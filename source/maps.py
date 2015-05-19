@@ -3,7 +3,7 @@
 from db import newspapers
 from func import PATH, link, next_step
 
-key_google = 'AIzaSyCfa0x6UYdgUF7kzg0iGJCoReWvUZRJ5D0'
+KEY_GOOGLE = 'AIzaSyCfa0x6UYdgUF7kzg0iGJCoReWvUZRJ5D0'
 
 def map():
     content_newspaper = ''
@@ -23,7 +23,7 @@ def map():
                             + '    paperlink[' + str(newspaper.id) + '] = \'' + newspaper.url + '\';\n'\
                             + '    iconimage[' + str(newspaper.id) + '] = \'' + newspaper.marker() + '\';\n\n'
 
-    return '<script src=\"https://maps.googleapis.com/maps/api/js?key=' + key_google\
+    return '<script src=\"https://maps.googleapis.com/maps/api/js?key=' + KEY_GOOGLE\
            + '&sensor=false\" type=\"text/javascript\">\n'\
            + '</script>\n'\
            + '<script>\n'\
