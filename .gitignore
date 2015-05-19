@@ -1,2 +1,6 @@
 *.pyc
-.idea/*
+*.txt
+*.html
+*.xml
+*.iml
+.name

@@ -31,9 +31,8 @@ content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
           + '<p>In this site presents newspapers <span style=\"text-decoration: line-through\">' \
             'from around the world</span>. Look at this entertaining statistics:</p>\n'\
           + '<ul>\n'\
-          + '<p><li>A total of <a style=\"text-decoration: underline\" href=\"http://papersaround.blogspot.com/\">'\
-          + str(len(newspapers)) + ' newspapers</a> from <a style=\"text-decoration: underline\" ' \
-                                   'href=\"http://papersaround.blogspot.com/p/countries.html\">'\
+          + '<p><li>A total of ' + str(len(newspapers)) + ' newspapers from <a style=\"text-decoration: underline\" ' \
+                                                          'href=\"http://papersaround.blogspot.com/p/countries.html\">'\
           + str(len(set(countries))) + ' countries</a> and <a style=\"text-decoration: underline\" ' \
                                        'href=\"http://papersaround.blogspot.com/p/countries.html\">'\
           + str(len(set(cities))) + ' cities</a>.</li></p>\n'\
