@@ -20,7 +20,7 @@ if __name__ == '__main__':
     choise = False
     while choise == False:
 
-        menu = input('\nWhat you want?\nAdd newspaper\nPost\nURL\nUpdate\nQuery\nquit\n').lower()
+        menu = input('\nWhat you want?\nAdd newspaper\nPost\nURL\nUpdate\nQuery\nExit\n').lower()
         if menu == 'add' or menu == 'add newspaper' or menu == 'newspaper' or menu == 'a':
             choise = True
             os.system('python "' + PATH + '/source/add.py"')
@@ -36,7 +36,7 @@ if __name__ == '__main__':
         elif menu == 'query' or menu == 'q':
             choise = True
             os.system('python "' + PATH + '/source/db.py"')
-        elif menu == 'quit':
+        elif menu == 'exit' or menu == 'e':
             sys.exit(0)
         else:
             print('Wrong! Please, input again.')
