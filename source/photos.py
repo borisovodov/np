@@ -4,8 +4,9 @@ import os
 import sys
 from func import PATH
 
-key_flickrapi = 'ad1829dfb5336f288a6a712cb714efef'
-key_flickrapi_secret = '44a1a2982af2b538'
+KEY_FLICKRAPI = 'ad1829dfb5336f288a6a712cb714efef'
+KEY_FLICKRAPI_SECRET = '44a1a2982af2b538'
+
 
 def setup_flickrapi():
     if not os.path.exists(sys.path[6] + '/flickrapi') or not os.path.exists(sys.path[6] + '/oauthlib'):
@@ -13,18 +14,20 @@ def setup_flickrapi():
         os.system('pip install flickrapi')
         print('Complete install flickrapi.')
 
+
 def authorization_flickr():
     import flickrapi
 
-    flickr = flickrapi.FlickrAPI(key_flickrapi, key_flickrapi_secret)
+    flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
     print('Authorization on Flickr...')
     flickr.authenticate_via_browser(perms='write')
     print('Complete authorization.')
 
+
 def upload_photos(newspaper, path_files=PATH + '/upload'):
     import flickrapi
 
-    flickr = flickrapi.FlickrAPI(key_flickrapi, key_flickrapi_secret)
+    flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
     photo_files = []
     photo_ids = []
     
@@ -44,11 +47,12 @@ def upload_photos(newspaper, path_files=PATH + '/upload'):
     print('Complete upload photos.')
     return photo_ids
 
-def link_photo(id):
+
+def link_photo(id_photo):
     import flickrapi
 
-    flickr = flickrapi.FlickrAPI(key_flickrapi, key_flickrapi_secret)
-    photo = flickr.photos.getSizes(photo_id=id)
+    flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
+    photo = flickr.photos.getSizes(photo_id=id_photo)
 
     url_o=''
     url_z=''
@@ -59,5 +63,5 @@ def link_photo(id):
             url_z = element.get('source')
     return '<div class=\"separator\" style=\"clear: both; text-align: center;\">\n'\
            + '<a href=\"' + url_o + '\" imageanchor=\"1\" style=\"margin-left: 1em; margin-right: 1em;\">'\
-           + '<img border=\"0\" src=\"' + url_z +'\" width=\"400\" /></a></div>\n'\
+           + '<img border=\"0\" src=\"' + url_z + '\" width=\"400\" /></a></div>\n'\
            + '<br />\n'
