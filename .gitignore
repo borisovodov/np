@@ -1,5 +1,12 @@
+# General
 .idea/
 __pycache__/
 *.py[cod]
+
+# Output
 *.txt
 *.html
+
+# Private
+config.py
+newspapers.db

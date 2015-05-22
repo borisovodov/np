@@ -3,9 +3,10 @@
 import os
 import sys
 from func import PATH
+from config import keys
 
-KEY_FLICKRAPI = 'ad1829dfb5336f288a6a712cb714efef'
-KEY_FLICKRAPI_SECRET = '44a1a2982af2b538'
+KEY_FLICKRAPI = keys['flickr']
+KEY_FLICKRAPI_SECRET = keys['flickr_secret']
 
 
 def setup_flickrapi():

@@ -2,11 +2,38 @@
 
 import sqlite3
 import datetime
+import os
 from newspaper import Newspaper
 from func import step, PATH
 
 
+def create_database():
+    connect = sqlite3.connect(PATH + '/data/newspapers.db')
+    cursor = connect.cursor()
+    cursor.execute('CREATE TABLE newspapers ('
+                   'id INTEGER PRIMARY KEY, '
+                   'city TEXT, '
+                   'country TEXT, '
+                   'title TEXT, '
+                   'number TEXT, '
+                   'number2 TEXT, '
+                   'date TEXT, '
+                   'language TEXT, '
+                   'senders TEXT, '
+                   'latitude REAL, '
+                   'longitude REAL, '
+                   'continent TEXT, '
+                   'hemisphere TEXT, '
+                   'population INTEGER, '
+                   'date_brought TEXT, '
+                   'url TEXT)')
+    connect.commit()
+    connect.close()
+
+
 def query(command):
+    if os.path.isfile(PATH + '/data/newspapers.db') == False:
+        create_database()
     connect = sqlite3.connect(PATH + '/data/newspapers.db')
     cursor = connect.cursor()
     table = cursor.execute(command.replace('\'', '\"'))
@@ -36,7 +63,8 @@ def query(command):
     connect.close()
     return query_newspapers
 
-newspapers = query('SELECT * FROM newspapers')
+if os.path.isfile(PATH + '/data/newspapers.db'):
+    newspapers = query('SELECT * FROM newspapers')
 
 if __name__ == '__main__':
     command = input('Input SQL command (only SELECT *): ')

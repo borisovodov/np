@@ -2,8 +2,10 @@
 
 from db import newspapers
 from func import PATH, link
+from config import keys
 
-KEY_GOOGLE = 'AIzaSyCfa0x6UYdgUF7kzg0iGJCoReWvUZRJ5D0'
+KEY_GOOGLE = keys['google']
+
 
 def map():
     content_newspaper = ''
