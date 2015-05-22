@@ -9,7 +9,7 @@ KEY_FLICKRAPI_SECRET = '44a1a2982af2b538'
 
 
 def setup_flickrapi():
-    if not os.path.exists(sys.path[6] + '/flickrapi') or not os.path.exists(sys.path[6] + '/oauthlib'):
+    if not os.path.exists(sys.path[-1] + '/flickrapi') or not os.path.exists(sys.path[-1] + '/oauthlib'):
         print('Setup flickrapi...')
         os.system('pip install flickrapi')
         print('Complete install flickrapi.')
