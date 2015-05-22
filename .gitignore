@@ -8,5 +8,5 @@ __pycache__/
 *.html
 
 # Private
-config.py
-newspapers.db
+source/config.py
+data/newspapers.db
