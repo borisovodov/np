@@ -1,7 +1,7 @@
 """Module generate maps for site and big map."""
 
 from db import newspapers
-from func import PATH, link, next_step
+from func import PATH, link
 
 KEY_GOOGLE = 'AIzaSyCfa0x6UYdgUF7kzg0iGJCoReWvUZRJ5D0'
 

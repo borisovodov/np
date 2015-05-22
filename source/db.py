@@ -3,7 +3,7 @@
 import sqlite3
 import datetime
 from newspaper import Newspaper
-from func import next_step, PATH
+from func import step, PATH
 
 
 def query(command):
@@ -44,4 +44,4 @@ if __name__ == '__main__':
     for row in table:
         print(row)
     print('Query completed.')
-    next_step()
+    step('next')

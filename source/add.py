@@ -3,7 +3,7 @@
 import datetime
 from newspaper import Newspaper
 from db import query, newspapers
-from func import next_step
+from func import step
 
 print('Choose newspaper\'s attribute.')
 
@@ -38,4 +38,4 @@ query('INSERT INTO newspapers (city, country, title, number, number2, date, lang
       + str(newspaper.date_brought.month) + '.' + str(newspaper.date_brought.year) + '\', \'' + newspaper.url + '\')')
 
 print('Newspaper added to database with id = ' + str(len(newspapers)) + '.')
-next_step()
+step('update')

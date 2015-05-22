@@ -2,7 +2,7 @@
 
 import photos
 from db import newspapers
-from func import PATH, link, next_step
+from func import PATH, link, step
 
 id = int(input('Input ID newspaper: '))
 path_photos = input('Input path to folder with upload photos or just press Enter for upload from default folder: ')
@@ -70,4 +70,4 @@ file_post = open(PATH + '/post.txt', encoding='utf-8', mode='w')
 file_post.write(content)
 file_post.close()
 print('Post generate.')
-next_step()
+step('next')
