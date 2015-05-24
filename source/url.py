@@ -1,7 +1,7 @@
 """Module for adding URL of post with newspaper in database."""
 
-from db import query
-from func import step
+from source.db import query
+from source.func import step
 
 id = int(input('Input ID newspaper: '))
 url = input('Input URL post newspaper: ').replace('.ru/', '.com/')

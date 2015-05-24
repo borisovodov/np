@@ -1,7 +1,7 @@
 """Module for update output files."""
 
 import os
-from func import PATH, step
+from source.func import PATH, step
 
 os.system('python "' + PATH + '/source/countries.py"')
 os.system('python "' + PATH + '/source/maps.py"')

@@ -1,8 +1,8 @@
 """Module generate statistic."""
 
 import collections
-from db import newspapers, query
-from func import PATH, link
+from source.db import newspapers, query
+from source.func import PATH, link
 
 countries = []
 cities = []

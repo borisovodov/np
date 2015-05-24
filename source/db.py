@@ -3,8 +3,8 @@
 import sqlite3
 import datetime
 import os
-from newspaper import Newspaper
-from func import step, PATH
+from source.newspaper import Newspaper
+from source.func import step, PATH
 
 
 def create_database():
@@ -63,7 +63,7 @@ def query(command):
     connect.close()
     return query_newspapers
 
-if os.path.isfile(PATH + '/data/newspapers.db'):
+if os.path.isfile(PATH + '/data/newspapers.db') == True:
     newspapers = query('SELECT * FROM newspapers')
 
 if __name__ == '__main__':

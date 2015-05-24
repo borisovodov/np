@@ -3,7 +3,7 @@
 import datetime
 import calendar
 from math import trunc
-from func import link
+from source.func import link
 
 
 class Newspaper:
@@ -50,12 +50,12 @@ class Newspaper:
             lat = str(trunc(self.latitude)) + '° ' + str(trunc((self.latitude - trunc(self.latitude))*60)) + '′ N'
         else:
             lat = str(abs(trunc(self.latitude))) + '° ' + str(abs(trunc((self.latitude - trunc(self.latitude))*60)))\
-                  + '′ S'
+                                                 + '′ S'
         if self.longitude > 0:
             long = str(trunc(self.longitude)) + '° ' + str(trunc((self.longitude - trunc(self.longitude))*60)) + '′ E'
         else:
             long = str(abs(trunc(self.longitude))) + '° ' + str(abs(trunc((self.longitude - trunc(self.longitude))*60)))\
-                   + '′ W'
+                                                   + '′ W'
 
         if coord == 'latitude':
             return lat
@@ -71,14 +71,12 @@ class Newspaper:
             return 'Southern Hemisphere'
 
     def __str__(self):
-        return '\'' + str(self.id) + '\', \'' + self.city + '\', \'' + self.country + '\', \'' + self.title + '\', \''\
-               + self.number + '\', \'' + self.number2 + '\', \''\
-               + str(self.date.day) + '.' + str(self.date.month) + '.' + str(self.date.year) + '\', \''\
-               + self.language + '\', \'' + ','.join(self.senders) + '\', \'' + str(self.latitude) + '\', \''\
-               + str(self.longitude) + '\', \'' + self.continent + '\', \'' + self.hemisphere + '\', \''\
-               + str(self.population) + '\', \''\
+        return str(self.id) + ', ' + self.city + ', ' + self.country + ', ' + self.title + ', ' + self.number + ', '\
+               + self.number2 + ', ' + str(self.date.day) + '.' + str(self.date.month) + '.' + str(self.date.year) + ', '\
+               + self.language + ', ' + ','.join(self.senders) + ', ' + str(self.latitude) + ', '\
+               + str(self.longitude) + ', ' + self.continent + ', ' + self.hemisphere + ', ' + str(self.population) + ', '\
                + str(self.date_brought.day) + '.' + str(self.date_brought.month) + '.' + str(self.date_brought.year)\
-               + '\', \'' + self.url + '\''
+               + ', ' + self.url
 
     def marker(self):
         return 'https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/' + self.country.lower() + '.png'

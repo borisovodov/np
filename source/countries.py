@@ -1,8 +1,8 @@
 """Module for generate countries."""
 
 from collections import defaultdict
-from db import newspapers
-from func import PATH, link
+from source.db import newspapers
+from source.func import PATH, link
 
 dict_country = defaultdict(list)
 content_countries = ''

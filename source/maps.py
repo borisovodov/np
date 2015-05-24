@@ -1,8 +1,8 @@
 """Module generate maps for site and big map."""
 
-from db import newspapers
-from func import PATH, link
-from config import keys
+from source.db import newspapers
+from source.func import PATH, link
+from source.config import keys
 
 KEY_GOOGLE = keys['google']
 

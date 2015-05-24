@@ -19,7 +19,6 @@ from source.func import PATH
 if __name__ == '__main__':
     choise = False
     while choise == False:
-
         menu = input('\nWhat you want?\nAdd newspaper\nPost\nURL\nUpdate\nQuery\nExit\n').lower()
         if menu == 'add' or menu == 'add newspaper' or menu == 'newspaper' or menu == 'a':
             choise = True

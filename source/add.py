@@ -1,9 +1,9 @@
 """Module for adding new newspaper in database."""
 
 import datetime
-from newspaper import Newspaper
-from db import query
-from func import step
+from source.newspaper import Newspaper
+from source.db import query
+from source.func import step
 
 print('Choose newspaper\'s attribute.')
 

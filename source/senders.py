@@ -1,7 +1,7 @@
 """Module for generate list of senders."""
 
-from db import newspapers
-from func import PATH, link
+from source.db import newspapers
+from source.func import PATH, link
 
 list_senders = []
 content_senders = ''

@@ -1,4 +1,25 @@
 """Module for saving config."""
 
-keys = {'google': 'AIzaSyCfa0x6UYdgUF7kzg0iGJCoReWvUZRJ5D0', 'flickr': 'ad1829dfb5336f288a6a712cb714efef',
-        'flickr_secret': '44a1a2982af2b538'}
+import os
+from source.func import PATH
+
+
+def create_config():
+    key_google = input('Input Google API key: ')
+    key_flickr = input('Input Flickr Key: ')
+    key_flickr_secret = input('Input Flickr Secret: ')
+    content = 'keys = {\'google\': \'' + key_google + '\', \'flickr\': \'' + key_flickr + '\', \'flickr_secret\': \''\
+              + key_flickr_secret + '\'}'
+    file_config = open(PATH + '/data/settings.py', encoding='utf-8', mode='w')
+    file_config.write(content)
+    file_config.close()
+
+if os.path.isfile(PATH + '/data/settings.py') == False:
+    create_config()
+
+import data.settings
+
+keys = data.settings.keys
+
+if __name__ == '__main__':
+    create_config()
