@@ -32,7 +32,10 @@ def create_database():
 
 
 def query(command):
-    if not os.path.isfile(PATH + '/data/newspapers.db'):
+    if not os.path.isdir(PATH + '/data'):
+        os.makedirs(PATH + '/data')
+        create_database()
+    elif not os.path.isfile(PATH + '/data/newspapers.db'):
         create_database()
     connect = sqlite3.connect(PATH + '/data/newspapers.db')
     cursor = connect.cursor()
