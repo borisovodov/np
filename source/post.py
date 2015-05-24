@@ -1,12 +1,14 @@
 """Module generate post for upload to Blogspot."""
 
 import source.photos as photos
+from source.newspaper import Newspaper
 from source.db import newspapers
-from source.func import PATH, link, step
+from source.func import PATH, step
 
 id_n = int(input('Input ID newspaper: '))
 path_photos = input('Input path to folder with upload photos or just press Enter for upload from default folder: ')
 
+newspaper = Newspaper()
 for newspaper_in_list in newspapers:
     if id_n == newspaper_in_list.id:
         newspaper = newspaper_in_list
@@ -33,7 +35,7 @@ content_up = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
 
 if newspaper.number == '' and newspaper.number2 == '':
     content = content_up + '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
-              '<strong>Language:</strong> ' + link(newspaper.language) + '<br />\n'\
+              '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n'\
               '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
               '<br />\n'\
               + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
@@ -41,7 +43,7 @@ if newspaper.number == '' and newspaper.number2 == '':
 elif newspaper.number2 == '':
     content = content_up + '<strong>Number:</strong> ' + newspaper.number + '<br />\n'\
               '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
-              '<strong>Language:</strong> ' + link(newspaper.language) + '<br />\n'\
+              '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n'\
               '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
               '<br />\n'\
               + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
@@ -49,7 +51,7 @@ elif newspaper.number2 == '':
 else:
     content = content_up + '<strong>Number:</strong> ' + newspaper.number + ' (' + newspaper.number2 + ')<br />\n'\
               '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
-              '<strong>Language:</strong> ' + link(newspaper.language) + '<br />\n'\
+              '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n'\
               '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
               '<br />\n'\
               + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\

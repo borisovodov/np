@@ -2,7 +2,8 @@
 
 from collections import defaultdict
 from source.db import newspapers
-from source.func import PATH, link
+from source.newspaper import Newspaper
+from source.func import PATH
 
 dict_country = defaultdict(list)
 content_countries = ''
@@ -11,9 +12,9 @@ for newspaper in newspapers:
     dict_country[newspaper.country].append(newspaper.city)
 
 for country in sorted(dict_country.items()):
-    content_countries = content_countries + link(country[0]) + '\n<ul>\n'
+    content_countries = content_countries + Newspaper.link(country[0]) + '\n<ul>\n'
     for city in sorted(set(country[1])):
-        content_countries = content_countries + '<li>' + link(city) + '</li>\n'
+        content_countries = content_countries + '<li>' + Newspaper.link(city) + '</li>\n'
     content_countries = content_countries + '</ul>\n'
 
 content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\

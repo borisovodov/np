@@ -1,7 +1,8 @@
 """Module for generate file with tags."""
 
+from source.newspaper import Newspaper
 from source.db import newspapers
-from source.func import PATH, link
+from source.func import PATH
 
 list_tags = []
 content_tags = ''
@@ -17,7 +18,7 @@ for newspaper in newspapers:
         list_tags.append(sender)
 
 for tag in sorted(set(list_tags)):
-    content_tags = content_tags + '<li>' + link(tag) + '</li>\n'
+    content_tags = content_tags + '<li>' + Newspaper.link(tag) + '</li>\n'
 
 content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
           + '<p>Here are all the tags used on the site in alphabetical order. To ease the search, press Ctrl + F.</p>\n'\

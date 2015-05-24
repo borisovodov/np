@@ -3,7 +3,6 @@
 import datetime
 import calendar
 from math import trunc
-from source.func import link
 
 
 class Newspaper:
@@ -26,17 +25,22 @@ class Newspaper:
         self.date_brought = datetime.date(1, 1, 1)
         self.url = ''
 
+    @staticmethod
+    def link(not_link):
+        return '<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/'\
+               + not_link.replace(' ', '%20') + '">' + not_link + '</a>'
+
     def format_senders(self):
         return ', '.join(self.senders)
 
     def format_senders_nice(self):
-        senders_string = link(self.senders[0])
+        senders_string = self.link(self.senders[0])
         if len(self.senders) == 2:
-            senders_string = link(self.senders[0]) + ' and ' + link(self.senders[1])
+            senders_string = self.link(self.senders[0]) + ' and ' + self.link(self.senders[1])
         elif len(self.senders) > 2:
             for i in range(1, len(self.senders) - 1):
-                senders_string = senders_string + ', ' + link(self.senders[i])
-            senders_string = senders_string + ' and ' + link(self.senders[-1])
+                senders_string = senders_string + ', ' + self.link(self.senders[i])
+            senders_string = senders_string + ' and ' + self.link(self.senders[-1])
         return senders_string
 
     def format_date(self):

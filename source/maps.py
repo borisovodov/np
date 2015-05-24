@@ -1,7 +1,7 @@
 """Module generate maps for site and big map."""
 
 from source.db import newspapers
-from source.func import PATH, link
+from source.func import PATH
 from source.config import keys
 
 KEY_GOOGLE = keys['google']
@@ -17,7 +17,7 @@ def map():
                             + '    papernumber2[' + str(newspaper.id) + '] = \'' + newspaper.number2 + '\';\n'\
                             + '    paperdate[' + str(newspaper.id) + '] = \''\
                             + newspaper.format_date() + '\';\n'\
-                            + '    paperlang[' + str(newspaper.id) + '] = \'' + link(newspaper.language) + '\';\n'\
+                            + '    paperlang[' + str(newspaper.id) + '] = \'' + newspaper.link(newspaper.language) + '\';\n'\
                             + '    papersender[' + str(newspaper.id) + '] = \''\
                             + newspaper.format_senders_nice() + '\';\n'\
                             + '    paperland[' + str(newspaper.id) + '] = new google.maps.LatLng('\
