@@ -49,7 +49,7 @@ def upload_photos(newspaper, path_files=PATH + '/upload'):
     print('Uploading photos...')
     for i in range(len(photo_files)):
         photo_files[i] = path_files + '/' + photo_files[i] + '.jpg'
-        photo = flickr.upload(filename=photo_files[i], title=str(newspaper.id) + ' ' + newspaper.title + ' ' + str(i),
+        photo = flickr.upload(filename=photo_files[i], title=str(newspaper.id) + ' ' + newspaper.title + ' ' + str(i + 1),
                               description='http://papersaround.blogspot.com/',
                               tags=newspaper.country + ' ' + newspaper.city, is_public='1')
         photo_ids.append(photo[0].text)
