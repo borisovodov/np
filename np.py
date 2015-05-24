@@ -13,13 +13,16 @@ __author__ = 'Boris Ovodov'
 __version__ = '1.0.0'
 
 import sys
-from source.add import add
-from source.post import post
-from source.url import url
-from source.update import update
-from source.db import db
+
+PATH = sys.path[0]
 
 if __name__ == '__main__':
+    from source.add import add
+    from source.post import post
+    from source.url import url
+    from source.update import update
+    from source.db import db
+
     choise = False
     while choise == False:
         menu = input('\nWhat you want?\nAdd newspaper\nPost\nURL\nUpdate\nQuery\nExit\n').lower()

@@ -1,6 +1,6 @@
 """Module generate post for upload to Blogspot."""
 
-from sys import path
+from np import PATH
 import source.photos as photos
 from source.newspaper import Newspaper
 from source.db import newspapers
@@ -59,7 +59,7 @@ def post():
                   + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
                   + content_photos + '</div>'
 
-    file_post = open(path[0] + '/post.txt', encoding='utf-8', mode='w')
+    file_post = open(PATH + '/post.txt', encoding='utf-8', mode='w')
     file_post.write(content)
     file_post.close()
     print('Post generate.')

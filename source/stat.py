@@ -1,7 +1,7 @@
 """Module generate statistic."""
 
 import collections
-from sys import path
+from np import PATH
 from source.newspaper import Newspaper
 from source.db import newspapers, query
 
@@ -136,7 +136,7 @@ def stat():
               + '</ul>-->\n'\
               + '</div>'
 
-    file_stat = open(path[0] + '/stat.txt', encoding='utf-8', mode='w')
+    file_stat = open(PATH + '/stat.txt', encoding='utf-8', mode='w')
     file_stat.write(content)
     file_stat.close()
     print('Generate statistic.')

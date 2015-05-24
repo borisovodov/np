@@ -1,6 +1,6 @@
 """Module for generate file with tags."""
 
-from sys import path
+from np import PATH
 from source.newspaper import Newspaper
 from source.db import newspapers
 
@@ -27,7 +27,7 @@ def tags():
               + content_tags\
               + '</div>'
 
-    file_tags = open(path[0] + '/tags.txt', encoding='utf-8', mode='w')
+    file_tags = open(PATH + '/tags.txt', encoding='utf-8', mode='w')
     file_tags.write(content)
     file_tags.close()
     print('Generate tags.')

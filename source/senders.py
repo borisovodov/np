@@ -1,6 +1,6 @@
 """Module for generate list of senders."""
 
-from sys import path
+from np import PATH
 from source.newspaper import Newspaper
 from source.db import newspapers
 
@@ -23,7 +23,7 @@ def senders():
               + '</ul>\n'\
               + '</div>'
 
-    file_senders = open(path[0] + '/senders.txt', encoding='utf-8', mode='w')
+    file_senders = open(PATH + '/senders.txt', encoding='utf-8', mode='w')
     file_senders.write(content)
     file_senders.close()
     print('Generate senders.')

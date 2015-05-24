@@ -1,6 +1,6 @@
 """Module generate maps for site and big map."""
 
-from sys import path
+from np import PATH
 from source.db import newspapers
 from source.config import keys
 
@@ -278,11 +278,11 @@ def maps():
                   + '    </body>\n'\
                   + '</html>'
 
-    file_small_map = open(path[0] + '/map.txt', encoding='utf-8', mode='w')
+    file_small_map = open(PATH + '/map.txt', encoding='utf-8', mode='w')
     file_small_map.write(content_small)
     file_small_map.close()
 
-    file_big_map = open(path[0] + '/map.html', encoding='utf-8', mode='w')
+    file_big_map = open(PATH + '/map.html', encoding='utf-8', mode='w')
     file_big_map.write(content_big)
     file_big_map.close()
     print('Generate maps.')

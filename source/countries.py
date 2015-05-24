@@ -1,7 +1,7 @@
 """Module for generate countries."""
 
 from collections import defaultdict
-from sys import path
+from np import PATH
 from source.db import newspapers
 from source.newspaper import Newspaper
 
@@ -24,7 +24,7 @@ def countries():
               + content_countries\
               + '</div>'
 
-    file_countries = open(path[0] + '/countries.txt', encoding='utf-8', mode='w')
+    file_countries = open(PATH + '/countries.txt', encoding='utf-8', mode='w')
     file_countries.write(content)
     file_countries.close()
     print('Generate countries.')
