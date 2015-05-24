@@ -1,13 +1,13 @@
 """Module generate maps for site and big map."""
 
+from sys import path
 from source.db import newspapers
-from source.func import PATH
 from source.config import keys
 
 KEY_GOOGLE = keys['google']
 
 
-def map():
+def map_general():
     content_newspaper = ''
     for newspaper in newspapers:
         content_newspaper = content_newspaper + '    papername[' + str(newspaper.id) + '] = \'' + newspaper.city + ', '\
@@ -252,35 +252,37 @@ def map():
            + '}\n'\
            + '</script>\n'
 
-content_small = '<p>This map shows all places from which newspapers were brought for this site.</p>\n'\
-                + '<p>Also you can see the <a style=\"text-decoration: underline\" ' \
-                  'href=\"https://googledrive.com/host/0B3n4EMBczDDEfkZOTFltWm1zYnlFTXAxUHY2TE9fbWhlWUoyN1IyZDdHUFVvN2xuNkNEczA/map.html\">' \
-                  'full map</a>.</p>\n'\
-                + map()\
-                + '<div id=\"map_canvas\" style=\"width: 100%; height: 600px\"></div>\n'
 
-content_big = '<!DOCTYPE html>\n'\
-              + '<html>\n'\
-              + '    <head>\n'\
-              + '        <meta charset=\"utf-8\">\n'\
-              + '    <title>Newspapers From Around The World - Map</title>\n'\
-              + '        <style type=\"text/css\">\n'\
-              + '            html { height: 100% }\n'\
-              + '            body { height: 100%; margin: 0; padding: 0 }\n'\
-              + '            #map_canvas { height: 100% }\n'\
-              + '        </style>\n'\
-              + map()\
-              + '    </head>\n'\
-              + '    <body  onload=\"initialize()\">\n'\
-              + '        <div id=\"map_canvas\" style=\"width: 100%; height: 100%\"></div>\n'\
-              + '    </body>\n'\
-              + '</html>'
+def maps():
+    content_small = '<p>This map shows all places from which newspapers were brought for this site.</p>\n'\
+                    + '<p>Also you can see the <a style=\"text-decoration: underline\" ' \
+                      'href=\"https://googledrive.com/host/0B3n4EMBczDDEfkZOTFltWm1zYnlFTXAxUHY2TE9fbWhlWUoyN1IyZDdHUFVvN2xuNkNEczA/map.html\">' \
+                      'full map</a>.</p>\n'\
+                    + map_general()\
+                    + '<div id=\"map_canvas\" style=\"width: 100%; height: 600px\"></div>\n'
 
-file_small_map = open(PATH + '/map.txt', encoding='utf-8', mode='w')
-file_small_map.write(content_small)
-file_small_map.close()
+    content_big = '<!DOCTYPE html>\n'\
+                  + '<html>\n'\
+                  + '    <head>\n'\
+                  + '        <meta charset=\"utf-8\">\n'\
+                  + '    <title>Newspapers From Around The World - Map</title>\n'\
+                  + '        <style type=\"text/css\">\n'\
+                  + '            html { height: 100% }\n'\
+                  + '            body { height: 100%; margin: 0; padding: 0 }\n'\
+                  + '            #map_canvas { height: 100% }\n'\
+                  + '        </style>\n'\
+                  + map_general()\
+                  + '    </head>\n'\
+                  + '    <body  onload=\"initialize()\">\n'\
+                  + '        <div id=\"map_canvas\" style=\"width: 100%; height: 100%\"></div>\n'\
+                  + '    </body>\n'\
+                  + '</html>'
 
-file_big_map = open(PATH + '/map.html', encoding='utf-8', mode='w')
-file_big_map.write(content_big)
-file_big_map.close()
-print('Generate maps.')
+    file_small_map = open(path[0] + '/map.txt', encoding='utf-8', mode='w')
+    file_small_map.write(content_small)
+    file_small_map.close()
+
+    file_big_map = open(path[0] + '/map.html', encoding='utf-8', mode='w')
+    file_big_map.write(content_big)
+    file_big_map.close()
+    print('Generate maps.')

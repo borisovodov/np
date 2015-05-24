@@ -1,31 +1,33 @@
 """Module for generate file with tags."""
 
+from sys import path
 from source.newspaper import Newspaper
 from source.db import newspapers
-from source.func import PATH
 
-list_tags = []
-content_tags = ''
 
-for newspaper in newspapers:
-    list_tags.append(newspaper.city)
-    list_tags.append(newspaper.country)
-    list_tags.append(str(newspaper.date.year))
-    list_tags.append(newspaper.language)
-    list_tags.append(newspaper.continent)
-    list_tags.append(newspaper.format_hemisphere())
-    for sender in newspaper.senders:
-        list_tags.append(sender)
+def tags():
+    list_tags = []
+    content_tags = ''
 
-for tag in sorted(set(list_tags)):
-    content_tags = content_tags + '<li>' + Newspaper.link(tag) + '</li>\n'
+    for newspaper in newspapers:
+        list_tags.append(newspaper.city)
+        list_tags.append(newspaper.country)
+        list_tags.append(str(newspaper.date.year))
+        list_tags.append(newspaper.language)
+        list_tags.append(newspaper.continent)
+        list_tags.append(newspaper.format_hemisphere())
+        for sender in newspaper.senders:
+            list_tags.append(sender)
 
-content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
-          + '<p>Here are all the tags used on the site in alphabetical order. To ease the search, press Ctrl + F.</p>\n'\
-          + content_tags\
-          + '</div>'
+    for tag in sorted(set(list_tags)):
+        content_tags = content_tags + '<li>' + Newspaper.link(tag) + '</li>\n'
 
-file_tags = open(PATH + '/tags.txt', encoding='utf-8', mode='w')
-file_tags.write(content)
-file_tags.close()
-print('Generate tags.')
+    content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
+              + '<p>Here are all the tags used on the site in alphabetical order. To ease the search, press Ctrl + F.</p>\n'\
+              + content_tags\
+              + '</div>'
+
+    file_tags = open(path[0] + '/tags.txt', encoding='utf-8', mode='w')
+    file_tags.write(content)
+    file_tags.close()
+    print('Generate tags.')

@@ -1,12 +1,16 @@
 """Module for update output files."""
 
-import os
-from source.func import PATH, step
+from source.countries import countries
+from source.maps import maps
+from source.senders import senders
+from source.stat import stat
+from source.tags import tags
 
-os.system('python "' + PATH + '/source/countries.py"')
-os.system('python "' + PATH + '/source/maps.py"')
-os.system('python "' + PATH + '/source/senders.py"')
-os.system('python "' + PATH + '/source/stat.py"')
-os.system('python "' + PATH + '/source/tags.py"')
-print('Update complete.')
-step('next')
+
+def update():
+    countries()
+    maps()
+    senders()
+    stat()
+    tags()
+    print('Update complete.')

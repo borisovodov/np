@@ -12,9 +12,12 @@ Main module of program
 __author__ = 'Boris Ovodov'
 __version__ = '1.0.0'
 
-import os
 import sys
-from source.func import PATH
+from source.add import add
+from source.post import post
+from source.url import url
+from source.update import update
+from source.db import db
 
 if __name__ == '__main__':
     choise = False
@@ -22,19 +25,19 @@ if __name__ == '__main__':
         menu = input('\nWhat you want?\nAdd newspaper\nPost\nURL\nUpdate\nQuery\nExit\n').lower()
         if menu == 'add' or menu == 'add newspaper' or menu == 'newspaper' or menu == 'a':
             choise = True
-            os.system('python "' + PATH + '/source/add.py"')
+            add()
         elif menu == 'post' or menu == 'p':
             choise = True
-            os.system('python "' + PATH + '/source/post.py"')
+            post()
         elif menu == 'url':
             choise = True
-            os.system('python "' + PATH + '/source/url.py"')
+            url()
         elif menu == 'update' or menu == 'u':
             choise = True
-            os.system('python "' + PATH + '/source/update.py"')
+            update()
         elif menu == 'query' or menu == 'q':
             choise = True
-            os.system('python "' + PATH + '/source/db.py"')
+            db()
         elif menu == 'exit' or menu == 'e':
             sys.exit(0)
         else:

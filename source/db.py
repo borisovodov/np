@@ -3,12 +3,12 @@
 import sqlite3
 import datetime
 import os
+from sys import path
 from source.newspaper import Newspaper
-from source.func import step, PATH
 
 
 def create_database():
-    connect = sqlite3.connect(PATH + '/data/newspapers.db')
+    connect = sqlite3.connect(path[0] + '/data/newspapers.db')
     cursor = connect.cursor()
     cursor.execute('CREATE TABLE newspapers ('
                    'id INTEGER PRIMARY KEY, '
@@ -32,12 +32,12 @@ def create_database():
 
 
 def query(command):
-    if not os.path.isdir(PATH + '/data'):
-        os.makedirs(PATH + '/data')
+    if not os.path.isdir(path[0] + '/data'):
+        os.makedirs(path[0] + '/data')
         create_database()
-    elif not os.path.isfile(PATH + '/data/newspapers.db'):
+    elif not os.path.isfile(path[0] + '/data/newspapers.db'):
         create_database()
-    connect = sqlite3.connect(PATH + '/data/newspapers.db')
+    connect = sqlite3.connect(path[0] + '/data/newspapers.db')
     cursor = connect.cursor()
     table = cursor.execute(command.replace('\'', '\"'))
     query_newspapers = []
@@ -66,13 +66,13 @@ def query(command):
     connect.close()
     return query_newspapers
 
-if os.path.isfile(PATH + '/data/newspapers.db'):
+if os.path.isfile(path[0] + '/data/newspapers.db'):
     newspapers = query('SELECT * FROM newspapers')
 
-if __name__ == '__main__':
+
+def db():
     command = input('Input SQL command (only SELECT *): ')
     table = query(command)
     for row in table:
         print(row)
     print('Query completed.')
-    step('next')

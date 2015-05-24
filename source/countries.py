@@ -1,28 +1,30 @@
 """Module for generate countries."""
 
 from collections import defaultdict
+from sys import path
 from source.db import newspapers
 from source.newspaper import Newspaper
-from source.func import PATH
 
-dict_country = defaultdict(list)
-content_countries = ''
 
-for newspaper in newspapers:
-    dict_country[newspaper.country].append(newspaper.city)
+def countries():
+    dict_country = defaultdict(list)
+    content_countries = ''
 
-for country in sorted(dict_country.items()):
-    content_countries = content_countries + Newspaper.link(country[0]) + '\n<ul>\n'
-    for city in sorted(set(country[1])):
-        content_countries = content_countries + '<li>' + Newspaper.link(city) + '</li>\n'
-    content_countries = content_countries + '</ul>\n'
+    for newspaper in newspapers:
+        dict_country[newspaper.country].append(newspaper.city)
 
-content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
-          + '<p>Newspapers for this site were brought from many countries and cities:</p>\n'\
-          + content_countries\
-          + '</div>'
+    for country in sorted(dict_country.items()):
+        content_countries = content_countries + Newspaper.link(country[0]) + '\n<ul>\n'
+        for city in sorted(set(country[1])):
+            content_countries = content_countries + '<li>' + Newspaper.link(city) + '</li>\n'
+        content_countries = content_countries + '</ul>\n'
 
-file_countries = open(PATH + '/countries.txt', encoding='utf-8', mode='w')
-file_countries.write(content)
-file_countries.close()
-print('Generate countries.')
+    content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
+              + '<p>Newspapers for this site were brought from many countries and cities:</p>\n'\
+              + content_countries\
+              + '</div>'
+
+    file_countries = open(path[0] + '/countries.txt', encoding='utf-8', mode='w')
+    file_countries.write(content)
+    file_countries.close()
+    print('Generate countries.')
