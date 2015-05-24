@@ -32,7 +32,7 @@ def create_database():
 
 
 def query(command):
-    if os.path.isfile(PATH + '/data/newspapers.db') == False:
+    if not os.path.isfile(PATH + '/data/newspapers.db'):
         create_database()
     connect = sqlite3.connect(PATH + '/data/newspapers.db')
     cursor = connect.cursor()
@@ -63,7 +63,7 @@ def query(command):
     connect.close()
     return query_newspapers
 
-if os.path.isfile(PATH + '/data/newspapers.db') == True:
+if os.path.isfile(PATH + '/data/newspapers.db'):
     newspapers = query('SELECT * FROM newspapers')
 
 if __name__ == '__main__':

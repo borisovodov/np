@@ -15,7 +15,7 @@ def create_config():
     file_config.close()
     print('Config file created.')
 
-if os.path.isfile(PATH + '/data/settings.py') == False:
+if not os.path.isfile(PATH + '/data/settings.py'):
     create_config()
 
 import data.settings
