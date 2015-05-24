@@ -61,7 +61,7 @@ class Newspaper:
             return lat
         elif coord == 'longitude':
             return long
-        else:
+        elif coord == 'both':
             return {'latitude': lat, 'longitude': long}
 
     def format_hemisphere_nice(self):
