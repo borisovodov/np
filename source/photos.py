@@ -1,7 +1,7 @@
 """Module for upload photos on Flickr with flickrapi library."""
 
 import os
-import sys
+import pip
 from source.func import PATH
 from source.config import keys
 
@@ -10,10 +10,19 @@ KEY_FLICKRAPI_SECRET = keys['flickr_secret']
 
 
 def setup_flickrapi():
-    if not os.path.exists(sys.path[-1] + '/flickrapi') or not os.path.exists(sys.path[-1] + '/oauthlib'):
-        print('Setup flickrapi...')
-        os.system('pip install flickrapi')
-        print('Complete install flickrapi.')
+    modules = []
+    for module in pip.get_installed_distributions():
+        modules.append(module.key)
+    if 'flickrapi' not in modules:
+        print('Install flickrapi...')
+        os.system('pip install --upgrade pip')
+        os.system('pip install --upgrade flickrapi')
+        os.system('pip install --upgrade requests')
+        os.system('pip install --upgrade six')
+        os.system('pip install --upgrade requests-oauthlib')
+        os.system('pip install --upgrade requests-toolbelt')
+        os.system('pip install --upgrade oauthlib')
+        print('Complete installing flickrapi.')
 
 
 def authorization_flickr():
