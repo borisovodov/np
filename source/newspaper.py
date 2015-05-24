@@ -26,10 +26,10 @@ class Newspaper:
         self.date_brought = datetime.date(1, 1, 1)
         self.url = ''
 
-    def format_senders_str(self):
+    def format_senders(self):
         return ', '.join(self.senders)
 
-    def format_senders_str_nice(self):
+    def format_senders_nice(self):
         senders_string = link(self.senders[0])
         if len(self.senders) == 2:
             senders_string = link(self.senders[0]) + ' and ' + link(self.senders[1])
@@ -39,13 +39,13 @@ class Newspaper:
             senders_string = senders_string + ' and ' + link(self.senders[-1])
         return senders_string
 
-    def format_date_str_nice(self):
+    def format_date(self):
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
 
-    def format_coordinates_str(self):
+    def format_coordinates(self):
         return str(self.latitude) + ',' + str(self.longitude)
 
-    def format_coordinates_str_nice(self, coord):
+    def format_coordinates_nice(self, coord):
         if self.latitude > 0:
             lat = str(trunc(self.latitude)) + '° ' + str(trunc((self.latitude - trunc(self.latitude))*60)) + '′ N'
         else:
@@ -64,7 +64,7 @@ class Newspaper:
         elif coord == 'both':
             return {'latitude': lat, 'longitude': long}
 
-    def format_hemisphere_nice(self):
+    def format_hemisphere(self):
         if self.hemisphere == 'n':
             return 'Northern Hemisphere'
         elif self.hemisphere == 's':

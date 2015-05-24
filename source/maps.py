@@ -16,12 +16,12 @@ def map():
                             + '    papernumber1[' + str(newspaper.id) + '] = \'' + newspaper.number + '\';\n'\
                             + '    papernumber2[' + str(newspaper.id) + '] = \'' + newspaper.number2 + '\';\n'\
                             + '    paperdate[' + str(newspaper.id) + '] = \''\
-                            + newspaper.format_date_str_nice() + '\';\n'\
+                            + newspaper.format_date() + '\';\n'\
                             + '    paperlang[' + str(newspaper.id) + '] = \'' + link(newspaper.language) + '\';\n'\
                             + '    papersender[' + str(newspaper.id) + '] = \''\
-                            + newspaper.format_senders_str_nice() + '\';\n'\
+                            + newspaper.format_senders_nice() + '\';\n'\
                             + '    paperland[' + str(newspaper.id) + '] = new google.maps.LatLng('\
-                            + newspaper.format_coordinates_str() + ');\n'\
+                            + newspaper.format_coordinates() + ');\n'\
                             + '    paperlink[' + str(newspaper.id) + '] = \'' + newspaper.url + '\';\n'\
                             + '    iconimage[' + str(newspaper.id) + '] = \'' + newspaper.marker() + '\';\n\n'
 

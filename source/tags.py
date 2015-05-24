@@ -12,7 +12,7 @@ for newspaper in newspapers:
     list_tags.append(str(newspaper.date.year))
     list_tags.append(newspaper.language)
     list_tags.append(newspaper.continent)
-    list_tags.append(newspaper.format_hemisphere_nice())
+    list_tags.append(newspaper.format_hemisphere())
     for sender in newspaper.senders:
         list_tags.append(sender)
 

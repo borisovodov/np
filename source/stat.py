@@ -44,18 +44,18 @@ content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
           + '<p><li>Newspapers were brought from the ' + str(len(set(continents))) + ' continents—'\
           + ', '.join(set(continents)) + '. More then other from ' + link(counter_continent.most_common(1)[0][0]) + ': '\
           + str(counter_continent.most_common(1)[0][1]) + '.</li></p>\n'\
-          + '<p><li>The northernmost newspaper brought ' + newspapers_latitude[-1].format_senders_str_nice()\
+          + '<p><li>The northernmost newspaper brought ' + newspapers_latitude[-1].format_senders_nice()\
           + ' from ' + link(newspapers_latitude[-1].city) + ', ' + link(newspapers_latitude[-1].country) + ': '\
-          + newspapers_latitude[-1].format_coordinates_str_nice('latitude') + '.</li></p>\n'\
-          + '<p><li>The southernmost newspaper brought ' + newspapers_latitude[0].format_senders_str_nice()\
+          + newspapers_latitude[-1].format_coordinates_nice('latitude') + '.</li></p>\n'\
+          + '<p><li>The southernmost newspaper brought ' + newspapers_latitude[0].format_senders_nice()\
           + ' from ' + link(newspapers_latitude[0].city) + ', ' + link(newspapers_latitude[0].country) + ': '\
-          + newspapers_latitude[0].format_coordinates_str_nice('latitude') + '.</li></p>\n'\
-          + '<p><li>The westernmost newspaper brought ' + newspapers_longitude[0].format_senders_str_nice()\
+          + newspapers_latitude[0].format_coordinates_nice('latitude') + '.</li></p>\n'\
+          + '<p><li>The westernmost newspaper brought ' + newspapers_longitude[0].format_senders_nice()\
           + ' from ' + link(newspapers_longitude[0].city) + ', ' + link(newspapers_longitude[0].country) + ': '\
-          + newspapers_longitude[0].format_coordinates_str_nice('longitude') + '.</li></p>\n'\
-          + '<p><li>The easternmost newspaper brought ' + newspapers_longitude[-1].format_senders_str_nice()\
+          + newspapers_longitude[0].format_coordinates_nice('longitude') + '.</li></p>\n'\
+          + '<p><li>The easternmost newspaper brought ' + newspapers_longitude[-1].format_senders_nice()\
           + ' from ' + link(newspapers_longitude[-1].city) + ', ' + link(newspapers_longitude[-1].country) + ': '\
-          + newspapers_longitude[-1].format_coordinates_str_nice('longitude') + '.</li></p>\n'\
+          + newspapers_longitude[-1].format_coordinates_nice('longitude') + '.</li></p>\n'\
           + '<p><li>Newspapers brought <a style=\"text-decoration: underline\" ' \
             'href=\"http://papersaround.blogspot.com/p/senders.html\">' + str(len(set(senders)))\
           + ' people</a>.</li></p>\n'\
@@ -66,7 +66,7 @@ content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
             '<a style=\"text-decoration: underline\" ' \
             'href=\"http://papersaround.blogspot.com/search/label/Alexandra%20Ovodova\">Alexandra Ovodova</a> ' \
             'filch from post.</li></p>\n'\
-          + '<p><li>Latest newspaper ' + newspapers[-1].format_senders_str_nice() + ' brought from '\
+          + '<p><li>Latest newspaper ' + newspapers[-1].format_senders_nice() + ' brought from '\
           + link(newspapers[-1].city) + ', ' + link(newspapers[-1].country) + '.</li></p>\n'\
           + '</ul><!--// Этот коммент не даёт показаться дополнительной статистике, пока она не готова\n'\
           + '<hr noshade style=\"margin-top: 30px; margin-bottom: 30px; color: black; background-color: black; ' \

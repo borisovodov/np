@@ -22,50 +22,35 @@ content_photos = ''
 for i in range(1, len(photo_ids)):
     content_photos = content_photos + photos.link_photo(photo_ids[i])
 
+content_up = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
+             '<!--Name: ' + newspaper.city + ', ' + newspaper.country + '-->\n'\
+             + '<!--Tags: ' + newspaper.country + ', ' + newspaper.city + ', '\
+             + str(newspaper.date.year) + ', ' + newspaper.language + ', '\
+             + newspaper.format_senders() + ', ' + newspaper.continent + ', '\
+             + newspaper.format_hemisphere() + ', -->\n'\
+             + '<!--ID: ' + str(newspaper.id) + '-->\n'\
+             + '<strong>Title:</strong> ' + newspaper.title + '<br />\n'
+
 if newspaper.number == '' and newspaper.number2 == '':
-    content = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
-              '<!--Name: ' + newspaper.city + ', ' + newspaper.country + '-->\n'\
-              '<!--Tags: ' + newspaper.country + ', ' + newspaper.city + ', '\
-              + str(newspaper.date.year) + ', ' + newspaper.language + ', '\
-              + newspaper.format_senders_str() + ', ' + newspaper.continent + ', '\
-              + newspaper.format_hemisphere_nice() + ', -->\n'\
-              '<!--ID: ' + str(newspaper.id) + '-->\n'\
-              '<strong>Title:</strong> ' + newspaper.title + '<br />\n'\
-              '<strong>Released:</strong> ' + newspaper.format_date_str_nice() + '<br />\n'\
+    content = content_up + '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
               '<strong>Language:</strong> ' + link(newspaper.language) + '<br />\n'\
-              '<strong>Sender:</strong> ' + newspaper.format_senders_str_nice() + '<br />\n'\
+              '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
               '<br />\n'\
               + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
               + content_photos + '</div>'
 elif newspaper.number2 == '':
-    content = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
-              '<!--Name: ' + newspaper.city + ', ' + newspaper.country + '-->\n'\
-              '<!--Tags: ' + newspaper.country + ', ' + newspaper.city + ', '\
-              + str(newspaper.date.year) + ', ' + newspaper.language + ', '\
-              + newspaper.format_senders_str() + ', ' + newspaper.continent + ', '\
-              + newspaper.format_hemisphere_nice() + ', -->\n'\
-              '<!--ID: ' + str(newspaper.id) + '-->\n'\
-              '<strong>Title:</strong> ' + newspaper.title + '<br />\n'\
-              '<strong>Number:</strong> ' + newspaper.number + '<br />\n'\
-              '<strong>Released:</strong> ' + newspaper.format_date_str_nice() + '<br />\n'\
+    content = content_up + '<strong>Number:</strong> ' + newspaper.number + '<br />\n'\
+              '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
               '<strong>Language:</strong> ' + link(newspaper.language) + '<br />\n'\
-              '<strong>Sender:</strong> ' + newspaper.format_senders_str_nice() + '<br />\n'\
+              '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
               '<br />\n'\
               + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
               + content_photos + '</div>'
 else:
-    content = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
-              '<!--Name: ' + newspaper.city + ', ' + newspaper.country + '-->\n'\
-              '<!--Tags: ' + newspaper.country + ', ' + newspaper.city + ', '\
-              + str(newspaper.date.year) + ', ' + newspaper.language + ', '\
-              + newspaper.format_senders_str() + ', ' + newspaper.continent + ', '\
-              + newspaper.format_hemisphere_nice() + ', -->\n'\
-              '<!--ID: ' + str(newspaper.id) + '-->\n'\
-              '<strong>Title:</strong> ' + newspaper.title + '<br />\n'\
-              '<strong>Number:</strong> ' + newspaper.number + ' (' + newspaper.number2 + ')<br />\n'\
-              '<strong>Released:</strong> ' + newspaper.format_date_str_nice() + '<br />\n'\
+    content = content_up + '<strong>Number:</strong> ' + newspaper.number + ' (' + newspaper.number2 + ')<br />\n'\
+              '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
               '<strong>Language:</strong> ' + link(newspaper.language) + '<br />\n'\
-              '<strong>Sender:</strong> ' + newspaper.format_senders_str_nice() + '<br />\n'\
+              '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
               '<br />\n'\
               + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
               + content_photos + '</div>'
