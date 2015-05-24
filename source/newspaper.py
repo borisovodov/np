@@ -67,7 +67,7 @@ class Newspaper:
     def format_hemisphere_nice(self):
         if self.hemisphere == 'n':
             return 'Northern Hemisphere'
-        else:
+        elif self.hemisphere == 's':
             return 'Southern Hemisphere'
 
     def __str__(self):
