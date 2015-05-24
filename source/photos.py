@@ -34,7 +34,7 @@ def upload_photos(newspaper, path_files=PATH + '/upload'):
     
     for file in os.listdir(path_files):
         if file.endswith('.jpg'):
-            photo_files.append(file.split('.')[0])
+            photo_files.append(file[:-4])
     photo_files.sort()
 
     print('Uploading photos...')
@@ -55,8 +55,8 @@ def link_photo(id_photo):
     flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
     photo = flickr.photos.getSizes(photo_id=id_photo)
 
-    url_o=''
-    url_z=''
+    url_o = ''
+    url_z = ''
     for element in photo[0]:
         if element.get('label') == 'Original':
             url_o = element.get('source')
