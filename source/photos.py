@@ -5,7 +5,7 @@ import pip
 from np import PATH
 from source.config import keys
 
-KEY_FLICKRAPI = keys['flickr']
+KEY_FLICKRAPI = keys['flickr_key']
 KEY_FLICKRAPI_SECRET = keys['flickr_secret']
 
 

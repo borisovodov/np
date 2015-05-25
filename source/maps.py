@@ -4,7 +4,7 @@ from np import PATH
 from source.db import newspapers
 from source.config import keys
 
-KEY_GOOGLE = keys['google']
+KEY_GOOGLE = keys['google_api_key']
 
 
 def map_general():
