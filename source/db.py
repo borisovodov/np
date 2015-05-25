@@ -30,13 +30,11 @@ def create_database():
     connect.commit()
     connect.close()
 
+if not os.path.isfile(PATH + '/data/newspapers.db'):
+        create_database()
+
 
 def query(command):
-    if not os.path.isdir(PATH + '/data'):
-        os.makedirs(PATH + '/data')
-        create_database()
-    elif not os.path.isfile(PATH + '/data/newspapers.db'):
-        create_database()
     connect = sqlite3.connect(PATH + '/data/newspapers.db')
     cursor = connect.cursor()
     table = cursor.execute(command.replace('\'', '\"'))
@@ -66,11 +64,10 @@ def query(command):
     connect.close()
     return query_newspapers
 
-if os.path.isfile(PATH + '/data/newspapers.db'):
-    newspapers = query('SELECT * FROM newspapers')
+newspapers = query('SELECT * FROM newspapers')
 
 
-def db():
+def sql():
     command = input('Input SQL command (only SELECT *): ')
     table = query(command)
     for row in table:
