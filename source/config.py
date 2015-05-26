@@ -15,7 +15,7 @@ def create_config():
     ET.SubElement(keys, 'key', service='google', name='google_api_key').text = key_google_api
     ET.SubElement(keys, 'key', service='flickr', name='flickr_key').text = key_flickr
     ET.SubElement(keys, 'key', service='flickr', name='flickr_secret').text = key_flickr_secret
-    ET.ElementTree(settings).write(PATH + '/data/settings.xml')
+    ET.ElementTree(settings).write(PATH + '/data/settings.xml', encoding='UTF-8', xml_declaration=True)
     print('Config file created.')
 
 if not os.path.isfile(PATH + '/data/settings.xml'):
