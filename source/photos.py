@@ -52,7 +52,7 @@ def upload_photos(newspaper, path_files=PATH + '/upload'):
         photo = flickr.upload(filename=photo_files[i], title=str(newspaper.id) + ' ' + newspaper.title + ' ' + str(i + 1),
                               description='http://papersaround.blogspot.com/',
                               tags=newspaper.country + ' ' + newspaper.city, is_public='1')
-        photo_ids.append(photo[0].text)
+        photo_ids.append(photo.find('photoid').text)
         print(str(i + 1) + '/' + str(len(photo_files)) + ' photos upload (' + str(((i+1)*100)//len(photo_files)) + '%)')
     print('Complete upload photos.')
     return photo_ids
