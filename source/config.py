@@ -12,9 +12,19 @@ def create_config():
 
     settings = ET.Element('settings')
     keys = ET.SubElement(settings, 'keys')
-    ET.SubElement(keys, 'key', service='google', name='google_api_key').text = key_google_api
-    ET.SubElement(keys, 'key', service='flickr', name='flickr_key').text = key_flickr
-    ET.SubElement(keys, 'key', service='flickr', name='flickr_secret').text = key_flickr_secret
+
+    google_api_key = ET.SubElement(keys, 'key', service='google')
+    ET.SubElement(google_api_key, 'name').text = 'google_api_key'
+    ET.SubElement(google_api_key, 'value').text = key_google_api
+
+    flickr_key = ET.SubElement(keys, 'key', service='flickr')
+    ET.SubElement(flickr_key, 'name').text = 'flickr_key'
+    ET.SubElement(flickr_key, 'value').text = key_flickr
+
+    flickr_secret = ET.SubElement(keys, 'key', service='flickr')
+    ET.SubElement(flickr_secret, 'name').text = 'flickr_secret'
+    ET.SubElement(flickr_secret, 'value').text = key_flickr_secret
+
     ET.ElementTree(settings).write(PATH + '/data/settings.xml', encoding='UTF-8', xml_declaration=True)
     print('Config file created.')
 
@@ -24,5 +34,5 @@ if not os.path.isfile(PATH + '/data/settings.xml'):
 settings = ET.parse(PATH + '/data/settings.xml').getroot()
 
 keys = {}
-for key in settings.iter('key'):
-    keys.update({key.get('name'): key.text})
+for key in settings.find('keys').iter('key'):
+    keys.update({key.find('name').text: key.find('value').text})
