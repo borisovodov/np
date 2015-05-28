@@ -7,7 +7,12 @@ from source.db import newspapers
 
 
 def post():
-    id_n = int(input('Input ID newspaper: '))
+    while True:
+        try:
+            id_n = int(input('Input ID newspaper: '))
+            break
+        except ValueError:
+            print('Incorrect ID newspaper. Try again.')
     path_photos = input('Input path to folder with upload photos or just press Enter for upload from default folder: ')
 
     newspaper = Newspaper()
@@ -16,6 +21,7 @@ def post():
             newspaper = newspaper_in_list
 
     photos.setup_flickrapi()
+    # Make verification with authorization.
     photos.authorization_flickr()
     if path_photos == '':
         photo_ids = photos.upload_photos(newspaper)

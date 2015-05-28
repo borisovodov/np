@@ -22,18 +22,20 @@ if __name__ == '__main__':
     from source.update import update
     from source.db import sql
 
-    menu = input('\nWhat you want?\nAdd newspaper\nPost\nURL\nUpdate\nQuery\nExit\n').lower()
-    if menu == 'add' or menu == 'add newspaper' or menu == 'newspaper' or menu == 'a':
-        add()
-    elif menu == 'post' or menu == 'p':
-        post()
-    elif menu == 'url':
-        url()
-    elif menu == 'update' or menu == 'u':
-        update()
-    elif menu == 'query' or menu == 'q':
-        sql()
-    elif menu == 'exit' or menu == 'e':
-        sys.exit(0)
-    else:
-        print('Wrong! Please, input again.')
+    while True:
+        menu = input('\nWhat you want?\nAdd newspaper\nPost\nURL\nUpdate\nQuery\nExit\n').lower()
+        if menu == 'add' or menu == 'add newspaper' or menu == 'newspaper' or menu == 'a':
+            add()
+        elif menu == 'post' or menu == 'p':
+            post()
+        elif menu == 'url':
+            url()
+        elif menu == 'update' or menu == 'u':
+            update()
+        elif menu == 'query' or menu == 'q':
+            sql()
+        elif menu == 'exit' or menu == 'e':
+            break
+        else:
+            print('Wrong! Please, input again.')
+        input('Press Enter to continue.')

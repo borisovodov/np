@@ -29,15 +29,17 @@ def create_database():
                    'url TEXT)')
     connect.commit()
     connect.close()
+    print('Database created.')
 
 if not os.path.isfile(PATH + '/data/newspapers.db'):
         create_database()
 
 
-def query(command):
+def query(command):  # Replace all work with database here.
     connect = sqlite3.connect(PATH + '/data/newspapers.db')
     cursor = connect.cursor()
     table = cursor.execute(command.replace('\'', '\"'))
+    # Make work without newspaper (only attribute).
     query_newspapers = []
     for row in table:
         newspaper = Newspaper()

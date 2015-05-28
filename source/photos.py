@@ -30,8 +30,13 @@ def authorization_flickr():
 
     flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
     print('Authorization on Flickr...')
-    flickr.authenticate_via_browser(perms='write')
-    print('Complete authorization.')
+    try:
+        flickr.authenticate_via_browser(perms='write')
+        print('Complete authorization.')
+        return True
+    except:
+        print('Anything wrong with authorization on Flickr. Try again later.')
+        return False
 
 
 def upload_photos(newspaper, path_files=PATH + '/upload'):
