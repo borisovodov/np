@@ -6,7 +6,7 @@ from source.newspaper import Newspaper
 from source.db import newspapers
 
 
-def post():
+def post_generate():
     while True:
         try:
             id_n = int(input('Input ID newspaper: '))
@@ -20,9 +20,6 @@ def post():
         if id_n == newspaper_in_list.id:
             newspaper = newspaper_in_list
 
-    photos.setup_flickrapi()
-    # Make verification with authorization.
-    photos.authorization_flickr()
     if path_photos == '':
         photo_ids = photos.upload_photos(newspaper)
     else:
@@ -39,17 +36,19 @@ def post():
                  + newspaper.format_senders() + ', ' + newspaper.continent + ', '\
                  + newspaper.format_hemisphere() + ', -->\n'\
                  + '<!--ID: ' + str(newspaper.id) + '-->\n'\
-                 + '<strong>Title:</strong> ' + newspaper.title + '<br />\n'
+                 '<strong>Title:</strong> ' + newspaper.title + '<br />\n'
+
+    print(content_up)
 
     if newspaper.number == '' and newspaper.number2 == '':
-        content = content_up + '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
+        return content_up + '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
                   '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n'\
                   '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
                   '<br />\n'\
                   + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
                   + content_photos + '</div>'
     elif newspaper.number2 == '':
-        content = content_up + '<strong>Number:</strong> ' + newspaper.number + '<br />\n'\
+        return content_up + '<strong>Number:</strong> ' + newspaper.number + '<br />\n'\
                   '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
                   '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n'\
                   '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
@@ -57,7 +56,7 @@ def post():
                   + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
                   + content_photos + '</div>'
     else:
-        content = content_up + '<strong>Number:</strong> ' + newspaper.number + ' (' + newspaper.number2 + ')<br />\n'\
+        return content_up + '<strong>Number:</strong> ' + newspaper.number + ' (' + newspaper.number2 + ')<br />\n'\
                   '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
                   '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n'\
                   '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
@@ -65,7 +64,13 @@ def post():
                   + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
                   + content_photos + '</div>'
 
-    file_post = open(PATH + '/post.txt', encoding='utf-8', mode='w')
-    file_post.write(content)
-    file_post.close()
-    print('Post generate.')
+
+def post():
+    photos.setup_flickrapi()
+    auth = photos.authorization_flickr()
+    if auth:
+        content = post_generate()
+        file_post = open(PATH + '/post.txt', encoding='utf-8', mode='w')
+        file_post.write(content)
+        file_post.close()
+        print('Post generate.')
