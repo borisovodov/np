@@ -12,15 +12,19 @@ import os
 
 PATH = sys.path[0]
 
-if not os.path.isdir(PATH + '/data'):
-    os.makedirs(PATH + '/data')
-
 if __name__ == '__main__':
     from source.add import add
     from source.post import post
     from source.url import url
     from source.update import update
-    from source.db import sql
+    from source.db import sql, newspapers
+
+    if not os.path.isdir(PATH + '/data'):
+        os.makedirs(PATH + '/data')
+
+    if len(newspapers) == 0:
+        print('Database is empty. Add newspaper.')
+        add()
 
     while True:
         menu = input('\nWhat you want?\nAdd newspaper\nPost\nURL\nUpdate\nQuery\nExit\n').lower()
