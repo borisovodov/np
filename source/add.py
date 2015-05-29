@@ -23,7 +23,6 @@ def add():
         except (IndexError, OverflowError, ValueError):
             print('Incorrect date. Try again.')
     newspaper.language = input('Language: ')
-    # Make senders and space.
     newspaper.senders = input('Senders (comma-separated): ').split(',')
     while True:
         try:
