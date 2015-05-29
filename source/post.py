@@ -31,14 +31,12 @@ def post_generate():
 
     content_up = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
                  '<!--Name: ' + newspaper.city + ', ' + newspaper.country + '-->\n'\
-                 + '<!--Tags: ' + newspaper.country + ', ' + newspaper.city + ', '\
+                 '<!--Tags: ' + newspaper.country + ', ' + newspaper.city + ', '\
                  + str(newspaper.date.year) + ', ' + newspaper.language + ', '\
                  + newspaper.format_senders() + ', ' + newspaper.continent + ', '\
                  + newspaper.format_hemisphere() + ', -->\n'\
-                 + '<!--ID: ' + str(newspaper.id) + '-->\n'\
+                 '<!--ID: ' + str(newspaper.id) + '-->\n'\
                  '<strong>Title:</strong> ' + newspaper.title + '<br />\n'
-
-    print(content_up)
 
     if newspaper.number == '' and newspaper.number2 == '':
         return content_up + '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\

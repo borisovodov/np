@@ -33,10 +33,20 @@ def add():
             break
         except (IndexError, ValueError):
             print('Incorrect coordinates. Try again.')
-    # Make verification of continent.
-    newspaper.continent = input('Continent: ')
-    # Make verification of hemisphere.
-    newspaper.hemisphere = input('Hemisphere (n or s): ')
+    while True:
+        continent_str = input('Continent: ')
+        if continent_str in ['Africa', 'Antarctica', 'Asia', 'Australia', 'Europe', 'North America', 'South America']:
+            newspaper.continent = continent_str
+            break
+        else:
+            print('Incorrect continent. Try again.')
+    while True:
+        hemisphere_str = input('Hemisphere (n or s): ')
+        if hemisphere_str in ['n', 's']:
+            newspaper.hemisphere = hemisphere_str
+            break
+        else:
+            print('Incorrect hemisphere. Try again.')
     while True:
         try:
             newspaper.population = int(input('Population: ').replace(' ', '').replace(',', '').replace('.', ''))
