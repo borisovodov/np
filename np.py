@@ -5,7 +5,7 @@ Main module of program.
 """
 
 __author__ = 'Boris Ovodov'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 
 import sys
 import os
