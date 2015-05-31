@@ -64,7 +64,6 @@ def post_generate():
 
 
 def post():
-    photos.setup_flickrapi()
     auth = photos.authorization_flickr()
     if auth:
         content = post_generate()
