@@ -15,11 +15,6 @@ if 'flickrapi' not in modules:
     print('Install flickrapi...')
     os.system('pip install --upgrade pip')
     os.system('pip install --upgrade flickrapi')
-    os.system('pip install --upgrade requests')
-    os.system('pip install --upgrade six')
-    os.system('pip install --upgrade requests-oauthlib')
-    os.system('pip install --upgrade requests-toolbelt')
-    os.system('pip install --upgrade oauthlib')
     print('Complete installing flickrapi.')
 
 
