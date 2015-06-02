@@ -7,6 +7,8 @@ from np import PATH
 
 def create_config():
     key_google_api = input('Create config file.\nInput Google API key: ')
+    key_google_client_id = input('Input Google Client ID: ')
+    key_google_client_secret = input('Input Google Client Secret: ')
     key_flickr = input('Input Flickr Key: ')
     key_flickr_secret = input('Input Flickr Secret: ')
 
@@ -16,6 +18,14 @@ def create_config():
     google_api_key = ET.SubElement(keys, 'key', service='google')
     ET.SubElement(google_api_key, 'name').text = 'google_api_key'
     ET.SubElement(google_api_key, 'value').text = key_google_api
+
+    google_client_id = ET.SubElement(keys, 'key', service='google')
+    ET.SubElement(google_client_id, 'name').text = 'google_client_id'
+    ET.SubElement(google_client_id, 'value').text = key_google_client_id
+
+    google_client_secret = ET.SubElement(keys, 'key', service='google')
+    ET.SubElement(google_client_secret, 'name').text = 'google_client_secret'
+    ET.SubElement(google_client_secret, 'value').text = key_google_client_secret
 
     flickr_key = ET.SubElement(keys, 'key', service='flickr')
     ET.SubElement(flickr_key, 'name').text = 'flickr_key'
