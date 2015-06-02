@@ -27,3 +27,8 @@ def senders():
     file_senders.write(content)
     file_senders.close()
     print('Generate senders.')
+
+
+from source.blog import update_page, authorization_blogger
+blog = authorization_blogger()
+update_page(blog, 'senders')

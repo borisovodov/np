@@ -21,9 +21,9 @@ if 'flickrapi' not in modules:
 def authorization_flickr():
     import flickrapi
 
-    flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
     print('Authorization on Flickr...')
     try:
+        flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
         flickr.authenticate_via_browser(perms='write')
         print('Complete authorization.')
         return True
