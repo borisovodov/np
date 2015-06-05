@@ -1,6 +1,9 @@
 """Module for work with Blogger."""
 
+import httplib2
 import pprint
+from oauth2client.file import Storage
+from googleapiclient.discovery import build
 from np import PATH
 from source.config import ids
 
@@ -8,14 +11,9 @@ ID_BLOGGER_BLOG = ids['blogger_blog_id']
 
 
 def authorization_blogger():
-    import httplib2
-    from oauth2client.file import Storage
-    from googleapiclient.discovery import build
-
     print('Authorization on Blogger...')
     storage = Storage(PATH + '/data/storage.db')
     credentials = storage.get()
-
     http_auth = credentials.authorize(httplib2.Http())
     blog = build('blogger', 'v3', http=http_auth)
     print('Complete authorization.')
