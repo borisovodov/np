@@ -12,12 +12,15 @@ ID_BLOGGER_BLOG = ids['blogger_blog_id']
 
 def authorization_blogger():
     print('Authorization on Blogger...')
-    storage = Storage(PATH + '/data/storage.db')
-    credentials = storage.get()
-    http_auth = credentials.authorize(httplib2.Http())
-    blog = build('blogger', 'v3', http=http_auth)
-    print('Complete authorization.')
-    return blog
+    try:
+        storage = Storage(PATH + '/data/storage.db')
+        credentials = storage.get()
+        http_auth = credentials.authorize(httplib2.Http())
+        blog = build('blogger', 'v3', http=http_auth)
+        print('Complete authorization.')
+        return blog
+    except:
+        print('Anything wrong with authorization on Blogger. Try again later.')
 
 
 def update_page(blog, page, content):

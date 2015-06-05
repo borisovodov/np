@@ -24,16 +24,22 @@ def authorization_google():
     from oauth2client.file import Storage
 
     print('Authorization on Google...')
-    flow = OAuth2WebServerFlow(client_id=KEY_GOOGLE_CLIENT_ID,
-                               client_secret=KEY_GOOGLE_CLIENT_SECRET,
-                               scope='https://www.googleapis.com/auth/blogger',
-                               redirect_uri='urn:ietf:wg:oauth:2.0:oob')
-    auth_uri = flow.step1_get_authorize_url()
-    webbrowser.open(auth_uri)
-    auth_code = input('Enter the auth code: ')
-    credentials = flow.step2_exchange(auth_code)
+    try:
+        if not os.path.isfile(PATH + '/data/storage.db'):
+            flow = OAuth2WebServerFlow(client_id=KEY_GOOGLE_CLIENT_ID,
+                                       client_secret=KEY_GOOGLE_CLIENT_SECRET,
+                                       scope='https://www.googleapis.com/auth/blogger '
+                                             'https://www.googleapis.com/auth/drive',
+                                       redirect_uri='urn:ietf:wg:oauth:2.0:oob')
+            auth_uri = flow.step1_get_authorize_url()
+            webbrowser.open(auth_uri)
+            auth_code = input('Enter the auth code: ')
+            credentials = flow.step2_exchange(auth_code)
 
-    storage = Storage(PATH + '/data/storage.db')
-    storage.put(credentials)
-    print('Complete authorization.')
-    return True
+            storage = Storage(PATH + '/data/storage.db')
+            storage.put(credentials)
+        print('Complete authorization.')
+        return True
+    except:
+        print('Anything wrong with authorization on Google. Try again later.')
+        return False
