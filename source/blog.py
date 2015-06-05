@@ -2,6 +2,7 @@
 
 import os
 import pip
+import webbrowser
 import pprint
 from np import PATH
 from source.config import keys, ids
@@ -22,7 +23,6 @@ if 'google-api-python-client' not in modules:
 
 def authorization_blogger():
     import httplib2
-    import webbrowser
     from oauth2client.client import OAuth2WebServerFlow
     from oauth2client.file import Storage
     from googleapiclient.discovery import build
