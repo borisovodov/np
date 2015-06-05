@@ -1,6 +1,5 @@
 """Module for work with Blogger."""
 
-import webbrowser
 import pprint
 from np import PATH
 from source.config import ids
