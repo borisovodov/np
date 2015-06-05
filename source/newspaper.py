@@ -44,6 +44,12 @@ class Newspaper:
         return senders_string
 
     def format_date(self):
+        return str(self.date.day) + '.' + str(self.date.month) + '.' + str(self.date.year)
+
+    def format_date_brought(self):
+        return str(self.date_brought.day) + '.' + str(self.date_brought.month) + '.' + str(self.date_brought.year)
+
+    def format_date_nice(self):
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
 
     def format_coordinates(self):
@@ -76,11 +82,10 @@ class Newspaper:
 
     def __str__(self):
         return str(self.id) + ', ' + self.city + ', ' + self.country + ', ' + self.title + ', ' + self.number + ', '\
-               + self.number2 + ', ' + str(self.date.day) + '.' + str(self.date.month) + '.' + str(self.date.year) + ', '\
+               + self.number2 + ', ' + self.format_date() + ', '\
                + self.language + ', ' + self.format_senders() + ', ' + str(self.latitude) + ', '\
                + str(self.longitude) + ', ' + self.continent + ', ' + self.hemisphere + ', ' + str(self.population) + ', '\
-               + str(self.date_brought.day) + '.' + str(self.date_brought.month) + '.' + str(self.date_brought.year)\
-               + ', ' + self.url
+               + self.format_date_brought() + ', ' + self.url
 
     def marker(self):
         return 'https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/' + self.country.lower() + '.png'

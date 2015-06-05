@@ -16,7 +16,7 @@ def map_general():
                             + '    papernumber1[' + str(newspaper.id) + '] = \'' + newspaper.number + '\';\n'\
                             + '    papernumber2[' + str(newspaper.id) + '] = \'' + newspaper.number2 + '\';\n'\
                             + '    paperdate[' + str(newspaper.id) + '] = \''\
-                            + newspaper.format_date() + '\';\n'\
+                            + newspaper.format_date_nice() + '\';\n'\
                             + '    paperlang[' + str(newspaper.id) + '] = \'' + newspaper.link(newspaper.language) + '\';\n'\
                             + '    papersender[' + str(newspaper.id) + '] = \''\
                             + newspaper.format_senders_nice() + '\';\n'\

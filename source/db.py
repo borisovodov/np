@@ -35,7 +35,7 @@ if not os.path.isfile(PATH + '/data/newspapers.db'):
         create_database()
 
 
-def query(command):  # Replace all work with database here.
+def query(command):
     connect = sqlite3.connect(PATH + '/data/newspapers.db')
     cursor = connect.cursor()
     table = cursor.execute(command.replace('\'', '\"'))

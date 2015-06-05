@@ -65,11 +65,9 @@ def add():
     query('INSERT INTO newspapers (city, country, title, number, number2, date, language, senders, latitude, '
           'longitude, continent, hemisphere, population, date_brought, url) VALUES (\'' + newspaper.city + '\', \''
           + newspaper.country + '\', \'' + newspaper.title + '\', \'' + newspaper.number + '\', \''
-          + newspaper.number2 + '\', \'' + str(newspaper.date.day) + '.' + str(newspaper.date.month) + '.'
-          + str(newspaper.date.year) + '\', \'' + newspaper.language + '\', \'' + ','.join(newspaper.senders) + '\', \''
-          + str(newspaper.latitude) + '\', \'' + str(newspaper.longitude) + '\', \'' + newspaper.continent + '\', \''
-          + newspaper.hemisphere + '\', \'' + str(newspaper.population) + '\', \''
-          + str(newspaper.date_brought.day) + '.' + str(newspaper.date_brought.month) + '.'
-          + str(newspaper.date_brought.year) + '\', \'' + newspaper.url + '\')')
+          + newspaper.number2 + '\', \'' + newspaper.format_date() + '\', \'' + newspaper.language + '\', \''
+          + newspaper.format_senders() + '\', \'' + str(newspaper.latitude) + '\', \''
+          + str(newspaper.longitude) + '\', \'' + newspaper.continent + '\', \'' + newspaper.hemisphere + '\', \''
+          + str(newspaper.population) + '\', \'' + newspaper.format_date_brought() + '\', \'' + newspaper.url + '\')')
 
     print('Newspaper added to database.')

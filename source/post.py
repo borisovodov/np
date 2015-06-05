@@ -39,7 +39,7 @@ def post_generate():
                  '<strong>Title:</strong> ' + newspaper.title + '<br />\n'
 
     if newspaper.number == '' and newspaper.number2 == '':
-        return content_up + '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
+        return content_up + '<strong>Released:</strong> ' + newspaper.format_date_nice() + '<br />\n'\
                   '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n'\
                   '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
                   '<br />\n'\
@@ -47,7 +47,7 @@ def post_generate():
                   + content_photos + '</div>'
     elif newspaper.number2 == '':
         return content_up + '<strong>Number:</strong> ' + newspaper.number + '<br />\n'\
-                  '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
+                  '<strong>Released:</strong> ' + newspaper.format_date_nice() + '<br />\n'\
                   '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n'\
                   '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
                   '<br />\n'\
@@ -55,7 +55,7 @@ def post_generate():
                   + content_photos + '</div>'
     else:
         return content_up + '<strong>Number:</strong> ' + newspaper.number + ' (' + newspaper.number2 + ')<br />\n'\
-                  '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
+                  '<strong>Released:</strong> ' + newspaper.format_date_nice() + '<br />\n'\
                   '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n'\
                   '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
                   '<br />\n'\
