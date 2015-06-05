@@ -77,7 +77,7 @@ class Newspaper:
     def __str__(self):
         return str(self.id) + ', ' + self.city + ', ' + self.country + ', ' + self.title + ', ' + self.number + ', '\
                + self.number2 + ', ' + str(self.date.day) + '.' + str(self.date.month) + '.' + str(self.date.year) + ', '\
-               + self.language + ', ' + ','.join(self.senders) + ', ' + str(self.latitude) + ', '\
+               + self.language + ', ' + self.format_senders() + ', ' + str(self.latitude) + ', '\
                + str(self.longitude) + ', ' + self.continent + ', ' + self.hemisphere + ', ' + str(self.population) + ', '\
                + str(self.date_brought.day) + '.' + str(self.date_brought.month) + '.' + str(self.date_brought.year)\
                + ', ' + self.url
