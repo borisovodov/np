@@ -17,10 +17,10 @@ if 'flickrapi' not in modules:
     os.system('pip install --upgrade flickrapi')
     print('Complete installing flickrapi.')
 
+import flickrapi
+
 
 def authorization_flickr():
-    import flickrapi
-
     print('Authorization on Flickr...')
     try:
         flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
@@ -33,8 +33,6 @@ def authorization_flickr():
 
 
 def upload_photos(newspaper, path_files=PATH + '/upload'):
-    import flickrapi
-
     flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
     photo_files = []
     photo_ids = []
@@ -57,8 +55,6 @@ def upload_photos(newspaper, path_files=PATH + '/upload'):
 
 
 def link_photo(id_photo):
-    import flickrapi
-
     flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
     photo = flickr.photos.getSizes(photo_id=id_photo)
 

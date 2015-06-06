@@ -18,28 +18,36 @@ if 'google-api-python-client' not in modules:
     os.system('pip install --upgrade google-api-python-client')
     print('Complete installing google-api.')
 
+import httplib2
+from oauth2client.client import OAuth2WebServerFlow
+from oauth2client.file import Storage
+
 
 def authorization_google():
-    from oauth2client.client import OAuth2WebServerFlow
-    from oauth2client.file import Storage
-
     print('Authorization on Google...')
     try:
-        if not os.path.isfile(PATH + '/data/storage.db'):
-            flow = OAuth2WebServerFlow(client_id=KEY_GOOGLE_CLIENT_ID,
-                                       client_secret=KEY_GOOGLE_CLIENT_SECRET,
-                                       scope='https://www.googleapis.com/auth/blogger '
-                                             'https://www.googleapis.com/auth/drive',
-                                       redirect_uri='urn:ietf:wg:oauth:2.0:oob')
-            auth_uri = flow.step1_get_authorize_url()
-            webbrowser.open(auth_uri)
-            auth_code = input('Enter the auth code: ')
-            credentials = flow.step2_exchange(auth_code)
+        flow = OAuth2WebServerFlow(client_id=KEY_GOOGLE_CLIENT_ID,
+                                   client_secret=KEY_GOOGLE_CLIENT_SECRET,
+                                   scope='https://www.googleapis.com/auth/blogger '
+                                         'https://www.googleapis.com/auth/drive',
+                                   redirect_uri='urn:ietf:wg:oauth:2.0:oob')
+        auth_uri = flow.step1_get_authorize_url()
+        webbrowser.open(auth_uri)
+        auth_code = input('Enter the auth code: ')
+        credentials = flow.step2_exchange(auth_code)
 
-            storage = Storage(PATH + '/data/storage.db')
-            storage.put(credentials)
+        storage = Storage(PATH + '/data/storage.db')
+        storage.put(credentials)
         print('Complete authorization.')
         return True
     except:
         print('Anything wrong with authorization on Google. Try again later.')
         return False
+
+
+def get_http():
+    if not os.path.isfile(PATH + '/data/storage.db'):
+        authorization_google()
+    storage = Storage(PATH + '/data/storage.db')
+    credentials = storage.get()
+    return credentials.authorize(httplib2.Http())
