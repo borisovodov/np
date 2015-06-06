@@ -22,6 +22,8 @@ import httplib2
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.file import Storage
 
+storage = Storage(PATH + '/data/google_credentials.db')
+
 
 def authorization_google():
     print('Authorization on Google...')
@@ -36,7 +38,6 @@ def authorization_google():
         auth_code = input('Enter the auth code: ')
         credentials = flow.step2_exchange(auth_code)
 
-        storage = Storage(PATH + '/data/storage.db')
         storage.put(credentials)
         print('Complete authorization on Google.')
         return True
@@ -46,8 +47,7 @@ def authorization_google():
 
 
 def get_http():
-    if not os.path.isfile(PATH + '/data/storage.db'):
+    if not os.path.isfile(PATH + '/data/google_credentials.db'):
         authorization_google()
-    storage = Storage(PATH + '/data/storage.db')
     credentials = storage.get()
     return credentials.authorize(httplib2.Http())
