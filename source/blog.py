@@ -19,10 +19,32 @@ def authorization_blogger():
         print('Anything wrong with authorization on Blogger. Try again later.')
 
 
-def update_page(blog, page, content):
+def update_page(blog, name, content):
     pages = blog.pages().list(blogId=ID_BLOGGER_BLOG).execute()
-    pprint.pprint(pages)
+    for page in pages['items']:
+        if page['title'] == name:
+            pprint.pprint(page)
+            page_up = page
+            page_id = page['id']
+    page_up = {
+        'blog': {'id': ID_BLOGGER_BLOG},
+        'content': content,
+        'id': str(page_id),
+        'title': name
+    }
+    pprint.pprint(page_up)
+    blog.pages().update(blogId=ID_BLOGGER_BLOG, pageId=page_up['id'], body=page_up)
+
+
+def add_post(blog, name, tags, content):
+    body = {
+  "labels": tags,
+  "content": content,
+  "title": name,
+}
+    post = blog.posts().insert(blogId=ID_BLOGGER_BLOG, body=body, isDraft=True)
 
 blog = authorization_blogger()
-pages = blog.pages().list(blogId=ID_BLOGGER_BLOG).execute()
-pprint.pprint(pages)
+#update_page(blog, 'Senders', '<div>Fdsfsdfsdfsdfsd</div>')
+
+add_post(blog, 'Yap!', ['dsf', 'sdfsdf', 'sdfsdf'], '<p>Yeeeesss!!!</p>')
