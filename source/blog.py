@@ -13,7 +13,7 @@ def authorization_blogger():
     try:
         http_auth = get_http()
         blog = build('blogger', 'v3', http=http_auth)
-        print('Complete authorization.')
+        print('Complete authorization on Blogger.')
         return blog
     except:
         print('Anything wrong with authorization on Blogger. Try again later.')

@@ -25,7 +25,7 @@ def authorization_flickr():
     try:
         flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
         flickr.authenticate_via_browser(perms='write')
-        print('Complete authorization.')
+        print('Complete authorization on Flickr.')
         return True
     except:
         print('Anything wrong with authorization on Flickr. Try again later.')

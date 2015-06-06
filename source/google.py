@@ -38,7 +38,7 @@ def authorization_google():
 
         storage = Storage(PATH + '/data/storage.db')
         storage.put(credentials)
-        print('Complete authorization.')
+        print('Complete authorization on Google.')
         return True
     except:
         print('Anything wrong with authorization on Google. Try again later.')
