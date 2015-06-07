@@ -70,8 +70,7 @@ def generate_post():
 
 
 def post():
-    auth = photos.authorization_flickr()
-    if auth:
-        blog = authorization_blogger()
-        add_post(blog=blog, body=generate_post())
-        print('Post added.')
+    photos.authorization_flickr()
+    blog = authorization_blogger()
+    add_post(blog=blog, body=generate_post())
+    print('Post added.')
