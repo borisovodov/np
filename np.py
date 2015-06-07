@@ -21,7 +21,7 @@ if __name__ == '__main__':
     from source.url import url
     from source.update import update
     from source.db import sql, newspapers
-    import source.blog
+    #import source.blog
 
     if len(newspapers) == 0:
         print('Database is empty. Add newspaper.')

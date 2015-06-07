@@ -1,6 +1,5 @@
 """Module for generate file with tags."""
 
-from np import PATH
 from source.newspaper import Newspaper
 from source.db import newspapers
 
@@ -22,12 +21,7 @@ def tags():
     for tag in sorted(set(list_tags)):
         content_tags = content_tags + '<li>' + Newspaper.link(tag) + '</li>\n'
 
-    content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
-              + '<p>Here are all the tags used on the site in alphabetical order. To ease the search, press Ctrl + F.</p>\n'\
-              + content_tags\
-              + '</div>'
-
-    file_tags = open(PATH + '/tags.txt', encoding='utf-8', mode='w')
-    file_tags.write(content)
-    file_tags.close()
-    print('Generate tags.')
+    return '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
+           + '<p>Here are all the tags used on the site in alphabetical order. To ease the search, press Ctrl + F.</p>\n'\
+           + content_tags\
+           + '</div>'
