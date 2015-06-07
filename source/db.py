@@ -70,7 +70,7 @@ newspapers = query('SELECT * FROM newspapers')
 
 
 def update(newspaper_id, attribute, value):
-    query('UPDATE newspapers SET ' + attribute + ' = \'' + value + '\' WHERE id = ' + str(id))
+    query('UPDATE newspapers SET ' + attribute + ' = \'' + value + '\' WHERE id = ' + str(newspaper_id))
 
 
 def sql():
