@@ -69,6 +69,10 @@ def query(command):
 newspapers = query('SELECT * FROM newspapers')
 
 
+def update(newspaper_id, attribute, value):
+    query('UPDATE newspapers SET ' + attribute + ' = \'' + value + '\' WHERE id = ' + str(id))
+
+
 def sql():
     command = input('Input SQL command (only SELECT *): ')
     table = query(command)

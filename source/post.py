@@ -1,11 +1,9 @@
 """Module generate post for upload to Blogspot."""
 
-import pprint
 import source.photos as photos
 from source.newspaper import Newspaper
-from source.db import newspapers
+from source.db import newspapers, update
 from source.blog import authorization_blogger, add_post
-from source.url import add_url
 
 
 def get_id():
@@ -84,4 +82,5 @@ def post():
     blog = authorization_blogger()
     response = add_post(blog=blog, body=generate_post(id_n, path))
     print('Post added.')
-    add_url(id_n, response['url'])
+    update(newspaper_id=id_n, attribute='url', value=response['url'])
+    print('URL added.')
