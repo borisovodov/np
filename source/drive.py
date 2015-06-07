@@ -20,7 +20,7 @@ def authorization_drive():
 
 
 def update_map(drive):
-    maps = drive.children().list(folderId=ID_DRIVE_FOLDER_MAP).execute()
+    maps = drive.files().list().execute()
     pprint.pprint(maps)
 
 drive = authorization_drive()

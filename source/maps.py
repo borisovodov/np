@@ -285,4 +285,4 @@ def maps():
     file_big_map = open(PATH + '/map.html', encoding='utf-8', mode='w')
     file_big_map.write(content_big)
     file_big_map.close()
-    print('Generate maps.')
+    print('Generate Maps.')
