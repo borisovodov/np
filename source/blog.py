@@ -1,6 +1,5 @@
 """Module for work with Blogger."""
 
-import pprint
 from source.google import get_http
 from googleapiclient.discovery import build
 from source.config import ids
