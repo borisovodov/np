@@ -28,4 +28,4 @@ def update_page(blog, body):
 
 
 def add_post(blog, body):
-    blog.posts().insert(blogId=ID_BLOGGER_BLOG, body=body).execute()
+    return blog.posts().insert(blogId=ID_BLOGGER_BLOG, body=body).execute()

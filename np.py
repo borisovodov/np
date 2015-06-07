@@ -18,7 +18,6 @@ if not os.path.isdir(PATH + '/data'):
 if __name__ == '__main__':
     from source.add import add
     from source.post import post
-    from source.url import url
     from source.update import update
     from source.db import sql, newspapers
 
@@ -27,15 +26,13 @@ if __name__ == '__main__':
         add()
 
     while True:
-        menu = input('\nWhat you want?\nAdd newspaper\nPost\nURL\nUpdate\nQuery\nExit\n').lower()
+        menu = input('\nWhat you want?\nAdd newspaper\nPost\nUpdate\nQuery\nExit\n').lower()
         if menu == 'add' or menu == 'add newspaper' or menu == 'newspaper' or menu == 'a':
             add()
             break
         elif menu == 'post' or menu == 'p':
             post()
             break
-        elif menu == 'url':
-            url()
         elif menu == 'update' or menu == 'u':
             update()
             break

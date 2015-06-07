@@ -1,23 +1,31 @@
 """Module generate post for upload to Blogspot."""
 
+import pprint
 import source.photos as photos
 from source.newspaper import Newspaper
 from source.db import newspapers
 from source.blog import authorization_blogger, add_post
+from source.url import add_url
 
 
-def generate_post():
+def get_id():
     while True:
         try:
-            id_n = int(input('Input ID newspaper: '))
+            newspaper_id = int(input('Input ID newspaper: '))
             break
         except ValueError:
             print('Incorrect ID newspaper. Try again.')
-    path_photos = input('Input path to folder with upload photos or just press Enter for upload from default folder: ')
+    return newspaper_id
 
+
+def get_path_photos():
+    return input('Input path to folder with upload photos or just press Enter for upload from default folder: ')
+
+
+def generate_post(newspaper_id, path_photos):
     newspaper = Newspaper()
     for newspaper_in_list in newspapers:
-        if id_n == newspaper_in_list.id:
+        if newspaper_id == newspaper_in_list.id:
             newspaper = newspaper_in_list
 
     if path_photos == '':
@@ -70,7 +78,10 @@ def generate_post():
 
 
 def post():
+    id_n = get_id()
+    path = get_path_photos()
     photos.authorization_flickr()
     blog = authorization_blogger()
-    add_post(blog=blog, body=generate_post())
+    response = add_post(blog=blog, body=generate_post(id_n, path))
     print('Post added.')
+    add_url(id_n, response['url'])
