@@ -20,6 +20,7 @@ if __name__ == '__main__':
     from source.post import post
     from source.update import update
     from source.db import db, newspapers
+    #import source.drive
 
     if len(newspapers) == 0:
         print('Database is empty. Add newspaper.')

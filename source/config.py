@@ -10,6 +10,8 @@ def create_config():
     key_google_client_id = input('Input Google Client ID: ')
     key_google_client_secret = input('Input Google Client Secret: ')
     id_blogger_blog = input('Input Blog ID: ')
+    id_drive_folder_marker = input('Input Markers Folder ID: ')
+    id_drive_folder_map = input('Input Map Folder ID: ')
     key_flickr = input('Input Flickr Key: ')
     key_flickr_secret = input('Input Flickr Secret: ')
 
@@ -41,6 +43,14 @@ def create_config():
     blogger_blog_id = ET.SubElement(ids, 'id', service='blogger')
     ET.SubElement(blogger_blog_id, 'name').text = 'blogger_blog_id'
     ET.SubElement(blogger_blog_id, 'value').text = id_blogger_blog
+
+    drive_folder_marker_id = ET.SubElement(ids, 'id', service='drive')
+    ET.SubElement(drive_folder_marker_id, 'name').text = 'drive_folder_marker_id'
+    ET.SubElement(drive_folder_marker_id, 'value').text = id_drive_folder_marker
+
+    drive_folder_map_id = ET.SubElement(ids, 'id', service='drive')
+    ET.SubElement(drive_folder_map_id, 'name').text = 'drive_folder_map_id'
+    ET.SubElement(drive_folder_map_id, 'value').text = id_drive_folder_map
 
     ET.ElementTree(settings).write(PATH + '/data/settings.xml', encoding='UTF-8', xml_declaration=True)
     print('Config file created.')
