@@ -24,22 +24,12 @@ def update_page(blog, name, content):
     for page in pages['items']:
         if page['title'] == name:
             page_id = page['id']
-    page_up = {
+    body = {
         'content': content,
         'title': name
     }
-    blog.pages().update(blogId=ID_BLOGGER_BLOG, pageId=page_id, body=page_up).execute()
+    blog.pages().update(blogId=ID_BLOGGER_BLOG, pageId=page_id, body=body).execute()
 
 
-def add_post(blog, name, tags, content):
-    body = {
-  "labels": tags,
-  "content": content,
-  "title": name,
-}
-    post = blog.posts().insert(blogId=ID_BLOGGER_BLOG, body=body, isDraft=True).execute()
-
-#blog = authorization_blogger()
-#update_page(blog, 'Senders', '<div>Fdsfsdfsdfsdfsd</div>')
-
-#add_post(blog, 'Yap!', ['dsf', 'sdfsdf', 'sdfsdf'], '<p>Yeeeesss!!!</p>')
+def add_post(blog, body):
+    blog.posts().insert(blogId=ID_BLOGGER_BLOG, body=body).execute()

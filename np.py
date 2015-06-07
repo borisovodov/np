@@ -42,5 +42,7 @@ if __name__ == '__main__':
         elif menu == 'query' or menu == 'q':
             sql()
             break
+        elif menu == 'exit' or menu == 'e':
+            break
         else:
             print('Wrong! Please, input again.')
