@@ -39,7 +39,6 @@ def query(command):
     connect = sqlite3.connect(PATH + '/data/newspapers.db')
     cursor = connect.cursor()
     table = cursor.execute(command.replace('\'', '\"'))
-    # Make work without newspaper (only attribute).
     query_newspapers = []
     for row in table:
         newspaper = Newspaper()
