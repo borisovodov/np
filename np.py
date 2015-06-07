@@ -19,7 +19,7 @@ if __name__ == '__main__':
     from source.add import add
     from source.post import post
     from source.update import update
-    from source.db import sql, newspapers
+    from source.db import db, newspapers
 
     if len(newspapers) == 0:
         print('Database is empty. Add newspaper.')
@@ -37,7 +37,7 @@ if __name__ == '__main__':
             update()
             break
         elif menu == 'query' or menu == 'q':
-            sql()
+            db()
             break
         elif menu == 'exit' or menu == 'e':
             break

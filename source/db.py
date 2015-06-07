@@ -69,11 +69,21 @@ def query(command):
 newspapers = query('SELECT * FROM newspapers')
 
 
+def insert(newspaper):
+    query('INSERT INTO newspapers (city, country, title, number, number2, date, language, senders, latitude, '
+          'longitude, continent, hemisphere, population, date_brought, url) VALUES (\'' + newspaper.city + '\', \''
+          + newspaper.country + '\', \'' + newspaper.title + '\', \'' + newspaper.number + '\', \''
+          + newspaper.number2 + '\', \'' + newspaper.format_date() + '\', \'' + newspaper.language + '\', \''
+          + newspaper.format_senders() + '\', \'' + str(newspaper.latitude) + '\', \''
+          + str(newspaper.longitude) + '\', \'' + newspaper.continent + '\', \'' + newspaper.hemisphere + '\', \''
+          + str(newspaper.population) + '\', \'' + newspaper.format_date_brought() + '\', \'' + newspaper.url + '\')')
+
+
 def update(newspaper_id, attribute, value):
     query('UPDATE newspapers SET ' + attribute + ' = \'' + value + '\' WHERE id = ' + str(newspaper_id))
 
 
-def sql():
+def db():
     command = input('Input SQL command (only SELECT *): ')
     table = query(command)
     for row in table:
