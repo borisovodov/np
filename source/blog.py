@@ -19,15 +19,11 @@ def authorization_blogger():
         print('Anything wrong with authorization on Blogger. Try again later.')
 
 
-def update_page(blog, name, content):
+def update_page(blog, body):
     pages = blog.pages().list(blogId=ID_BLOGGER_BLOG).execute()
     for page in pages['items']:
-        if page['title'] == name:
+        if page['title'] == body['title']:
             page_id = page['id']
-    body = {
-        'content': content,
-        'title': name
-    }
     blog.pages().update(blogId=ID_BLOGGER_BLOG, pageId=page_id, body=body).execute()
 
 

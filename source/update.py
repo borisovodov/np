@@ -10,13 +10,13 @@ from source.blog import authorization_blogger, update_page
 
 def update():
     blog = authorization_blogger()
-    update_page(blog=blog, name='Countries', content=countries())
-    print('Update Countries.')
     maps()
-    update_page(blog=blog, name='Senders', content=senders())
+    update_page(blog=blog, body=countries())
+    print('Update Countries.')
+    update_page(blog=blog, body=senders())
     print('Update Senders.')
-    update_page(blog=blog, name='Statistic', content=stat())
+    update_page(blog=blog, body=stat())
     print('Update Statistic.')
-    update_page(blog=blog, name='Tags', content=tags())
+    update_page(blog=blog, body=tags())
     print('Update Tags.')
     print('Update complete.')

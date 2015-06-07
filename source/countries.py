@@ -18,7 +18,12 @@ def countries():
             content_countries = content_countries + '<li>' + Newspaper.link(city) + '</li>\n'
         content_countries = content_countries + '</ul>\n'
 
-    return '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
-           + '<p>Newspapers for this site were brought from many countries and cities:</p>\n'\
-           + content_countries\
-           + '</div>'
+    content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
+              '<p>Newspapers for this site were brought from many countries and cities:</p>\n'\
+              + content_countries\
+              + '</div>'
+
+    return {
+        'content': content,
+        'title': 'Countries'
+    }

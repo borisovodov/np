@@ -74,3 +74,4 @@ def post():
     if auth:
         blog = authorization_blogger()
         add_post(blog=blog, body=generate_post())
+        print('Post added.')
