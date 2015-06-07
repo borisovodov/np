@@ -31,7 +31,7 @@ class Newspaper:
                + not_link.replace(' ', '%20') + '">' + not_link + '</a>'
 
     def format_senders(self):
-        return ', '.join(self.senders)
+        return ','.join(self.senders)
 
     def format_senders_nice(self):
         senders_string = self.link(self.senders[0])
