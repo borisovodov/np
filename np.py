@@ -21,7 +21,6 @@ if __name__ == '__main__':
     from source.url import url
     from source.update import update
     from source.db import sql, newspapers
-    #import source.blog
 
     if len(newspapers) == 0:
         print('Database is empty. Add newspaper.')
@@ -31,16 +30,17 @@ if __name__ == '__main__':
         menu = input('\nWhat you want?\nAdd newspaper\nPost\nURL\nUpdate\nQuery\nExit\n').lower()
         if menu == 'add' or menu == 'add newspaper' or menu == 'newspaper' or menu == 'a':
             add()
+            break
         elif menu == 'post' or menu == 'p':
             post()
+            break
         elif menu == 'url':
             url()
         elif menu == 'update' or menu == 'u':
             update()
+            break
         elif menu == 'query' or menu == 'q':
             sql()
-        elif menu == 'exit' or menu == 'e':
             break
         else:
             print('Wrong! Please, input again.')
-        input('Press Enter to continue.')
