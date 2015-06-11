@@ -9,6 +9,7 @@ from .blog import authorization_blogger, update_page
 
 
 def update():
+    print('Update Pages.')
     blog = authorization_blogger()
     maps()
     update_page(blog=blog, body=countries())
