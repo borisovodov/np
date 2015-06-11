@@ -67,6 +67,7 @@ def query(command):
         return query_newspapers
     except sqlite3.OperationalError:
         print('Bad query!')
+        return None
 
 
 def newspapers():
