@@ -4,7 +4,7 @@ import sqlite3
 import datetime
 import os
 from np import PATH
-from source.newspaper import Newspaper
+from .newspaper import Newspaper
 
 
 def create_database():
@@ -65,7 +65,9 @@ def query(command):
     connect.close()
     return query_newspapers
 
-newspapers = query('SELECT * FROM newspapers')
+
+def newspapers():
+    return query('SELECT * FROM newspapers')
 
 
 def insert(newspaper):

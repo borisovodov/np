@@ -1,9 +1,9 @@
 """Module generate post for upload to Blogspot."""
 
-import source.photos as photos
-from source.newspaper import Newspaper
-from source.db import newspapers, update
-from source.blog import authorization_blogger, add_post
+import src.photos as photos
+from .newspaper import Newspaper
+from .db import newspapers, update
+from .blog import authorization_blogger, add_post
 
 
 def get_id():
@@ -22,7 +22,7 @@ def get_path_photos():
 
 def generate_post(newspaper_id, path_photos):
     newspaper = Newspaper()
-    for newspaper_in_list in newspapers:
+    for newspaper_in_list in newspapers():
         if newspaper_id == newspaper_in_list.id:
             newspaper = newspaper_in_list
 

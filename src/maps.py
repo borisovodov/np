@@ -1,15 +1,15 @@
 """Module generate maps for site and big map."""
 
 from np import PATH
-from source.db import newspapers
-from source.config import keys
+from .db import newspapers
+from .config import keys
 
 KEY_GOOGLE = keys['google_api_key']
 
 
 def map_general():
     content_newspaper = ''
-    for newspaper in newspapers:
+    for newspaper in newspapers():
         content_newspaper = content_newspaper + '    papername[' + str(newspaper.id) + '] = \'' + newspaper.city + ', '\
                             + newspaper.country + '\';\n'\
                             + '    papertitle[' + str(newspaper.id) + '] = \'' + newspaper.title + '\';\n'\
@@ -61,7 +61,7 @@ def map_general():
            + '    var marker=[];\n'\
            + '\n'\
            + content_newspaper\
-           + '    var N=' + str(len(newspapers)) + '; //Общее число газет\n'\
+           + '    var N=' + str(len(newspapers())) + '; //Общее число газет\n'\
            + '    var i;\n'\
            + '    var j;\n'\
            + '    var k;\n'\

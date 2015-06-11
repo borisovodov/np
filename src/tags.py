@@ -1,14 +1,14 @@
 """Module for generate file with tags."""
 
-from source.newspaper import Newspaper
-from source.db import newspapers
+from .newspaper import Newspaper
+from .db import newspapers
 
 
 def tags():
     list_tags = []
     content_tags = ''
 
-    for newspaper in newspapers:
+    for newspaper in newspapers():
         list_tags.append(newspaper.city)
         list_tags.append(newspaper.country)
         list_tags.append(str(newspaper.date.year))

@@ -1,9 +1,9 @@
 """Module generate statistic."""
 
 import collections
-from source.newspaper import Newspaper
-from source.db import newspapers, query
-from source.stat_adding import content_adding
+from .newspaper import Newspaper
+from .db import newspapers, query
+from .stat_adding import content_adding
 
 
 def stat():
@@ -13,7 +13,7 @@ def stat():
     continents = []
     senders = []
 
-    for newspaper in newspapers:
+    for newspaper in newspapers():
         countries.append(newspaper.country)
         cities.append(newspaper.city)
         languages.append(newspaper.language)
@@ -33,8 +33,8 @@ def stat():
               '<p>In this site presents newspapers <span style=\"text-decoration: line-through\">' \
               'from around the world</span>. Look at this entertaining statistics:</p>\n'\
               '<ul>\n'\
-              '<p><li>A total of ' + str(len(newspapers)) + ' newspapers from <a style=\"text-decoration: underline\" ' \
-                                                            'href=\"http://papersaround.blogspot.com/p/countries.html\">'\
+              '<p><li>A total of ' + str(len(newspapers())) + ' newspapers from <a style=\"text-decoration: underline\" ' \
+                                                              'href=\"http://papersaround.blogspot.com/p/countries.html\">'\
               + str(len(set(countries))) + ' countries</a> and <a style=\"text-decoration: underline\" ' \
                                            'href=\"http://papersaround.blogspot.com/p/countries.html\">'\
               + str(len(set(cities))) + ' cities</a>.</li></p>\n'\
@@ -73,8 +73,8 @@ def stat():
                 '<a style=\"text-decoration: underline\" ' \
                 'href=\"http://papersaround.blogspot.com/search/label/Alexandra%20Ovodova\">Alexandra Ovodova</a> ' \
                 'filch from post.</li></p>\n'\
-              + '<p><li>Latest newspaper ' + newspapers[-1].format_senders_nice() + ' brought from '\
-              + Newspaper.link(newspapers[-1].city) + ', ' + Newspaper.link(newspapers[-1].country) + '.</li></p>\n'\
+              + '<p><li>Latest newspaper ' + newspapers()[-1].format_senders_nice() + ' brought from '\
+              + Newspaper.link(newspapers()[-1].city) + ', ' + Newspaper.link(newspapers()[-1].country) + '.</li></p>\n'\
               + '</ul>'\
               + content_adding\
               + '</div>'

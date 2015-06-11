@@ -1,8 +1,8 @@
 """Module for adding new newspaper in database."""
 
 import datetime
-from source.newspaper import Newspaper
-from source.db import insert
+from .newspaper import Newspaper
+from .db import insert
 
 
 def add():

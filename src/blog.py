@@ -1,8 +1,8 @@
 """Module for work with Blogger."""
 
-from source.google import get_http
+from .google import get_http
 from googleapiclient.discovery import build
-from source.config import ids
+from .config import ids
 
 ID_BLOGGER_BLOG = ids['blogger_blog_id']
 

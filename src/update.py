@@ -1,11 +1,11 @@
 """Module for update output files."""
 
-from source.countries import countries
-from source.maps import maps
-from source.senders import senders
-from source.stat import stat
-from source.tags import tags
-from source.blog import authorization_blogger, update_page
+from .countries import countries
+from .maps import maps
+from .senders import senders
+from .stat import stat
+from .tags import tags
+from .blog import authorization_blogger, update_page
 
 
 def update():

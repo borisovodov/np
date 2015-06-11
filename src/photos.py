@@ -3,7 +3,7 @@
 import os
 import pip
 from np import PATH
-from source.config import keys
+from .config import keys
 
 KEY_FLICKRAPI = keys['flickr_key']
 KEY_FLICKRAPI_SECRET = keys['flickr_secret']

@@ -4,7 +4,7 @@ import os
 import pip
 import webbrowser
 from np import PATH
-from source.config import keys
+from .config import keys
 
 KEY_GOOGLE_CLIENT_ID = keys['google_client_id']
 KEY_GOOGLE_CLIENT_SECRET = keys['google_client_secret']
