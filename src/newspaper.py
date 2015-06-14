@@ -3,6 +3,7 @@
 import datetime
 import calendar
 from math import trunc
+from .config import ids
 
 
 class Newspaper:
@@ -88,4 +89,4 @@ class Newspaper:
                + self.format_date_brought() + ', ' + self.url
 
     def marker(self):
-        return 'https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/' + self.country.lower() + '.png'
+        return 'https://googledrive.com/host/' + ids['drive_folder_marker_id'] + '/' + self.country.lower() + '.png'

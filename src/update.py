@@ -12,6 +12,7 @@ def update():
     print('Update Pages.')
     blog = authorization_blogger()
     maps()
+    print('Generate Map.')
     update_page(blog=blog, body=countries())
     print('Update Countries.')
     update_page(blog=blog, body=senders())
