@@ -7,7 +7,7 @@ PIP 7.0.3<br>
 FlickrAPI 2.0<br>
 Google API Python Client 1.4.0
 
-For work just run np.py In menu enter:
+For work just run np.py. In menu enter:
 - 'a' for add newspaper in database
 - 'p' for upload scans on Flickr, generate HTML and creating post on Blogger
 - 'u' for generate HTMLs and update pages on Blogger
