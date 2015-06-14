@@ -2,7 +2,7 @@
 
 import os
 import pip
-from np import PATH
+import sys
 from .config import keys
 
 KEY_FLICKRAPI = keys['flickr_key']
@@ -32,7 +32,7 @@ def authorization_flickr():
         return False
 
 
-def upload_photos(newspaper, path_files=PATH + '/upload'):
+def upload_photos(newspaper, path_files=sys.path[0] + '/upload'):
     flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
     photo_files = []
     photo_ids = []

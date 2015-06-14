@@ -1,8 +1,10 @@
 """Module for saving config."""
 
 import os
+import sys
 import xml.etree.ElementTree as ET
-from np import PATH
+
+settings_path = sys.path[0] + '/data/settings.xml'
 
 
 def create_config():
@@ -52,13 +54,13 @@ def create_config():
     ET.SubElement(drive_folder_map_id, 'name').text = 'drive_folder_map_id'
     ET.SubElement(drive_folder_map_id, 'value').text = id_drive_folder_map
 
-    ET.ElementTree(settings).write(PATH + '/data/settings.xml', encoding='UTF-8', xml_declaration=True)
+    ET.ElementTree(settings).write(settings_path, encoding='UTF-8', xml_declaration=True)
     print('Config file created.')
 
-if not os.path.isfile(PATH + '/data/settings.xml'):
+if not os.path.isfile(settings_path):
     create_config()
 
-settings = ET.parse(PATH + '/data/settings.xml').getroot()
+settings = ET.parse(settings_path).getroot()
 
 keys = {}
 for key in settings.find('keys').iter('key'):

@@ -10,10 +10,8 @@ __version__ = '1.1.0'
 import sys
 import os
 
-PATH = sys.path[0]
-
-if not os.path.isdir(PATH + '/data'):
-    os.makedirs(PATH + '/data')
+if not os.path.isdir(sys.path[0] + '/data'):
+    os.makedirs(sys.path[0] + '/data')
 
 if __name__ == '__main__':
     from src.add import add

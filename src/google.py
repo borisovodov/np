@@ -3,7 +3,7 @@
 import os
 import pip
 import webbrowser
-from np import PATH
+import sys
 from .config import keys
 
 KEY_GOOGLE_CLIENT_ID = keys['google_client_id']
@@ -22,7 +22,8 @@ import httplib2
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.file import Storage
 
-storage = Storage(PATH + '/data/google_credentials.db')
+storage_path = sys.path[0] + '/data/google_credentials.db'
+storage = Storage(storage_path)
 
 
 def authorization_google():
@@ -47,7 +48,7 @@ def authorization_google():
 
 
 def get_http():
-    if not os.path.isfile(PATH + '/data/google_credentials.db'):
+    if not os.path.isfile(storage_path):
         authorization_google()
     credentials = storage.get()
     return credentials.authorize(httplib2.Http())

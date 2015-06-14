@@ -3,12 +3,14 @@
 import sqlite3
 import datetime
 import os
-from np import PATH
+import sys
 from .newspaper import Newspaper
+
+db_path = sys.path[0] + '/data/newspapers.db'
 
 
 def create_database():
-    connect = sqlite3.connect(PATH + '/data/newspapers.db')
+    connect = sqlite3.connect(db_path)
     cursor = connect.cursor()
     cursor.execute('CREATE TABLE newspapers ('
                    'id INTEGER PRIMARY KEY, '
@@ -31,13 +33,13 @@ def create_database():
     connect.close()
     print('Database created.')
 
-if not os.path.isfile(PATH + '/data/newspapers.db'):
+if not os.path.isfile(db_path):
         create_database()
 
 
 def query(command):
     try:
-        connect = sqlite3.connect(PATH + '/data/newspapers.db')
+        connect = sqlite3.connect(db_path)
         cursor = connect.cursor()
         table = cursor.execute(command.replace('\'', '\"'))
         query_newspapers = []
