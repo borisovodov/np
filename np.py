@@ -1,5 +1,5 @@
 """np is a program for easy work with database of newspapers,
-uploading scans on Flickr, creating posts and updating pages on Blogger.
+upload scans on Flickr, create posts and update pages on Blogger.
 
 Main module of program.
 """
