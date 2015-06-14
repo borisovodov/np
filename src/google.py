@@ -22,7 +22,7 @@ import httplib2
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.file import Storage
 
-storage_path = sys.path[0] + '/data/google_credentials.db'
+storage_path = sys.path[0] + '/temp/google_credentials.db'
 storage = Storage(storage_path)
 
 

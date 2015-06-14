@@ -6,13 +6,16 @@ from .senders import senders
 from .stat import stat
 from .tags import tags
 from .blog import authorization_blogger, update_page
+from .drive import authorization_drive, update_map
 
 
 def update():
     print('Update Pages.')
-    blog = authorization_blogger()
+    drive = authorization_drive()
     maps()
-    print('Generate Map.')
+    update_map(drive=drive)
+    print('Update Map.')
+    blog = authorization_blogger()
     update_page(blog=blog, body=countries())
     print('Update Countries.')
     update_page(blog=blog, body=senders())

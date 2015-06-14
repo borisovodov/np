@@ -2,10 +2,6 @@
 
 import sys
 from .db import newspapers
-from .config import keys, ids
-
-KEY_GOOGLE = keys['google_api_key']
-ID_DRIVE_FOLDER_MAP = ids['drive_folder_map_id']
 
 
 def content_map():
@@ -250,6 +246,6 @@ def content_map():
 
 
 def maps():
-    file_map = open(sys.path[0] + '/map.js', encoding='utf-8', mode='w')
+    file_map = open(sys.path[0] + '/temp/map.js', encoding='utf-8', mode='w')
     file_map.write(content_map())
     file_map.close()

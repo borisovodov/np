@@ -8,8 +8,7 @@ settings_path = sys.path[0] + '/data/settings.xml'
 
 
 def create_config():
-    key_google_api = input('Create config file.\nInput Google API key: ')
-    key_google_client_id = input('Input Google Client ID: ')
+    key_google_client_id = input('Create config file.\nInput Google Client ID: ')
     key_google_client_secret = input('Input Google Client Secret: ')
     id_blogger_blog = input('Input Blog ID: ')
     id_drive_folder_marker = input('Input Markers Folder ID: ')
@@ -21,10 +20,6 @@ def create_config():
 
     keys = ET.SubElement(settings, 'keys')
     ids = ET.SubElement(settings, 'ids')
-
-    google_api_key = ET.SubElement(keys, 'key', service='google')
-    ET.SubElement(google_api_key, 'name').text = 'google_api_key'
-    ET.SubElement(google_api_key, 'value').text = key_google_api
 
     google_client_id = ET.SubElement(keys, 'key', service='google')
     ET.SubElement(google_client_id, 'name').text = 'google_client_id'

@@ -13,12 +13,14 @@ import os
 if not os.path.isdir(sys.path[0] + '/data'):
     os.makedirs(sys.path[0] + '/data')
 
+if not os.path.isdir(sys.path[0] + '/temp'):
+    os.makedirs(sys.path[0] + '/temp')
+
 if __name__ == '__main__':
     from src.add import add
     from src.post import post
     from src.update import update
     from src.db import db, newspapers
-    #import src.drive
 
     if len(newspapers()) == 0:
         print('Database is empty. Add newspaper.')
