@@ -246,6 +246,6 @@ def content_map():
 
 
 def maps():
-    file_map = open(sys.path[0] + '/temp/map.js', encoding='utf-8', mode='w')
+    file_map = open(sys.path[0] + '/tmp/map.js', encoding='utf-8', mode='w')
     file_map.write(content_map())
     file_map.close()

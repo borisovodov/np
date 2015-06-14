@@ -13,8 +13,8 @@ import os
 if not os.path.isdir(sys.path[0] + '/data'):
     os.makedirs(sys.path[0] + '/data')
 
-if not os.path.isdir(sys.path[0] + '/temp'):
-    os.makedirs(sys.path[0] + '/temp')
+if not os.path.isdir(sys.path[0] + '/tmp'):
+    os.makedirs(sys.path[0] + '/tmp')
 
 if __name__ == '__main__':
     from src.add import add
