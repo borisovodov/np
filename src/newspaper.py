@@ -2,28 +2,47 @@
 
 import datetime
 import calendar
-from math import trunc
-from .config import ids
+from .city import City
+from .language import Language
+from .sender import Sender
+from .coordinates import Coordinates
+from .cost import Cost
 
 
 class Newspaper:
 
     def __init__(self):
         self.id = 0
-        self.city = ''
-        self.country = ''
+        self.city = City()
         self.title = ''
         self.number = ''
         self.number2 = ''
         self.date = datetime.date(1, 1, 1)
-        self.language = ''
-        self.senders = []
-        self.latitude = 0.0
-        self.longitude = 0.0
-        self.continent = ''
-        self.hemisphere = ''
-        self.population = 0
+        self.language = Language()
+        self.senders = [Sender()]
+        self.coordinates = Coordinates()
         self.date_brought = datetime.date(1, 1, 1)
+        self.color = ''
+        self.pages = 0
+        self.format = ''
+        self.type = ''
+        self.costs = [Cost()]
+        self.site = ''
+        self.issn = ''
+        self.date_start_publication = datetime.date(1, 1, 1)
+        self.circulation = 0
+        self.crossword = False
+        self.sudoku = False
+        self.nonogram = False
+        self.ad_toyota = False
+        self.program_guide = False
+        self.anecdote = False
+        self.caricature = False
+        self.recipe = False
+        self.horoscope = False
+        self.pravda = False
+        self.naked_women = False
+        self.church = False
         self.url = ''
 
     @staticmethod
@@ -53,40 +72,8 @@ class Newspaper:
     def format_date_nice(self):
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
 
-    def format_coordinates(self):
-        return str(self.latitude) + ',' + str(self.longitude)
-
-    def format_coordinates_nice(self, coord):
-        if self.latitude > 0:
-            lat = str(trunc(self.latitude)) + '° ' + str(trunc((self.latitude - trunc(self.latitude))*60)) + '′ N'
-        else:
-            lat = str(abs(trunc(self.latitude))) + '° ' + str(abs(trunc((self.latitude - trunc(self.latitude))*60)))\
-                                                 + '′ S'
-        if self.longitude > 0:
-            long = str(trunc(self.longitude)) + '° ' + str(trunc((self.longitude - trunc(self.longitude))*60)) + '′ E'
-        else:
-            long = str(abs(trunc(self.longitude))) + '° ' + str(abs(trunc((self.longitude - trunc(self.longitude))*60)))\
-                                                   + '′ W'
-
-        if coord == 'latitude':
-            return lat
-        elif coord == 'longitude':
-            return long
-        elif coord == 'both':
-            return {'latitude': lat, 'longitude': long}
-
-    def format_hemisphere(self):
-        if self.hemisphere == 'n':
-            return 'Northern Hemisphere'
-        elif self.hemisphere == 's':
-            return 'Southern Hemisphere'
-
     def __str__(self):
-        return str(self.id) + ', ' + self.city + ', ' + self.country + ', ' + self.title + ', ' + self.number + ', '\
-               + self.number2 + ', ' + self.format_date() + ', '\
-               + self.language + ', ' + self.format_senders() + ', ' + str(self.latitude) + ', '\
-               + str(self.longitude) + ', ' + self.continent + ', ' + self.hemisphere + ', ' + str(self.population) + ', '\
-               + self.format_date_brought() + ', ' + self.url
-
-    def marker(self):
-        return 'https://googledrive.com/host/' + ids['drive_folder_marker_id'] + '/' + self.country.lower() + '.png'
+        return str(self.id) + ', ' + str(self.city) + ', ' + str(self.city.country) + ', ' + self.title + ', '\
+               + self.number + ', ' + self.number2 + ', ' + self.format_date() + ', ' + str(self.language) + ', '\
+               + self.format_senders() + ', ' + str(self.city.continent) + ', ' + str(self.city.hemisphere) + ', '\
+               + str(self.city.population) + ', ' + self.format_date_brought() + ', ' + self.url
