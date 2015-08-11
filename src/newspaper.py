@@ -6,6 +6,7 @@ from .city import City
 from .language import Language
 from .sender import Sender
 from .coordinates import Coordinates
+from .format import Format
 from .cost import Cost
 
 
@@ -24,7 +25,7 @@ class Newspaper:
         self.date_brought = datetime.date(1, 1, 1)
         self.color = ''
         self.pages = 0
-        self.format = ''
+        self.format = Format()
         self.type = ''
         self.costs = [Cost()]
         self.site = ''

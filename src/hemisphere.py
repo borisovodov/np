@@ -4,7 +4,6 @@
 class Hemisphere:
 
     def __init__(self):
-        self.id = 0
         self.name = ''
 
     def name_full(self):
