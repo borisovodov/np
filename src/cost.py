@@ -15,4 +15,4 @@ class Cost:
         return self
 
     def __str__(self):
-        return str(self.value) + ' ' + self.currency.symbol
+        return str(self.value) + '-' + str(self.currency.id)

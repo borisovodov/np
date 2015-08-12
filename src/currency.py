@@ -19,3 +19,10 @@ class Currency:
 
     def __str__(self):
         return self.name
+
+    def __iter__(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'symbol': self.symbol
+        }

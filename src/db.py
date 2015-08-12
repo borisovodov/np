@@ -112,12 +112,16 @@ def insert(newspaper):
           + str(newspaper.population) + '\', \'' + newspaper.format_date_brought() + '\', \'' + newspaper.url + '\')')
 
 
-def update(newspaper_id, attribute, value):
-    query('UPDATE newspaper SET ' + attribute + ' = \'' + value + '\' WHERE id = ' + str(newspaper_id))
-
-
 def get_attributes(object_type, object_id):
     return query('SELECT * FROM ' + object_type + ' WHERE id = ' + object_id)
+
+
+def set_attributes(object_same):
+    data_string = ''
+    for data in object_same:
+        data_string = data_string + data[0] + ' = \'' + str(data[1]) + '\', '
+    query('UPDATE ' + object_same.__class__.__name__ + ' SET ' + data_string[:-2]
+          + ' WHERE id = ' + str(object_same[0][1]))
 
 
 def newspapers():

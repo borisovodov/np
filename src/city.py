@@ -34,3 +34,19 @@ class City:
 
     def __str__(self):
         return self.name
+
+    def __iter__(self):
+        if not self.coastal:
+            coastal_string = 0
+        else:
+            coastal_string = 1
+        return {
+            'id': self.id,
+            'name': self.name,
+            'country': self.country.id,
+            'population': self.population,
+            'hemisphere': self.hemisphere.name,
+            'continent': self.continent,
+            'coastal': coastal_string,
+            'altitude': self.altitude
+        }

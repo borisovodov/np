@@ -47,6 +47,25 @@ class Newspaper:
         self.church = False
         self.url = ''
 
+    @staticmethod
+    def link(not_link):
+        return '<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/'\
+               + not_link.replace(' ', '%20') + '">' + not_link + '</a>'
+
+    @staticmethod
+    def boolean_int(boolean):
+        if not boolean:
+            return 0
+        else:
+            return 1
+
+    @staticmethod
+    def int_boolean(integer):
+        if integer == 0:
+            return False
+        else:
+            return True
+
     def get_newspaper(self, newspaper_id):
         for row in get_attributes('newspaper', newspaper_id):
             self.id = int(row[0])
@@ -73,85 +92,90 @@ class Newspaper:
             self.issn = row[21]
             self.date_start_publication = datetime.date(day=int(row[22]), month=int(row[23]), year=int(row[24]))
             self.circulation = int(row[25])
-            if int(row[26]) == 0:
-                self.crossword = False
-            else:
-                self.crossword = True
-            if int(row[27]) == 0:
-                self.sudoku = False
-            else:
-                self.sudoku = True
-            if int(row[28]) == 0:
-                self.nonogram = False
-            else:
-                self.nonogram = True
-            if int(row[29]) == 0:
-                self.ad_toyota = False
-            else:
-                self.ad_toyota = True
-            if int(row[30]) == 0:
-                self.program_guide = False
-            else:
-                self.program_guide = True
-            if int(row[31]) == 0:
-                self.anecdote = False
-            else:
-                self.anecdote = True
-            if int(row[32]) == 0:
-                self.caricature = False
-            else:
-                self.caricature = True
-            if int(row[33]) == 0:
-                self.recipe = False
-            else:
-                self.recipe = True
-            if int(row[34]) == 0:
-                self.horoscope = False
-            else:
-                self.horoscope = True
-            if int(row[35]) == 0:
-                self.pravda = False
-            else:
-                self.pravda = True
-            if int(row[36]) == 0:
-                self.naked_women = False
-            else:
-                self.naked_women = True
-            if int(row[37]) == 0:
-                self.church = False
-            else:
-                self.church = True
+            self.crossword = self.int_boolean(int(row[26]))
+            self.sudoku = self.int_boolean(int(row[27]))
+            self.nonogram = self.int_boolean(int(row[28]))
+            self.ad_toyota = self.int_boolean(int(row[29]))
+            self.program_guide = self.int_boolean(int(row[30]))
+            self.anecdote = self.int_boolean(int(row[31]))
+            self.caricature = self.int_boolean(int(row[32]))
+            self.recipe = self.int_boolean(int(row[33]))
+            self.horoscope = self.int_boolean(int(row[34]))
+            self.pravda = self.int_boolean(int(row[35]))
+            self.naked_women = self.int_boolean(int(row[36]))
+            self.church = self.int_boolean(int(row[37]))
             self.url = row[38]
 
-    @staticmethod
-    def link(not_link):
-        return '<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/'\
-               + not_link.replace(' ', '%20') + '">' + not_link + '</a>'
-
     def format_senders(self):
-        return ','.join(self.senders)
+        senders_string = ''
+        for sender in self.senders:
+            senders_string = senders_string + str(sender.id) + ','
+        return senders_string[:-1]
 
     def format_senders_nice(self):
-        senders_string = self.link(self.senders[0])
+        senders_string = self.link(self.senders[0].name)
         if len(self.senders) == 2:
-            senders_string = self.link(self.senders[0]) + ' and ' + self.link(self.senders[1])
+            senders_string = self.link(self.senders[0].name) + ' and ' + self.link(self.senders[1].name)
         elif len(self.senders) > 2:
             for i in range(1, len(self.senders) - 1):
-                senders_string = senders_string + ', ' + self.link(self.senders[i])
-            senders_string = senders_string + ' and ' + self.link(self.senders[-1])
+                senders_string = senders_string + ', ' + self.link(self.senders[i].name)
+            senders_string = senders_string + ' and ' + self.link(self.senders[-1].name)
         return senders_string
 
-    def format_date(self):
-        return str(self.date.day) + '.' + str(self.date.month) + '.' + str(self.date.year)
-
-    def format_date_brought(self):
-        return str(self.date_brought.day) + '.' + str(self.date_brought.month) + '.' + str(self.date_brought.year)
+    def format_costs(self):
+        costs_string = ''
+        for cost in self.costs:
+            costs_string = costs_string + str(cost) + ','
+        return costs_string[:-1]
 
     def format_date_nice(self):
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
 
     def __str__(self):
         return str(self.id) + ', ' + str(self.city) + ', ' + str(self.city.country) + ', ' + self.title + ', '\
-               + self.number + ', ' + self.number2 + ', ' + self.format_date() + ', ' + str(self.language) + ', '\
+               + self.number + ', ' + self.number2 + ', ' + str(self.language) + ', '\
                + self.format_senders() + ', ' + str(self.city.continent) + ', ' + str(self.city.hemisphere) + ', '\
-               + str(self.city.population) + ', ' + self.format_date_brought() + ', ' + self.url
+               + str(self.city.population) + ', ' + self.url
+
+    def __iter__(self):
+        return {
+            'id': self.id,
+            'city': self.city.id,
+            'title': self.title,
+            'number': self.number,
+            'number2': self.number2,
+            'date_day': self.date.day,
+            'date_month': self.date.month,
+            'date_year': self.date.year,
+            'language': self.language.id,
+            'senders': self.format_senders(),
+            'coordinates_latitude': self.coordinates.latitude,
+            'coordinates_longitude': self.coordinates.longitude,
+            'date_brought_day': self.date_brought.day,
+            'date_brought_month': self.date_brought.month,
+            'date_brought_year': self.date_brought.year,
+            'color': self.color,
+            'pages': self.pages,
+            'format': self.format.id,
+            'type': self.type,
+            'costs': self.format_costs(),
+            'site': self.site,
+            'issn': self.issn,
+            'date_start_publication_day': self.date_start_publication.day,
+            'date_start_publication_month': self.date_start_publication.month,
+            'date_start_publication_year': self.date_start_publication.year,
+            'circulation': self.circulation,
+            'crossword': self.boolean_int(self.crossword),
+            'sudoku': self.boolean_int(self.sudoku),
+            'nonogram': self.boolean_int(self.nonogram),
+            'ad_toyota': self.boolean_int(self.ad_toyota),
+            'program_guide': self.boolean_int(self.program_guide),
+            'anecdote': self.boolean_int(self.anecdote),
+            'caricature': self.boolean_int(self.caricature),
+            'recipe': self.boolean_int(self.recipe),
+            'horoscope': self.boolean_int(self.horoscope),
+            'pravda': self.boolean_int(self.pravda),
+            'naked_women': self.boolean_int(self.naked_women),
+            'church': self.boolean_int(self.church),
+            'url': self.url
+        }

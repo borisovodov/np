@@ -2,7 +2,7 @@
 
 import src.photos as photos
 from .newspaper import Newspaper
-from .db import newspapers, update
+from .db import newspapers, set_attributes
 from .blog import authorization_blogger, add_post
 
 
@@ -20,12 +20,7 @@ def get_path_photos():
     return input('Input path to folder with upload photos or just press Enter for upload from default folder: ')
 
 
-def generate_post(newspaper_id, path_photos):
-    newspaper = Newspaper()
-    for newspaper_in_list in newspapers():
-        if newspaper_id == newspaper_in_list.id:
-            newspaper = newspaper_in_list
-
+def generate_post(newspaper, path_photos):
     if path_photos == '':
         photo_ids = photos.upload_photos(newspaper)
     else:
@@ -77,12 +72,19 @@ def generate_post(newspaper_id, path_photos):
 
 def post():
     id_n = get_id()
+    newspaper = Newspaper()
+    newspaper.get_newspaper(id_n)
     path = get_path_photos()
+
     photos.authorization_flickr()
-    body = generate_post(id_n, path)
+
+    body = generate_post(newspaper, path)
+
     print('Uploading post on Blogger.')
     blog = authorization_blogger()
     response = add_post(blog=blog, body=body)
     print('Post added.')
-    update(newspaper_id=id_n, attribute='url', value=response['url'])
+
+    newspaper.url = response['url']
+    set_attributes(newspaper)
     print('URL added to database.')

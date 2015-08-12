@@ -23,3 +23,12 @@ class Format:
 
     def __str__(self):
         return self.name
+
+    def __iter__(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'height': self.height,
+            'width': self.width,
+            'aspect_ratio': self.aspect_ratio
+        }

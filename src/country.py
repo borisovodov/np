@@ -28,3 +28,14 @@ class Country:
 
     def __str__(self):
         return self.name
+
+    def __iter__(self):
+        languages = ''
+        for language in self.languages:
+            languages = languages + str(language.id) + ','
+        return {
+            'id': self.id,
+            'name': self.name,
+            'languages': languages[:-1],
+            'population': self.population
+        }
