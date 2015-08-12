@@ -8,6 +8,7 @@ from .sender import Sender
 from .coordinates import Coordinates
 from .format import Format
 from .cost import Cost
+from .db import get_attributes
 
 
 class Newspaper:
@@ -20,14 +21,14 @@ class Newspaper:
         self.number2 = ''
         self.date = datetime.date(1, 1, 1)
         self.language = Language()
-        self.senders = [Sender()]
+        self.senders = []
         self.coordinates = Coordinates()
         self.date_brought = datetime.date(1, 1, 1)
         self.color = ''
         self.pages = 0
         self.format = Format()
         self.type = ''
-        self.costs = [Cost()]
+        self.costs = []
         self.site = ''
         self.issn = ''
         self.date_start_publication = datetime.date(1, 1, 1)
@@ -45,6 +46,82 @@ class Newspaper:
         self.naked_women = False
         self.church = False
         self.url = ''
+
+    def get_newspaper(self, newspaper_id):
+        for row in get_attributes('newspaper', newspaper_id):
+            self.id = int(row[0])
+            self.city.get_city(int(row[1]))
+            self.title = row[2]
+            self.number = row[3]
+            self.number2 = row[4]
+            self.date = datetime.date(day=int(row[5]), month=int(row[6]), year=int(row[7]))
+            self.language.get_language(int(row[8]))
+            for sender_id in row[9].split(','):
+                sender = Sender()
+                self.senders.append(sender.get_sender(int(sender_id)))
+            self.coordinates.latitude = float(row[10])
+            self.coordinates.longitude = float(row[11])
+            self.date_brought = datetime.date(day=int(row[12]), month=int(row[13]), year=int(row[14]))
+            self.color = row[15]
+            self.pages = int(row[16])
+            self.format.get_format(int(row[17]))
+            self.type = row[18]
+            for cost_attribute in row[19].split(','):
+                cost = Cost()
+                self.costs.append(cost.get_cost(cost_attribute.split('-')[0], int(cost_attribute.split('-')[1])))
+            self.site = row[20]
+            self.issn = row[21]
+            self.date_start_publication = datetime.date(day=int(row[22]), month=int(row[23]), year=int(row[24]))
+            self.circulation = int(row[25])
+            if int(row[26]) == 0:
+                self.crossword = False
+            else:
+                self.crossword = True
+            if int(row[27]) == 0:
+                self.sudoku = False
+            else:
+                self.sudoku = True
+            if int(row[28]) == 0:
+                self.nonogram = False
+            else:
+                self.nonogram = True
+            if int(row[29]) == 0:
+                self.ad_toyota = False
+            else:
+                self.ad_toyota = True
+            if int(row[30]) == 0:
+                self.program_guide = False
+            else:
+                self.program_guide = True
+            if int(row[31]) == 0:
+                self.anecdote = False
+            else:
+                self.anecdote = True
+            if int(row[32]) == 0:
+                self.caricature = False
+            else:
+                self.caricature = True
+            if int(row[33]) == 0:
+                self.recipe = False
+            else:
+                self.recipe = True
+            if int(row[34]) == 0:
+                self.horoscope = False
+            else:
+                self.horoscope = True
+            if int(row[35]) == 0:
+                self.pravda = False
+            else:
+                self.pravda = True
+            if int(row[36]) == 0:
+                self.naked_women = False
+            else:
+                self.naked_women = True
+            if int(row[37]) == 0:
+                self.church = False
+            else:
+                self.church = True
+            self.url = row[38]
 
     @staticmethod
     def link(not_link):

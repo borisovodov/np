@@ -2,7 +2,7 @@
 
 import collections
 from .newspaper import Newspaper
-from .db import newspapers, query
+from .db import newspapers
 from .stat_adding import content_adding
 
 
