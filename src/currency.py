@@ -1,6 +1,6 @@
 """This module contain Currency class."""
 
-from .db import get_attributes
+from .db import get_attribute
 
 
 class Currency:
@@ -11,10 +11,9 @@ class Currency:
         self.symbol = ''
 
     def get_currency(self, currency_id):
-        for row in get_attributes('currency', currency_id):
-            self.id = int(row[0])
-            self.name = row[1]
-            self.symbol = row[2]
+        self.id = int(currency_id)
+        self.name = get_attribute(self, 'name')
+        self.symbol = get_attribute(self, 'symbol')
         return self
 
     def __str__(self):

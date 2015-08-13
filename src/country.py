@@ -2,7 +2,7 @@
 
 from .config import ids
 from .language import Language
-from .db import get_attributes
+from .db import get_attribute
 
 
 class Country:
@@ -14,13 +14,12 @@ class Country:
         self.population = 0
 
     def get_country(self, country_id):
-        for row in get_attributes('country', country_id):
-            self.id = int(row[0])
-            self.name = row[1]
-            for language_id in row[2].split(','):
-                language = Language()
-                self.languages.append(language.get_language(int(language_id)))
-            self.population = int(row[3])
+        self.id = country_id
+        self.name = get_attribute(self, 'name')
+        for language_id in get_attribute(self, 'languages').split(','):
+            language = Language()
+            self.languages.append(language.get_language(int(language_id)))
+        self.population = int(get_attribute(self, 'population'))
         return self
 
     def marker(self):

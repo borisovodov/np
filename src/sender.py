@@ -1,6 +1,6 @@
 """This module contain Sender class."""
 
-from .db import get_attributes
+from .db import get_attribute
 
 
 class Sender:
@@ -10,9 +10,8 @@ class Sender:
         self.name = ''
 
     def get_sender(self, sender_id):
-        for row in get_attributes('sender', sender_id):
-            self.id = int(row[0])
-            self.name = row[1]
+        self.id = sender_id
+        self.name = get_attribute(self, 'name')
         return self
 
     def __str__(self):

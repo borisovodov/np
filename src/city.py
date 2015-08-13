@@ -2,7 +2,7 @@
 
 from .country import Country
 from .hemisphere import Hemisphere
-from .db import get_attributes
+from .db import get_attribute
 
 
 class City:
@@ -18,18 +18,17 @@ class City:
         self.altitude = 0.0
 
     def get_city(self, city_id):
-        for row in get_attributes('city', city_id):
-            self.id = int(row[0])
-            self.name = row[1]
-            self.country.get_country(int(row[2]))
-            self.population = int(row[3])
-            self.hemisphere.name = row[4]
-            self.continent = row[5]
-            if int(row[6]) == 0:
-                self.coastal = False
-            else:
-                self.coastal = True
-            self.altitude = float(row[7])
+        self.id = city_id
+        self.name = get_attribute(self, 'name')
+        self.country.get_country(int(get_attribute(self, 'country')))
+        self.population = int(get_attribute(self, 'population'))
+        self.hemisphere.name = get_attribute(self, 'hemisphere')
+        self.continent = get_attribute(self, 'continent')
+        if int(get_attribute(self, 'coastal')) == 0:
+            self.coastal = False
+        else:
+            self.coastal = True
+        self.altitude = float(get_attribute(self, 'altitude'))
         return self
 
     def __str__(self):

@@ -8,7 +8,7 @@ from .sender import Sender
 from .coordinates import Coordinates
 from .format import Format
 from .cost import Cost
-from .db import get_attributes
+from .db import get_attribute
 
 
 class Newspaper:
@@ -67,44 +67,50 @@ class Newspaper:
             return True
 
     def get_newspaper(self, newspaper_id):
-        for row in get_attributes('newspaper', newspaper_id):
-            self.id = int(row[0])
-            self.city.get_city(int(row[1]))
-            self.title = row[2]
-            self.number = row[3]
-            self.number2 = row[4]
-            self.date = datetime.date(day=int(row[5]), month=int(row[6]), year=int(row[7]))
-            self.language.get_language(int(row[8]))
-            for sender_id in row[9].split(','):
-                sender = Sender()
-                self.senders.append(sender.get_sender(int(sender_id)))
-            self.coordinates.latitude = float(row[10])
-            self.coordinates.longitude = float(row[11])
-            self.date_brought = datetime.date(day=int(row[12]), month=int(row[13]), year=int(row[14]))
-            self.color = row[15]
-            self.pages = int(row[16])
-            self.format.get_format(int(row[17]))
-            self.type = row[18]
-            for cost_attribute in row[19].split(','):
-                cost = Cost()
-                self.costs.append(cost.get_cost(cost_attribute.split('-')[0], int(cost_attribute.split('-')[1])))
-            self.site = row[20]
-            self.issn = row[21]
-            self.date_start_publication = datetime.date(day=int(row[22]), month=int(row[23]), year=int(row[24]))
-            self.circulation = int(row[25])
-            self.crossword = self.int_boolean(int(row[26]))
-            self.sudoku = self.int_boolean(int(row[27]))
-            self.nonogram = self.int_boolean(int(row[28]))
-            self.ad_toyota = self.int_boolean(int(row[29]))
-            self.program_guide = self.int_boolean(int(row[30]))
-            self.anecdote = self.int_boolean(int(row[31]))
-            self.caricature = self.int_boolean(int(row[32]))
-            self.recipe = self.int_boolean(int(row[33]))
-            self.horoscope = self.int_boolean(int(row[34]))
-            self.pravda = self.int_boolean(int(row[35]))
-            self.naked_women = self.int_boolean(int(row[36]))
-            self.church = self.int_boolean(int(row[37]))
-            self.url = row[38]
+        self.id = newspaper_id
+        self.city.get_city(int(get_attribute(self, 'name')))
+        self.title = get_attribute(self, 'title')
+        self.number = get_attribute(self, 'number')
+        self.number2 = get_attribute(self, 'number2')
+        self.date = datetime.date(day=int(get_attribute(self, 'date_day')),
+                                  month=int(get_attribute(self, 'date_month')),
+                                  year=int(get_attribute(self, 'date_year')))
+        self.language.get_language(int(get_attribute(self, 'language')))
+        for sender_id in get_attribute(self, 'sender').split(','):
+            sender = Sender()
+            self.senders.append(sender.get_sender(int(sender_id)))
+        self.coordinates.latitude = float(get_attribute(self, 'latitude'))
+        self.coordinates.longitude = float(get_attribute(self, 'longitude'))
+        self.date_brought = datetime.date(day=int(get_attribute(self, 'date_brought_day')),
+                                          month=int(get_attribute(self, 'date_brought_month')),
+                                          year=int(get_attribute(self, 'date_brought_year')))
+        self.color = get_attribute(self, 'color')
+        self.pages = int(get_attribute(self, 'pages'))
+        self.format.get_format(int(get_attribute(self, 'format')))
+        self.type = get_attribute(self, 'type')
+        for cost_attribute in get_attribute(self, 'costs').split(','):
+            cost = Cost()
+            self.costs.append(cost.get_cost(cost_attribute.split('-')[0], int(cost_attribute.split('-')[1])))
+        self.site = get_attribute(self, 'site')
+        self.issn = get_attribute(self, 'issn')
+        self.date_start_publication = datetime.date(day=int(get_attribute(self, 'date_start_publication_day')),
+                                                    month=int(get_attribute(self, 'date_start_publication_month')),
+                                                    year=int(get_attribute(self, 'date_start_publication_year')))
+        self.circulation = int(get_attribute(self, 'circulation'))
+        self.crossword = self.int_boolean(int(get_attribute(self, 'crossword')))
+        self.sudoku = self.int_boolean(int(get_attribute(self, 'sudoku')))
+        self.nonogram = self.int_boolean(int(get_attribute(self, 'nonogram')))
+        self.ad_toyota = self.int_boolean(int(get_attribute(self, 'ad_toyota')))
+        self.program_guide = self.int_boolean(int(get_attribute(self, 'program_guide')))
+        self.anecdote = self.int_boolean(int(get_attribute(self, 'anecdote')))
+        self.caricature = self.int_boolean(int(get_attribute(self, 'caricature')))
+        self.recipe = self.int_boolean(int(get_attribute(self, 'recipe')))
+        self.horoscope = self.int_boolean(int(get_attribute(self, 'horoscope')))
+        self.pravda = self.int_boolean(int(get_attribute(self, 'pravda')))
+        self.naked_women = self.int_boolean(int(get_attribute(self, 'naked_women')))
+        self.church = self.int_boolean(int(get_attribute(self, 'church')))
+        self.url = get_attribute(self, 'url')
+        return self
 
     def format_senders(self):
         senders_string = ''
