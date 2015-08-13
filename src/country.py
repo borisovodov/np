@@ -32,9 +32,9 @@ class Country:
         languages = ''
         for language in self.languages:
             languages = languages + str(language.id) + ','
-        return {
-            'id': self.id,
-            'name': self.name,
-            'languages': languages[:-1],
-            'population': self.population
-        }
+        return [
+            self.id,
+            self.name,
+            languages[:-1],
+            self.population
+        ].__iter__()

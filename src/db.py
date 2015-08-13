@@ -102,14 +102,15 @@ def query(command):
         print('Bad query!')
 
 
-def insert(newspaper):
-    query('INSERT INTO newspaper (city, country, title, number, number2, date, language, senders, latitude, '
-          'longitude, continent, hemisphere, population, date_brought, url) VALUES (\'' + newspaper.city + '\', \''
-          + newspaper.country + '\', \'' + newspaper.title + '\', \'' + newspaper.number + '\', \''
-          + newspaper.number2 + '\', \'' + newspaper.format_date() + '\', \'' + newspaper.language + '\', \''
-          + newspaper.format_senders() + '\', \'' + str(newspaper.latitude) + '\', \''
-          + str(newspaper.longitude) + '\', \'' + newspaper.continent + '\', \'' + newspaper.hemisphere + '\', \''
-          + str(newspaper.population) + '\', \'' + newspaper.format_date_brought() + '\', \'' + newspaper.url + '\')')
+def insert(object_same):
+    attributes_string = ''
+    values_string = ''
+    for attribute in dir(object_same):
+        attributes_string = attributes_string + attribute + ', '
+    for value in object_same:
+        values_string = values_string + '\'' + value + '\', '
+    query('INSERT INTO ' + object_same.__class__.__name__.lower() + '(' + attributes_string[:-2]
+          + ') VALUES (' + values_string[:-2] + ')')
 
 
 def get_attribute(object_same, attribute):
@@ -119,7 +120,7 @@ def get_attribute(object_same, attribute):
 
 def set_attribute(object_same, attribute):
     query('UPDATE ' + object_same.__class__.__name__.lower()
-          + ' SET ' + attribute + ' = \'' + str(object_same.__dict__[attribute]) + '\', '
+          + ' SET ' + attribute + ' = \'' + str(getattr(object_same, attribute)) + '\', '
           + ' WHERE id = ' + str(object_same.id))
 
 

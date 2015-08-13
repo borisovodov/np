@@ -39,13 +39,13 @@ class City:
             coastal_string = 0
         else:
             coastal_string = 1
-        return {
-            'id': self.id,
-            'name': self.name,
-            'country': self.country.id,
-            'population': self.population,
-            'hemisphere': self.hemisphere.name,
-            'continent': self.continent,
-            'coastal': coastal_string,
-            'altitude': self.altitude
-        }
+        return [
+            self.id,
+            self.name,
+            self.country.id,
+            self.population,
+            self.hemisphere.name,
+            self.continent,
+            coastal_string,
+            self.altitude
+        ].__iter__()

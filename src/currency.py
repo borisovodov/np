@@ -20,8 +20,8 @@ class Currency:
         return self.name
 
     def __iter__(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'symbol': self.symbol
-        }
+        return [
+            self.id,
+            self.name,
+            self.symbol
+        ]

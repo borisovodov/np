@@ -18,7 +18,7 @@ class Sender:
         return self.name
 
     def __iter__(self):
-        return {
-            'id': self.id,
-            'name': self.name
-        }
+        return [
+            self.id,
+            self.name
+        ]

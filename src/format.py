@@ -24,10 +24,10 @@ class Format:
         return self.name
 
     def __iter__(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'height': self.height,
-            'width': self.width,
-            'aspect_ratio': self.aspect_ratio
-        }
+        return [
+            self.id,
+            self.name,
+            self.height,
+            self.width,
+            self.aspect_ratio
+        ]
