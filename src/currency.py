@@ -17,11 +17,4 @@ class Currency:
         return self
 
     def __str__(self):
-        return self.name
-
-    def __iter__(self):
-        return [
-            self.id,
-            self.name,
-            self.symbol
-        ]
+        return '\'' + str(self.id) + '\', ' + self.name + '\', ' + self.symbol + '\''

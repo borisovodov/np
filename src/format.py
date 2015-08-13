@@ -21,13 +21,5 @@ class Format:
         return self
 
     def __str__(self):
-        return self.name
-
-    def __iter__(self):
-        return [
-            self.id,
-            self.name,
-            self.height,
-            self.width,
-            self.aspect_ratio
-        ]
+        return '\'' + str(self.id) + '\', ' + self.name + '\', ' + str(self.height) + '\', ' + str(self.width) + '\', '\
+               + self.aspect_ratio + '\''

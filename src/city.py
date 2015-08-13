@@ -32,20 +32,10 @@ class City:
         return self
 
     def __str__(self):
-        return self.name
-
-    def __iter__(self):
         if not self.coastal:
-            coastal_string = 0
+            coastal_int = 0
         else:
-            coastal_string = 1
-        return [
-            self.id,
-            self.name,
-            self.country.id,
-            self.population,
-            self.hemisphere.name,
-            self.continent,
-            coastal_string,
-            self.altitude
-        ].__iter__()
+            coastal_int = 1
+        return '\'' + str(self.id) + '\', ' + self.name + '\', ' + str(self.country.id) + '\', ' + str(self.population)\
+               + '\', ' + self.hemisphere.name + '\', ' + self.continent + '\', ' + str(coastal_int) + '\', '\
+               + str(self.altitude) + '\''

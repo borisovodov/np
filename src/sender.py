@@ -15,10 +15,4 @@ class Sender:
         return self
 
     def __str__(self):
-        return self.name
-
-    def __iter__(self):
-        return [
-            self.id,
-            self.name
-        ]
+        return '\'' + str(self.id) + '\', ' + self.name + '\''

@@ -103,14 +103,8 @@ def query(command):
 
 
 def insert(object_same):
-    attributes_string = ''
-    values_string = ''
-    for attribute in dir(object_same):
-        attributes_string = attributes_string + attribute + ', '
-    for value in object_same:
-        values_string = values_string + '\'' + value + '\', '
-    query('INSERT INTO ' + object_same.__class__.__name__.lower() + '(' + attributes_string[:-2]
-          + ') VALUES (' + values_string[:-2] + ')')
+    query('INSERT INTO ' + object_same.__class__.__name__.lower() + '(' + ', '.join(dir(object_same))
+          + ') VALUES (' + str(object_same) + ')')
 
 
 def get_attribute(object_same, attribute):

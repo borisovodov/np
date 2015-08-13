@@ -26,15 +26,7 @@ class Country:
         return 'https://googledrive.com/host/' + ids['drive_folder_marker_id'] + '/' + self.name.lower() + '.png'
 
     def __str__(self):
-        return self.name
-
-    def __iter__(self):
         languages = ''
         for language in self.languages:
             languages = languages + str(language.id) + ','
-        return [
-            self.id,
-            self.name,
-            languages[:-1],
-            self.population
-        ].__iter__()
+        return '\'' + str(self.id) + '\', ' + self.name + '\', ' + languages[:-1] + '\', ' + str(self.population) + '\''

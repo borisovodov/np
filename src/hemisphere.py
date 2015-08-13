@@ -13,4 +13,4 @@ class Hemisphere:
             return 'Southern Hemisphere'
 
     def __str__(self):
-        return self.name_full()
+        return self.name
