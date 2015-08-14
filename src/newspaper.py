@@ -79,8 +79,8 @@ class Newspaper:
         for sender_id in get_attribute(self, 'sender').split(','):
             sender = Sender()
             self.senders.append(sender.get_sender(int(sender_id)))
-        self.coordinates.latitude = float(get_attribute(self, 'latitude'))
-        self.coordinates.longitude = float(get_attribute(self, 'longitude'))
+        self.coordinates.latitude = float(get_attribute(self, 'coordinates_latitude'))
+        self.coordinates.longitude = float(get_attribute(self, 'coordinates_longitude'))
         self.date_brought = datetime.date(day=int(get_attribute(self, 'date_brought_day')),
                                           month=int(get_attribute(self, 'date_brought_month')),
                                           year=int(get_attribute(self, 'date_brought_year')))
@@ -153,3 +153,11 @@ class Newspaper:
                + str(self.boolean_int(self.recipe)) + '\', \'' + str(self.boolean_int(self.horoscope)) + '\', \''\
                + str(self.boolean_int(self.pravda)) + '\', \'' + str(self.boolean_int(self.naked_women)) + '\', \''\
                + str(self.boolean_int(self.church)) + '\', \'' + self.url + '\''
+
+    def __dir__(self):
+        return ['id', 'city', 'title', 'number', 'number2', 'date_day', 'date_month', 'date_year', 'language',
+                'senders', 'coordinates_latitude', 'coordinates_longitude', 'date_brought_day', 'date_brought_month',
+                'date_brought_year', 'color', 'pages', 'format', 'type', 'costs', 'site', 'issn',
+                'date_start_publication_day', 'date_start_publication_month', 'date_start_publication_year',
+                'circulation', 'crossword', 'sudoku', 'nonogram', 'ad_toyota', 'program_guide', 'anecdote',
+                'caricature', 'recipe', 'horoscope', 'pravda', 'naked_women', 'church', 'url']

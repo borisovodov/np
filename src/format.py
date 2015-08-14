@@ -23,3 +23,6 @@ class Format:
     def __str__(self):
         return '\'' + str(self.id) + '\', \'' + self.name + '\', \'' + str(self.height) + '\', \'' + str(self.width) + '\', \''\
                + self.aspect_ratio + '\''
+
+    def __dir__(self):
+        return ['id', 'name', 'height', 'width', 'aspect_ratio']

@@ -16,3 +16,6 @@ class Sender:
 
     def __str__(self):
         return '\'' + str(self.id) + '\', \'' + self.name + '\''
+
+    def __dir__(self):
+        return ['id', 'name']

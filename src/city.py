@@ -39,3 +39,6 @@ class City:
         return '\'' + str(self.id) + '\', \'' + self.name + '\', \'' + str(self.country.id) + '\', \''\
                + str(self.population) + '\', \'' + self.hemisphere.name + '\', \'' + self.continent + '\', \''\
                + str(coastal_int) + '\', \'' + str(self.altitude) + '\''
+
+    def __dir__(self):
+        return ['id', 'name', 'country', 'population', 'hemisphere', 'continent', 'coastal', 'altitude']

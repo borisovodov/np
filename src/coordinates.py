@@ -9,10 +9,7 @@ class Coordinates:
         self.latitude = 0.0
         self.longitude = 0.0
 
-    def format(self):
-        return str(self.latitude) + ',' + str(self.longitude)
-
-    def format_nice(self, coord):
+    def format(self, coord):
         if self.latitude > 0:
             lat = str(trunc(self.latitude)) + '° ' + str(trunc((self.latitude - trunc(self.latitude))*60)) + '′ N'
         else:
@@ -33,3 +30,6 @@ class Coordinates:
 
     def __str__(self):
         return str(self.latitude) + '\', \'' + str(self.longitude)
+
+    def __dir__(self):
+        return ['latitude', 'longitude']
