@@ -138,19 +138,18 @@ class Newspaper:
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
 
     def __str__(self):
-        return '\'' + str(self.id) + '\', ' + str(self.city.id) + '\', ' + self.title + '\', ' + self.number + '\', '\
-               + self.number2 + '\', ' + str(self.date.day) + '\', ' + str(self.date.month) + '\', '\
-               + str(self.date.year) + '\', ' + str(self.language.id) + '\', ' + self.format_senders() + '\', '\
-               + str(self.coordinates.latitude) + '\', ' + str(self.coordinates.longitude) + '\', '\
-               + str(self.date_brought.day) + '\', ' + str(self.date_brought.month) + '\', '\
-               + str(self.date_brought.year) + '\', ' + self.color + '\', ' + str(self.pages) + '\', '\
-               + str(self.format.id) + '\', ' + self.type + '\', ' + self.format_costs() + '\', ' + self.site + '\', '\
-               + self.issn + '\', ' + str(self.date_start_publication.day) + '\', '\
-               + str(self.date_start_publication.month) + '\', ' + str(self.date_start_publication.year) + '\', '\
-               + str(self.circulation) + '\', ' + str(self.boolean_int(self.crossword)) + '\', '\
-               + str(self.boolean_int(self.sudoku)) + '\', ' + str(self.boolean_int(self.nonogram)) + '\', '\
-               + str(self.boolean_int(self.ad_toyota)) + '\', ' + str(self.boolean_int(self.program_guide)) + '\', '\
-               + str(self.boolean_int(self.anecdote)) + '\', ' + str(self.boolean_int(self.caricature)) + '\', '\
-               + str(self.boolean_int(self.recipe)) + '\', ' + str(self.boolean_int(self.horoscope)) + '\', '\
-               + str(self.boolean_int(self.pravda)) + '\', ' + str(self.boolean_int(self.naked_women)) + '\', '\
-               + str(self.boolean_int(self.church)) + '\', ' + self.url + '\''
+        return '\'' + str(self.id) + '\', \'' + str(self.city.id) + '\', \'' + self.title + '\', \'' + self.number + '\', \''\
+               + self.number2 + '\', \'' + str(self.date.day) + '\', \'' + str(self.date.month) + '\', \''\
+               + str(self.date.year) + '\', \'' + str(self.language.id) + '\', \'' + self.format_senders() + '\', \''\
+               + str(self.coordinates) + '\', \'' + str(self.date_brought.day) + '\', \'' + str(self.date_brought.month) + '\', \''\
+               + str(self.date_brought.year) + '\', \'' + self.color + '\', \'' + str(self.pages) + '\', \''\
+               + str(self.format.id) + '\', \'' + self.type + '\', \'' + self.format_costs() + '\', \'' + self.site + '\', \''\
+               + self.issn + '\', \'' + str(self.date_start_publication.day) + '\', \''\
+               + str(self.date_start_publication.month) + '\', \'' + str(self.date_start_publication.year) + '\', \''\
+               + str(self.circulation) + '\', \'' + str(self.boolean_int(self.crossword)) + '\', \''\
+               + str(self.boolean_int(self.sudoku)) + '\', \'' + str(self.boolean_int(self.nonogram)) + '\', \''\
+               + str(self.boolean_int(self.ad_toyota)) + '\', \'' + str(self.boolean_int(self.program_guide)) + '\', \''\
+               + str(self.boolean_int(self.anecdote)) + '\', \'' + str(self.boolean_int(self.caricature)) + '\', \''\
+               + str(self.boolean_int(self.recipe)) + '\', \'' + str(self.boolean_int(self.horoscope)) + '\', \''\
+               + str(self.boolean_int(self.pravda)) + '\', \'' + str(self.boolean_int(self.naked_women)) + '\', \''\
+               + str(self.boolean_int(self.church)) + '\', \'' + self.url + '\''

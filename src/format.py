@@ -21,5 +21,5 @@ class Format:
         return self
 
     def __str__(self):
-        return '\'' + str(self.id) + '\', ' + self.name + '\', ' + str(self.height) + '\', ' + str(self.width) + '\', '\
+        return '\'' + str(self.id) + '\', \'' + self.name + '\', \'' + str(self.height) + '\', \'' + str(self.width) + '\', \''\
                + self.aspect_ratio + '\''

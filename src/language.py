@@ -20,4 +20,4 @@ class Language:
         return self.name
 
     def __iter__(self):
-        return '\'' + str(self.id) + '\', ' + self.name + '\', ' + str(self.population) + '\''
+        return '\'' + str(self.id) + '\', \'' + self.name + '\', \'' + str(self.population) + '\''

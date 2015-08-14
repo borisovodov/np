@@ -30,3 +30,6 @@ class Coordinates:
             return long
         elif coord == 'both':
             return {'latitude': lat, 'longitude': long}
+
+    def __str__(self):
+        return str(self.latitude) + '\', \'' + str(self.longitude)

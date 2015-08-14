@@ -36,6 +36,6 @@ class City:
             coastal_int = 0
         else:
             coastal_int = 1
-        return '\'' + str(self.id) + '\', ' + self.name + '\', ' + str(self.country.id) + '\', ' + str(self.population)\
-               + '\', ' + self.hemisphere.name + '\', ' + self.continent + '\', ' + str(coastal_int) + '\', '\
-               + str(self.altitude) + '\''
+        return '\'' + str(self.id) + '\', \'' + self.name + '\', \'' + str(self.country.id) + '\', \''\
+               + str(self.population) + '\', \'' + self.hemisphere.name + '\', \'' + self.continent + '\', \''\
+               + str(coastal_int) + '\', \'' + str(self.altitude) + '\''

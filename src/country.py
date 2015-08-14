@@ -29,4 +29,5 @@ class Country:
         languages = ''
         for language in self.languages:
             languages = languages + str(language.id) + ','
-        return '\'' + str(self.id) + '\', ' + self.name + '\', ' + languages[:-1] + '\', ' + str(self.population) + '\''
+        return '\'' + str(self.id) + '\', \'' + self.name + '\', \'' + languages[:-1] + '\', \''\
+               + str(self.population) + '\''
