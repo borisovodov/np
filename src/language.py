@@ -17,7 +17,7 @@ class Language:
         return self
 
     def __str__(self):
-        return '\'' + str(self.id) + '\', \'' + self.name + '\', \'' + str(self.population) + '\''
+        return '\'' + self.name + '\', \'' + str(self.population) + '\''
 
     def __dir__(self):
-        return ['id', 'name', 'population']
+        return ['name', 'population']

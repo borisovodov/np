@@ -17,7 +17,7 @@ class Currency:
         return self
 
     def __str__(self):
-        return '\'' + str(self.id) + '\', \'' + self.name + '\', \'' + self.symbol + '\''
+        return '\'' + self.name + '\', \'' + self.symbol + '\''
 
     def __dir__(self):
-        return ['id', 'name', 'symbol']
+        return ['name', 'symbol']

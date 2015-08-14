@@ -138,7 +138,7 @@ class Newspaper:
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
 
     def __str__(self):
-        return '\'' + str(self.id) + '\', \'' + str(self.city.id) + '\', \'' + self.title + '\', \'' + self.number + '\', \''\
+        return '\'' + str(self.city.id) + '\', \'' + self.title + '\', \'' + self.number + '\', \''\
                + self.number2 + '\', \'' + str(self.date.day) + '\', \'' + str(self.date.month) + '\', \''\
                + str(self.date.year) + '\', \'' + str(self.language.id) + '\', \'' + self.format_senders() + '\', \''\
                + str(self.coordinates) + '\', \'' + str(self.date_brought.day) + '\', \'' + str(self.date_brought.month) + '\', \''\
@@ -155,7 +155,7 @@ class Newspaper:
                + str(self.boolean_int(self.church)) + '\', \'' + self.url + '\''
 
     def __dir__(self):
-        return ['id', 'city', 'title', 'number', 'number2', 'date_day', 'date_month', 'date_year', 'language',
+        return ['city', 'title', 'number', 'number2', 'date_day', 'date_month', 'date_year', 'language',
                 'senders', 'coordinates_latitude', 'coordinates_longitude', 'date_brought_day', 'date_brought_month',
                 'date_brought_year', 'color', 'pages', 'format', 'type', 'costs', 'site', 'issn',
                 'date_start_publication_day', 'date_start_publication_month', 'date_start_publication_year',
