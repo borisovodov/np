@@ -47,7 +47,6 @@ def create_database():
                    'caricature INTEGER, '
                    'recipe INTEGER, '
                    'horoscope INTEGER, '
-                   'pravda INTEGER, '
                    'naked_women INTEGER, '
                    'church INTEGER, '
                    'url TEXT)')
