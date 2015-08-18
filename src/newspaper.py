@@ -42,7 +42,6 @@ class Newspaper:
         self.caricature = False
         self.recipe = False
         self.horoscope = False
-        self.pravda = False
         self.naked_women = False
         self.church = False
         self.url = ''
@@ -106,7 +105,6 @@ class Newspaper:
         self.caricature = self.int_boolean(int(get_attribute(self, 'caricature')))
         self.recipe = self.int_boolean(int(get_attribute(self, 'recipe')))
         self.horoscope = self.int_boolean(int(get_attribute(self, 'horoscope')))
-        self.pravda = self.int_boolean(int(get_attribute(self, 'pravda')))
         self.naked_women = self.int_boolean(int(get_attribute(self, 'naked_women')))
         self.church = self.int_boolean(int(get_attribute(self, 'church')))
         self.url = get_attribute(self, 'url')
@@ -151,7 +149,7 @@ class Newspaper:
                + str(self.boolean_int(self.ad_toyota)) + '\', \'' + str(self.boolean_int(self.program_guide)) + '\', \''\
                + str(self.boolean_int(self.anecdote)) + '\', \'' + str(self.boolean_int(self.caricature)) + '\', \''\
                + str(self.boolean_int(self.recipe)) + '\', \'' + str(self.boolean_int(self.horoscope)) + '\', \''\
-               + str(self.boolean_int(self.pravda)) + '\', \'' + str(self.boolean_int(self.naked_women)) + '\', \''\
+               + str(self.boolean_int(self.naked_women)) + '\', \''\
                + str(self.boolean_int(self.church)) + '\', \'' + self.url + '\''
 
     def __dir__(self):
@@ -160,4 +158,4 @@ class Newspaper:
                 'date_brought_year', 'color', 'pages', 'format', 'type', 'costs', 'site', 'issn',
                 'date_start_publication_day', 'date_start_publication_month', 'date_start_publication_year',
                 'circulation', 'crossword', 'sudoku', 'nonogram', 'ad_toyota', 'program_guide', 'anecdote',
-                'caricature', 'recipe', 'horoscope', 'pravda', 'naked_women', 'church', 'url']
+                'caricature', 'recipe', 'horoscope', 'naked_women', 'church', 'url']
