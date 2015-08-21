@@ -17,19 +17,19 @@ if not os.path.isdir(sys.path[0] + '/tmp'):
     os.makedirs(sys.path[0] + '/tmp')
 
 if __name__ == '__main__':
-    from src.add import add
+    from src.add import add_newspaper
     from src.post import post
     from src.update import update
     from src.db import db, newspapers
 
     if len(newspapers()) == 0:
         print('Database is empty. Add newspaper.')
-        add()
+        add_newspaper()
 
     while True:
         menu = input('\nWhat you want?\nAdd newspaper\nPost\nUpdate\nQuery\nExit\n').lower()
         if menu == 'add' or menu == 'add newspaper' or menu == 'newspaper' or menu == 'a':
-            add()
+            add_newspaper()
         elif menu == 'post' or menu == 'p':
             post()
         elif menu == 'update' or menu == 'u':
