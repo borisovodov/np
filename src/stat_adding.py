@@ -54,6 +54,7 @@ content_adding = '<!--// Этот коммент не даёт показать�
                    'href=\"http://papersaround.blogspot.com/search/label/Verkhoturie\">Verkhoturie</a>, ' \
                    '<a style=\"text-decoration: underline\" ' \
                    'href=\"http://papersaround.blogspot.com/search/label/Russia\">Russia</a>—8776 people.</li></p>\');\n'\
+                 + 'if (h > 34 && h < 35) document.writeln(\'количество букв в названии.\');\n'\
                  + '//--><!--</script>\n'\
                  + '</li></p>\n'\
                  + '</ul>-->\n'

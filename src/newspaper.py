@@ -29,13 +29,16 @@ class Newspaper:
         self.format = Format()
         self.type = ''
         self.costs = []
+        self.frequency = ''
+        self.circulation = 0
         self.site = ''
         self.issn = ''
         self.date_start_publication = datetime.date(1, 1, 1)
-        self.circulation = 0
+        self.geotag = False
         self.crossword = False
         self.sudoku = False
         self.nonogram = False
+        self.kakuro = False
         self.ad_toyota = False
         self.program_guide = False
         self.anecdote = False
@@ -44,6 +47,7 @@ class Newspaper:
         self.horoscope = False
         self.naked_women = False
         self.church = False
+        self.trash = False
         self.url = ''
 
     @staticmethod
@@ -94,15 +98,18 @@ class Newspaper:
         for cost_attribute in get_attribute_by_id(self, 'costs').split(','):
             cost = Cost()
             self.costs.append(cost.get_cost(cost_attribute))
+        self.frequency = get_attribute_by_id(self, 'frequency')
+        self.circulation = int(get_attribute_by_id(self, 'circulation'))
         self.site = get_attribute_by_id(self, 'site')
         self.issn = get_attribute_by_id(self, 'issn')
         self.date_start_publication = datetime.date(day=int(get_attribute_by_id(self, 'date_start_publication_day')),
                                                     month=int(get_attribute_by_id(self, 'date_start_publication_month')),
                                                     year=int(get_attribute_by_id(self, 'date_start_publication_year')))
-        self.circulation = int(get_attribute_by_id(self, 'circulation'))
+        self.geotag = self.int_boolean(int(get_attribute_by_id(self, 'geotag')))
         self.crossword = self.int_boolean(int(get_attribute_by_id(self, 'crossword')))
         self.sudoku = self.int_boolean(int(get_attribute_by_id(self, 'sudoku')))
         self.nonogram = self.int_boolean(int(get_attribute_by_id(self, 'nonogram')))
+        self.kakuro = self.int_boolean(int(get_attribute_by_id(self, 'kakuro')))
         self.ad_toyota = self.int_boolean(int(get_attribute_by_id(self, 'ad_toyota')))
         self.program_guide = self.int_boolean(int(get_attribute_by_id(self, 'program_guide')))
         self.anecdote = self.int_boolean(int(get_attribute_by_id(self, 'anecdote')))
@@ -111,6 +118,7 @@ class Newspaper:
         self.horoscope = self.int_boolean(int(get_attribute_by_id(self, 'horoscope')))
         self.naked_women = self.int_boolean(int(get_attribute_by_id(self, 'naked_women')))
         self.church = self.int_boolean(int(get_attribute_by_id(self, 'church')))
+        self.trash = self.int_boolean(int(get_attribute_by_id(self, 'trash')))
         self.url = get_attribute_by_id(self, 'url')
         return self
 
@@ -143,23 +151,25 @@ class Newspaper:
         return '\'' + str(self.city.id) + '\', \'' + self.title + '\', \'' + self.number + '\', \''\
                + self.number2 + '\', \'' + str(self.date.day) + '\', \'' + str(self.date.month) + '\', \''\
                + str(self.date.year) + '\', \'' + str(self.language.id) + '\', \'' + self.format_senders() + '\', \''\
-               + str(self.coordinates) + '\', \'' + str(self.date_brought.day) + '\', \'' + str(self.date_brought.month) + '\', \''\
-               + str(self.date_brought.year) + '\', \'' + self.color + '\', \'' + str(self.pages) + '\', \''\
-               + str(self.format.id) + '\', \'' + self.type + '\', \'' + self.format_costs() + '\', \'' + self.site + '\', \''\
-               + self.issn + '\', \'' + str(self.date_start_publication.day) + '\', \''\
+               + str(self.coordinates) + '\', \'' + str(self.date_brought.day) + '\', \''\
+               + str(self.date_brought.month) + '\', \'' + str(self.date_brought.year) + '\', \'' + self.color + '\', \''\
+               + str(self.pages) + '\', \'' + str(self.format.id) + '\', \'' + self.type + '\', \''\
+               + self.format_costs() + '\', \'' + self.frequency + '\', \'' + str(self.circulation) + '\', \''\
+               + self.site + '\', \'' + self.issn + '\', \'' + str(self.date_start_publication.day) + '\', \''\
                + str(self.date_start_publication.month) + '\', \'' + str(self.date_start_publication.year) + '\', \''\
-               + str(self.circulation) + '\', \'' + str(self.boolean_int(self.crossword)) + '\', \''\
+               + str(self.boolean_int(self.geotag)) + '\', \'' + str(self.boolean_int(self.crossword)) + '\', \''\
                + str(self.boolean_int(self.sudoku)) + '\', \'' + str(self.boolean_int(self.nonogram)) + '\', \''\
-               + str(self.boolean_int(self.ad_toyota)) + '\', \'' + str(self.boolean_int(self.program_guide)) + '\', \''\
-               + str(self.boolean_int(self.anecdote)) + '\', \'' + str(self.boolean_int(self.caricature)) + '\', \''\
-               + str(self.boolean_int(self.recipe)) + '\', \'' + str(self.boolean_int(self.horoscope)) + '\', \''\
-               + str(self.boolean_int(self.naked_women)) + '\', \'' + str(self.boolean_int(self.church)) + '\', \''\
+               + str(self.boolean_int(self.kakuro)) + '\', \'' + str(self.boolean_int(self.ad_toyota)) + '\', \''\
+               + str(self.boolean_int(self.program_guide)) + '\', \'' + str(self.boolean_int(self.anecdote)) + '\', \''\
+               + str(self.boolean_int(self.caricature)) + '\', \'' + str(self.boolean_int(self.recipe)) + '\', \''\
+               + str(self.boolean_int(self.horoscope)) + '\', \'' + str(self.boolean_int(self.naked_women)) + '\', \''\
+               + str(self.boolean_int(self.church)) + '\', \'' + str(self.boolean_int(self.trash)) + '\', \''\
                + self.url + '\''
 
     def __dir__(self):
-        return ['city', 'title', 'number', 'number2', 'date_day', 'date_month', 'date_year', 'language',
-                'senders', 'coordinates_latitude', 'coordinates_longitude', 'date_brought_day', 'date_brought_month',
-                'date_brought_year', 'color', 'pages', 'format', 'type', 'costs', 'site', 'issn',
-                'date_start_publication_day', 'date_start_publication_month', 'date_start_publication_year',
-                'circulation', 'crossword', 'sudoku', 'nonogram', 'ad_toyota', 'program_guide', 'anecdote',
-                'caricature', 'recipe', 'horoscope', 'naked_women', 'church', 'url']
+        return ['city', 'title', 'number', 'number2', 'date_day', 'date_month', 'date_year', 'language', 'senders',
+                'coordinates_latitude', 'coordinates_longitude', 'date_brought_day', 'date_brought_month',
+                'date_brought_year', 'color', 'pages', 'format', 'type', 'costs', 'frequency', 'circulation', 'site',
+                'issn', 'date_start_publication_day', 'date_start_publication_month', 'date_start_publication_year',
+                'geotag', 'crossword', 'sudoku', 'nonogram', 'kakuro', 'ad_toyota', 'program_guide', 'anecdote',
+                'caricature', 'recipe', 'horoscope', 'naked_women', 'church', 'trash', 'url']
