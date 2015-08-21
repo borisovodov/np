@@ -42,7 +42,6 @@ class Newspaper:
         self.caricature = False
         self.recipe = False
         self.horoscope = False
-        self.pravda = False
         self.naked_women = False
         self.church = False
         self.url = ''
@@ -110,7 +109,6 @@ class Newspaper:
         self.caricature = self.int_boolean(int(get_attribute_by_id(self, 'caricature')))
         self.recipe = self.int_boolean(int(get_attribute_by_id(self, 'recipe')))
         self.horoscope = self.int_boolean(int(get_attribute_by_id(self, 'horoscope')))
-        self.pravda = self.int_boolean(int(get_attribute_by_id(self, 'pravda')))
         self.naked_women = self.int_boolean(int(get_attribute_by_id(self, 'naked_women')))
         self.church = self.int_boolean(int(get_attribute_by_id(self, 'church')))
         self.url = get_attribute_by_id(self, 'url')
@@ -155,8 +153,8 @@ class Newspaper:
                + str(self.boolean_int(self.ad_toyota)) + '\', \'' + str(self.boolean_int(self.program_guide)) + '\', \''\
                + str(self.boolean_int(self.anecdote)) + '\', \'' + str(self.boolean_int(self.caricature)) + '\', \''\
                + str(self.boolean_int(self.recipe)) + '\', \'' + str(self.boolean_int(self.horoscope)) + '\', \''\
-               + str(self.boolean_int(self.pravda)) + '\', \'' + str(self.boolean_int(self.naked_women)) + '\', \''\
-               + str(self.boolean_int(self.church)) + '\', \'' + self.url + '\''
+               + str(self.boolean_int(self.naked_women)) + '\', \'' + str(self.boolean_int(self.church)) + '\', \''\
+               + self.url + '\''
 
     def __dir__(self):
         return ['city', 'title', 'number', 'number2', 'date_day', 'date_month', 'date_year', 'language',
@@ -164,4 +162,4 @@ class Newspaper:
                 'date_brought_year', 'color', 'pages', 'format', 'type', 'costs', 'site', 'issn',
                 'date_start_publication_day', 'date_start_publication_month', 'date_start_publication_year',
                 'circulation', 'crossword', 'sudoku', 'nonogram', 'ad_toyota', 'program_guide', 'anecdote',
-                'caricature', 'recipe', 'horoscope', 'pravda', 'naked_women', 'church', 'url']
+                'caricature', 'recipe', 'horoscope', 'naked_women', 'church', 'url']
