@@ -3,7 +3,6 @@
 import sqlite3
 import os
 import sys
-from .newspaper import Newspaper
 
 DB_PATH = sys.path[0] + '/data/newspapers.db'
 
@@ -143,15 +142,6 @@ def set_attribute_by_id(object_same, attribute):
 
 def search(object_type, attribute, value):
     return query('SELECT id FROM ' + object_type + ' WHERE ' + attribute + ' = \'' + str(value) + '\'')
-
-
-def newspapers():
-    table_newspapers = []
-    table = query('SELECT * FROM newspaper')
-    for row in table:
-        newspaper = Newspaper()
-        table_newspapers.append(newspaper.get_newspaper(int(row[0])))
-    return table_newspapers
 
 
 def db():

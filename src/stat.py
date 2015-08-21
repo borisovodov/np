@@ -1,8 +1,7 @@
 """Module generate statistic."""
 
 import collections
-from .newspaper import Newspaper
-from .db import newspapers
+from .newspaper import Newspaper, newspapers
 from .stat_adding import content_adding
 
 

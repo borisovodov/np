@@ -1,8 +1,7 @@
 """Module for generate countries."""
 
 from collections import defaultdict
-from .db import newspapers
-from .newspaper import Newspaper
+from .newspaper import Newspaper, newspapers
 
 
 def countries():

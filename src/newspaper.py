@@ -8,7 +8,7 @@ from .sender import Sender
 from .coordinates import Coordinates
 from .format import Format
 from .cost import Cost
-from .db import get_attribute_by_id
+from .db import get_attribute_by_id, query
 
 
 class Newspaper:
@@ -173,3 +173,12 @@ class Newspaper:
                 'issn', 'date_start_publication_day', 'date_start_publication_month', 'date_start_publication_year',
                 'geotag', 'crossword', 'sudoku', 'nonogram', 'kakuro', 'ad_toyota', 'program_guide', 'anecdote',
                 'caricature', 'recipe', 'horoscope', 'naked_women', 'church', 'trash', 'url']
+
+
+def newspapers():
+    table_newspapers = []
+    table = query('SELECT * FROM newspaper')
+    for row in table:
+        newspaper = Newspaper()
+        table_newspapers.append(newspaper.get_newspaper(int(row[0])))
+    return table_newspapers

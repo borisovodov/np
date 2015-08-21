@@ -1,7 +1,6 @@
 """Module for generate file with tags."""
 
-from .newspaper import Newspaper
-from .db import newspapers
+from .newspaper import Newspaper, newspapers
 
 
 def tags():

@@ -20,7 +20,8 @@ if __name__ == '__main__':
     from src.add import add_newspaper
     from src.post import post
     from src.update import update
-    from src.db import db, newspapers
+    from src.db import db
+    from src.newspaper import newspapers
 
     if len(newspapers()) == 0:
         print('Database is empty. Add newspaper.')

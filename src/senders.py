@@ -1,7 +1,6 @@
 """Module for generate list of senders."""
 
-from .newspaper import Newspaper
-from .db import newspapers
+from .newspaper import Newspaper, newspapers
 
 
 def senders():

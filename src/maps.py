@@ -1,7 +1,7 @@
 """Module generate maps for site and big map."""
 
 import sys
-from .db import newspapers
+from .newspaper import newspapers
 
 
 def content_map():

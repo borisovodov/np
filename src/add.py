@@ -21,7 +21,7 @@ FREQUENCIES = ['Daily', 'Weekly', 'Monthly', 'Unknown']
 def add_currency(currency_with_name):
     currency_with_name.symbol = input('Symbol of ' + currency_with_name.name + ': ')
     insert(currency_with_name)
-    print('Currency added to database.')
+    print(currency_with_name.name + ' added.')
     currency_with_name.get_currency_by_name()
     return currency_with_name
 
@@ -41,14 +41,14 @@ def add_format(format_with_name):
             print('Incorrect width. Try again.')
     format_with_name.aspect_ratio = input('Aspect ratio of format: ')
     insert(format_with_name)
-    print('Format added to database.')
+    print('Format added.')
     format_with_name.get_format_by_name()
     return format_with_name
 
 
 def add_sender(sender_with_name):
     insert(sender_with_name)
-    print(sender_with_name.name + ' added to database.')
+    print(sender_with_name.name + ' added.')
     sender_with_name.get_sender_by_name()
     return sender_with_name
 
@@ -57,18 +57,18 @@ def add_language(language_with_name):
     while True:
         try:
             language_with_name.population = int(input('Input population for ' + language_with_name.name
-                                                      + 'language: ').replace(' ', '').replace(',', '').replace('.', ''))
+                                                      + ' language: ').replace(' ', '').replace(',', '').replace('.', ''))
             break
         except ValueError:
             print('Incorrect population. Try again.')
     insert(language_with_name)
-    print('Language added to database.')
+    print(language_with_name.name + ' language added.')
     language_with_name.get_language_by_name()
     return language_with_name
 
 
 def add_country(country_with_name):
-    languages_str = input('Official languages in country (comma-separated):')
+    languages_str = input('Official languages in country (comma-separated): ')
     for language_str in languages_str.split(','):
         language = Language()
         language.name = language_str
@@ -86,7 +86,7 @@ def add_country(country_with_name):
         except ValueError:
             print('Incorrect population. Try again.')
     insert(country_with_name)
-    print('Country added to database.')
+    print(country_with_name.name + ' added.')
     country_with_name.get_country_by_name()
     return country_with_name
 
@@ -129,6 +129,9 @@ def add_city(city_with_name_and_country):
             break
         except ValueError:
             print('Incorrect elevation. Try again.')
+    insert(city_with_name_and_country)
+    print(city_with_name_and_country.name + ' added.')
+    city_with_name_and_country.get_city_by_name()
     return city_with_name_and_country
 
 
@@ -414,4 +417,4 @@ def add_newspaper():
         else:
             print('Incorrect value. Try again.')
     insert(newspaper)
-    print('Newspaper added to database.')
+    print('Newspaper added.')
