@@ -2,7 +2,7 @@
 
 import src.photos as photos
 from .newspaper import Newspaper
-from .db import set_attribute
+from .db import set_attribute_by_id
 from .blog import authorization_blogger, add_post
 
 
@@ -86,5 +86,5 @@ def post():
     print('Post added.')
 
     newspaper.url = response['url']
-    set_attribute(newspaper, 'url')
+    set_attribute_by_id(newspaper, 'url')
     print('URL added to database.')

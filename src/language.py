@@ -1,6 +1,6 @@
 """This module contain Language class."""
 
-from .db import get_attribute
+from .db import get_attribute_by_id, get_id_by_attribute
 
 
 class Language:
@@ -10,10 +10,14 @@ class Language:
         self.name = ''
         self.population = 0
 
-    def get_language(self, language_id):
-        self.id = language_id
-        self.name = get_attribute(self, 'name')
-        self.population = int(get_attribute(self, 'population'))
+    def get_language_by_id(self):
+        self.name = get_attribute_by_id(self, 'name')
+        self.population = int(get_attribute_by_id(self, 'population'))
+        return self
+
+    def get_language_by_name(self):
+        self.id = get_id_by_attribute(self, 'name')
+        self.get_language_by_id()
         return self
 
     def __str__(self):

@@ -2,7 +2,7 @@
 
 from .config import ids
 from .language import Language
-from .db import get_attribute
+from .db import get_attribute_by_id, get_id_by_attribute
 
 
 class Country:
@@ -13,13 +13,18 @@ class Country:
         self.languages = []
         self.population = 0
 
-    def get_country(self, country_id):
-        self.id = country_id
-        self.name = get_attribute(self, 'name')
-        for language_id in get_attribute(self, 'languages').split(','):
+    def get_country_by_id(self):
+        self.name = get_attribute_by_id(self, 'name')
+        for language_id in get_attribute_by_id(self, 'languages').split(','):
             language = Language()
-            self.languages.append(language.get_language(int(language_id)))
-        self.population = int(get_attribute(self, 'population'))
+            language.id = int(language_id)
+            self.languages.append(language.get_language_by_id())
+        self.population = int(get_attribute_by_id(self, 'population'))
+        return self
+
+    def get_country_by_name(self):
+        self.id = get_id_by_attribute(self, 'name')
+        self.get_country_by_id()
         return self
 
     def marker(self):
@@ -29,8 +34,7 @@ class Country:
         languages = ''
         for language in self.languages:
             languages = languages + str(language.id) + ','
-        return '\'' + self.name + '\', \'' + languages[:-1] + '\', \''\
-               + str(self.population) + '\''
+        return '\'' + self.name + '\', \'' + languages[:-1] + '\', \'' + str(self.population) + '\''
 
     def __dir__(self):
         return ['name', 'languages', 'population']

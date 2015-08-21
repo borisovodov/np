@@ -9,9 +9,10 @@ class Cost:
         self.value = 0.0
         self.currency = Currency()
 
-    def get_cost(self, string):
-        self.value = float(string.split('-')[0])
-        self.currency.get_currency(int(string.split('-')[1]))
+    def get_cost(self, cost_string):
+        self.value = float(cost_string.split('-')[0])
+        self.currency.id = int(cost_string.split('-')[1])
+        self.currency.get_currency_by_id()
         return self
 
     def __str__(self):

@@ -8,7 +8,7 @@ from .sender import Sender
 from .coordinates import Coordinates
 from .format import Format
 from .cost import Cost
-from .db import get_attribute
+from .db import get_attribute_by_id
 
 
 class Newspaper:
@@ -68,48 +68,52 @@ class Newspaper:
 
     def get_newspaper(self, newspaper_id):
         self.id = newspaper_id
-        self.city.get_city(int(get_attribute(self, 'name')))
-        self.title = get_attribute(self, 'title')
-        self.number = get_attribute(self, 'number')
-        self.number2 = get_attribute(self, 'number2')
-        self.date = datetime.date(day=int(get_attribute(self, 'date_day')),
-                                  month=int(get_attribute(self, 'date_month')),
-                                  year=int(get_attribute(self, 'date_year')))
-        self.language.get_language(int(get_attribute(self, 'language')))
-        for sender_id in get_attribute(self, 'sender').split(','):
+        self.city.id = int(get_attribute_by_id(self, 'name'))
+        self.city.get_city_by_id()
+        self.title = get_attribute_by_id(self, 'title')
+        self.number = get_attribute_by_id(self, 'number')
+        self.number2 = get_attribute_by_id(self, 'number2')
+        self.date = datetime.date(day=int(get_attribute_by_id(self, 'date_day')),
+                                  month=int(get_attribute_by_id(self, 'date_month')),
+                                  year=int(get_attribute_by_id(self, 'date_year')))
+        self.language.id = int(get_attribute_by_id(self, 'language'))
+        self.language.get_language_by_id()
+        for sender_id in get_attribute_by_id(self, 'sender').split(','):
             sender = Sender()
-            self.senders.append(sender.get_sender(int(sender_id)))
-        self.coordinates.latitude = float(get_attribute(self, 'coordinates_latitude'))
-        self.coordinates.longitude = float(get_attribute(self, 'coordinates_longitude'))
-        self.date_brought = datetime.date(day=int(get_attribute(self, 'date_brought_day')),
-                                          month=int(get_attribute(self, 'date_brought_month')),
-                                          year=int(get_attribute(self, 'date_brought_year')))
-        self.color = get_attribute(self, 'color')
-        self.pages = int(get_attribute(self, 'pages'))
-        self.format.get_format(int(get_attribute(self, 'format')))
-        self.type = get_attribute(self, 'type')
-        for cost_attribute in get_attribute(self, 'costs').split(','):
+            sender.id = int(sender_id)
+            self.senders.append(sender.get_sender_by_id())
+        self.coordinates.latitude = float(get_attribute_by_id(self, 'coordinates_latitude'))
+        self.coordinates.longitude = float(get_attribute_by_id(self, 'coordinates_longitude'))
+        self.date_brought = datetime.date(day=int(get_attribute_by_id(self, 'date_brought_day')),
+                                          month=int(get_attribute_by_id(self, 'date_brought_month')),
+                                          year=int(get_attribute_by_id(self, 'date_brought_year')))
+        self.color = get_attribute_by_id(self, 'color')
+        self.pages = int(get_attribute_by_id(self, 'pages'))
+        self.format.id = int(get_attribute_by_id(self, 'format'))
+        self.format.get_format_by_id()
+        self.type = get_attribute_by_id(self, 'type')
+        for cost_attribute in get_attribute_by_id(self, 'costs').split(','):
             cost = Cost()
             self.costs.append(cost.get_cost(cost_attribute))
-        self.site = get_attribute(self, 'site')
-        self.issn = get_attribute(self, 'issn')
-        self.date_start_publication = datetime.date(day=int(get_attribute(self, 'date_start_publication_day')),
-                                                    month=int(get_attribute(self, 'date_start_publication_month')),
-                                                    year=int(get_attribute(self, 'date_start_publication_year')))
-        self.circulation = int(get_attribute(self, 'circulation'))
-        self.crossword = self.int_boolean(int(get_attribute(self, 'crossword')))
-        self.sudoku = self.int_boolean(int(get_attribute(self, 'sudoku')))
-        self.nonogram = self.int_boolean(int(get_attribute(self, 'nonogram')))
-        self.ad_toyota = self.int_boolean(int(get_attribute(self, 'ad_toyota')))
-        self.program_guide = self.int_boolean(int(get_attribute(self, 'program_guide')))
-        self.anecdote = self.int_boolean(int(get_attribute(self, 'anecdote')))
-        self.caricature = self.int_boolean(int(get_attribute(self, 'caricature')))
-        self.recipe = self.int_boolean(int(get_attribute(self, 'recipe')))
-        self.horoscope = self.int_boolean(int(get_attribute(self, 'horoscope')))
-        self.pravda = self.int_boolean(int(get_attribute(self, 'pravda')))
-        self.naked_women = self.int_boolean(int(get_attribute(self, 'naked_women')))
-        self.church = self.int_boolean(int(get_attribute(self, 'church')))
-        self.url = get_attribute(self, 'url')
+        self.site = get_attribute_by_id(self, 'site')
+        self.issn = get_attribute_by_id(self, 'issn')
+        self.date_start_publication = datetime.date(day=int(get_attribute_by_id(self, 'date_start_publication_day')),
+                                                    month=int(get_attribute_by_id(self, 'date_start_publication_month')),
+                                                    year=int(get_attribute_by_id(self, 'date_start_publication_year')))
+        self.circulation = int(get_attribute_by_id(self, 'circulation'))
+        self.crossword = self.int_boolean(int(get_attribute_by_id(self, 'crossword')))
+        self.sudoku = self.int_boolean(int(get_attribute_by_id(self, 'sudoku')))
+        self.nonogram = self.int_boolean(int(get_attribute_by_id(self, 'nonogram')))
+        self.ad_toyota = self.int_boolean(int(get_attribute_by_id(self, 'ad_toyota')))
+        self.program_guide = self.int_boolean(int(get_attribute_by_id(self, 'program_guide')))
+        self.anecdote = self.int_boolean(int(get_attribute_by_id(self, 'anecdote')))
+        self.caricature = self.int_boolean(int(get_attribute_by_id(self, 'caricature')))
+        self.recipe = self.int_boolean(int(get_attribute_by_id(self, 'recipe')))
+        self.horoscope = self.int_boolean(int(get_attribute_by_id(self, 'horoscope')))
+        self.pravda = self.int_boolean(int(get_attribute_by_id(self, 'pravda')))
+        self.naked_women = self.int_boolean(int(get_attribute_by_id(self, 'naked_women')))
+        self.church = self.int_boolean(int(get_attribute_by_id(self, 'church')))
+        self.url = get_attribute_by_id(self, 'url')
         return self
 
     def format_senders(self):

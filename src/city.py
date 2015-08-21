@@ -2,7 +2,7 @@
 
 from .country import Country
 from .hemisphere import Hemisphere
-from .db import get_attribute
+from .db import get_attribute_by_id, get_id_by_attribute, search
 
 
 class City:
@@ -17,19 +17,34 @@ class City:
         self.coastal = False
         self.altitude = 0.0
 
-    def get_city(self, city_id):
-        self.id = city_id
-        self.name = get_attribute(self, 'name')
-        self.country.get_country(int(get_attribute(self, 'country')))
-        self.population = int(get_attribute(self, 'population'))
-        self.hemisphere.name = get_attribute(self, 'hemisphere')
-        self.continent = get_attribute(self, 'continent')
-        if int(get_attribute(self, 'coastal')) == 0:
+    def get_city_by_id(self):
+        self.name = get_attribute_by_id(self, 'name')
+        self.country.id = int(get_attribute_by_id(self, 'country'))
+        self.country.get_country_by_id()
+        self.population = int(get_attribute_by_id(self, 'population'))
+        self.hemisphere.name = get_attribute_by_id(self, 'hemisphere')
+        self.continent = get_attribute_by_id(self, 'continent')
+        if int(get_attribute_by_id(self, 'coastal')) == 0:
             self.coastal = False
         else:
             self.coastal = True
-        self.altitude = float(get_attribute(self, 'altitude'))
+        self.altitude = float(get_attribute_by_id(self, 'altitude'))
         return self
+
+    def get_city_by_name_and_country(self):
+        for id_by_name in search('city', 'name', self.name):
+            for id_by_country in search('city', 'country', self.country.id):
+                if id_by_name == id_by_country:
+                    self.id = id_by_name
+        self.get_city_by_id()
+        return self
+
+    def is_city(self):
+        for id_by_name in search('city', 'name', self.name):
+            for id_by_country in search('city', 'country', self.country.id):
+                if id_by_name == id_by_country:
+                    return True
+        return False
 
     def __str__(self):
         if not self.coastal:

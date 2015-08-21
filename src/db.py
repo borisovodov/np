@@ -94,7 +94,11 @@ def query(command):
     try:
         connect = sqlite3.connect(DB_PATH)
         cursor = connect.cursor()
-        table = cursor.execute(command.replace('\'', '\"'))
+        table_tuple = cursor.execute(command.replace('\'', '\"'))
+        table = []
+        for row in table_tuple:
+            for attribute in row:
+                table.append(attribute)
         connect.commit()
         connect.close()
         return table
@@ -107,15 +111,35 @@ def insert(object_same):
           + ') VALUES (' + str(object_same) + ')')
 
 
-def get_attribute(object_same, attribute):
-    return query('SELECT ' + attribute + ' FROM ' + object_same.__class__.__name__.lower()
-                 + ' WHERE id = ' + str(object_same.id))
+def is_object(object_same, attribute):
+    table = query('SELECT * ' + ' FROM ' + object_same.__class__.__name__.lower()
+                  + ' WHERE ' + attribute + ' = \'' + str(getattr(object_same, attribute)) + '\'')
+    if len(table) != 0:
+        return True
+    else:
+        return False
 
 
-def set_attribute(object_same, attribute):
+def get_attribute_by_id(object_same, attribute):
+    table = query('SELECT ' + attribute + ' FROM ' + object_same.__class__.__name__.lower()
+                  + ' WHERE id = \'' + str(object_same.id) + '\'')
+    return table[0]
+
+
+def get_id_by_attribute(object_same, attribute):
+    table = query('SELECT id FROM ' + object_same.__class__.__name__.lower()
+                  + ' WHERE ' + attribute + ' = \'' + str(getattr(object_same, attribute)) + '\'')
+    return int(table[0])
+
+
+def set_attribute_by_id(object_same, attribute):
     query('UPDATE ' + object_same.__class__.__name__.lower()
           + ' SET ' + attribute + ' = \'' + str(getattr(object_same, attribute)) + '\', '
-          + ' WHERE id = ' + str(object_same.id))
+          + ' WHERE id = \'' + str(object_same.id) + '\'')
+
+
+def search(object_type, attribute, value):
+    return query('SELECT id FROM ' + object_type + ' WHERE ' + attribute + ' = \'' + str(value) + '\'')
 
 
 def newspapers():
