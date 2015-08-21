@@ -6,7 +6,16 @@ from .country import Country
 from .language import Language
 from .city import City
 from .sender import Sender
-from .db import insert, is_object
+from .format import Format
+from .cost import Cost
+from .currency import Currency
+from .db import insert, is_object_by_name
+
+HEMISPHERES = ['n', 's']
+CONTINENTS = ['Africa', 'Antarctica', 'Asia', 'Australia', 'Europe', 'North America', 'South America']
+COLORS = ['Monochrome', 'Bicolor', 'Multicolor']
+TYPES = ['Newspaper', 'Magazine', 'Brochure']
+FREQUENCIES = ['Daily', 'Weekly', 'Monthly', 'Unknown']
 
 
 def add_currency(currency_with_name):
@@ -63,7 +72,7 @@ def add_country(country_with_name):
     for language_str in languages_str.split(','):
         language = Language()
         language.name = language_str
-        if is_object(language, 'name'):
+        if is_object_by_name(language):
             language.get_language_by_name()
             country_with_name.languages.append(language)
         else:
@@ -92,14 +101,14 @@ def add_city(city_with_name_and_country):
             print('Incorrect population. Try again.')
     while True:
         hemisphere_str = input('Hemisphere (n or s): ')
-        if hemisphere_str in ['n', 's']:
+        if hemisphere_str in HEMISPHERES:
             city_with_name_and_country.hemisphere.name = hemisphere_str
             break
         else:
             print('Incorrect hemisphere. Try again.')
     while True:
         continent_str = input('Continent: ')
-        if continent_str in ['Africa', 'Antarctica', 'Asia', 'Australia', 'Europe', 'North America', 'South America']:
+        if continent_str in CONTINENTS:
             city_with_name_and_country.continent = continent_str
             break
         else:
@@ -128,7 +137,7 @@ def add_newspaper():
 
     country = Country()
     country.name = input('Country: ')
-    if is_object(country, 'name'):
+    if is_object_by_name(country):
         country.get_country_by_name()
     else:
         country = add_country(country)
@@ -157,17 +166,17 @@ def add_newspaper():
 
     language = Language()
     language.name = input('Language: ')
-    if is_object(language, 'name'):
+    if is_object_by_name(language):
         language.get_language_by_name()
     else:
         language = add_language(language)
     newspaper.language = language
 
-    senders_str = input('Senders (comma-separated): ').replace(' ,', ',')
+    senders_str = input('Senders (comma-separated): ').replace(' ,', ',').replace('  ', ' ')
     for sender_str in senders_str.split(','):
         sender = Sender()
         sender.name = sender_str
-        if is_object(sender, 'name'):
+        if is_object_by_name(sender):
             sender.get_sender_by_name()
         else:
             sender = add_sender(sender)
@@ -183,15 +192,226 @@ def add_newspaper():
             print('Incorrect coordinates. Try again.')
     while True:
         try:
-            date_brought_str = input('Date brought (dot-separated): ')
-            newspaper.date_brought = datetime.date(day=int(date_brought_str.split('.')[0]),
-                                                   month=int(date_brought_str.split('.')[1]),
-                                                   year=int(date_brought_str.split('.')[2]))
-            break
+            date_brought_str = input('Date brought (dot-separated or unknown): ')
+            if date_brought_str == 'unknown':
+                break
+            else:
+                newspaper.date_brought = datetime.date(day=int(date_brought_str.split('.')[0]),
+                                                       month=int(date_brought_str.split('.')[1]),
+                                                       year=int(date_brought_str.split('.')[2]))
+                break
         except (IndexError, OverflowError, ValueError):
             print('Incorrect date. Try again.')
     while True:
-
-
+        color_str = input('Color (Monochrome, Bicolor or Multicolor): ')
+        if color_str in COLORS:
+            newspaper.color = color_str
+            break
+        else:
+            print('Incorrect color. Try again.')
+    while True:
+        try:
+            newspaper.pages = int(input('Pages: '))
+            break
+        except ValueError:
+            print('Incorrect value of pages. Try again.')
+    format = Format()
+    format.name = input('Format: ')
+    if is_object_by_name(format):
+        format.get_format_by_name()
+    else:
+        format = add_format(format)
+    newspaper.format = format
+    while True:
+        type_str = input('Type (Newspaper, Magazine or Brochure): ')
+        if type_str in TYPES:
+            newspaper.type = type_str
+            break
+        else:
+            print('Incorrect type. Try again.')
+    while True:
+        try:
+            costs_str = input('Costs (COST-CURRENCY and dot-separated): ').replace(' ', '')
+            for cost_str in costs_str.split(','):
+                cost = Cost()
+                cost.value = cost_str.split('-')[0]
+                currency = Currency()
+                currency.name = cost_str.split('-')[1]
+                if is_object_by_name(currency):
+                    currency.get_currency_by_name()
+                else:
+                    currency = add_currency(currency)
+                cost.currency = currency
+                newspaper.costs.append(cost)
+            break
+        except (IndexError, ValueError):
+            print('Incorrect costs. Try again.')
+    while True:
+        frequency_str = input('Frequency (Daily, Weekly, Monthly or Unknown): ')
+        if frequency_str in FREQUENCIES:
+            newspaper.frequency = frequency_str
+            break
+        else:
+            print('Incorrect frequency. Try again.')
+    while True:
+        try:
+            newspaper.circulation = int(input('Circulation: '))
+            break
+        except ValueError:
+            print('Incorrect circulation. Try again.')
+    newspaper.site = input('Site: ')
+    newspaper.issn = input('ISSN: ')
+    while True:
+        try:
+            date_start_publication_str = input('Date start publication (dot-separated or unknown): ')
+            if date_start_publication_str == 'unknown':
+                break
+            else:
+                newspaper.date_brought = datetime.date(day=int(date_start_publication_str.split('.')[0]),
+                                                       month=int(date_start_publication_str.split('.')[1]),
+                                                       year=int(date_start_publication_str.split('.')[2]))
+                break
+        except (IndexError, OverflowError, ValueError):
+            print('Incorrect date. Try again.')
+    while True:
+        string = input('Geotagging in name of newspaper (y/n): ')
+        if string == 'y':
+            newspaper.geotag = True
+            break
+        elif string == 'n':
+            newspaper.geotag = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Crossword (y/n): ')
+        if string == 'y':
+            newspaper.crossword = True
+            break
+        elif string == 'n':
+            newspaper.crossword = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Sudoku (y/n): ')
+        if string == 'y':
+            newspaper.sudoku = True
+            break
+        elif string == 'n':
+            newspaper.sudoku = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Nonogram (y/n): ')
+        if string == 'y':
+            newspaper.nonogram = True
+            break
+        elif string == 'n':
+            newspaper.nonogram = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Kakuro (y/n): ')
+        if string == 'y':
+            newspaper.kakuro = True
+            break
+        elif string == 'n':
+            newspaper.kakuro = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Advertising Toyota (y/n): ')
+        if string == 'y':
+            newspaper.ad_toyota = True
+            break
+        elif string == 'n':
+            newspaper.ad_toyota = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Program guide (y/n): ')
+        if string == 'y':
+            newspaper.program_guide = True
+            break
+        elif string == 'n':
+            newspaper.program_guide = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Anecdote (y/n): ')
+        if string == 'y':
+            newspaper.anecdote = True
+            break
+        elif string == 'n':
+            newspaper.anecdote = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Caricature (y/n): ')
+        if string == 'y':
+            newspaper.caricature = True
+            break
+        elif string == 'n':
+            newspaper.caricature = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Recipe (y/n): ')
+        if string == 'y':
+            newspaper.recipe = True
+            break
+        elif string == 'n':
+            newspaper.recipe = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Horoscope (y/n): ')
+        if string == 'y':
+            newspaper.horoscope = True
+            break
+        elif string == 'n':
+            newspaper.horoscope = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Images of naked women (y/n): ')
+        if string == 'y':
+            newspaper.naked_women = True
+            break
+        elif string == 'n':
+            newspaper.naked_women = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Church newspaper (y/n): ')
+        if string == 'y':
+            newspaper.church = True
+            break
+        elif string == 'n':
+            newspaper.church = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('TRASH newspaper (y/n): ')
+        if string == 'y':
+            newspaper.trash = True
+            break
+        elif string == 'n':
+            newspaper.trash = False
+            break
+        else:
+            print('Incorrect value. Try again.')
     insert(newspaper)
     print('Newspaper added to database.')

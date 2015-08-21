@@ -2,7 +2,7 @@
 
 from .country import Country
 from .hemisphere import Hemisphere
-from .db import get_attribute_by_id, get_id_by_attribute, search
+from .db import get_attribute_by_id, search
 
 
 class City:

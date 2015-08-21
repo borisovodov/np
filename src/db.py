@@ -114,9 +114,9 @@ def insert(object_same):
           + ') VALUES (' + str(object_same) + ')')
 
 
-def is_object(object_same, attribute):
+def is_object_by_name(object_same):
     table = query('SELECT * ' + ' FROM ' + object_same.__class__.__name__.lower()
-                  + ' WHERE ' + attribute + ' = \'' + str(getattr(object_same, attribute)) + '\'')
+                  + ' WHERE name = \'' + object_same.name + '\'')
     if len(table) != 0:
         return True
     else:
