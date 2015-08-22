@@ -34,7 +34,7 @@ class Country:
         languages = ''
         for language in self.languages:
             languages = languages + str(language.id) + ','
-        return '\'' + self.name + '\', \'' + languages[:-1] + '\', \'' + str(self.population) + '\''
+        return '\'' + languages[:-1] + '\', \'' + self.name + '\', \'' + str(self.population) + '\''
 
     def __dir__(self):
-        return ['name', 'languages', 'population']
+        return ['languages', 'name', 'population']

@@ -167,12 +167,23 @@ class Newspaper:
                + self.url + '\''
 
     def __dir__(self):
-        return ['city', 'title', 'number', 'number2', 'date_day', 'date_month', 'date_year', 'language', 'senders',
-                'coordinates_latitude', 'coordinates_longitude', 'date_brought_day', 'date_brought_month',
-                'date_brought_year', 'color', 'pages', 'format', 'type', 'costs', 'frequency', 'circulation', 'site',
-                'issn', 'date_start_publication_day', 'date_start_publication_month', 'date_start_publication_year',
-                'geotag', 'crossword', 'sudoku', 'nonogram', 'kakuro', 'ad_toyota', 'program_guide', 'anecdote',
-                'caricature', 'recipe', 'horoscope', 'naked_women', 'church', 'trash', 'url']
+        return ['ad_toyota', 'anecdote', 'caricature', 'church', 'circulation', 'city', 'color', 'coordinates_latitude',
+                'coordinates_longitude', 'costs', 'crossword', 'date_brought_day', 'date_brought_month',
+
+                'date_day', 'date_month', 'date_year',
+                'date_brought_year', 'date_start_publication_day',
+                'date_start_publication_month', 'date_start_publication_year',
+
+
+                'title', 'number', 'number2',
+                'language', 'senders',
+
+                'pages', 'format',
+                'type', 'frequency', 'site',
+                'issn',
+                'geotag', 'sudoku', 'nonogram', 'kakuro', 'program_guide',
+                'recipe', 'horoscope',
+                'naked_women', 'trash', 'url']
 
 
 def newspapers():

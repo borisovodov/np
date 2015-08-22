@@ -25,8 +25,8 @@ class Format:
         return self
 
     def __str__(self):
-        return '\'' + self.name + '\', \'' + str(self.height) + '\', \'' + str(self.width) + '\', \''\
-               + self.aspect_ratio + '\''
+        return '\'' + self.aspect_ratio + '\', \'' + str(self.height) + '\', \'' + self.name + '\', \''\
+               + str(self.width) + '\''
 
     def __dir__(self):
-        return ['name', 'height', 'width', 'aspect_ratio']
+        return ['aspect_ratio', 'height', 'name', 'width']

@@ -87,6 +87,9 @@ def add_country(country_with_name):
             print('Incorrect population. Try again.')
     insert(country_with_name)
     print(country_with_name.name + ' added.')
+    from .db import query
+    q = query('SELECT * FROM country')
+    print(q)
     country_with_name.get_country_by_name()
     return country_with_name
 

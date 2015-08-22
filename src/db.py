@@ -109,8 +109,10 @@ def query(command):
 
 
 def insert(object_same):
-    query('INSERT INTO ' + object_same.__class__.__name__.lower() + '(' + ', '.join(dir(object_same))
-          + ') VALUES (' + str(object_same) + ')')
+    q = 'INSERT INTO ' + object_same.__class__.__name__.lower() + '(' + ', '.join(dir(object_same))\
+        + ') VALUES (' + str(object_same) + ')'
+    print(q)
+    query(q)
 
 
 def is_object_by_name(object_same):
@@ -129,8 +131,11 @@ def get_attribute_by_id(object_same, attribute):
 
 
 def get_id_by_attribute(object_same, attribute):
-    table = query('SELECT id FROM ' + object_same.__class__.__name__.lower()
-                  + ' WHERE ' + attribute + ' = \'' + str(getattr(object_same, attribute)) + '\'')
+    q = 'SELECT id FROM ' + object_same.__class__.__name__.lower() + ' WHERE ' + attribute + ' = \''\
+        + str(getattr(object_same, attribute)) + '\''
+    print(q)
+    table = query(q)
+    print(table)
     return int(table[0])
 
 

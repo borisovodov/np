@@ -21,11 +21,6 @@ if __name__ == '__main__':
     from src.post import post
     from src.update import update
     from src.db import db
-    from src.newspaper import newspapers
-
-    if len(newspapers()) == 0:
-        print('Database is empty. Add newspaper.')
-        add_newspaper()
 
     while True:
         menu = input('\nWhat you want?\nAdd newspaper\nPost\nUpdate\nQuery\nExit\n').lower()

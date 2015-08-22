@@ -51,9 +51,9 @@ class City:
             coastal_int = 0
         else:
             coastal_int = 1
-        return '\'' + self.name + '\', \'' + str(self.country.id) + '\', \''\
-               + str(self.population) + '\', \'' + self.hemisphere.name + '\', \'' + self.continent + '\', \''\
-               + str(coastal_int) + '\', \'' + str(self.altitude) + '\''
+        return '\'' + str(self.altitude) + '\', \'' + str(coastal_int) + '\', \''\
+               + self.continent + '\', \'' + str(self.country.id) + '\', \'' + self.hemisphere.name + '\', \''\
+               + self.name + '\', \'' + str(self.population) + '\''
 
     def __dir__(self):
-        return ['name', 'country', 'population', 'hemisphere', 'continent', 'coastal', 'altitude']
+        return ['altitude', 'coastal', 'continent', 'country', 'hemisphere', 'name', 'population']
