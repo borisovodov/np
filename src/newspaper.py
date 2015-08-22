@@ -148,42 +148,31 @@ class Newspaper:
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
 
     def __str__(self):
-        return '\'' + str(self.city.id) + '\', \'' + self.title + '\', \'' + self.number + '\', \''\
-               + self.number2 + '\', \'' + str(self.date.day) + '\', \'' + str(self.date.month) + '\', \''\
-               + str(self.date.year) + '\', \'' + str(self.language.id) + '\', \'' + self.format_senders() + '\', \''\
-               + str(self.coordinates) + '\', \'' + str(self.date_brought.day) + '\', \''\
-               + str(self.date_brought.month) + '\', \'' + str(self.date_brought.year) + '\', \'' + self.color + '\', \''\
-               + str(self.pages) + '\', \'' + str(self.format.id) + '\', \'' + self.type + '\', \''\
-               + self.format_costs() + '\', \'' + self.frequency + '\', \'' + str(self.circulation) + '\', \''\
-               + self.site + '\', \'' + self.issn + '\', \'' + str(self.date_start_publication.day) + '\', \''\
+        return '\'' + str(self.boolean_int(self.ad_toyota)) + '\', \'' + str(self.boolean_int(self.anecdote)) + '\', \''\
+               + str(self.boolean_int(self.caricature)) + '\', \'' + str(self.boolean_int(self.church)) + '\', \''\
+               + str(self.circulation) + '\', \'' + str(self.city.id) + '\', \'' + self.color + '\', \''\
+               + str(self.coordinates) + '\', \'' + self.format_costs() + '\', \''\
+               + str(self.boolean_int(self.crossword)) + '\', \'' + str(self.date_brought.day) + '\', \''\
+               + str(self.date_brought.month) + '\', \'' + str(self.date_brought.year) + '\', \'' + str(self.date.day) + '\', \''\
+               + str(self.date.month) + '\', \'' + str(self.date_start_publication.day) + '\', \''\
                + str(self.date_start_publication.month) + '\', \'' + str(self.date_start_publication.year) + '\', \''\
-               + str(self.boolean_int(self.geotag)) + '\', \'' + str(self.boolean_int(self.crossword)) + '\', \''\
-               + str(self.boolean_int(self.sudoku)) + '\', \'' + str(self.boolean_int(self.nonogram)) + '\', \''\
-               + str(self.boolean_int(self.kakuro)) + '\', \'' + str(self.boolean_int(self.ad_toyota)) + '\', \''\
-               + str(self.boolean_int(self.program_guide)) + '\', \'' + str(self.boolean_int(self.anecdote)) + '\', \''\
-               + str(self.boolean_int(self.caricature)) + '\', \'' + str(self.boolean_int(self.recipe)) + '\', \''\
-               + str(self.boolean_int(self.horoscope)) + '\', \'' + str(self.boolean_int(self.naked_women)) + '\', \''\
-               + str(self.boolean_int(self.church)) + '\', \'' + str(self.boolean_int(self.trash)) + '\', \''\
+               + str(self.date.year) + '\', \'' + str(self.format.id) + '\', \'' + self.frequency + '\', \''\
+               + str(self.boolean_int(self.geotag)) + '\', \'' + str(self.boolean_int(self.horoscope)) + '\', \''\
+               + self.issn + '\', \'' + str(self.boolean_int(self.kakuro)) + '\', \'' + str(self.language.id) + '\', \''\
+               + str(self.boolean_int(self.naked_women)) + '\', \'' + str(self.boolean_int(self.nonogram)) + '\', \''\
+               + self.number + '\', \'' + self.number2 + '\', \'' + str(self.pages) + '\', \''\
+               + str(self.boolean_int(self.program_guide)) + '\', \'' + str(self.boolean_int(self.recipe)) + '\', \''\
+               + self.format_senders() + '\', \'' + self.site + '\', \'' + str(self.boolean_int(self.sudoku)) + '\', \''\
+               + self.title + '\', \'' + str(self.boolean_int(self.trash)) + '\', \'' + self.type + '\', \''\
                + self.url + '\''
 
     def __dir__(self):
         return ['ad_toyota', 'anecdote', 'caricature', 'church', 'circulation', 'city', 'color', 'coordinates_latitude',
                 'coordinates_longitude', 'costs', 'crossword', 'date_brought_day', 'date_brought_month',
-
-                'date_day', 'date_month', 'date_year',
-                'date_brought_year', 'date_start_publication_day',
-                'date_start_publication_month', 'date_start_publication_year',
-
-
-                'title', 'number', 'number2',
-                'language', 'senders',
-
-                'pages', 'format',
-                'type', 'frequency', 'site',
-                'issn',
-                'geotag', 'sudoku', 'nonogram', 'kakuro', 'program_guide',
-                'recipe', 'horoscope',
-                'naked_women', 'trash', 'url']
+                'date_brought_year', 'date_day', 'date_month', 'date_start_publication_day',
+                'date_start_publication_month', 'date_start_publication_year', 'date_year', 'format', 'frequency',
+                'geotag', 'horoscope', 'issn', 'kakuro', 'language', 'naked_women', 'nonogram', 'number', 'number2',
+                'pages', 'program_guide', 'recipe', 'senders', 'site', 'sudoku', 'title', 'trash', 'type', 'url']
 
 
 def newspapers():
