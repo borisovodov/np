@@ -10,13 +10,11 @@ class Format:
         self.name = ''
         self.height = 0
         self.width = 0
-        self.aspect_ratio = ''
 
     def get_format_by_id(self):
         self.name = get_attribute_by_id(self, 'name')
         self.height = int(get_attribute_by_id(self, 'height'))
         self.width = int(get_attribute_by_id(self, 'width'))
-        self.aspect_ratio = get_attribute_by_id(self, 'aspect_ratio')
         return self
 
     def get_format_by_name(self):
@@ -25,8 +23,8 @@ class Format:
         return self
 
     def __str__(self):
-        return '\'' + self.aspect_ratio + '\', \'' + str(self.height) + '\', \'' + self.name + '\', \''\
+        return '\'' + str(self.height) + '\', \'' + self.name + '\', \''\
                + str(self.width) + '\''
 
     def __dir__(self):
-        return ['aspect_ratio', 'height', 'name', 'width']
+        return ['height', 'name', 'width']

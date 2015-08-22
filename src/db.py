@@ -75,8 +75,7 @@ def create_database():
                    'id INTEGER PRIMARY KEY, '
                    'name TEXT, '
                    'height INTEGER, '
-                   'width INTEGER, '
-                   'aspect_ratio TEXT)')
+                   'width INTEGER)')
     cursor.execute('CREATE TABLE language ('
                    'id INTEGER PRIMARY KEY, '
                    'name TEXT, '
@@ -109,10 +108,8 @@ def query(command):
 
 
 def insert(object_same):
-    q = 'INSERT INTO ' + object_same.__class__.__name__.lower() + '(' + ', '.join(dir(object_same))\
-        + ') VALUES (' + str(object_same) + ')'
-    print(q)
-    query(q)
+    query('INSERT INTO ' + object_same.__class__.__name__.lower() + '(' + ', '.join(dir(object_same))
+          + ') VALUES (' + str(object_same) + ')')
 
 
 def is_object_by_name(object_same):
@@ -131,10 +128,8 @@ def get_attribute_by_id(object_same, attribute):
 
 
 def get_id_by_attribute(object_same, attribute):
-    q = 'SELECT id FROM ' + object_same.__class__.__name__.lower() + ' WHERE ' + attribute + ' = \''\
-        + str(getattr(object_same, attribute)) + '\''
-    print(q)
-    table = query(q)
+    table = query('SELECT id FROM ' + object_same.__class__.__name__.lower() + ' WHERE ' + attribute + ' = \''
+                  + str(getattr(object_same, attribute)) + '\'')
     print(table)
     return int(table[0])
 
@@ -150,8 +145,7 @@ def search(object_type, attribute, value):
 
 
 def db():
-    command = input('Input SQL command (only SELECT *): ')
+    command = input('Input SQL command: ')
     table = query(command)
-    for row in table:
-        print(row)
+    print(table)
     print('Query completed.')

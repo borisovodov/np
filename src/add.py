@@ -39,7 +39,6 @@ def add_format(format_with_name):
             break
         except ValueError:
             print('Incorrect width. Try again.')
-    format_with_name.aspect_ratio = input('Aspect ratio of format: ')
     insert(format_with_name)
     print('Format added.')
     format_with_name.get_format_by_name()
@@ -56,8 +55,8 @@ def add_sender(sender_with_name):
 def add_language(language_with_name):
     while True:
         try:
-            language_with_name.population = int(input('Input population for ' + language_with_name.name
-                                                      + ' language: ').replace(' ', '').replace(',', '').replace('.', ''))
+            language_with_name.population = int(input('Input population for ' + language_with_name.name +
+                                                      ' language: ').replace(' ', '').replace(',', '').replace('.', ''))
             break
         except ValueError:
             print('Incorrect population. Try again.')
@@ -87,9 +86,6 @@ def add_country(country_with_name):
             print('Incorrect population. Try again.')
     insert(country_with_name)
     print(country_with_name.name + ' added.')
-    from .db import query
-    q = query('SELECT * FROM country')
-    print(q)
     country_with_name.get_country_by_name()
     return country_with_name
 
@@ -134,7 +130,7 @@ def add_city(city_with_name_and_country):
             print('Incorrect elevation. Try again.')
     insert(city_with_name_and_country)
     print(city_with_name_and_country.name + ' added.')
-    city_with_name_and_country.get_city_by_name()
+    city_with_name_and_country.get_city_by_name_and_country()
     return city_with_name_and_country
 
 
@@ -178,7 +174,7 @@ def add_newspaper():
         language = add_language(language)
     newspaper.language = language
 
-    senders_str = input('Senders (comma-separated): ').replace(' ,', ',').replace('  ', ' ')
+    senders_str = input('Senders (comma-separated): ').replace(', ', ',').replace('  ', ' ')
     for sender_str in senders_str.split(','):
         sender = Sender()
         sender.name = sender_str
