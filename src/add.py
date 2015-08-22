@@ -40,7 +40,7 @@ def add_format(format_with_name):
         except ValueError:
             print('Incorrect width. Try again.')
     insert(format_with_name)
-    print('Format added.')
+    print(format_with_name.name + ' format added.')
     format_with_name.get_format_by_name()
     return format_with_name
 
@@ -55,7 +55,7 @@ def add_sender(sender_with_name):
 def add_language(language_with_name):
     while True:
         try:
-            language_with_name.population = int(input('Input population for ' + language_with_name.name +
+            language_with_name.population = int(input('Population of ' + language_with_name.name.lower() +
                                                       ' language: ').replace(' ', '').replace(',', '').replace('.', ''))
             break
         except ValueError:
@@ -67,7 +67,8 @@ def add_language(language_with_name):
 
 
 def add_country(country_with_name):
-    languages_str = input('Official languages in country (comma-separated): ')
+    languages_str = input('Official languages in ' + country_with_name.name
+                          + ' (comma-separated): ').replace(', ', ',').replace('  ', ' ')
     for language_str in languages_str.split(','):
         language = Language()
         language.name = language_str
@@ -79,8 +80,8 @@ def add_country(country_with_name):
             country_with_name.languages.append(language)
     while True:
         try:
-            country_with_name.population = int(input('Population of country: '
-                                                     '').replace(' ', '').replace(',', '').replace('.', ''))
+            country_with_name.population = int(input('Population of ' + country_with_name.name
+                                                     + ': ').replace(' ', '').replace(',', '').replace('.', ''))
             break
         except ValueError:
             print('Incorrect population. Try again.')
@@ -93,8 +94,8 @@ def add_country(country_with_name):
 def add_city(city_with_name_and_country):
     while True:
         try:
-            city_with_name_and_country.population = int(input('Population of city: '
-                                                              '').replace(' ', '').replace(',', '').replace('.', ''))
+            city_with_name_and_country.population = int(input('Population of ' + city_with_name_and_country.name
+                                                              + ': ').replace(' ', '').replace(',', '').replace('.', ''))
             break
         except ValueError:
             print('Incorrect population. Try again.')
@@ -116,18 +117,19 @@ def add_city(city_with_name_and_country):
         coastal_str = input('Coastal city (y/n): ')
         if coastal_str == 'y':
             city_with_name_and_country.coastal = True
+            city_with_name_and_country.altitude = 0.0
             break
         elif coastal_str == 'n':
             city_with_name_and_country.coastal = False
+            while True:
+                try:
+                    city_with_name_and_country.altitude = float(input('Cities elevation (m): '))
+                    break
+                except ValueError:
+                    print('Incorrect elevation. Try again.')
             break
         else:
             print('Incorrect value. Try again.')
-    while True:
-        try:
-            city_with_name_and_country.altitude = float(input('Cities elevation (m): '))
-            break
-        except ValueError:
-            print('Incorrect elevation. Try again.')
     insert(city_with_name_and_country)
     print(city_with_name_and_country.name + ' added.')
     city_with_name_and_country.get_city_by_name_and_country()
@@ -156,7 +158,7 @@ def add_newspaper():
     newspaper.city = city
     newspaper.title = input('Title: ')
     newspaper.number = input('Number: ')
-    newspaper.number2 = input('Number2: ')
+    newspaper.number2 = input('Number 2: ')
     while True:
         try:
             date_str = input('Date (dot-separated): ')
@@ -236,7 +238,7 @@ def add_newspaper():
             costs_str = input('Costs (COST-CURRENCY and dot-separated): ').replace(' ', '')
             for cost_str in costs_str.split(','):
                 cost = Cost()
-                cost.value = cost_str.split('-')[0]
+                cost.value = float(cost_str.split('-')[0])
                 currency = Currency()
                 currency.name = cost_str.split('-')[1]
                 if is_object_by_name(currency):

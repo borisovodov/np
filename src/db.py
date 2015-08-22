@@ -130,7 +130,6 @@ def get_attribute_by_id(object_same, attribute):
 def get_id_by_attribute(object_same, attribute):
     table = query('SELECT id FROM ' + object_same.__class__.__name__.lower() + ' WHERE ' + attribute + ' = \''
                   + str(getattr(object_same, attribute)) + '\'')
-    print(table)
     return int(table[0])
 
 
