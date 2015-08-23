@@ -92,7 +92,8 @@ class Newspaper:
         self.site = get_attribute_by_id(self, 'site')
         self.issn = get_attribute_by_id(self, 'issn')
         self.date_start_publication = datetime.date(day=int(get_attribute_by_id(self, 'date_start_publication_day')),
-                                                    month=int(get_attribute_by_id(self, 'date_start_publication_month')),
+                                                    month=int(get_attribute_by_id(self,
+                                                                                  'date_start_publication_month')),
                                                     year=int(get_attribute_by_id(self, 'date_start_publication_year')))
         self.geotag = bool(get_attribute_by_id(self, 'geotag'))
         self.crossword = bool(get_attribute_by_id(self, 'crossword'))
@@ -173,11 +174,10 @@ class Newspaper:
                 'weather_forecast']
 
 
-def newspapers():
+def newspapers(order_by='id'):
     table_newspapers = []
-    table = list_of('newspaper')
-    for row in table:
+    for row in list_of('newspaper', order_by):
         newspaper = Newspaper()
-        newspaper.id = int(row[0])
+        newspaper.id = int(row)
         table_newspapers.append(newspaper.get_newspaper_by_id())
     return table_newspapers

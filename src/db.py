@@ -146,8 +146,8 @@ def search(object_type, attribute, value):
     return query('SELECT id FROM ' + object_type + ' WHERE ' + attribute + ' = \'' + str(value) + '\'')
 
 
-def list_of(object_type):
-    return query('SELECT * FROM ' + object_type)
+def list_of(object_type, order_by='id'):
+    return query('SELECT id FROM ' + object_type + ' ORDER BY ' + order_by)
 
 
 def db():

@@ -25,8 +25,8 @@ def stat():
     counter_continent = collections.Counter(continents)
     counter_sender = collections.Counter(senders)
 
-    newspapers_latitude = query('SELECT * FROM newspapers ORDER BY latitude')
-    newspapers_longitude = query('SELECT * FROM newspapers ORDER BY longitude')
+    newspapers_latitude = newspapers('coordinates_latitude')
+    newspapers_longitude = newspapers('coordinates_longitude')
 
     content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
               '<p>In this site presents newspapers <span style=\"text-decoration: line-through\">' \
@@ -73,7 +73,7 @@ def stat():
                 'href=\"http://papersaround.blogspot.com/search/label/Alexandra%20Ovodova\">Alexandra Ovodova</a> ' \
                 'filch from post.</li></p>\n'\
               + '<p><li>Latest newspaper ' + newspapers()[-1].format_senders_nice() + ' brought from '\
-              + Newspaper.link(newspapers()[-1].city) + ', ' + Newspaper.link(newspapers()[-1].country) + '.</li></p>\n'\
+              + Newspaper.link(newspapers()[-1].city.name) + ', ' + Newspaper.link(newspapers()[-1].city.country.name) + '.</li></p>\n'\
               + '</ul>'\
               + content_adding\
               + '</div>'
