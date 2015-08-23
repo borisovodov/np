@@ -55,9 +55,8 @@ class Newspaper:
         return '<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/'\
                + not_link.replace(' ', '%20') + '">' + not_link + '</a>'
 
-    def get_newspaper(self, newspaper_id):
-        self.id = newspaper_id
-        self.city.id = int(get_attribute_by_id(self, 'name'))
+    def get_newspaper_by_id(self):
+        self.city.id = int(get_attribute_by_id(self, 'city'))
         self.city.get_city_by_id()
         self.title = get_attribute_by_id(self, 'title')
         self.number = get_attribute_by_id(self, 'number')
@@ -67,7 +66,7 @@ class Newspaper:
                                   year=int(get_attribute_by_id(self, 'date_year')))
         self.language.id = int(get_attribute_by_id(self, 'language'))
         self.language.get_language_by_id()
-        for sender_id in get_attribute_by_id(self, 'sender').split(','):
+        for sender_id in get_attribute_by_id(self, 'senders').split(','):
             sender = Sender()
             sender.id = int(sender_id)
             self.senders.append(sender.get_sender_by_id())
@@ -81,9 +80,11 @@ class Newspaper:
         self.format_paper.id = int(get_attribute_by_id(self, 'format_paper'))
         self.format_paper.get_format_by_id()
         self.type = get_attribute_by_id(self, 'type')
-        for cost_attribute in get_attribute_by_id(self, 'costs').split(','):
-            cost = Cost()
-            self.costs.append(cost.get_cost(cost_attribute))
+        if get_attribute_by_id(self, 'costs') != '':
+            for cost_attribute in get_attribute_by_id(self, 'costs').split(','):
+                if cost_attribute != '':
+                    cost = Cost()
+                    self.costs.append(cost.get_cost(cost_attribute))
         self.frequency = get_attribute_by_id(self, 'frequency')
         self.circulation = int(get_attribute_by_id(self, 'circulation'))
         self.site = get_attribute_by_id(self, 'site')
@@ -108,10 +109,16 @@ class Newspaper:
         self.url = get_attribute_by_id(self, 'url')
         return self
 
-    def format_senders(self):
+    def format_senders_id(self):
         senders_string = ''
         for sender in self.senders:
             senders_string = senders_string + str(sender.id) + ','
+        return senders_string[:-1]
+
+    def format_senders_name(self):
+        senders_string = ''
+        for sender in self.senders:
+            senders_string = senders_string + str(sender.name) + ','
         return senders_string[:-1]
 
     def format_senders_nice(self):
@@ -126,11 +133,14 @@ class Newspaper:
 
     def format_costs(self):
         costs_string = ''
-        for cost in self.costs:
-            costs_string = costs_string + str(cost) + ','
-        return costs_string[:-1]
+        if len(self.costs) == 0:
+            return costs_string
+        else:
+            for cost in self.costs:
+                costs_string = costs_string + str(cost) + ','
+            return costs_string[:-1]
 
-    def format_date_nice(self):
+    def format_date(self):
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
 
     def __str__(self):
@@ -145,7 +155,7 @@ class Newspaper:
                + str(self.geotag) + '\', \'' + str(self.horoscope) + '\', \'' + self.issn + '\', \'' + str(self.kakuro) + '\', \'' + str(self.language.id) + '\', \''\
                + str(self.naked_women) + '\', \'' + str(self.nonogram) + '\', \'' + self.number + '\', \''\
                + self.number2 + '\', \'' + str(self.pages) + '\', \'' + str(self.program_guide) + '\', \''\
-               + str(self.recipe) + '\', \'' + self.format_senders() + '\', \'' + self.site + '\', \''\
+               + str(self.recipe) + '\', \'' + self.format_senders_id() + '\', \'' + self.site + '\', \''\
                + str(self.sudoku) + '\', \'' + self.title + '\', \'' + str(self.trash) + '\', \'' + self.type + '\', \''\
                + self.url + '\''
 

@@ -7,6 +7,7 @@ from .blog import authorization_blogger, add_post
 
 
 def get_id():
+    newspaper_id = 0
     while True:
         try:
             newspaper_id = int(input('Input ID newspaper: '))
@@ -30,34 +31,34 @@ def generate_post(newspaper, path_photos):
     for i in range(1, len(photo_ids)):
         content_photos = content_photos + photos.link_photo(photo_ids[i])
 
-    post_name = newspaper.city + ', ' + newspaper.country
+    post_name = newspaper.city.name + ', ' + newspaper.city.country.name
     post_tags = [
-        newspaper.country, newspaper.city, str(newspaper.date.year), newspaper.language, newspaper.format_senders(),
-        newspaper.continent, newspaper.format_hemisphere()
+        newspaper.city.country.name, newspaper.city.name, str(newspaper.date.year), newspaper.language.name,
+        newspaper.format_senders_name(), newspaper.city.continent, newspaper.city.hemisphere.name_full()
         ]
 
     content_up = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
                  '<strong>Title:</strong> ' + newspaper.title + '<br />\n'
 
     if newspaper.number == '' and newspaper.number2 == '':
-        post_content = content_up + '<strong>Released:</strong> ' + newspaper.format_date_nice() + '<br />\n' \
-                                    '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n' \
+        post_content = content_up + '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n' \
+                                    '<strong>Language:</strong> ' + newspaper.link(newspaper.language.name) + '<br />\n' \
                                     '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n' \
                                     '<br />\n'\
                                     + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
                                     + content_photos + '</div>'
     elif newspaper.number2 == '':
         post_content = content_up + '<strong>Number:</strong> ' + newspaper.number + '<br />\n'\
-                                    '<strong>Released:</strong> ' + newspaper.format_date_nice() + '<br />\n'\
-                                    '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n'\
+                                    '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
+                                    '<strong>Language:</strong> ' + newspaper.link(newspaper.language.name) + '<br />\n'\
                                     '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
                                     '<br />\n'\
                                     + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
                                     + content_photos + '</div>'
     else:
         post_content = content_up + '<strong>Number:</strong> ' + newspaper.number + ' (' + newspaper.number2 + ')<br />\n'\
-                                    '<strong>Released:</strong> ' + newspaper.format_date_nice() + '<br />\n'\
-                                    '<strong>Language:</strong> ' + newspaper.link(newspaper.language) + '<br />\n'\
+                                    '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
+                                    '<strong>Language:</strong> ' + newspaper.link(newspaper.language.name) + '<br />\n'\
                                     '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
                                     '<br />\n'\
                                     + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
@@ -71,9 +72,9 @@ def generate_post(newspaper, path_photos):
 
 
 def post():
-    id_n = get_id()
     newspaper = Newspaper()
-    newspaper.get_newspaper(id_n)
+    newspaper.id = get_id()
+    newspaper.get_newspaper_by_id()
     path = get_path_photos()
 
     photos.authorization_flickr()

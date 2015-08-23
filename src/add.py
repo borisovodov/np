@@ -223,7 +223,7 @@ def add_newspaper():
         except ValueError:
             print('Incorrect value of pages. Try again.')
     format_paper = FormatPaper()
-    format_paper.name = input('FormatPaper: ')
+    format_paper.name = input('Format: ')
     if is_object_by_name(format_paper):
         format_paper.get_format_by_name()
     else:

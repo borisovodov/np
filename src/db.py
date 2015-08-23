@@ -71,7 +71,7 @@ def create_database():
                    'id INTEGER PRIMARY KEY, '
                    'name TEXT, '
                    'symbol TEXT)')
-    cursor.execute('CREATE TABLE format ('
+    cursor.execute('CREATE TABLE formatpaper ('
                    'id INTEGER PRIMARY KEY, '
                    'name TEXT, '
                    'height INTEGER, '
@@ -93,6 +93,7 @@ if not os.path.isfile(DB_PATH):
 
 def query(command):
     try:
+        print(command)
         connect = sqlite3.connect(DB_PATH)
         cursor = connect.cursor()
         table_tuple = cursor.execute(command.replace('\'', '\"'))
@@ -113,7 +114,7 @@ def insert(object_same):
 
 
 def is_object_by_name(object_same):
-    table = query('SELECT * ' + ' FROM ' + object_same.__class__.__name__.lower()
+    table = query('SELECT * FROM ' + object_same.__class__.__name__.lower()
                   + ' WHERE name = \'' + object_same.name + '\'')
     if len(table) != 0:
         return True
@@ -135,7 +136,7 @@ def get_id_by_attribute(object_same, attribute):
 
 def set_attribute_by_id(object_same, attribute):
     query('UPDATE ' + object_same.__class__.__name__.lower()
-          + ' SET ' + attribute + ' = \'' + str(getattr(object_same, attribute)) + '\', '
+          + ' SET ' + attribute + ' = \'' + str(getattr(object_same, attribute)) + '\' '
           + ' WHERE id = \'' + str(object_same.id) + '\'')
 
 
