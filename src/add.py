@@ -6,7 +6,7 @@ from .country import Country
 from .language import Language
 from .city import City
 from .sender import Sender
-from .format import Format
+from .formatpaper import FormatPaper
 from .cost import Cost
 from .currency import Currency
 from .db import insert, is_object_by_name
@@ -15,7 +15,7 @@ HEMISPHERES = ['n', 's']
 CONTINENTS = ['Africa', 'Antarctica', 'Asia', 'Australia', 'Europe', 'North America', 'South America']
 COLORS = ['Monochrome', 'Bicolor', 'Multicolor']
 TYPES = ['Newspaper', 'Magazine', 'Brochure']
-FREQUENCIES = ['Daily', 'Weekly', 'Monthly', 'Unknown']
+FREQUENCIES = ['Daily', 'Weekly', 'Monthly', '']
 
 
 def add_currency(currency_with_name):
@@ -94,8 +94,8 @@ def add_country(country_with_name):
 def add_city(city_with_name_and_country):
     while True:
         try:
-            city_with_name_and_country.population = int(input('Population of ' + city_with_name_and_country.name
-                                                              + ': ').replace(' ', '').replace(',', '').replace('.', ''))
+            city_with_name_and_country.population = int(input('Population of ' + city_with_name_and_country.name +
+                                                              ': ').replace(' ', '').replace(',', '').replace('.', ''))
             break
         except ValueError:
             print('Incorrect population. Try again.')
@@ -161,10 +161,13 @@ def add_newspaper():
     newspaper.number2 = input('Number 2: ')
     while True:
         try:
-            date_str = input('Date (dot-separated): ')
-            newspaper.date = datetime.date(day=int(date_str.split('.')[0]), month=int(date_str.split('.')[1]),
-                                           year=int(date_str.split('.')[2]))
-            break
+            date_str = input('Date (dot-separated or empty): ')
+            if date_str == '':
+                break
+            else:
+                newspaper.date = datetime.date(day=int(date_str.split('.')[0]), month=int(date_str.split('.')[1]),
+                                               year=int(date_str.split('.')[2]))
+                break
         except (IndexError, OverflowError, ValueError):
             print('Incorrect date. Try again.')
 
@@ -196,8 +199,8 @@ def add_newspaper():
             print('Incorrect coordinates. Try again.')
     while True:
         try:
-            date_brought_str = input('Date brought (dot-separated or unknown): ')
-            if date_brought_str == 'unknown':
+            date_brought_str = input('Date brought (dot-separated or empty): ')
+            if date_brought_str == '':
                 break
             else:
                 newspaper.date_brought = datetime.date(day=int(date_brought_str.split('.')[0]),
@@ -219,13 +222,13 @@ def add_newspaper():
             break
         except ValueError:
             print('Incorrect value of pages. Try again.')
-    format = Format()
-    format.name = input('Format: ')
-    if is_object_by_name(format):
-        format.get_format_by_name()
+    format_paper = FormatPaper()
+    format_paper.name = input('FormatPaper: ')
+    if is_object_by_name(format_paper):
+        format_paper.get_format_by_name()
     else:
-        format = add_format(format)
-    newspaper.format = format
+        format_paper = add_format(format_paper)
+    newspaper.format_paper = format_paper
     while True:
         type_str = input('Type (Newspaper, Magazine or Brochure): ')
         if type_str in TYPES:
@@ -235,23 +238,26 @@ def add_newspaper():
             print('Incorrect type. Try again.')
     while True:
         try:
-            costs_str = input('Costs (COST-CURRENCY and dot-separated): ').replace(' ', '')
-            for cost_str in costs_str.split(','):
-                cost = Cost()
-                cost.value = float(cost_str.split('-')[0])
-                currency = Currency()
-                currency.name = cost_str.split('-')[1]
-                if is_object_by_name(currency):
-                    currency.get_currency_by_name()
-                else:
-                    currency = add_currency(currency)
-                cost.currency = currency
-                newspaper.costs.append(cost)
-            break
+            costs_str = input('Costs (COST-CURRENCY and dot-separated or empty): ').replace(' ', '')
+            if costs_str == '':
+                break
+            else:
+                for cost_str in costs_str.split(','):
+                    cost = Cost()
+                    cost.value = float(cost_str.split('-')[0])
+                    currency = Currency()
+                    currency.name = cost_str.split('-')[1]
+                    if is_object_by_name(currency):
+                        currency.get_currency_by_name()
+                    else:
+                        currency = add_currency(currency)
+                    cost.currency = currency
+                    newspaper.costs.append(cost)
+                break
         except (IndexError, ValueError):
             print('Incorrect costs. Try again.')
     while True:
-        frequency_str = input('Frequency (Daily, Weekly, Monthly or Unknown): ')
+        frequency_str = input('Frequency (Daily, Weekly, Monthly or empty): ')
         if frequency_str in FREQUENCIES:
             newspaper.frequency = frequency_str
             break
@@ -259,7 +265,7 @@ def add_newspaper():
             print('Incorrect frequency. Try again.')
     while True:
         try:
-            newspaper.circulation = int(input('Circulation: '))
+            newspaper.circulation = int(input('Circulation (0 if unknown): '))
             break
         except ValueError:
             print('Incorrect circulation. Try again.')
@@ -267,8 +273,8 @@ def add_newspaper():
     newspaper.issn = input('ISSN: ')
     while True:
         try:
-            date_start_publication_str = input('Date start publication (dot-separated or unknown): ')
-            if date_start_publication_str == 'unknown':
+            date_start_publication_str = input('Date start publication (dot-separated or empty): ')
+            if date_start_publication_str == '':
                 break
             else:
                 newspaper.date_brought = datetime.date(day=int(date_start_publication_str.split('.')[0]),

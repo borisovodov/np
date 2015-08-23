@@ -6,7 +6,7 @@ from .city import City
 from .language import Language
 from .sender import Sender
 from .coordinates import Coordinates
-from .format import Format
+from .formatpaper import FormatPaper
 from .cost import Cost
 from .db import get_attribute_by_id, query
 
@@ -26,7 +26,7 @@ class Newspaper:
         self.date_brought = datetime.date(1, 1, 1)
         self.color = ''
         self.pages = 0
-        self.format = Format()
+        self.format_paper = FormatPaper()
         self.type = ''
         self.costs = []
         self.frequency = ''
@@ -55,20 +55,6 @@ class Newspaper:
         return '<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/'\
                + not_link.replace(' ', '%20') + '">' + not_link + '</a>'
 
-    @staticmethod
-    def boolean_int(boolean):
-        if not boolean:
-            return 0
-        else:
-            return 1
-
-    @staticmethod
-    def int_boolean(integer):
-        if integer == 0:
-            return False
-        else:
-            return True
-
     def get_newspaper(self, newspaper_id):
         self.id = newspaper_id
         self.city.id = int(get_attribute_by_id(self, 'name'))
@@ -92,8 +78,8 @@ class Newspaper:
                                           year=int(get_attribute_by_id(self, 'date_brought_year')))
         self.color = get_attribute_by_id(self, 'color')
         self.pages = int(get_attribute_by_id(self, 'pages'))
-        self.format.id = int(get_attribute_by_id(self, 'format'))
-        self.format.get_format_by_id()
+        self.format_paper.id = int(get_attribute_by_id(self, 'format_paper'))
+        self.format_paper.get_format_by_id()
         self.type = get_attribute_by_id(self, 'type')
         for cost_attribute in get_attribute_by_id(self, 'costs').split(','):
             cost = Cost()
@@ -105,20 +91,20 @@ class Newspaper:
         self.date_start_publication = datetime.date(day=int(get_attribute_by_id(self, 'date_start_publication_day')),
                                                     month=int(get_attribute_by_id(self, 'date_start_publication_month')),
                                                     year=int(get_attribute_by_id(self, 'date_start_publication_year')))
-        self.geotag = self.int_boolean(int(get_attribute_by_id(self, 'geotag')))
-        self.crossword = self.int_boolean(int(get_attribute_by_id(self, 'crossword')))
-        self.sudoku = self.int_boolean(int(get_attribute_by_id(self, 'sudoku')))
-        self.nonogram = self.int_boolean(int(get_attribute_by_id(self, 'nonogram')))
-        self.kakuro = self.int_boolean(int(get_attribute_by_id(self, 'kakuro')))
-        self.ad_toyota = self.int_boolean(int(get_attribute_by_id(self, 'ad_toyota')))
-        self.program_guide = self.int_boolean(int(get_attribute_by_id(self, 'program_guide')))
-        self.anecdote = self.int_boolean(int(get_attribute_by_id(self, 'anecdote')))
-        self.caricature = self.int_boolean(int(get_attribute_by_id(self, 'caricature')))
-        self.recipe = self.int_boolean(int(get_attribute_by_id(self, 'recipe')))
-        self.horoscope = self.int_boolean(int(get_attribute_by_id(self, 'horoscope')))
-        self.naked_women = self.int_boolean(int(get_attribute_by_id(self, 'naked_women')))
-        self.church = self.int_boolean(int(get_attribute_by_id(self, 'church')))
-        self.trash = self.int_boolean(int(get_attribute_by_id(self, 'trash')))
+        self.geotag = bool(get_attribute_by_id(self, 'geotag'))
+        self.crossword = bool(get_attribute_by_id(self, 'crossword'))
+        self.sudoku = bool(get_attribute_by_id(self, 'sudoku'))
+        self.nonogram = bool(get_attribute_by_id(self, 'nonogram'))
+        self.kakuro = bool(get_attribute_by_id(self, 'kakuro'))
+        self.ad_toyota = bool(get_attribute_by_id(self, 'ad_toyota'))
+        self.program_guide = bool(get_attribute_by_id(self, 'program_guide'))
+        self.anecdote = bool(get_attribute_by_id(self, 'anecdote'))
+        self.caricature = bool(get_attribute_by_id(self, 'caricature'))
+        self.recipe = bool(get_attribute_by_id(self, 'recipe'))
+        self.horoscope = bool(get_attribute_by_id(self, 'horoscope'))
+        self.naked_women = bool(get_attribute_by_id(self, 'naked_women'))
+        self.church = bool(get_attribute_by_id(self, 'church'))
+        self.trash = bool(get_attribute_by_id(self, 'trash'))
         self.url = get_attribute_by_id(self, 'url')
         return self
 
@@ -148,29 +134,26 @@ class Newspaper:
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
 
     def __str__(self):
-        return '\'' + str(self.boolean_int(self.ad_toyota)) + '\', \'' + str(self.boolean_int(self.anecdote)) + '\', \''\
-               + str(self.boolean_int(self.caricature)) + '\', \'' + str(self.boolean_int(self.church)) + '\', \''\
-               + str(self.circulation) + '\', \'' + str(self.city.id) + '\', \'' + self.color + '\', \''\
-               + str(self.coordinates) + '\', \'' + self.format_costs() + '\', \''\
-               + str(self.boolean_int(self.crossword)) + '\', \'' + str(self.date_brought.day) + '\', \''\
+        return '\'' + str(self.ad_toyota) + '\', \'' + str(self.anecdote) + '\', \'' + str(self.caricature) + '\', \''\
+               + str(self.church) + '\', \'' + str(self.circulation) + '\', \'' + str(self.city.id) + '\', \''\
+               + self.color + '\', \'' + str(self.coordinates) + '\', \'' + self.format_costs() + '\', \''\
+               + str(self.crossword) + '\', \'' + str(self.date_brought.day) + '\', \''\
                + str(self.date_brought.month) + '\', \'' + str(self.date_brought.year) + '\', \'' + str(self.date.day) + '\', \''\
                + str(self.date.month) + '\', \'' + str(self.date_start_publication.day) + '\', \''\
                + str(self.date_start_publication.month) + '\', \'' + str(self.date_start_publication.year) + '\', \''\
-               + str(self.date.year) + '\', \'' + str(self.format.id) + '\', \'' + self.frequency + '\', \''\
-               + str(self.boolean_int(self.geotag)) + '\', \'' + str(self.boolean_int(self.horoscope)) + '\', \''\
-               + self.issn + '\', \'' + str(self.boolean_int(self.kakuro)) + '\', \'' + str(self.language.id) + '\', \''\
-               + str(self.boolean_int(self.naked_women)) + '\', \'' + str(self.boolean_int(self.nonogram)) + '\', \''\
-               + self.number + '\', \'' + self.number2 + '\', \'' + str(self.pages) + '\', \''\
-               + str(self.boolean_int(self.program_guide)) + '\', \'' + str(self.boolean_int(self.recipe)) + '\', \''\
-               + self.format_senders() + '\', \'' + self.site + '\', \'' + str(self.boolean_int(self.sudoku)) + '\', \''\
-               + self.title + '\', \'' + str(self.boolean_int(self.trash)) + '\', \'' + self.type + '\', \''\
+               + str(self.date.year) + '\', \'' + str(self.format_paper.id) + '\', \'' + self.frequency + '\', \''\
+               + str(self.geotag) + '\', \'' + str(self.horoscope) + '\', \'' + self.issn + '\', \'' + str(self.kakuro) + '\', \'' + str(self.language.id) + '\', \''\
+               + str(self.naked_women) + '\', \'' + str(self.nonogram) + '\', \'' + self.number + '\', \''\
+               + self.number2 + '\', \'' + str(self.pages) + '\', \'' + str(self.program_guide) + '\', \''\
+               + str(self.recipe) + '\', \'' + self.format_senders() + '\', \'' + self.site + '\', \''\
+               + str(self.sudoku) + '\', \'' + self.title + '\', \'' + str(self.trash) + '\', \'' + self.type + '\', \''\
                + self.url + '\''
 
     def __dir__(self):
         return ['ad_toyota', 'anecdote', 'caricature', 'church', 'circulation', 'city', 'color', 'coordinates_latitude',
                 'coordinates_longitude', 'costs', 'crossword', 'date_brought_day', 'date_brought_month',
                 'date_brought_year', 'date_day', 'date_month', 'date_start_publication_day',
-                'date_start_publication_month', 'date_start_publication_year', 'date_year', 'format', 'frequency',
+                'date_start_publication_month', 'date_start_publication_year', 'date_year', 'format_paper', 'frequency',
                 'geotag', 'horoscope', 'issn', 'kakuro', 'language', 'naked_women', 'nonogram', 'number', 'number2',
                 'pages', 'program_guide', 'recipe', 'senders', 'site', 'sudoku', 'title', 'trash', 'type', 'url']
 

@@ -3,7 +3,7 @@
 from .db import get_attribute_by_id, get_id_by_attribute
 
 
-class Format:
+class FormatPaper:
 
     def __init__(self):
         self.id = 0

@@ -24,10 +24,7 @@ class City:
         self.population = int(get_attribute_by_id(self, 'population'))
         self.hemisphere.name = get_attribute_by_id(self, 'hemisphere')
         self.continent = get_attribute_by_id(self, 'continent')
-        if int(get_attribute_by_id(self, 'coastal')) == 0:
-            self.coastal = False
-        else:
-            self.coastal = True
+        self.coastal = bool(get_attribute_by_id(self, 'coastal'))
         self.altitude = float(get_attribute_by_id(self, 'altitude'))
         return self
 
@@ -47,11 +44,7 @@ class City:
         return False
 
     def __str__(self):
-        if not self.coastal:
-            coastal_int = 0
-        else:
-            coastal_int = 1
-        return '\'' + str(self.altitude) + '\', \'' + str(coastal_int) + '\', \''\
+        return '\'' + str(self.altitude) + '\', \'' + str(self.coastal) + '\', \''\
                + self.continent + '\', \'' + str(self.country.id) + '\', \'' + self.hemisphere.name + '\', \''\
                + self.name + '\', \'' + str(self.population) + '\''
 
