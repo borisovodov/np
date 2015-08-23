@@ -9,10 +9,10 @@ def senders():
 
     for newspaper in newspapers():
         for sender in newspaper.senders:
-            list_senders.append(sender)
+            list_senders.append(sender.name)
 
     for sender in sorted(set(list_senders)):
-        content_senders = content_senders + '<li>' + Newspaper.link(sender.name) + '</li>\n'
+        content_senders = content_senders + '<li>' + Newspaper.link(sender) + '</li>\n'
 
     content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
               '<p>The author is grateful for everything these people:</p>\n'\

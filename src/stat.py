@@ -47,21 +47,21 @@ def stat():
               + Newspaper.link(counter_continent.most_common(1)[0][0]) + ': '\
               + str(counter_continent.most_common(1)[0][1]) + '.</li></p>\n'\
               + '<p><li>The northernmost newspaper brought ' + newspapers_latitude[-1].format_senders_nice()\
-              + ' from ' + Newspaper.link(newspapers_latitude[-1].city) + ', '\
-              + Newspaper.link(newspapers_latitude[-1].country) + ': '\
-              + newspapers_latitude[-1].format_coordinates_nice('latitude') + '.</li></p>\n'\
+              + ' from ' + Newspaper.link(newspapers_latitude[-1].city.name) + ', '\
+              + Newspaper.link(newspapers_latitude[-1].city.country.name) + ': '\
+              + newspapers_latitude[-1].coordinates.format('latitude') + '.</li></p>\n'\
               + '<p><li>The southernmost newspaper brought ' + newspapers_latitude[0].format_senders_nice()\
-              + ' from ' + Newspaper.link(newspapers_latitude[0].city) + ', '\
-              + Newspaper.link(newspapers_latitude[0].country) + ': '\
-              + newspapers_latitude[0].format_coordinates_nice('latitude') + '.</li></p>\n'\
+              + ' from ' + Newspaper.link(newspapers_latitude[0].city.name) + ', '\
+              + Newspaper.link(newspapers_latitude[0].city.country.name) + ': '\
+              + newspapers_latitude[0].coordinates.format('latitude') + '.</li></p>\n'\
               + '<p><li>The westernmost newspaper brought ' + newspapers_longitude[0].format_senders_nice()\
-              + ' from ' + Newspaper.link(newspapers_longitude[0].city) + ', '\
-              + Newspaper.link(newspapers_longitude[0].country) + ': '\
-              + newspapers_longitude[0].format_coordinates_nice('longitude') + '.</li></p>\n'\
+              + ' from ' + Newspaper.link(newspapers_longitude[0].city.name) + ', '\
+              + Newspaper.link(newspapers_longitude[0].city.country.name) + ': '\
+              + newspapers_longitude[0].coordinates.format('longitude') + '.</li></p>\n'\
               + '<p><li>The easternmost newspaper brought ' + newspapers_longitude[-1].format_senders_nice()\
-              + ' from ' + Newspaper.link(newspapers_longitude[-1].city) + ', '\
-              + Newspaper.link(newspapers_longitude[-1].country) + ': '\
-              + newspapers_longitude[-1].format_coordinates_nice('longitude') + '.</li></p>\n'\
+              + ' from ' + Newspaper.link(newspapers_longitude[-1].city.name) + ', '\
+              + Newspaper.link(newspapers_longitude[-1].city.country.name) + ': '\
+              + newspapers_longitude[-1].coordinates.format('longitude') + '.</li></p>\n'\
               + '<p><li>Newspapers brought <a style=\"text-decoration: underline\" ' \
                 'href=\"http://papersaround.blogspot.com/p/senders.html\">' + str(len(set(senders)))\
               + ' people</a>.</li></p>\n'\

@@ -29,7 +29,7 @@ class Coordinates:
             return {'latitude': lat, 'longitude': long}
 
     def __str__(self):
-        return str(self.latitude) + '\', \'' + str(self.longitude)
+        return str(self.latitude) + '\',\'' + str(self.longitude)
 
     def __dir__(self):
         return ['latitude', 'longitude']
