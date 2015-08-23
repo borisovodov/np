@@ -173,5 +173,6 @@ def newspapers():
     table = query('SELECT * FROM newspaper')
     for row in table:
         newspaper = Newspaper()
-        table_newspapers.append(newspaper.get_newspaper(int(row[0])))
+        newspaper.id = int(row[0])
+        table_newspapers.append(newspaper.get_newspaper_by_id())
     return table_newspapers
