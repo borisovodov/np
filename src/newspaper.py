@@ -43,6 +43,7 @@ class Newspaper:
         self.tv_schedule = False
         self.anecdote = False
         self.caricature = False
+        self.comic_strip = False
         self.recipe = False
         self.horoscope = False
         self.weather_forecast = False
@@ -102,6 +103,7 @@ class Newspaper:
         self.tv_schedule = bool(get_attribute_by_id(self, 'tv_schedule'))
         self.anecdote = bool(get_attribute_by_id(self, 'anecdote'))
         self.caricature = bool(get_attribute_by_id(self, 'caricature'))
+        self.comic_strip = bool(get_attribute_by_id(self, 'comic_strip'))
         self.recipe = bool(get_attribute_by_id(self, 'recipe'))
         self.horoscope = bool(get_attribute_by_id(self, 'horoscope'))
         self.weather_forecast = bool(get_attribute_by_id(self, 'weather_forecast'))
@@ -148,7 +150,7 @@ class Newspaper:
     def __str__(self):
         return '\'' + str(self.ad_toyota) + '\', \'' + str(self.anecdote) + '\', \'' + str(self.caricature) + '\', \''\
                + str(self.church) + '\', \'' + str(self.circulation) + '\', \'' + str(self.city.id) + '\', \''\
-               + self.color + '\', \'' + str(self.coordinates) + '\', \'' + self.format_costs() + '\', \''\
+               + self.color + '\', \'' + str(self.comic_strip) + '\', \'' + str(self.coordinates) + '\', \'' + self.format_costs() + '\', \''\
                + str(self.crossword) + '\', \'' + str(self.date_brought.day) + '\', \''\
                + str(self.date_brought.month) + '\', \'' + str(self.date_brought.year) + '\', \'' + str(self.date.day) + '\', \''\
                + str(self.date.month) + '\', \'' + str(self.date_start_publication.day) + '\', \''\
@@ -162,9 +164,9 @@ class Newspaper:
                + str(self.weather_forecast) + '\''
 
     def __dir__(self):
-        return ['ad_toyota', 'anecdote', 'caricature', 'church', 'circulation', 'city', 'color', 'coordinates_latitude',
-                'coordinates_longitude', 'costs', 'crossword', 'date_brought_day', 'date_brought_month',
-                'date_brought_year', 'date_day', 'date_month', 'date_start_publication_day',
+        return ['ad_toyota', 'anecdote', 'caricature', 'church', 'circulation', 'city', 'color', 'comic_strip',
+                'coordinates_latitude', 'coordinates_longitude', 'costs', 'crossword', 'date_brought_day',
+                'date_brought_month', 'date_brought_year', 'date_day', 'date_month', 'date_start_publication_day',
                 'date_start_publication_month', 'date_start_publication_year', 'date_year', 'format_paper', 'frequency',
                 'geotag', 'horoscope', 'issn', 'kakuro', 'language', 'naked_women', 'nonogram', 'number', 'number2',
                 'pages', 'recipe', 'senders', 'site', 'sudoku', 'title', 'trash', 'tv_schedule', 'type', 'url',

@@ -47,6 +47,7 @@ def create_database():
                    'tv_schedule TEXT, '
                    'anecdote TEXT, '
                    'caricature TEXT, '
+                   'comic_strip TEXT, '
                    'recipe TEXT, '
                    'horoscope TEXT, '
                    'weather_forecast TEXT, '
@@ -106,7 +107,7 @@ def query(command):
         connect.close()
         return table
     except sqlite3.OperationalError:
-        print('Bad query!')
+        print('Bad query.')
 
 
 def insert(object_same):

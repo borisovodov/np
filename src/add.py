@@ -374,6 +374,16 @@ def add_newspaper():
         else:
             print('Incorrect value. Try again.')
     while True:
+        string = input('Comic strip (y/n): ')
+        if string == 'y':
+            newspaper.comic_strip = True
+            break
+        elif string == 'n':
+            newspaper.comic_strip = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
         string = input('Recipe (y/n): ')
         if string == 'y':
             newspaper.recipe = True

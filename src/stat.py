@@ -13,12 +13,12 @@ def stat():
     senders = []
 
     for newspaper in newspapers():
-        countries.append(newspaper.country)
-        cities.append(newspaper.city)
-        languages.append(newspaper.language)
-        continents.append(newspaper.continent)
+        countries.append(newspaper.city.country.name)
+        cities.append(newspaper.city.name)
+        languages.append(newspaper.language.name)
+        continents.append(newspaper.city.continent)
         for sender in newspaper.senders:
-            senders.append(sender)
+            senders.append(sender.name)
 
     counter_country = collections.Counter(countries)
     counter_language = collections.Counter(languages)
