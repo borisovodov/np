@@ -21,9 +21,10 @@ if __name__ == '__main__':
     from src.post import post
     from src.update import update
     from src.db import db
+    from src.export import export
 
     while True:
-        menu = input('\nWhat you want?\nAdd newspaper\nPost\nUpdate\nQuery\nExit\n').lower()
+        menu = input('\nWhat you want?\nAdd newspaper\nPost\nUpdate\nQuery\nExport\nExit\n').lower()
         if menu == 'add' or menu == 'add newspaper' or menu == 'newspaper' or menu == 'a':
             add_newspaper()
         elif menu == 'post' or menu == 'p':
@@ -32,6 +33,8 @@ if __name__ == '__main__':
             update()
         elif menu == 'query' or menu == 'q':
             db()
+        elif menu == 'export' or menu == 'exp':
+            export()
         elif menu == 'exit' or menu == 'e':
             break
         else:
