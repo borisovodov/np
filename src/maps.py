@@ -16,9 +16,9 @@ def content_map():
                             + newspaper.format_date() + '\';\n'\
                             + 'paperlang[' + str(newspaper.id) + '] = \'' + newspaper.link(newspaper.language.name) + '\';\n'\
                             + 'papersender[' + str(newspaper.id) + '] = \''\
-                            + newspaper.format_senders_name() + '\';\n'\
+                            + newspaper.format_senders_nice() + '\';\n'\
                             + 'paperland[' + str(newspaper.id) + '] = new google.maps.LatLng('\
-                            + str(newspaper.coordinates) + ');\n'\
+                            + str(newspaper.coordinates.latitude) + ',' + str(newspaper.coordinates.longitude) + ');\n'\
                             + 'paperlink[' + str(newspaper.id) + '] = \'' + newspaper.url + '\';\n'\
                             + 'iconimage[' + str(newspaper.id) + '] = \'' + newspaper.city.country.marker() + '\';\n\n'
 
@@ -54,7 +54,7 @@ def content_map():
            + 'var marker=[];\n'\
            + '\n'\
            + content_newspaper\
-           + 'var N=' + str(len(newspapers())) + '; //Общее число газет\n'\
+           + 'var N=' + str(len(newspapers()) + 1) + '; //Общее число газет\n'\
            + 'var i;\n'\
            + 'var j;\n'\
            + 'var k;\n'\
