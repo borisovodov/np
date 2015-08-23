@@ -44,11 +44,12 @@ def create_database():
                    'nonogram TEXT, '
                    'kakuro TEXT, '
                    'ad_toyota TEXT, '
-                   'program_guide TEXT, '
+                   'tv_schedule TEXT, '
                    'anecdote TEXT, '
                    'caricature TEXT, '
                    'recipe TEXT, '
                    'horoscope TEXT, '
+                   'weather_forecast TEXT, '
                    'naked_women TEXT, '
                    'church TEXT, '
                    'trash TEXT, '
@@ -142,6 +143,10 @@ def set_attribute_by_id(object_same, attribute):
 
 def search(object_type, attribute, value):
     return query('SELECT id FROM ' + object_type + ' WHERE ' + attribute + ' = \'' + str(value) + '\'')
+
+
+def list_of(object_type):
+    return query('SELECT * FROM ' + object_type)
 
 
 def db():

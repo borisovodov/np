@@ -8,7 +8,7 @@ from .sender import Sender
 from .coordinates import Coordinates
 from .formatpaper import FormatPaper
 from .cost import Cost
-from .db import get_attribute_by_id, query
+from .db import get_attribute_by_id, list_of
 
 
 class Newspaper:
@@ -40,11 +40,12 @@ class Newspaper:
         self.nonogram = False
         self.kakuro = False
         self.ad_toyota = False
-        self.program_guide = False
+        self.tv_schedule = False
         self.anecdote = False
         self.caricature = False
         self.recipe = False
         self.horoscope = False
+        self.weather_forecast = False
         self.naked_women = False
         self.church = False
         self.trash = False
@@ -98,11 +99,12 @@ class Newspaper:
         self.nonogram = bool(get_attribute_by_id(self, 'nonogram'))
         self.kakuro = bool(get_attribute_by_id(self, 'kakuro'))
         self.ad_toyota = bool(get_attribute_by_id(self, 'ad_toyota'))
-        self.program_guide = bool(get_attribute_by_id(self, 'program_guide'))
+        self.tv_schedule = bool(get_attribute_by_id(self, 'tv_schedule'))
         self.anecdote = bool(get_attribute_by_id(self, 'anecdote'))
         self.caricature = bool(get_attribute_by_id(self, 'caricature'))
         self.recipe = bool(get_attribute_by_id(self, 'recipe'))
         self.horoscope = bool(get_attribute_by_id(self, 'horoscope'))
+        self.weather_forecast = bool(get_attribute_by_id(self, 'weather_forecast'))
         self.naked_women = bool(get_attribute_by_id(self, 'naked_women'))
         self.church = bool(get_attribute_by_id(self, 'church'))
         self.trash = bool(get_attribute_by_id(self, 'trash'))
@@ -152,12 +154,12 @@ class Newspaper:
                + str(self.date.month) + '\', \'' + str(self.date_start_publication.day) + '\', \''\
                + str(self.date_start_publication.month) + '\', \'' + str(self.date_start_publication.year) + '\', \''\
                + str(self.date.year) + '\', \'' + str(self.format_paper.id) + '\', \'' + self.frequency + '\', \''\
-               + str(self.geotag) + '\', \'' + str(self.horoscope) + '\', \'' + self.issn + '\', \'' + str(self.kakuro) + '\', \'' + str(self.language.id) + '\', \''\
-               + str(self.naked_women) + '\', \'' + str(self.nonogram) + '\', \'' + self.number + '\', \''\
-               + self.number2 + '\', \'' + str(self.pages) + '\', \'' + str(self.program_guide) + '\', \''\
-               + str(self.recipe) + '\', \'' + self.format_senders_id() + '\', \'' + self.site + '\', \''\
-               + str(self.sudoku) + '\', \'' + self.title + '\', \'' + str(self.trash) + '\', \'' + self.type + '\', \''\
-               + self.url + '\''
+               + str(self.geotag) + '\', \'' + str(self.horoscope) + '\', \'' + self.issn + '\', \'' + str(self.kakuro) + '\', \''\
+               + str(self.language.id) + '\', \'' + str(self.naked_women) + '\', \'' + str(self.nonogram) + '\', \''\
+               + self.number + '\', \'' + self.number2 + '\', \'' + str(self.pages) + '\', \'' + str(self.recipe) + '\', \''\
+               + self.format_senders_id() + '\', \'' + self.site + '\', \'' + str(self.sudoku) + '\', \'' + self.title + '\', \''\
+               + str(self.trash) + str(self.tv_schedule) + '\', \'' + '\', \'' + self.type + '\', \'' + self.url + '\', \''\
+               + str(self.weather_forecast) + '\''
 
     def __dir__(self):
         return ['ad_toyota', 'anecdote', 'caricature', 'church', 'circulation', 'city', 'color', 'coordinates_latitude',
@@ -165,12 +167,13 @@ class Newspaper:
                 'date_brought_year', 'date_day', 'date_month', 'date_start_publication_day',
                 'date_start_publication_month', 'date_start_publication_year', 'date_year', 'format_paper', 'frequency',
                 'geotag', 'horoscope', 'issn', 'kakuro', 'language', 'naked_women', 'nonogram', 'number', 'number2',
-                'pages', 'program_guide', 'recipe', 'senders', 'site', 'sudoku', 'title', 'trash', 'type', 'url']
+                'pages', 'recipe', 'senders', 'site', 'sudoku', 'title', 'trash', 'tv_schedule', 'type', 'url',
+                'weather_forecast']
 
 
 def newspapers():
     table_newspapers = []
-    table = query('SELECT * FROM newspaper')
+    table = list_of('newspaper')
     for row in table:
         newspaper = Newspaper()
         newspaper.id = int(row[0])

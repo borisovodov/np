@@ -4,18 +4,20 @@ from .newspaper import Newspaper, newspapers
 
 
 def tags():
-    list_tags = []
+    list_tags = ['Coastal city', 'Geotagging', 'Crossword', 'Sudoku', 'Nonogram', 'Kakuro', 'Advertising Toyota',
+                 'TV schedule', 'Anecdote', 'Caricature', 'Recipe', 'Horoscope', 'Weather Forecast', 'Naked Women',
+                 'Church', 'TRASH']
     content_tags = ''
 
     for newspaper in newspapers():
-        list_tags.append(newspaper.city)
-        list_tags.append(newspaper.country)
+        list_tags.append(newspaper.city.name)
+        list_tags.append(newspaper.city.country.name)
         list_tags.append(str(newspaper.date.year))
-        list_tags.append(newspaper.language)
-        list_tags.append(newspaper.continent)
-        list_tags.append(newspaper.format_hemisphere())
+        list_tags.append(newspaper.language.name)
+        list_tags.append(newspaper.city.continent)
+        list_tags.append(newspaper.city.hemisphere.name_full())
         for sender in newspaper.senders:
-            list_tags.append(sender)
+            list_tags.append(sender.name)
 
     for tag in sorted(set(list_tags)):
         content_tags = content_tags + '<li>' + Newspaper.link(tag) + '</li>\n'

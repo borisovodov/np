@@ -9,7 +9,7 @@ def countries():
     content_countries = ''
 
     for newspaper in newspapers():
-        dict_country[newspaper.country].append(newspaper.city)
+        dict_country[newspaper.city.country.name].append(newspaper.city.name)
 
     for country in sorted(dict_country.items()):
         content_countries = content_countries + Newspaper.link(country[0]) + '\n<ul>\n'

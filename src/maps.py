@@ -7,20 +7,20 @@ from .newspaper import newspapers
 def content_map():
     content_newspaper = ''
     for newspaper in newspapers():
-        content_newspaper = content_newspaper + 'papername[' + str(newspaper.id) + '] = \'' + newspaper.city + ', '\
-                            + newspaper.country + '\';\n'\
+        content_newspaper = content_newspaper + 'papername[' + str(newspaper.id) + '] = \'' + newspaper.city.name + ', '\
+                            + newspaper.city.country.name + '\';\n'\
                             + 'papertitle[' + str(newspaper.id) + '] = \'' + newspaper.title + '\';\n'\
                             + 'papernumber1[' + str(newspaper.id) + '] = \'' + newspaper.number + '\';\n'\
                             + 'papernumber2[' + str(newspaper.id) + '] = \'' + newspaper.number2 + '\';\n'\
                             + 'paperdate[' + str(newspaper.id) + '] = \''\
                             + newspaper.format_date() + '\';\n'\
-                            + 'paperlang[' + str(newspaper.id) + '] = \'' + newspaper.link(newspaper.language) + '\';\n'\
+                            + 'paperlang[' + str(newspaper.id) + '] = \'' + newspaper.link(newspaper.language.name) + '\';\n'\
                             + 'papersender[' + str(newspaper.id) + '] = \''\
-                            + newspaper.format_senders_nice() + '\';\n'\
+                            + newspaper.format_senders_name() + '\';\n'\
                             + 'paperland[' + str(newspaper.id) + '] = new google.maps.LatLng('\
-                            + newspaper.format_coordinates() + ');\n'\
+                            + str(newspaper.coordinates) + ');\n'\
                             + 'paperlink[' + str(newspaper.id) + '] = \'' + newspaper.url + '\';\n'\
-                            + 'iconimage[' + str(newspaper.id) + '] = \'' + newspaper.marker() + '\';\n\n'
+                            + 'iconimage[' + str(newspaper.id) + '] = \'' + newspaper.city.country.marker() + '\';\n\n'
 
     return 'function initialize() {\n'\
            + '    var mapOptions = {\n'\
