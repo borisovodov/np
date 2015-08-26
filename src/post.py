@@ -3,7 +3,7 @@
 import src.photos as photos
 from .newspaper import Newspaper
 from .db import set_attribute_by_id
-from .blog import authorization_blogger, add_post
+from .blog import authorization_blogger, add_post, update_post
 
 
 def get_id():
@@ -83,9 +83,13 @@ def post():
 
     print('Uploading post on Blogger.')
     blog = authorization_blogger()
-    response = add_post(blog=blog, body=body)
+    if newspaper.url == '':
+        response = add_post(blog=blog, body=body)
+        newspaper.url = response['url']
+        set_attribute_by_id(newspaper, 'url')
+    else:
+        update_post(blog=blog, body=body)
     print('Post added.')
 
-    newspaper.url = response['url']
-    set_attribute_by_id(newspaper, 'url')
+
     print('URL added to database.')

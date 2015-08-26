@@ -27,5 +27,13 @@ def update_page(blog, body):
     blog.pages().update(blogId=ID_BLOGGER_BLOG, pageId=page_id, body=body).execute()
 
 
+def update_post(blog, body):
+    page_id = 0
+    pages = blog.pages().list(blogId=ID_BLOGGER_BLOG).execute()
+    for page in pages['items']:
+        if page['title'] == body['title']:
+            page_id = page['id']
+
+
 def add_post(blog, body):
     return blog.posts().insert(blogId=ID_BLOGGER_BLOG, body=body).execute()
