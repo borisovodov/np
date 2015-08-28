@@ -2,9 +2,9 @@
 
 from .google import get_http
 from googleapiclient.discovery import build
-from .config import ids
+from .config import config
 
-ID_BLOGGER_BLOG = ids['blogger_blog_id']
+ID_BLOGGER_BLOG = config('blogger_blog_id')
 
 
 def authorization_blogger():
@@ -28,7 +28,7 @@ def update_page(blog, body):
 
 
 def update_post(blog, body, newspaper):
-    post = blog.posts().getByPath(blogId=ID_BLOGGER_BLOG, path=newspaper.url).execute()
+    post = blog.posts().getByPath(blogId=ID_BLOGGER_BLOG, path=newspaper.path()).execute()
     blog.posts().update(blogId=ID_BLOGGER_BLOG, postId=post['id'], body=body).execute()
 
 

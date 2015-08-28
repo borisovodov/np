@@ -2,6 +2,7 @@
 
 import datetime
 import calendar
+from .config import config
 from .city import City
 from .language import Language
 from .sender import Sender
@@ -9,6 +10,8 @@ from .coordinates import Coordinates
 from .formatpaper import FormatPaper
 from .cost import Cost
 from .db import get_attribute_by_id, list_of
+
+BLOG_NAME = config('blogger_blog_name')
 
 
 class Newspaper:
@@ -54,7 +57,7 @@ class Newspaper:
 
     @staticmethod
     def link(not_link):
-        return '<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/'\
+        return '<a style="text-decoration: underline" href="http://' + BLOG_NAME + '.blogspot.com/search/label/'\
                + not_link.replace(' ', '%20') + '">' + not_link + '</a>'
 
     def get_newspaper_by_id(self):
@@ -147,6 +150,9 @@ class Newspaper:
 
     def format_date(self):
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
+
+    def path(self):
+        return self.url[32:]
 
     def __str__(self):
         return '\'' + str(self.ad_toyota) + '\', \'' + str(self.anecdote) + '\', \'' + str(self.caricature) + '\', \''\

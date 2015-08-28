@@ -4,9 +4,9 @@ import sys
 from .google import get_http
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
-from .config import ids
+from .config import config
 
-ID_DRIVE_FOLDER_MAP = ids['drive_folder_map_id']
+ID_DRIVE_FOLDER_MAP = config('drive_folder_map_id')
 
 
 def authorization_drive():

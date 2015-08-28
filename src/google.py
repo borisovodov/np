@@ -4,10 +4,10 @@ import os
 import pip
 import webbrowser
 import sys
-from .config import keys
+from .config import config
 
-KEY_GOOGLE_CLIENT_ID = keys['google_client_id']
-KEY_GOOGLE_CLIENT_SECRET = keys['google_client_secret']
+KEY_GOOGLE_CLIENT_ID = config('google_client_id')
+KEY_GOOGLE_CLIENT_SECRET = config('google_client_secret')
 
 modules = []
 for module in pip.get_installed_distributions():

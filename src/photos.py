@@ -3,10 +3,10 @@
 import os
 import pip
 import sys
-from .config import keys
+from .config import config
 
-KEY_FLICKRAPI = keys['flickr_key']
-KEY_FLICKRAPI_SECRET = keys['flickr_secret']
+KEY_FLICKRAPI = config('flickr_key')
+KEY_FLICKRAPI_SECRET = config('flickr_secret')
 
 modules = []
 for module in pip.get_installed_distributions():

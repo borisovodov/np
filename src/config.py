@@ -3,64 +3,72 @@
 import os
 import sys
 import xml.etree.ElementTree as ET
+import xml.dom.minidom as minidom
 
-settings_path = sys.path[0] + '/data/settings.xml'
+SETTINGS_PATH = sys.path[0] + '/data/settings.xml'
 
 
 def create_config():
-    key_google_client_id = input('Create config file.\nInput Google Client ID: ')
-    key_google_client_secret = input('Input Google Client Secret: ')
-    id_blogger_blog = input('Input Blog ID: ')
-    id_drive_folder_marker = input('Input Markers Folder ID: ')
-    id_drive_folder_map = input('Input Map Folder ID: ')
-    key_flickr = input('Input Flickr Key: ')
-    key_flickr_secret = input('Input Flickr Secret: ')
+    blogger_blog_name = input('Create config file.\nInput Blog Name: ').replace(' ', '').lower()
+    blogger_blog_id = input('Input Blog ID: ')
+    google_client_id = input('Input Google Client ID: ')
+    google_client_secret = input('Input Google Client Secret: ')
+    flickr_key = input('Input Flickr Key: ')
+    flickr_secret = input('Input Flickr Secret: ')
+    drive_folder_marker_id = input('Input Markers Folder ID: ')
+    drive_folder_map_id = input('Input Map Folder ID: ')
 
     settings = ET.Element('settings')
 
-    keys = ET.SubElement(settings, 'keys')
-    ids = ET.SubElement(settings, 'ids')
+    google_client_id_element = ET.SubElement(settings, 'setting')
+    ET.SubElement(google_client_id_element, 'name').text = 'google_client_id'
+    ET.SubElement(google_client_id_element, 'value').text = google_client_id
 
-    google_client_id = ET.SubElement(keys, 'key', service='google')
-    ET.SubElement(google_client_id, 'name').text = 'google_client_id'
-    ET.SubElement(google_client_id, 'value').text = key_google_client_id
+    google_client_secret_element = ET.SubElement(settings, 'setting')
+    ET.SubElement(google_client_secret_element, 'name').text = 'google_client_secret'
+    ET.SubElement(google_client_secret_element, 'value').text = google_client_secret
 
-    google_client_secret = ET.SubElement(keys, 'key', service='google')
-    ET.SubElement(google_client_secret, 'name').text = 'google_client_secret'
-    ET.SubElement(google_client_secret, 'value').text = key_google_client_secret
+    flickr_key_element = ET.SubElement(settings, 'setting')
+    ET.SubElement(flickr_key_element, 'name').text = 'flickr_key'
+    ET.SubElement(flickr_key_element, 'value').text = flickr_key
 
-    flickr_key = ET.SubElement(keys, 'key', service='flickr')
-    ET.SubElement(flickr_key, 'name').text = 'flickr_key'
-    ET.SubElement(flickr_key, 'value').text = key_flickr
+    flickr_secret_element = ET.SubElement(settings, 'setting')
+    ET.SubElement(flickr_secret_element, 'name').text = 'flickr_secret'
+    ET.SubElement(flickr_secret_element, 'value').text = flickr_secret
 
-    flickr_secret = ET.SubElement(keys, 'key', service='flickr')
-    ET.SubElement(flickr_secret, 'name').text = 'flickr_secret'
-    ET.SubElement(flickr_secret, 'value').text = key_flickr_secret
+    blogger_blog_name_element = ET.SubElement(settings, 'setting')
+    ET.SubElement(blogger_blog_name_element, 'name').text = 'blogger_blog_name'
+    ET.SubElement(blogger_blog_name_element, 'value').text = blogger_blog_name
 
-    blogger_blog_id = ET.SubElement(ids, 'id', service='blogger')
-    ET.SubElement(blogger_blog_id, 'name').text = 'blogger_blog_id'
-    ET.SubElement(blogger_blog_id, 'value').text = id_blogger_blog
+    blogger_blog_id_element = ET.SubElement(settings, 'setting')
+    ET.SubElement(blogger_blog_id_element, 'name').text = 'blogger_blog_id'
+    ET.SubElement(blogger_blog_id_element, 'value').text = blogger_blog_id
 
-    drive_folder_marker_id = ET.SubElement(ids, 'id', service='drive')
-    ET.SubElement(drive_folder_marker_id, 'name').text = 'drive_folder_marker_id'
-    ET.SubElement(drive_folder_marker_id, 'value').text = id_drive_folder_marker
+    drive_folder_marker_id_element = ET.SubElement(settings, 'setting')
+    ET.SubElement(drive_folder_marker_id_element, 'name').text = 'drive_folder_marker_id'
+    ET.SubElement(drive_folder_marker_id_element, 'value').text = drive_folder_marker_id
 
-    drive_folder_map_id = ET.SubElement(ids, 'id', service='drive')
-    ET.SubElement(drive_folder_map_id, 'name').text = 'drive_folder_map_id'
-    ET.SubElement(drive_folder_map_id, 'value').text = id_drive_folder_map
+    drive_folder_map_id_element = ET.SubElement(settings, 'setting')
+    ET.SubElement(drive_folder_map_id_element, 'name').text = 'drive_folder_map_id'
+    ET.SubElement(drive_folder_map_id_element, 'value').text = drive_folder_map_id
 
-    ET.ElementTree(settings).write(settings_path, encoding='UTF-8', xml_declaration=True)
+    ET.ElementTree(settings).write(SETTINGS_PATH, encoding='UTF-8', xml_declaration=True)
+    xml = minidom.parse(SETTINGS_PATH)
+    pretty_xml = xml.toprettyxml(encoding='UTF-8')
+    f = open(SETTINGS_PATH, 'wb')
+    f.write(pretty_xml)
+    f.close()
     print('Config file created.')
 
-if not os.path.isfile(settings_path):
+if not os.path.isfile(SETTINGS_PATH):
     create_config()
 
-settings = ET.parse(settings_path).getroot()
 
-keys = {}
-for key in settings.find('keys').iter('key'):
-    keys.update({key.find('name').text: key.find('value').text})
-
-ids = {}
-for id in settings.find('ids').iter('id'):
-    ids.update({id.find('name').text: id.find('value').text})
+def config(parameter):
+    value = ''
+    settings = ET.parse(SETTINGS_PATH).getroot()
+    for setting in settings.iter('setting'):
+        if setting.find('name').text == parameter:
+            value = setting.find('value').text
+            break
+    return value
