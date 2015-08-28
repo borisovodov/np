@@ -78,11 +78,10 @@ def post():
     path = get_path_photos()
 
     photos.authorization_flickr()
-
     body = generate_post(newspaper, path)
-
     print('Uploading post on Blogger.')
     blog = authorization_blogger()
+
     if newspaper.url == '':
         response = add_post(blog=blog, body=body)
         newspaper.url = response['url']
@@ -90,5 +89,5 @@ def post():
         print('URL added to database.')
         print('Post added.')
     else:
-        update_post(blog=blog, body=body)
+        update_post(blog=blog, body=body, newspaper=newspaper)
         print('Post updated.')
