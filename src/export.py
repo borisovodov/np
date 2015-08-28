@@ -2,6 +2,7 @@
 
 import sys
 import xml.etree.ElementTree as ET
+import xml.dom.minidom as minidom
 from .newspaper import newspapers
 
 EXPORT_PATH = sys.path[0] + '/newspapers.xml'
@@ -41,15 +42,15 @@ def export():
         coordinates_element = ET.SubElement(newspaper_element, 'coordinates')
         ET.SubElement(coordinates_element, 'latitude').text = str(newspaper.coordinates.latitude)
         ET.SubElement(coordinates_element, 'longitude').text = str(newspaper.coordinates.longitude)
-        ET.SubElement(newspaper_element, 'date brought').text = str(newspaper.date_brought.day) + '.'\
+        ET.SubElement(newspaper_element, 'date_brought').text = str(newspaper.date_brought.day) + '.'\
                                                                 + str(newspaper.date_brought.month) + '.'\
                                                                 + str(newspaper.date_brought.year)
         ET.SubElement(newspaper_element, 'color').text = newspaper.color
         ET.SubElement(newspaper_element, 'pages').text = str(newspaper.pages)
-        format_element = ET.SubElement(newspaper_element, 'format', id=str(newspaper.format_paper))
+        format_element = ET.SubElement(newspaper_element, 'format', id=str(newspaper.format_paper.id))
         ET.SubElement(format_element, 'name').text = newspaper.format_paper.name
-        ET.SubElement(format_element, 'height').text = newspaper.format_paper.height
-        ET.SubElement(format_element, 'width').text = newspaper.format_paper.width
+        ET.SubElement(format_element, 'height').text = str(newspaper.format_paper.height)
+        ET.SubElement(format_element, 'width').text = str(newspaper.format_paper.width)
         ET.SubElement(newspaper_element, 'type').text = newspaper.type
         costs_element = ET.SubElement(newspaper_element, 'costs')
         for cost in newspaper.costs:
@@ -62,7 +63,7 @@ def export():
         ET.SubElement(newspaper_element, 'circulation').text = str(newspaper.circulation)
         ET.SubElement(newspaper_element, 'site').text = newspaper.site
         ET.SubElement(newspaper_element, 'issn').text = newspaper.issn
-        ET.SubElement(newspaper_element, 'date start publication').text = str(newspaper.date_start_publication.day) + '.'\
+        ET.SubElement(newspaper_element, 'date_start_publication').text = str(newspaper.date_start_publication.day) + '.'\
                                                                           + str(newspaper.date_start_publication.month) + '.'\
                                                                           + str(newspaper.date_start_publication.year)
         ET.SubElement(newspaper_element, 'geotag').text = str(newspaper.geotag)
@@ -84,4 +85,9 @@ def export():
         ET.SubElement(newspaper_element, 'url').text = newspaper.url
 
     ET.ElementTree(root).write(EXPORT_PATH, encoding='UTF-8', xml_declaration=True)
+    xml = minidom.parse(EXPORT_PATH)
+    pretty_xml = xml.toprettyxml(encoding='UTF-8')
+    f = open(EXPORT_PATH, 'wb')
+    f.write(pretty_xml)
+    f.close()
     print('Export file created.')
