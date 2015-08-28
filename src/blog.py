@@ -29,7 +29,7 @@ def update_page(blog, body):
 
 def update_post(blog, body, newspaper):
     post = blog.posts().getByPath(blogId=ID_BLOGGER_BLOG, path=newspaper.url).execute()
-    blog.pages().update(blogId=ID_BLOGGER_BLOG, pageId=post['id'], body=body).execute()
+    blog.posts().update(blogId=ID_BLOGGER_BLOG, postId=post['id'], body=body).execute()
 
 
 def add_post(blog, body):
