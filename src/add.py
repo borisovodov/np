@@ -265,7 +265,9 @@ def add_newspaper():
             print('Incorrect frequency. Try again.')
     while True:
         try:
-            newspaper.circulation = int(input('Circulation (0 if unknown): '))
+            circulation_str = input('Circulation (empty if unknown): ')
+            if circulation_str != '':
+                newspaper.circulation = int(circulation_str)
             break
         except ValueError:
             print('Incorrect circulation. Try again.')
