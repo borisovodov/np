@@ -87,9 +87,8 @@ def post():
         response = add_post(blog=blog, body=body)
         newspaper.url = response['url']
         set_attribute_by_id(newspaper, 'url')
+        print('URL added to database.')
+        print('Post added.')
     else:
         update_post(blog=blog, body=body)
-    print('Post added.')
-
-
-    print('URL added to database.')
+        print('Post updated.')
