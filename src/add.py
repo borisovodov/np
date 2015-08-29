@@ -6,7 +6,7 @@ from .country import Country
 from .language import Language
 from .city import City
 from .sender import Sender
-from .formatpaper import FormatPaper
+from .formatpaper import FormatPaper, formats
 from .cost import Cost
 from .currency import Currency
 from .db import insert, is_object_by_name
@@ -15,7 +15,7 @@ HEMISPHERES = ['n', 's']
 CONTINENTS = ['Africa', 'Antarctica', 'Asia', 'Australia', 'Europe', 'North America', 'South America']
 COLORS = ['Monochrome', 'Bicolor', 'Multicolor']
 TYPES = ['Newspaper', 'Magazine', 'Brochure']
-FREQUENCIES = ['Daily', 'Weekly', 'Monthly', '']
+FREQUENCIES = ['Daily', 'Weekly', 'Monthly', 'Bimonthly', '']
 
 
 def add_currency(currency_with_name):
@@ -218,12 +218,15 @@ def add_newspaper():
             print('Incorrect color. Try again.')
     while True:
         try:
-            newspaper.pages = int(input('Pages: '))
+            newspaper.pages = int(input('Pages (empty if unknown): '))
             break
         except ValueError:
             print('Incorrect value of pages. Try again.')
+    formats_str = ''
+    for formatpaper in formats():
+        formats_str = formats_str + formatpaper.name + ', '
     format_paper = FormatPaper()
-    format_paper.name = input('Format: ')
+    format_paper.name = input('Format (' + formats_str[:-2] + '): ')
     if is_object_by_name(format_paper):
         format_paper.get_format_by_name()
     else:
@@ -238,7 +241,7 @@ def add_newspaper():
             print('Incorrect type. Try again.')
     while True:
         try:
-            costs_str = input('Costs (COST-CURRENCY and dot-separated or empty): ').replace(' ', '')
+            costs_str = input('Costs (COST-CURRENCY and dot-separated or empty): ').replace(', ', ',')
             if costs_str == '':
                 break
             else:
@@ -257,7 +260,7 @@ def add_newspaper():
         except (IndexError, ValueError):
             print('Incorrect costs. Try again.')
     while True:
-        frequency_str = input('Frequency (Daily, Weekly, Monthly or empty): ')
+        frequency_str = input('Frequency (Daily, Weekly, Monthly, Bimonthly or empty): ')
         if frequency_str in FREQUENCIES:
             newspaper.frequency = frequency_str
             break
@@ -265,7 +268,8 @@ def add_newspaper():
             print('Incorrect frequency. Try again.')
     while True:
         try:
-            circulation_str = input('Circulation (empty if unknown): ')
+            circulation_str = input('Circulation (empty if unknown): ').replace(',', '').replace(' ', '').replace('.',
+                                                                                                                  '')
             if circulation_str != '':
                 newspaper.circulation = int(circulation_str)
             break

@@ -1,6 +1,6 @@
 """This module contain Format class."""
 
-from .db import get_attribute_by_id, get_id_by_attribute
+from .db import get_attribute_by_id, get_id_by_attribute, list_of
 
 
 class FormatPaper:
@@ -28,3 +28,12 @@ class FormatPaper:
 
     def __dir__(self):
         return ['height', 'name', 'width']
+
+
+def formats():
+    table_formats = []
+    for row in list_of('formatpaper'):
+        formatpaper = FormatPaper()
+        formatpaper.id = int(row)
+        table_formats.append(formatpaper.get_format_by_id())
+    return table_formats

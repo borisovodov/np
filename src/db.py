@@ -96,7 +96,8 @@ if not os.path.isfile(DB_PATH):
 
 def query(command):
     try:
-        print(command)
+        # Uncomment next string for show all transaction.
+        # print(command)
         connect = sqlite3.connect(DB_PATH)
         cursor = connect.cursor()
         table_tuple = cursor.execute(command.replace('\'', '\"'))
