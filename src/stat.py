@@ -1,8 +1,11 @@
 """Module generate statistic."""
 
 import collections
+from .config import config
 from .newspaper import Newspaper, newspapers
 from .stat_adding import content_adding
+
+BLOG_NAME = config('blogger_blog_name')
 
 
 def stat():
@@ -33,9 +36,9 @@ def stat():
               'from around the world</span>. Look at this entertaining statistics:</p>\n'\
               '<ul>\n'\
               '<p><li>A total of ' + str(len(newspapers())) + ' newspapers from <a style=\"text-decoration: underline\" ' \
-                                                              'href=\"http://papersaround.blogspot.com/p/countries.html\">'\
+                                                              'href=\"http://' + BLOG_NAME + '.blogspot.com/p/countries.html\">'\
               + str(len(set(countries))) + ' countries</a> and <a style=\"text-decoration: underline\" ' \
-                                           'href=\"http://papersaround.blogspot.com/p/countries.html\">'\
+                                           'href=\"http://' + BLOG_NAME + '.blogspot.com/p/countries.html\">'\
               + str(len(set(cities))) + ' cities</a>.</li></p>\n'\
               + '<p><li>Most newspapers from ' + Newspaper.link(counter_country.most_common(1)[0][0]) + '—'\
               + str(counter_country.most_common(1)[0][1]) + '.</li></p>\n'\
@@ -63,14 +66,14 @@ def stat():
               + Newspaper.link(newspapers_longitude[-1].city.country.name) + ': '\
               + newspapers_longitude[-1].coordinates.format('longitude') + '.</li></p>\n'\
               + '<p><li>Newspapers brought <a style=\"text-decoration: underline\" ' \
-                'href=\"http://papersaround.blogspot.com/p/senders.html\">' + str(len(set(senders)))\
+                'href=\"http://' + BLOG_NAME + '.blogspot.com/p/senders.html\">' + str(len(set(senders)))\
               + ' people</a>.</li></p>\n'\
               + '<p><li>Most newspapers brought ' + Newspaper.link(counter_sender.most_common(1)[0][0]) + '—'\
               + str(counter_continent.most_common(1)[0][1]) + '.</li></p>\n'\
               + '<p><li>First <a style=\"text-decoration: underline\" ' \
-                'href=\"http://papersaround.blogspot.com/2012/01/beijing-china.html\">newspaper</a> ' \
+                'href=\"http://' + BLOG_NAME + '.blogspot.com/2012/01/beijing-china.html\">newspaper</a> ' \
                 '<a style=\"text-decoration: underline\" ' \
-                'href=\"http://papersaround.blogspot.com/search/label/Alexandra%20Ovodova\">Alexandra Ovodova</a> ' \
+                'href=\"http://' + BLOG_NAME + '.blogspot.com/search/label/Alexandra%20Ovodova\">Alexandra Ovodova</a> ' \
                 'filch from post.</li></p>\n'\
               + '<p><li>Latest newspaper ' + newspapers()[-1].format_senders_nice() + ' brought from '\
               + Newspaper.link(newspapers()[-1].city.name) + ', ' + Newspaper.link(newspapers()[-1].city.country.name) + '.</li></p>\n'\

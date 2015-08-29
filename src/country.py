@@ -1,9 +1,10 @@
 """This module contain Country class."""
 
-from .config import ids
+from .config import config
 from .language import Language
 from .db import get_attribute_by_id, get_id_by_attribute
 
+DRIVE_FOLDER_MARKER_ID = config('drive_folder_marker_id')
 
 class Country:
 
@@ -28,7 +29,7 @@ class Country:
         return self
 
     def marker(self):
-        return 'https://googledrive.com/host/' + ids['drive_folder_marker_id'] + '/' + self.name.lower() + '.png'
+        return 'https://googledrive.com/host/' + DRIVE_FOLDER_MARKER_ID + '/' + self.name.lower() + '.png'
 
     def __str__(self):
         languages = ''

@@ -89,8 +89,8 @@ def create_database():
     connect.close()
 
 if not os.path.isfile(DB_PATH):
-        create_database()
-        print('Database created.')
+    create_database()
+    print('Database created.')
 
 
 def query(command):

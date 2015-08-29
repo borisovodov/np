@@ -152,7 +152,7 @@ class Newspaper:
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
 
     def path(self):
-        return self.url[32:]
+        return self.url.replace('http://' + BLOG_NAME + '.blogspot.com', '')
 
     def __str__(self):
         return '\'' + str(self.ad_toyota) + '\', \'' + str(self.anecdote) + '\', \'' + str(self.caricature) + '\', \''\
