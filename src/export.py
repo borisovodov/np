@@ -79,6 +79,7 @@ def export():
         ET.SubElement(newspaper_element, 'recipe').text = str(newspaper.recipe)
         ET.SubElement(newspaper_element, 'horoscope').text = str(newspaper.horoscope)
         ET.SubElement(newspaper_element, 'weather_forecast').text = str(newspaper.weather_forecast)
+        ET.SubElement(newspaper_element, 'obituary').text = str(newspaper.obituary)
         ET.SubElement(newspaper_element, 'naked_women').text = str(newspaper.naked_women)
         ET.SubElement(newspaper_element, 'church').text = str(newspaper.church)
         ET.SubElement(newspaper_element, 'trash').text = str(newspaper.trash)

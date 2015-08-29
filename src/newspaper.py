@@ -50,6 +50,7 @@ class Newspaper:
         self.recipe = False
         self.horoscope = False
         self.weather_forecast = False
+        self.obituary = False
         self.naked_women = False
         self.church = False
         self.trash = False
@@ -111,6 +112,7 @@ class Newspaper:
         self.recipe = bool(get_attribute_by_id(self, 'recipe'))
         self.horoscope = bool(get_attribute_by_id(self, 'horoscope'))
         self.weather_forecast = bool(get_attribute_by_id(self, 'weather_forecast'))
+        self.obituary = bool(get_attribute_by_id(self, 'obituary'))
         self.naked_women = bool(get_attribute_by_id(self, 'naked_women'))
         self.church = bool(get_attribute_by_id(self, 'church'))
         self.trash = bool(get_attribute_by_id(self, 'trash'))
@@ -157,17 +159,18 @@ class Newspaper:
     def __str__(self):
         return '\'' + str(self.ad_toyota) + '\', \'' + str(self.anecdote) + '\', \'' + str(self.caricature) + '\', \''\
                + str(self.church) + '\', \'' + str(self.circulation) + '\', \'' + str(self.city.id) + '\', \''\
-               + self.color + '\', \'' + str(self.comic_strip) + '\', \'' + str(self.coordinates) + '\', \'' + self.format_costs() + '\', \''\
-               + str(self.crossword) + '\', \'' + str(self.date_brought.day) + '\', \''\
+               + self.color + '\', \'' + str(self.comic_strip) + '\', \'' + str(self.coordinates) + '\', \''\
+               + self.format_costs() + '\', \'' + str(self.crossword) + '\', \'' + str(self.date_brought.day) + '\', \''\
                + str(self.date_brought.month) + '\', \'' + str(self.date_brought.year) + '\', \'' + str(self.date.day) + '\', \''\
                + str(self.date.month) + '\', \'' + str(self.date_start_publication.day) + '\', \''\
                + str(self.date_start_publication.month) + '\', \'' + str(self.date_start_publication.year) + '\', \''\
                + str(self.date.year) + '\', \'' + str(self.format_paper.id) + '\', \'' + self.frequency + '\', \''\
                + str(self.geotag) + '\', \'' + str(self.horoscope) + '\', \'' + self.issn + '\', \'' + str(self.kakuro) + '\', \''\
                + str(self.language.id) + '\', \'' + str(self.naked_women) + '\', \'' + str(self.nonogram) + '\', \''\
-               + self.number + '\', \'' + self.number2 + '\', \'' + str(self.pages) + '\', \'' + str(self.recipe) + '\', \''\
-               + self.format_senders_id() + '\', \'' + self.site + '\', \'' + str(self.sudoku) + '\', \'' + self.title + '\', \''\
-               + str(self.trash) + str(self.tv_schedule) + '\', \'' + '\', \'' + self.type + '\', \'' + self.url + '\', \''\
+               + self.number + '\', \'' + self.number2 + '\', \'' + str(self.obituary) + '\', \'' + str(self.pages) + '\', \''\
+               + str(self.recipe) + '\', \'' + self.format_senders_id() + '\', \'' + self.site + '\', \''\
+               + str(self.sudoku) + '\', \'' + self.title + '\', \'' + str(self.trash) + '\', \''\
+               + str(self.tv_schedule) + '\', \'' + self.type + '\', \'' + self.url + '\', \''\
                + str(self.weather_forecast) + '\''
 
     def __dir__(self):
@@ -176,8 +179,8 @@ class Newspaper:
                 'date_brought_month', 'date_brought_year', 'date_day', 'date_month', 'date_start_publication_day',
                 'date_start_publication_month', 'date_start_publication_year', 'date_year', 'format_paper', 'frequency',
                 'geotag', 'horoscope', 'issn', 'kakuro', 'language', 'naked_women', 'nonogram', 'number', 'number2',
-                'pages', 'recipe', 'senders', 'site', 'sudoku', 'title', 'trash', 'tv_schedule', 'type', 'url',
-                'weather_forecast']
+                'obituary', 'pages', 'recipe', 'senders', 'site', 'sudoku', 'title', 'trash', 'tv_schedule', 'type',
+                'url', 'weather_forecast']
 
 
 def newspapers(order_by='id'):

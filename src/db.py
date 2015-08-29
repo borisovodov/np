@@ -51,6 +51,7 @@ def create_database():
                    'recipe TEXT, '
                    'horoscope TEXT, '
                    'weather_forecast TEXT, '
+                   'obituary TEXT, '
                    'naked_women TEXT, '
                    'church TEXT, '
                    'trash TEXT, '

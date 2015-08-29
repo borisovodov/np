@@ -416,6 +416,16 @@ def add_newspaper():
         else:
             print('Incorrect value. Try again.')
     while True:
+        string = input('Obituary (y/n): ')
+        if string == 'y':
+            newspaper.obituary = True
+            break
+        elif string == 'n':
+            newspaper.obituary = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
         string = input('Images of naked women (y/n): ')
         if string == 'y':
             newspaper.naked_women = True

@@ -6,7 +6,7 @@ from .newspaper import Newspaper, newspapers
 def tags():
     list_tags = ['Coastal city', 'Geotagging', 'Crossword', 'Sudoku', 'Nonogram', 'Kakuro', 'Advertising Toyota',
                  'TV schedule', 'Anecdote', 'Caricature', 'Comic Strip', 'Recipe', 'Horoscope', 'Weather Forecast',
-                 'Naked Women', 'Church', 'TRASH']
+                 'Obituary', 'Naked Women', 'Church', 'TRASH']
     content_tags = ''
 
     for newspaper in newspapers():
