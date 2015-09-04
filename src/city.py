@@ -17,6 +17,13 @@ class City:
         self.coastal = False
         self.altitude = 0.0
 
+    @staticmethod
+    def str_to_bool(string):
+        if string == 'True':
+            return True
+        else:
+            return False
+
     def get_city_by_id(self):
         self.name = get_attribute_by_id(self, 'name')
         self.country.id = int(get_attribute_by_id(self, 'country'))
@@ -24,7 +31,7 @@ class City:
         self.population = int(get_attribute_by_id(self, 'population'))
         self.hemisphere.name = get_attribute_by_id(self, 'hemisphere')
         self.continent = get_attribute_by_id(self, 'continent')
-        self.coastal = bool(get_attribute_by_id(self, 'coastal'))
+        self.coastal = self.str_to_bool(get_attribute_by_id(self, 'coastal'))
         self.altitude = float(get_attribute_by_id(self, 'altitude'))
         return self
 

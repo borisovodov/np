@@ -61,6 +61,13 @@ class Newspaper:
         return '<a style="text-decoration: underline" href="http://' + BLOG_NAME + '.blogspot.com/search/label/'\
                + not_link.replace(' ', '%20') + '">' + not_link + '</a>'
 
+    @staticmethod
+    def str_to_bool(string):
+        if string == 'True':
+            return True
+        else:
+            return False
+
     def get_newspaper_by_id(self):
         self.city.id = int(get_attribute_by_id(self, 'city'))
         self.city.get_city_by_id()
@@ -99,23 +106,23 @@ class Newspaper:
                                                     month=int(get_attribute_by_id(self,
                                                                                   'date_start_publication_month')),
                                                     year=int(get_attribute_by_id(self, 'date_start_publication_year')))
-        self.geotag = bool(get_attribute_by_id(self, 'geotag'))
-        self.crossword = bool(get_attribute_by_id(self, 'crossword'))
-        self.sudoku = bool(get_attribute_by_id(self, 'sudoku'))
-        self.nonogram = bool(get_attribute_by_id(self, 'nonogram'))
-        self.kakuro = bool(get_attribute_by_id(self, 'kakuro'))
-        self.ad_toyota = bool(get_attribute_by_id(self, 'ad_toyota'))
-        self.tv_schedule = bool(get_attribute_by_id(self, 'tv_schedule'))
-        self.anecdote = bool(get_attribute_by_id(self, 'anecdote'))
-        self.caricature = bool(get_attribute_by_id(self, 'caricature'))
-        self.comic_strip = bool(get_attribute_by_id(self, 'comic_strip'))
-        self.recipe = bool(get_attribute_by_id(self, 'recipe'))
-        self.horoscope = bool(get_attribute_by_id(self, 'horoscope'))
-        self.weather_forecast = bool(get_attribute_by_id(self, 'weather_forecast'))
-        self.obituary = bool(get_attribute_by_id(self, 'obituary'))
-        self.naked_women = bool(get_attribute_by_id(self, 'naked_women'))
-        self.church = bool(get_attribute_by_id(self, 'church'))
-        self.trash = bool(get_attribute_by_id(self, 'trash'))
+        self.geotag = self.str_to_bool(get_attribute_by_id(self, 'geotag'))
+        self.crossword = self.str_to_bool(get_attribute_by_id(self, 'crossword'))
+        self.sudoku = self.str_to_bool(get_attribute_by_id(self, 'sudoku'))
+        self.nonogram = self.str_to_bool(get_attribute_by_id(self, 'nonogram'))
+        self.kakuro = self.str_to_bool(get_attribute_by_id(self, 'kakuro'))
+        self.ad_toyota = self.str_to_bool(get_attribute_by_id(self, 'ad_toyota'))
+        self.tv_schedule = self.str_to_bool(get_attribute_by_id(self, 'tv_schedule'))
+        self.anecdote = self.str_to_bool(get_attribute_by_id(self, 'anecdote'))
+        self.caricature = self.str_to_bool(get_attribute_by_id(self, 'caricature'))
+        self.comic_strip = self.str_to_bool(get_attribute_by_id(self, 'comic_strip'))
+        self.recipe = self.str_to_bool(get_attribute_by_id(self, 'recipe'))
+        self.horoscope = self.str_to_bool(get_attribute_by_id(self, 'horoscope'))
+        self.weather_forecast = self.str_to_bool(get_attribute_by_id(self, 'weather_forecast'))
+        self.obituary = self.str_to_bool(get_attribute_by_id(self, 'obituary'))
+        self.naked_women = self.str_to_bool(get_attribute_by_id(self, 'naked_women'))
+        self.church = self.str_to_bool(get_attribute_by_id(self, 'church'))
+        self.trash = self.str_to_bool(get_attribute_by_id(self, 'trash'))
         self.url = get_attribute_by_id(self, 'url')
         return self
 
