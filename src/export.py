@@ -1,6 +1,7 @@
 """Module for export database to XML file."""
 
 import sys
+import datetime
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 from .newspaper import newspapers
@@ -9,7 +10,7 @@ EXPORT_PATH = sys.path[0] + '/newspapers.xml'
 
 
 def export():
-    root = ET.Element('newspapers')
+    root = ET.Element('newspapers', date_export=str(datetime.datetime.now()))
     for newspaper in newspapers():
         newspaper_element = ET.SubElement(root, 'newspaper', id=str(newspaper.id))
         city_element = ET.SubElement(newspaper_element, 'city', id=str(newspaper.city.id))
