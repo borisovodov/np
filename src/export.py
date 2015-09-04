@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 from .newspaper import newspapers
 
-EXPORT_PATH = sys.path[0] + '/newspapers.xml'
+EXPORT_PATH = sys.path[0] + '/export_' + str(datetime.date.today()) + '.xml'
 
 
 def export():
