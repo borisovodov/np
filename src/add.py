@@ -27,6 +27,7 @@ def add_currency(currency_with_name):
 
 
 def add_format(format_with_name):
+    format_with_name.nice_name = input('Nice name of format : ')
     while True:
         try:
             format_with_name.height = int(input('Height of format newspaper (mm): '))

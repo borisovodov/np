@@ -8,11 +8,13 @@ class FormatPaper:
     def __init__(self):
         self.id = 0
         self.name = ''
+        self.nice_name = ''
         self.height = 0
         self.width = 0
 
     def get_format_by_id(self):
         self.name = get_attribute_by_id(self, 'name')
+        self.nice_name = get_attribute_by_id(self, 'nice_name')
         self.height = int(get_attribute_by_id(self, 'height'))
         self.width = int(get_attribute_by_id(self, 'width'))
         return self
@@ -23,11 +25,11 @@ class FormatPaper:
         return self
 
     def __str__(self):
-        return '\'' + str(self.height) + '\', \'' + self.name + '\', \''\
+        return '\'' + str(self.height) + '\', \'' + self.name + '\', \'' + self.nice_name + '\', \''\
                + str(self.width) + '\''
 
     def __dir__(self):
-        return ['height', 'name', 'width']
+        return ['height', 'name', 'nice_name', 'width']
 
 
 def formats():

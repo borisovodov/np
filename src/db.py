@@ -77,6 +77,7 @@ def create_database():
     cursor.execute('CREATE TABLE formatpaper ('
                    'id INTEGER PRIMARY KEY, '
                    'name TEXT, '
+                   'nice_name TEXT, '
                    'height INTEGER, '
                    'width INTEGER)')
     cursor.execute('CREATE TABLE language ('
