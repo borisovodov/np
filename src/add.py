@@ -341,16 +341,6 @@ def add_newspaper():
         else:
             print('Incorrect value. Try again.')
     while True:
-        string = input('Advertising Toyota (y/n): ')
-        if string == 'y':
-            newspaper.ad_toyota = True
-            break
-        elif string == 'n':
-            newspaper.ad_toyota = False
-            break
-        else:
-            print('Incorrect value. Try again.')
-    while True:
         string = input('TV schedule (y/n): ')
         if string == 'y':
             newspaper.tv_schedule = True
@@ -457,6 +447,16 @@ def add_newspaper():
             break
         elif string == 'n':
             newspaper.trash = False
+            break
+        else:
+            print('Incorrect value. Try again.')
+    while True:
+        string = input('Extra newspaper (y/n): ')
+        if string == 'y':
+            newspaper.extra = True
+            break
+        elif string == 'n':
+            newspaper.extra = False
             break
         else:
             print('Incorrect value. Try again.')

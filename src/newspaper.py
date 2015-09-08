@@ -42,7 +42,6 @@ class Newspaper:
         self.sudoku = False
         self.nonogram = False
         self.kakuro = False
-        self.ad_toyota = False
         self.tv_schedule = False
         self.anecdote = False
         self.caricature = False
@@ -54,6 +53,7 @@ class Newspaper:
         self.naked_women = False
         self.church = False
         self.trash = False
+        self.extra = False
         self.url = ''
 
     @staticmethod
@@ -111,7 +111,6 @@ class Newspaper:
         self.sudoku = self.str_to_bool(get_attribute_by_id(self, 'sudoku'))
         self.nonogram = self.str_to_bool(get_attribute_by_id(self, 'nonogram'))
         self.kakuro = self.str_to_bool(get_attribute_by_id(self, 'kakuro'))
-        self.ad_toyota = self.str_to_bool(get_attribute_by_id(self, 'ad_toyota'))
         self.tv_schedule = self.str_to_bool(get_attribute_by_id(self, 'tv_schedule'))
         self.anecdote = self.str_to_bool(get_attribute_by_id(self, 'anecdote'))
         self.caricature = self.str_to_bool(get_attribute_by_id(self, 'caricature'))
@@ -123,6 +122,7 @@ class Newspaper:
         self.naked_women = self.str_to_bool(get_attribute_by_id(self, 'naked_women'))
         self.church = self.str_to_bool(get_attribute_by_id(self, 'church'))
         self.trash = self.str_to_bool(get_attribute_by_id(self, 'trash'))
+        self.extra = self.str_to_bool(get_attribute_by_id(self, 'extra'))
         self.url = get_attribute_by_id(self, 'url')
         return self
 
@@ -164,14 +164,15 @@ class Newspaper:
         return self.url.replace('http://' + BLOG_NAME + '.blogspot.com', '')
 
     def __str__(self):
-        return '\'' + str(self.ad_toyota) + '\', \'' + str(self.anecdote) + '\', \'' + str(self.caricature) + '\', \''\
+        return '\'' + str(self.anecdote) + '\', \'' + str(self.caricature) + '\', \''\
                + str(self.church) + '\', \'' + str(self.circulation) + '\', \'' + str(self.city.id) + '\', \''\
                + self.color + '\', \'' + str(self.comic_strip) + '\', \'' + str(self.coordinates) + '\', \''\
                + self.format_costs() + '\', \'' + str(self.crossword) + '\', \'' + str(self.date_brought.day) + '\', \''\
                + str(self.date_brought.month) + '\', \'' + str(self.date_brought.year) + '\', \'' + str(self.date.day) + '\', \''\
                + str(self.date.month) + '\', \'' + str(self.date_start_publication.day) + '\', \''\
                + str(self.date_start_publication.month) + '\', \'' + str(self.date_start_publication.year) + '\', \''\
-               + str(self.date.year) + '\', \'' + str(self.format_paper.id) + '\', \'' + self.frequency + '\', \''\
+               + str(self.date.year) + '\', \'' + str(self.extra) + '\', \'' + str(self.format_paper.id) + '\', \''\
+               + self.frequency + '\', \''\
                + str(self.geotag) + '\', \'' + str(self.horoscope) + '\', \'' + self.issn + '\', \'' + str(self.kakuro) + '\', \''\
                + str(self.language.id) + '\', \'' + str(self.naked_women) + '\', \'' + str(self.nonogram) + '\', \''\
                + self.number + '\', \'' + self.number2 + '\', \'' + str(self.obituary) + '\', \'' + str(self.pages) + '\', \''\
@@ -181,10 +182,11 @@ class Newspaper:
                + str(self.weather_forecast) + '\''
 
     def __dir__(self):
-        return ['ad_toyota', 'anecdote', 'caricature', 'church', 'circulation', 'city', 'color', 'comic_strip',
+        return ['anecdote', 'caricature', 'church', 'circulation', 'city', 'color', 'comic_strip',
                 'coordinates_latitude', 'coordinates_longitude', 'costs', 'crossword', 'date_brought_day',
                 'date_brought_month', 'date_brought_year', 'date_day', 'date_month', 'date_start_publication_day',
-                'date_start_publication_month', 'date_start_publication_year', 'date_year', 'format_paper', 'frequency',
+                'date_start_publication_month', 'date_start_publication_year', 'date_year', 'extra', 'format_paper',
+                'frequency',
                 'geotag', 'horoscope', 'issn', 'kakuro', 'language', 'naked_women', 'nonogram', 'number', 'number2',
                 'obituary', 'pages', 'recipe', 'senders', 'site', 'sudoku', 'title', 'trash', 'tv_schedule', 'type',
                 'url', 'weather_forecast']

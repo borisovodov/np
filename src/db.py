@@ -43,7 +43,6 @@ def create_database():
                    'sudoku TEXT, '
                    'nonogram TEXT, '
                    'kakuro TEXT, '
-                   'ad_toyota TEXT, '
                    'tv_schedule TEXT, '
                    'anecdote TEXT, '
                    'caricature TEXT, '
@@ -55,6 +54,7 @@ def create_database():
                    'naked_women TEXT, '
                    'church TEXT, '
                    'trash TEXT, '
+                   'extra TEXT, '
                    'url TEXT)')
     cursor.execute('CREATE TABLE city ('
                    'id INTEGER PRIMARY KEY, '
