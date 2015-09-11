@@ -9,6 +9,7 @@ from .sender import Sender
 from .coordinates import Coordinates
 from .formatpaper import FormatPaper
 from .cost import Cost
+from .photo import Photo
 from .db import get_attribute_by_id, list_of
 
 BLOG_NAME = config('blogger_blog_name')
@@ -54,6 +55,7 @@ class Newspaper:
         self.church = False
         self.trash = False
         self.extra = False
+        self.photos = []
         self.url = ''
 
     @staticmethod

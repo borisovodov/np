@@ -2,7 +2,7 @@
 
 import flickrapi
 from .config import config
-from .newspaper import Newspaper
+from .db import get_attribute_by_id, get_id_by_attribute
 
 KEY_FLICKRAPI = config('flickr_key')
 KEY_FLICKRAPI_SECRET = config('flickr_secret')
@@ -13,20 +13,20 @@ class Photo:
 
     def __init__(self):
         self.id = 0
-        self.newspaper = Newspaper()
+        self.flickr_id = 0
 
-    def upload(self, path):
+    def upload(self, path, newspaper):
         flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
-        flickr_photo = flickr.upload(filename=path, title=str(self.newspaper.id) + ' ' + self.newspaper.title + ' '
-                                                                                 + str(i + 1),
+        flickr_photo = flickr.upload(filename=path, title=str(newspaper.id) + ' ' + newspaper.title,
                                      description='http://' + BLOG_NAME + '.blogspot.com/',
-                                     tags=self.newspaper.city.country.name + ' ' + self.newspaper.city.name,
+                                     tags=newspaper.city.country.name + ' ' + newspaper.city.name,
                                      is_public='1')
+        self.flickr_id = flickr_photo.find('photoid').text
         return self
 
     def link(self):
         flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
-        photo = flickr.photos.getSizes(photo_id=self.id)
+        photo = flickr.photos.getSizes(photo_id=self.flickr_id)
 
         url_o = ''
         url_z = ''
@@ -40,5 +40,12 @@ class Photo:
                + '<img border=\"0\" src=\"' + url_z + '\" width=\"400\" /></a></div>\n'\
                + '<br />\n'
 
+    def get_photo_by_id(self):
+        self.flickr_id = get_attribute_by_id(self, 'flickr_id')
+        return self
+
     def __str__(self):
-        return str(self.id)
+        return '\'' + str(self.flickr_id) + '\''
+
+    def __dir__(self):
+        return ['flickr_id']
