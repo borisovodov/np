@@ -1,22 +1,12 @@
 """Module for authorization on Google."""
 
 import os
-import pip
 import webbrowser
 import sys
 from .config import config
 
 KEY_GOOGLE_CLIENT_ID = config('google_client_id')
 KEY_GOOGLE_CLIENT_SECRET = config('google_client_secret')
-
-modules = []
-for module in pip.get_installed_distributions():
-    modules.append(module.key)
-if 'google-api-python-client' not in modules:
-    print('Install google-api...')
-    os.system('pip install --upgrade pip')
-    os.system('pip install --upgrade google-api-python-client')
-    print('Complete installing google-api.')
 
 import httplib2
 from oauth2client.client import OAuth2WebServerFlow

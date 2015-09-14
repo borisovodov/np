@@ -10,6 +10,10 @@ __version__ = '1.1.3'
 
 import sys
 import os
+from src.setup_lib import setup, update
+# from src.start
+# from src.migration
+from src.export import export
 
 if not os.path.isdir(sys.path[0] + '/data'):
     os.makedirs(sys.path[0] + '/data')
@@ -17,26 +21,21 @@ if not os.path.isdir(sys.path[0] + '/data'):
 if not os.path.isdir(sys.path[0] + '/tmp'):
     os.makedirs(sys.path[0] + '/tmp')
 
-if __name__ == '__main__':
-    from src.add import add_newspaper
-    from src.post import post
-    from src.update import update
-    from src.db import db
-    from src.export import export
+setup()
 
-    while True:
-        menu = input('\nWhat you want?\nAdd newspaper\nPost\nUpdate\nQuery\nExport\nExit\n').lower()
-        if menu == 'add' or menu == 'add newspaper' or menu == 'newspaper' or menu == 'a':
-            add_newspaper()
-        elif menu == 'post' or menu == 'p':
-            post()
-        elif menu == 'update' or menu == 'u':
-            update()
-        elif menu == 'query' or menu == 'q':
-            db()
-        elif menu == 'export' or menu == 'exp':
-            export()
-        elif menu == 'exit' or menu == 'e':
-            break
-        else:
-            print('Wrong! Please, input again.')
+while True:
+    menu = input('\nWhat you want?\nStart app\nExport\nMigration\nUpdate app\nExit\n').lower()
+    if menu == 'start' or menu == 's' or menu == 'start app':
+        print('')
+        # start()
+    elif menu == 'export' or menu == 'exp':
+        export()
+    elif menu == 'migration' or menu == 'm':
+        print('')
+        # migration()
+    elif menu == 'update' or menu == 'u' or menu == 'update app':
+        update()
+    elif menu == 'exit' or menu == 'e':
+        break
+    else:
+        print('Wrong! Please, input again.')

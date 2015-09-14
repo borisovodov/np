@@ -9,15 +9,6 @@ KEY_FLICKRAPI = config('flickr_key')
 KEY_FLICKRAPI_SECRET = config('flickr_secret')
 BLOG_NAME = config('blogger_blog_name')
 
-modules = []
-for module in pip.get_installed_distributions():
-    modules.append(module.key)
-if 'flickrapi' not in modules:
-    print('Install flickrapi...')
-    os.system('pip install --upgrade pip')
-    os.system('pip install --upgrade flickrapi')
-    print('Complete installing flickrapi.')
-
 import flickrapi
 
 
