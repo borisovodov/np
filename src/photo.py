@@ -2,7 +2,7 @@
 
 import flickrapi
 from .config import config
-from .db import get_attribute_by_id, get_id_by_attribute
+from .db import get_attribute_by_id
 
 KEY_FLICKRAPI = config('flickr_key')
 KEY_FLICKRAPI_SECRET = config('flickr_secret')
