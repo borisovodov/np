@@ -13,8 +13,8 @@ class Currency(models.Model):
 
 class FormatPaper(models.Model):
     name = models.CharField()
-    height = models.IntegerField
-    width = models.IntegerField
+    height = models.IntegerField()
+    width = models.IntegerField()
 
     def __str__(self):
         return self.name + ' (' + str(self.height) + '×' + str(self.width) + ')'
