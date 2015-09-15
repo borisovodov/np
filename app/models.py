@@ -55,13 +55,6 @@ class FormatPaper(models.Model):
         return self.name + ' (' + str(self.height) + '×' + str(self.width) + ')'
 
 
-class Hemisphere(models.Model):
-    name = models.CharField()
-
-    def __str__(self):
-        return self.name
-
-
 class Language(models.Model):
     name = models.CharField()
     population = models.IntegerField()
@@ -78,7 +71,7 @@ class Sender(models.Model):
 
 
 class Cost(models.Model):
-    value = 0.0
+    value = models.FloatField()
     currency = models.ForeignKey(Currency)
 
     def __str__(self):
@@ -95,3 +88,16 @@ class Country(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class City(models.Model):
+    name = models.CharField()
+    country = models.ForeignKey(Country)
+    population = models.IntegerField()
+    hemisphere = models.CharField()
+    continent = models.CharField()
+    coastal = models.BooleanField()
+    altitude = models.FloatField()
+
+    def __str__(self):
+        return self.name + ', ' + self.country.name
