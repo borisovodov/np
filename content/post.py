@@ -1,9 +1,9 @@
 """Module generate post for upload to Blogspot."""
 
-import src.photos as photos
+import src.flickr
 from .newspaper import Newspaper
-from .db import set_attribute_by_id
-from .blog import authorization_blogger, add_post, update_post
+from src.db import set_attribute_by_id
+from src.blog import authorization_blogger, add_post, update_post
 
 
 def get_id():

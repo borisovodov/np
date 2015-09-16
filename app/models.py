@@ -90,7 +90,7 @@ class Country(models.Model):
 
 class City(models.Model):
     name = models.CharField()
-    country = models.ForeignKey(Country)
+    country = models.OneToOneField(Country)
     population = models.IntegerField()
     hemisphere = models.CharField()
     continent = models.CharField()
@@ -102,18 +102,18 @@ class City(models.Model):
 
 
 class Newspaper(models.Model):
-    city = models.ForeignKey(City)
+    city = models.OneToOneField(City)
     title = models.CharField()
     number = models.CharField()
     number2 = models.CharField()
     date = models.DateField()
-    language = models.ForeignKey(Language)
+    language = models.OneToOneField(Language)
     senders = models.ManyToManyField(Sender)
-    coordinates = models.ForeignKey(Coordinates)
+    coordinates = models.OneToOneField(Coordinates)
     date_brought = models.DateField()
     color = models.CharField()
     pages = models.IntegerField()
-    formatpaper = models.ForeignKey(FormatPaper)
+    formatpaper = models.OneToOneField(FormatPaper)
     type = models.CharField()
     frequency = models.CharField()
     circulation = models.IntegerField()
@@ -147,16 +147,16 @@ class Newspaper(models.Model):
 
     def format_senders_name(self):
         senders_string = ''
-        for sender in self.senders:
+        for sender in self.senders.all():
             senders_string = senders_string + str(sender.name) + ','
         return senders_string[:-1]
 
     def format_senders_nice(self):
-        senders_string = self.link(self.senders[0].name)
-        if len(self.senders) == 2:
+        senders_string = self.link(self.senders.all()[0].name)
+        if len(self.senders.all()) == 2:
             senders_string = self.link(self.senders[0].name) + ' and ' + self.link(self.senders[1].name)
-        elif len(self.senders) > 2:
-            for i in range(1, len(self.senders) - 1):
+        elif len(self.senders.all()) > 2:
+            for i in range(1, len(self.senders.all()) - 1):
                 senders_string = senders_string + ', ' + self.link(self.senders[i].name)
             senders_string = senders_string + ' and ' + self.link(self.senders[-1].name)
         return senders_string
@@ -168,20 +168,88 @@ class Newspaper(models.Model):
         return self.url.replace('http://' + BLOG_NAME + '.blogspot.com', '')
 
     def upload_photos(self):
+        self.photo_set.all().delete()
         photo_files = []
-        for file in os.listdir(self.path_to_photos):
+        for file in os.listdir(str(self.path_to_photos)):
             if file.endswith('.jpg'):
                 photo_files.append(file[:-4])
         photo_files.sort()
-        # delete photos of newspaper
         for i in range(len(photo_files)):
             photo = Photo()
             photo.newspaper = self
             photo.name = photo_files[i]
             photo.upload()
             photo.save()
-            print(str(i + 1) + '/' + str(len(photo_files)) + ' photos upload (' + str(((i+1)*100)//len(photo_files)) + '%)')
+            print(str(i + 1) + '/' + str(len(photo_files)) + ' photos upload (' + str(((i+1)*100)//len(photo_files))
+                  + '%)')
         print('Complete upload photos.')
+
+    def post(self):
+        from src.flickr import authorization_flickr
+        from src.blog import authorization_blogger, add_post, update_post
+
+        self.upload_photos()
+        content_photos = ''
+        for photo in self.photo_set.all():
+            content_photos = content_photos + photo.link()
+
+        post_name = self.city.name + ', ' + self.city.country.name
+        post_tags = [
+            self.city.country.name, self.city.name, str(self.date.year), self.language.name,
+            self.format_senders_name(), self.city.continent, self.city.hemisphere.name_full()
+            ]
+
+        content_up = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
+                     '<strong>Title:</strong> ' + self.title + '<br />\n'
+        content_num = ''
+        if self.number2 is None:
+            content_num = '<strong>Number:</strong> ' + self.number + '<br />\n'
+        else:
+            content_num = '<strong>Number:</strong> ' + self.number + ' (' + self.number2 + ')<br />\n'
+        content_date = ''
+        if self.date not is None:
+            '<strong>Released:</strong> ' + self.format_date() + '<br />\n'
+
+        if newspaper.number == '' and newspaper.number2 == '':
+            post_content = content_up + '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n' \
+                                        '<strong>Language:</strong> ' + newspaper.link(newspaper.language.name) + '<br />\n' \
+                                        '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n' \
+                                        '<br />\n'\
+                                        + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
+                                        + content_photos + '</div>'
+        elif newspaper.number2 == '':
+            post_content = content_up + '<strong>Number:</strong> ' + newspaper.number + '<br />\n'\
+                                        '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
+                                        '<strong>Language:</strong> ' + newspaper.link(newspaper.language.name) + '<br />\n'\
+                                        '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
+                                        '<br />\n'\
+                                        + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
+                                        + content_photos + '</div>'
+        else:
+            post_content = content_up + '<strong>Number:</strong> ' + newspaper.number + ' (' + newspaper.number2 + ')<br />\n'\
+                                        '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
+                                        '<strong>Language:</strong> ' + newspaper.link(newspaper.language.name) + '<br />\n'\
+                                        '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\
+                                        '<br />\n'\
+                                        + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
+                                        + content_photos + '</div>'
+
+        generate_post = {
+            'title': post_name,
+            'content': post_content,
+            'labels': post_tags
+        }
+        authorization_flickr()
+        body = generate_post(newspaper, path)
+        print('Uploading post on Blogger.')
+        blog = authorization_blogger()
+
+        if self.url == '':
+            response = add_post(blog=blog, body=body)
+            self.url = response['url']
+            self.save()
+        else:
+            update_post(blog=blog, body=body, newspaper=newspaper)
 
     def __str__(self):
         return '\'' + str(self.anecdote) + '\', \''
@@ -197,7 +265,7 @@ class Cost(models.Model):
 
 
 class Photo(models.Model):
-    flickr_id = models.IntegerField()
+    flickr_id = models.CharField()
     name = models.CharField()
     newspaper = models.ForeignKey(Newspaper)
 
@@ -228,4 +296,4 @@ class Photo(models.Model):
                + '<br />\n'
 
     def __str__(self):
-        return str(self.flickr_id)
+        return self.flickr_id
