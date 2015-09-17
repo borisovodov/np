@@ -201,7 +201,7 @@ class Newspaper(models.Model):
         # add tags.
 
         content_title = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
-                     '<strong>Title:</strong> ' + self.title + '<br />\n'
+                        '<strong>Title:</strong> ' + self.title + '<br />\n'
 
         content_number = ''
         if self.number2 is '':
