@@ -1,16 +1,22 @@
 """Module contain all classes."""
 
-import os
-import calendar
-import flickrapi
-from math import trunc
 from django.db import models
 from src.config import config
 
-DRIVE_FOLDER_MARKER_ID = config('drive_folder_marker_id')
-KEY_FLICKRAPI = config('flickr_key')
-KEY_FLICKRAPI_SECRET = config('flickr_secret')
 BLOG_NAME = config('blogger_blog_name')
+
+
+class City(models.Model):
+    name = models.CharField()
+    country = models.ForeignKey(Country)
+    population = models.IntegerField()
+    hemisphere = models.CharField()
+    continent = models.CharField()
+    coastal = models.BooleanField()
+    altitude = models.FloatField()
+
+    def __str__(self):
+        return self.name + ', ' + self.country.name
 
 
 class Coordinates(models.Model):
@@ -18,30 +24,55 @@ class Coordinates(models.Model):
     longitude = models.FloatField()
 
     def format(self, coord):
+        from math import trunc
+
         if self.latitude > 0:
-            lat = str(trunc(float(self.latitude))) + '° ' + str(trunc((float(self.latitude) -
-                                                                       trunc(float(self.latitude)))*60)) + '′ N'
+            latitude = str(trunc(float(self.latitude))) + '° ' + str(trunc((float(self.latitude) -
+                                                                            trunc(float(self.latitude)))*60)) + '′ N'
         else:
-            lat = str(abs(trunc(float(self.latitude)))) + '° ' + str(abs(trunc((float(self.latitude) -
-                                                                                trunc(float(self.latitude)))*60)))\
+            latitude = str(abs(trunc(float(self.latitude)))) + '° ' + str(abs(trunc((float(self.latitude) -
+                                                                              trunc(float(self.latitude)))*60)))\
                                                                + '′ S'
         if self.longitude > 0:
-            long = str(trunc(float(self.longitude))) + '° ' + str(trunc((float(self.longitude) -
-                                                                         trunc(float(self.longitude)))*60)) + '′ E'
+            longitude = str(trunc(float(self.longitude))) + '° ' + str(trunc((float(self.longitude) -
+                                                                       trunc(float(self.longitude)))*60)) + '′ E'
         else:
-            long = str(abs(trunc(float(self.longitude)))) + '° ' + str(abs(trunc((float(self.longitude) -
-                                                                                  trunc(float(self.longitude)))*60)))\
+            longitude = str(abs(trunc(float(self.longitude)))) + '° ' + str(abs(trunc((float(self.longitude) -
+                                                                                trunc(float(self.longitude)))*60)))\
                                                                  + '′ W'
 
         if coord == 'latitude':
-            return lat
+            return latitude
         elif coord == 'longitude':
-            return long
+            return longitude
         elif coord == 'both':
-            return {'latitude': lat, 'longitude': long}
+            return {'latitude': latitude, 'longitude': longitude}
 
     def __str__(self):
         return self.format('latitude') + ' ' + self.format('longitude')
+
+
+class Cost(models.Model):
+    value = models.FloatField()
+    currency = models.ForeignKey(Currency)
+    newspaper = models.ForeignKey(Newspaper)
+
+    def __str__(self):
+        return str(self.value) + ' ' + str(self.currency)
+
+
+class Country(models.Model):
+    name = models.CharField()
+    languages = models.ManyToManyField(Language)
+    population = models.IntegerField()
+
+    def marker(self):
+        from src.config import config
+
+        return 'https://googledrive.com/host/' + config('drive_folder_marker_id') + '/' + self.name.lower() + '.png'
+
+    def __str__(self):
+        return self.name
 
 
 class Currency(models.Model):
@@ -67,38 +98,6 @@ class Language(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Sender(models.Model):
-    name = models.CharField()
-
-    def __str__(self):
-        return self.name
-
-
-class Country(models.Model):
-    name = models.CharField()
-    languages = models.ManyToManyField(Language)
-    population = models.IntegerField()
-
-    def marker(self):
-        return 'https://googledrive.com/host/' + DRIVE_FOLDER_MARKER_ID + '/' + self.name.lower() + '.png'
-
-    def __str__(self):
-        return self.name
-
-
-class City(models.Model):
-    name = models.CharField()
-    country = models.ForeignKey(Country)
-    population = models.IntegerField()
-    hemisphere = models.CharField()
-    continent = models.CharField()
-    coastal = models.BooleanField()
-    altitude = models.FloatField()
-
-    def __str__(self):
-        return self.name + ', ' + self.country.name
 
 
 class Newspaper(models.Model):
@@ -162,12 +161,16 @@ class Newspaper(models.Model):
         return senders_string
 
     def format_date(self):
+        import calendar
+
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
 
     def path(self):
         return self.url.replace('http://' + BLOG_NAME + '.blogspot.com', '')
 
     def upload_photos(self):
+        import os
+
         self.photo_set.all().delete()
         photo_files = []
         for file in os.listdir(str(self.path_to_photos)):
@@ -240,22 +243,15 @@ class Newspaper(models.Model):
         return '\'' + str(self.anecdote) + '\', \''
 
 
-class Cost(models.Model):
-    value = models.FloatField()
-    currency = models.ForeignKey(Currency)
-    newspaper = models.ForeignKey(Newspaper)
-
-    def __str__(self):
-        return str(self.value) + ' ' + str(self.currency)
-
-
 class Photo(models.Model):
     flickr_id = models.CharField()
     name = models.CharField()
     newspaper = models.ForeignKey(Newspaper)
 
     def upload(self):
-        flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
+        from flickrapi import FlickrAPI
+
+        flickr = FlickrAPI(config('flickr_key'), config('flickr_secret'))
         flickr_photo = flickr.upload(filename=self.newspaper.path_to_photos + '/' + self.name + '.jpg',
                                      title=str(self.newspaper.id) + ' ' + self.newspaper.title,
                                      description='http://' + BLOG_NAME + '.blogspot.com/',
@@ -265,7 +261,9 @@ class Photo(models.Model):
         return self
 
     def link(self):
-        flickr = flickrapi.FlickrAPI(KEY_FLICKRAPI, KEY_FLICKRAPI_SECRET)
+        from flickrapi import FlickrAPI
+
+        flickr = FlickrAPI(config('flickr_key'), config('flickr_secret'))
         photo_flickr = flickr.photos.getSizes(photo_id=self.flickr_id)
 
         url_o = ''
@@ -282,3 +280,10 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.flickr_id
+
+
+class Sender(models.Model):
+    name = models.CharField()
+
+    def __str__(self):
+        return self.name
