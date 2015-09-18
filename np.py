@@ -11,9 +11,7 @@ __version__ = '1.1.3'
 import sys
 import os
 from src.setup_lib import setup, update
-from src.start import start
-from src.migration import migration
-from src.export import export
+#from src.export import export
 
 if not os.path.isdir(sys.path[0] + '/data'):
     os.makedirs(sys.path[0] + '/data')
@@ -26,11 +24,13 @@ setup()
 while True:
     menu = input('\nWhat you want?\nStart app\nExport\nMigration\nUpdate app\nExit\n').lower()
     if menu == 'start' or menu == 's' or menu == 'start app':
-        start()
+        os.system('python manage.py runserver 1515')
     elif menu == 'export' or menu == 'exp':
-        export()
+        print('')
+        #export()
     elif menu == 'migration' or menu == 'm':
-        migration()
+        os.system('python manage.py migrate')
+        os.system('python manage.py makemigrations app')
     elif menu == 'update' or menu == 'u' or menu == 'update app':
         update()
     elif menu == 'exit' or menu == 'e':
