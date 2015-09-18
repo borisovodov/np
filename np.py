@@ -22,7 +22,7 @@ if not os.path.isdir(sys.path[0] + '/tmp'):
 setup()
 
 while True:
-    menu = input('\nWhat you want?\nStart app\nExport\nMigration\nUpdate app\nExit\n').lower()
+    menu = input('\nWhat you want?\nStart app\nExport\nMigration\nSuperuser\nUpdate app\nExit\n').lower()
     if menu == 'start' or menu == 's' or menu == 'start app':
         os.system('python manage.py runserver 1515')
     elif menu == 'export' or menu == 'exp':
@@ -31,6 +31,8 @@ while True:
     elif menu == 'migration' or menu == 'm':
         os.system('python manage.py migrate')
         os.system('python manage.py makemigrations app')
+    elif menu == 'superuser':
+        os.system('python manage.py createsuperuser')
     elif menu == 'update' or menu == 'u' or menu == 'update app':
         update()
     elif menu == 'exit' or menu == 'e':

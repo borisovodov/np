@@ -6,19 +6,6 @@ from src.config import config
 BLOG_NAME = config('blogger_blog_name')
 
 
-class City(models.Model):
-    name = models.CharField()
-    country = models.ForeignKey(Country)
-    population = models.IntegerField()
-    hemisphere = models.CharField()
-    continent = models.CharField()
-    coastal = models.BooleanField()
-    altitude = models.FloatField()
-
-    def __str__(self):
-        return self.name + ', ' + self.country.name
-
-
 class Coordinates(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -52,17 +39,40 @@ class Coordinates(models.Model):
         return self.format('latitude') + ' ' + self.format('longitude')
 
 
-class Cost(models.Model):
-    value = models.FloatField()
-    currency = models.ForeignKey(Currency)
-    newspaper = models.ForeignKey(Newspaper)
+class Currency(models.Model):
+    name = models.CharField(max_length=200)
+    symbol = models.CharField(max_length=200)
 
     def __str__(self):
-        return str(self.value) + ' ' + str(self.currency)
+        return self.name
+
+
+class FormatPaper(models.Model):
+    name = models.CharField(max_length=200)
+    height = models.IntegerField(default=0)
+    width = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name + ' (' + str(self.height) + '×' + str(self.width) + ')'
+
+
+class Language(models.Model):
+    name = models.CharField(max_length=200)
+    population = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+
+class Sender(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
 
 
 class Country(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=200)
     languages = models.ManyToManyField(Language)
     population = models.IntegerField()
 
@@ -75,49 +85,37 @@ class Country(models.Model):
         return self.name
 
 
-class Currency(models.Model):
-    name = models.CharField()
-    symbol = models.CharField()
-
-    def __str__(self):
-        return self.symbol
-
-
-class FormatPaper(models.Model):
-    name = models.CharField()
-    height = models.IntegerField(default=0)
-    width = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.name + ' (' + str(self.height) + '×' + str(self.width) + ')'
-
-
-class Language(models.Model):
-    name = models.CharField()
+class City(models.Model):
+    name = models.CharField(max_length=200)
+    country = models.ForeignKey(Country)
     population = models.IntegerField()
+    hemisphere = models.CharField(max_length=200)
+    continent = models.CharField(max_length=200)
+    coastal = models.BooleanField()
+    altitude = models.FloatField()
 
     def __str__(self):
-        return self.name
+        return self.name + ', ' + self.country.name
 
 
 class Newspaper(models.Model):
     city = models.ForeignKey(City)
-    title = models.CharField()
-    number = models.CharField(default='')
-    number2 = models.CharField(default='')
+    title = models.CharField(max_length=200)
+    number = models.CharField(max_length=200, default='')
+    number2 = models.CharField(max_length=200, default='')
     date = models.DateField()  # default value
     language = models.ForeignKey(Language)
     senders = models.ManyToManyField(Sender)
     coordinates = models.OneToOneField(Coordinates)
     date_brought = models.DateField()
-    color = models.CharField()
+    color = models.CharField(max_length=200)
     pages = models.IntegerField()
     formatpaper = models.ForeignKey(FormatPaper)
-    type = models.CharField()
-    frequency = models.CharField()
+    type = models.CharField(max_length=200)
+    frequency = models.CharField(max_length=200)
     circulation = models.IntegerField()
-    site = models.CharField()
-    issn = models.CharField()
+    site = models.CharField(max_length=200)
+    issn = models.CharField(max_length=200)
     date_start_publication = models.DateField()
     geotag = models.BooleanField()
     crossword = models.BooleanField()
@@ -136,8 +134,8 @@ class Newspaper(models.Model):
     church = models.BooleanField()
     trash = models.BooleanField()
     extra = models.BooleanField()
-    path_to_photos = models.CharField()
-    url = models.CharField(default='')
+    path_to_photos = models.CharField(max_length=200)
+    url = models.CharField(max_length=200, default='')
 
     @staticmethod
     def link(not_link):
@@ -243,9 +241,18 @@ class Newspaper(models.Model):
         return '\'' + str(self.anecdote) + '\', \''
 
 
+class Cost(models.Model):
+    value = models.FloatField()
+    currency = models.ForeignKey(Currency)
+    newspaper = models.ForeignKey(Newspaper)
+
+    def __str__(self):
+        return str(self.value) + ' ' + str(self.currency)
+
+
 class Photo(models.Model):
-    flickr_id = models.CharField()
-    name = models.CharField()
+    flickr_id = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
     newspaper = models.ForeignKey(Newspaper)
 
     def upload(self):
@@ -280,10 +287,3 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.flickr_id
-
-
-class Sender(models.Model):
-    name = models.CharField()
-
-    def __str__(self):
-        return self.name
