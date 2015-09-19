@@ -1,14 +1,14 @@
 """Module for generate countries."""
 
 from collections import defaultdict
-from .newspaper import Newspaper, newspapers
+from app.models import Newspaper
 
 
 def countries():
     dict_country = defaultdict(list)
     content_countries = ''
 
-    for newspaper in newspapers():
+    for newspaper in Newspaper.objects.all():
         dict_country[newspaper.city.country.name].append(newspaper.city.name)
 
     for country in sorted(dict_country.items()):

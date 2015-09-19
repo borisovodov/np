@@ -40,14 +40,14 @@ def generate_post(newspaper, path_photos):
     content_up = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
                  '<strong>Title:</strong> ' + newspaper.title + '<br />\n'
 
-    if newspaper.number == '' and newspaper.number2 == '':
+    if newspaper.number == '' and newspaper.number_2 == '':
         post_content = content_up + '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n' \
                                     '<strong>Language:</strong> ' + newspaper.link(newspaper.language.name) + '<br />\n' \
                                     '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n' \
                                     '<br />\n'\
                                     + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
                                     + content_photos + '</div>'
-    elif newspaper.number2 == '':
+    elif newspaper.number_2 == '':
         post_content = content_up + '<strong>Number:</strong> ' + newspaper.number + '<br />\n'\
                                     '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
                                     '<strong>Language:</strong> ' + newspaper.link(newspaper.language.name) + '<br />\n'\
@@ -56,7 +56,7 @@ def generate_post(newspaper, path_photos):
                                     + photos.link_photo(photo_ids[0]) + '<!--more-->\n'\
                                     + content_photos + '</div>'
     else:
-        post_content = content_up + '<strong>Number:</strong> ' + newspaper.number + ' (' + newspaper.number2 + ')<br />\n'\
+        post_content = content_up + '<strong>Number:</strong> ' + newspaper.number + ' (' + newspaper.number_2 + ')<br />\n'\
                                     '<strong>Released:</strong> ' + newspaper.format_date() + '<br />\n'\
                                     '<strong>Language:</strong> ' + newspaper.link(newspaper.language.name) + '<br />\n'\
                                     '<strong>Sender:</strong> ' + newspaper.format_senders_nice() + '<br />\n'\

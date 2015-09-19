@@ -1,13 +1,13 @@
 """Module for generate list of senders."""
 
-from .newspaper import Newspaper, newspapers
+from app.models import Newspaper
 
 
 def senders():
     list_senders = []
     content_senders = ''
 
-    for newspaper in newspapers():
+    for newspaper in Newspaper.objects.all():
         for sender in newspaper.senders:
             list_senders.append(sender.name)
 

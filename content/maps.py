@@ -1,17 +1,17 @@
 """Module generate maps for site and big map."""
 
 import sys
-from .newspaper import newspapers
+from app.models import Newspaper
 
 
 def content_map():
     content_newspaper = ''
-    for newspaper in newspapers():
+    for newspaper in Newspaper.objects.all():
         content_newspaper = content_newspaper + 'papername[' + str(newspaper.id) + '] = \'' + newspaper.city.name + ', '\
                             + newspaper.city.country.name + '\';\n'\
                             + 'papertitle[' + str(newspaper.id) + '] = \'' + newspaper.title + '\';\n'\
                             + 'papernumber1[' + str(newspaper.id) + '] = \'' + newspaper.number + '\';\n'\
-                            + 'papernumber2[' + str(newspaper.id) + '] = \'' + newspaper.number2 + '\';\n'\
+                            + 'papernumber2[' + str(newspaper.id) + '] = \'' + newspaper.number_2 + '\';\n'\
                             + 'paperdate[' + str(newspaper.id) + '] = \''\
                             + newspaper.format_date() + '\';\n'\
                             + 'paperlang[' + str(newspaper.id) + '] = \'' + newspaper.link(newspaper.language.name) + '\';\n'\
@@ -54,7 +54,7 @@ def content_map():
            + 'var marker=[];\n'\
            + '\n'\
            + content_newspaper\
-           + 'var N=' + str(len(newspapers()) + 1) + '; //Общее число газет\n'\
+           + 'var N=' + str(len(Newspaper.objects.all()) + 1) + '; //Общее число газет\n'\
            + 'var i;\n'\
            + 'var j;\n'\
            + 'var k;\n'\

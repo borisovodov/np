@@ -1,8 +1,8 @@
 """Module generate statistic."""
 
 import collections
-from .config import config
-from .newspaper import Newspaper, newspapers
+from src.config import config
+from app.models import Newspaper
 from .stat_adding import content_adding
 
 BLOG_NAME = config('blogger_blog_name')
@@ -15,7 +15,7 @@ def stat():
     continents = []
     senders = []
 
-    for newspaper in newspapers():
+    for newspaper in Newspaper.objects.all():
         countries.append(newspaper.city.country.name)
         cities.append(newspaper.city.name)
         languages.append(newspaper.language.name)
@@ -28,15 +28,15 @@ def stat():
     counter_continent = collections.Counter(continents)
     counter_sender = collections.Counter(senders)
 
-    newspapers_latitude = newspapers('coordinates_latitude')
-    newspapers_longitude = newspapers('coordinates_longitude')
+    newspapers_latitude = Newspaper.objects.order_by('coordinates__latitude')
+    newspapers_longitude = Newspaper.objects.order_by('coordinates__longitude')
 
     content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
               '<p>In this site presents newspapers <span style=\"text-decoration: line-through\">' \
               'from around the world</span>. Look at this entertaining statistics:</p>\n'\
               '<ul>\n'\
-              '<p><li>A total of ' + str(len(newspapers())) + ' newspapers from <a style=\"text-decoration: underline\" ' \
-                                                              'href=\"http://' + BLOG_NAME + '.blogspot.com/p/countries.html\">'\
+              '<p><li>A total of ' + str(len(Newspaper.objects.all())) + ' newspapers from <a style=\"text-decoration: underline\" ' \
+                                                                         'href=\"http://' + BLOG_NAME + '.blogspot.com/p/countries.html\">'\
               + str(len(set(countries))) + ' countries</a> and <a style=\"text-decoration: underline\" ' \
                                            'href=\"http://' + BLOG_NAME + '.blogspot.com/p/countries.html\">'\
               + str(len(set(cities))) + ' cities</a>.</li></p>\n'\
@@ -75,8 +75,9 @@ def stat():
                 '<a style=\"text-decoration: underline\" ' \
                 'href=\"http://' + BLOG_NAME + '.blogspot.com/search/label/Alexandra%20Ovodova\">Alexandra Ovodova</a> ' \
                 'filch from post.</li></p>\n'\
-              + '<p><li>Latest newspaper ' + newspapers()[-1].format_senders_nice() + ' brought from '\
-              + Newspaper.link(newspapers()[-1].city.name) + ', ' + Newspaper.link(newspapers()[-1].city.country.name) + '.</li></p>\n'\
+              + '<p><li>Latest newspaper ' + Newspaper.objects.latest('date_brought').format_senders_nice() + ' brought from '\
+              + Newspaper.link(Newspaper.objects.latest('date_brought').city.name) + ', '\
+              + Newspaper.link(Newspaper.objects.latest('date_brought').city.country.name) + '.</li></p>\n'\
               + '</ul>'\
               + content_adding\
               + '</div>'

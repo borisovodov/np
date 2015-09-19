@@ -46,6 +46,9 @@ class Currency(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ('name',)
+
 
 class FormatPaper(models.Model):
     name = models.CharField(max_length=200)
@@ -55,6 +58,9 @@ class FormatPaper(models.Model):
     def __str__(self):
         return self.name + ' (' + str(self.height) + '×' + str(self.width) + ')'
 
+    class Meta:
+        ordering = ('name',)
+
 
 class Language(models.Model):
     name = models.CharField(max_length=200)
@@ -63,12 +69,18 @@ class Language(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ('name',)
+
 
 class Sender(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ('name',)
 
 
 class Country(models.Model):
@@ -83,6 +95,9 @@ class Country(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ('name',)
 
 
 class City(models.Model):
@@ -110,6 +125,9 @@ class City(models.Model):
 
     def __str__(self):
         return self.name + ', ' + self.country.name
+
+    class Meta:
+        ordering = ('name',)
 
 
 class Newspaper(models.Model):
@@ -235,14 +253,15 @@ class Newspaper(models.Model):
         # add tags.
 
         content_title = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
-                        '<strong>Title:</strong> ' + self.title + '<br />\n'
+                        '<strong>Title:</strong> ' + str(self.title) + '<br />\n'
 
         content_number = ''
         if self.number != '':
             if self.number_2 == '':
-                content_number = '<strong>Number:</strong> ' + self.number + '<br />\n'
+                content_number = '<strong>Number:</strong> ' + str(self.number) + '<br />\n'
             else:
-                content_number = '<strong>Number:</strong> ' + self.number + ' (' + self.number_2 + ')<br />\n'
+                content_number = '<strong>Number:</strong> ' + str(self.number) + ' (' + str(self.number_2)\
+                                 + ')<br />\n'
 
         content_date = ''
         if self.date != datetime.date(1, 1, 1):
@@ -276,9 +295,9 @@ class Newspaper(models.Model):
         number_str = ' '
         if self.number != '':
             if self.number_2 == '':
-                number_str = ' #' + self.number + ' '
+                number_str = ' #' + str(self.number) + ' '
             else:
-                number_str = ' #' + self.number + ' (' + self.number_2 + ') '
+                number_str = ' #' + str(self.number) + ' (' + str(self.number_2) + ') '
 
         date_str = ' '
         if self.date != datetime.date(1, 1, 1):

@@ -2,6 +2,7 @@
 
 from django.contrib import admin
 from .models import *
+from content import update
 
 
 class CostsInline(admin.StackedInline):
@@ -11,6 +12,7 @@ class CostsInline(admin.StackedInline):
 
 class NewspaperAdmin(admin.ModelAdmin):
     inlines = [CostsInline]
+    actions = [update]
 
 admin.site.register(City)
 admin.site.register(Coordinates)

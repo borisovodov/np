@@ -1,6 +1,6 @@
 """Module for generate file with tags."""
 
-from .newspaper import Newspaper, newspapers
+from app.models import Newspaper
 
 
 def tags():
@@ -9,7 +9,7 @@ def tags():
                  'Obituary', 'Naked Women', 'Church', 'TRASH', 'Extra']
     content_tags = ''
 
-    for newspaper in newspapers():
+    for newspaper in Newspaper.objects.all():
         list_tags.append(newspaper.city.name)
         list_tags.append(newspaper.city.country.name)
         list_tags.append(str(newspaper.date.year))

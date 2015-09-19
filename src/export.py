@@ -18,7 +18,7 @@ def export():
         country_element = ET.SubElement(city_element, 'country')
         ET.SubElement(country_element, 'name').text = newspaper.city.country.name
         languages_element = ET.SubElement(country_element, 'languages')
-        for language in newspaper.city.country.language_set.all():
+        for language in newspaper.city.country.languages.all():
             language_element = ET.SubElement(languages_element, 'language')
             ET.SubElement(language_element, 'name').text = language.name
             ET.SubElement(language_element, 'population').text = str(language.population)
