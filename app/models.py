@@ -7,8 +7,8 @@ BLOG_NAME = config('blogger_blog_name')
 
 
 class Coordinates(models.Model):
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    latitude = models.FloatField(default=0.0)
+    longitude = models.FloatField(default=0.0)
 
     def format(self, coord):
         from math import trunc
@@ -36,7 +36,7 @@ class Coordinates(models.Model):
             return {'latitude': latitude, 'longitude': longitude}
 
     def __str__(self):
-        return self.format('latitude') + ' ' + self.format('longitude')
+        return self.format('latitude') + ', ' + self.format('longitude')
 
 
 class Currency(models.Model):
@@ -49,8 +49,8 @@ class Currency(models.Model):
 
 class FormatPaper(models.Model):
     name = models.CharField(max_length=200)
-    height = models.IntegerField(default=0)
-    width = models.IntegerField(default=0)
+    height = models.IntegerField()
+    width = models.IntegerField()
 
     def __str__(self):
         return self.name + ' (' + str(self.height) + '×' + str(self.width) + ')'
@@ -86,43 +86,75 @@ class Country(models.Model):
 
 
 class City(models.Model):
+    HEMISPHERES = (
+        ('Northern Hemisphere', 'Northern Hemisphere'),
+        ('Southern Hemisphere', 'Southern Hemisphere'),
+    )
+    CONTINENTS = (
+        ('Africa', 'Africa'),
+        ('Antarctica', 'Antarctica'),
+        ('Asia', 'Asia'),
+        ('Australia', 'Australia'),
+        ('Europe', 'Europe'),
+        ('North America', 'North America'),
+        ('South America', 'South America'),
+    )
+
     name = models.CharField(max_length=200)
     country = models.ForeignKey(Country)
     population = models.IntegerField()
-    hemisphere = models.CharField(max_length=200)
-    continent = models.CharField(max_length=200)
+    hemisphere = models.CharField(max_length=19, choices=HEMISPHERES)
+    continent = models.CharField(max_length=13, choices=CONTINENTS)
     coastal = models.BooleanField()
-    altitude = models.FloatField()
+    altitude = models.FloatField(default=0.0)
 
     def __str__(self):
         return self.name + ', ' + self.country.name
 
 
 class Newspaper(models.Model):
+    COLORS = (
+        ('Monochrome', 'Monochrome'),
+        ('Bicolor', 'Bicolor'),
+        ('Multicolor', 'Multicolor'),
+    )
+    TYPES = (
+        ('Newspaper', 'Newspaper'),
+        ('Magazine', 'Magazine'),
+        ('Brochure', 'Brochure'),
+    )
+    FREQUENCIES = (
+        ('Daily', 'Daily'),
+        ('Weekly', 'Weekly'),
+        ('Monthly', 'Monthly'),
+        ('Bimonthly', 'Bimonthly'),
+        ('Other/Unknown', 'Other/Unknown'),
+    )
+
     city = models.ForeignKey(City)
     title = models.CharField(max_length=200)
-    number = models.CharField(max_length=200, default='')
-    number2 = models.CharField(max_length=200, default='')
-    date = models.DateField()  # default value
+    number = models.CharField(max_length=200, blank=True)
+    number_2 = models.CharField(max_length=200, blank=True)
+    date = models.DateField(default='0001-01-01', blank=True)
     language = models.ForeignKey(Language)
     senders = models.ManyToManyField(Sender)
     coordinates = models.OneToOneField(Coordinates)
-    date_brought = models.DateField()
-    color = models.CharField(max_length=200)
-    pages = models.IntegerField()
-    formatpaper = models.ForeignKey(FormatPaper)
-    type = models.CharField(max_length=200)
-    frequency = models.CharField(max_length=200)
-    circulation = models.IntegerField()
-    site = models.CharField(max_length=200)
-    issn = models.CharField(max_length=200)
-    date_start_publication = models.DateField()
+    date_brought = models.DateField(default='0001-01-01', blank=True)
+    color = models.CharField(max_length=200, choices=COLORS)
+    pages = models.IntegerField(default=0, blank=True)
+    format_paper = models.ForeignKey(FormatPaper)
+    type = models.CharField(max_length=200, choices=TYPES)
+    frequency = models.CharField(max_length=200, choices=FREQUENCIES)
+    circulation = models.IntegerField(default=0, blank=True)
+    site = models.CharField(max_length=200, blank=True)
+    ISSN = models.CharField(max_length=200, blank=True)
+    date_start_publication = models.DateField(default='0001-01-01', blank=True)
     geotag = models.BooleanField()
     crossword = models.BooleanField()
     sudoku = models.BooleanField()
     nonogram = models.BooleanField()
     kakuro = models.BooleanField()
-    tv_schedule = models.BooleanField()
+    TV_schedule = models.BooleanField()
     anecdote = models.BooleanField()
     caricature = models.BooleanField()
     comic_strip = models.BooleanField()
@@ -134,8 +166,8 @@ class Newspaper(models.Model):
     church = models.BooleanField()
     trash = models.BooleanField()
     extra = models.BooleanField()
-    path_to_photos = models.CharField(max_length=200)
-    url = models.CharField(max_length=200, default='')
+    path_to_photos = models.CharField(max_length=200, blank=True)
+    URL = models.CharField(max_length=200, blank=True)
 
     @staticmethod
     def link(not_link):
@@ -186,6 +218,7 @@ class Newspaper(models.Model):
         print('Complete upload photos.')
 
     def post(self):
+        import datetime
         from src.flickr import authorization_flickr
         from src.blog import authorization_blogger, add_post, update_post
 
@@ -205,13 +238,14 @@ class Newspaper(models.Model):
                         '<strong>Title:</strong> ' + self.title + '<br />\n'
 
         content_number = ''
-        if self.number2 is '':
-            content_number = '<strong>Number:</strong> ' + self.number + '<br />\n'
-        else:
-            content_number = '<strong>Number:</strong> ' + self.number + ' (' + self.number2 + ')<br />\n'
+        if self.number != '':
+            if self.number_2 == '':
+                content_number = '<strong>Number:</strong> ' + self.number + '<br />\n'
+            else:
+                content_number = '<strong>Number:</strong> ' + self.number + ' (' + self.number_2 + ')<br />\n'
 
         content_date = ''
-        if self.date is not None:
+        if self.date != datetime.date(1, 1, 1):
             '<strong>Released:</strong> ' + self.format_date() + '<br />\n'
 
         content_language = '<strong>Language:</strong> ' + self.link(self.language.name) + '<br />\n'
@@ -238,7 +272,18 @@ class Newspaper(models.Model):
             update_post(blog=blog, body=generate_post, newspaper=self)
 
     def __str__(self):
-        return '\'' + str(self.anecdote) + '\', \''
+        import datetime
+        number_str = ' '
+        if self.number != '':
+            if self.number_2 == '':
+                number_str = ' #' + self.number + ' '
+            else:
+                number_str = ' #' + self.number + ' (' + self.number_2 + ') '
+
+        date_str = ' '
+        if self.date != datetime.date(1, 1, 1):
+            date_str = 'at ' + self.format_date() + ' '
+        return self.title + number_str + date_str + 'from ' + self.city.name + ', ' + self.city.country.name
 
 
 class Cost(models.Model):
