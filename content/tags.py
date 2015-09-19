@@ -3,20 +3,20 @@
 from app.models import Newspaper
 
 
-def tags():
+def tags(queryset):
     list_tags = ['Coastal city', 'Geotagging', 'Crossword', 'Sudoku', 'Nonogram', 'Kakuro',
                  'TV schedule', 'Anecdote', 'Caricature', 'Comic Strip', 'Recipe', 'Horoscope', 'Weather Forecast',
                  'Obituary', 'Naked Women', 'Church', 'TRASH', 'Extra']
     content_tags = ''
 
-    for newspaper in Newspaper.objects.all():
+    for newspaper in queryset:
         list_tags.append(newspaper.city.name)
         list_tags.append(newspaper.city.country.name)
         list_tags.append(str(newspaper.date.year))
         list_tags.append(newspaper.language.name)
         list_tags.append(newspaper.city.continent)
-        list_tags.append(newspaper.city.hemisphere.name_full())
-        for sender in newspaper.senders:
+        list_tags.append(newspaper.city.hemisphere)
+        for sender in newspaper.senders.all():
             list_tags.append(sender.name)
 
     for tag in sorted(set(list_tags)):

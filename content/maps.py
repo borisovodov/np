@@ -1,12 +1,11 @@
 """Module generate maps for site and big map."""
 
 import sys
-from app.models import Newspaper
 
 
-def content_map():
+def content_map(queryset):
     content_newspaper = ''
-    for newspaper in Newspaper.objects.all():
+    for newspaper in queryset:
         content_newspaper = content_newspaper + 'papername[' + str(newspaper.id) + '] = \'' + newspaper.city.name + ', '\
                             + newspaper.city.country.name + '\';\n'\
                             + 'papertitle[' + str(newspaper.id) + '] = \'' + newspaper.title + '\';\n'\
@@ -19,7 +18,7 @@ def content_map():
                             + newspaper.format_senders_nice() + '\';\n'\
                             + 'paperland[' + str(newspaper.id) + '] = new google.maps.LatLng('\
                             + str(newspaper.coordinates.latitude) + ',' + str(newspaper.coordinates.longitude) + ');\n'\
-                            + 'paperlink[' + str(newspaper.id) + '] = \'' + newspaper.url + '\';\n'\
+                            + 'paperlink[' + str(newspaper.id) + '] = \'' + newspaper.URL + '\';\n'\
                             + 'iconimage[' + str(newspaper.id) + '] = \'' + newspaper.city.country.marker() + '\';\n\n'
 
     return 'function initialize() {\n'\
@@ -54,7 +53,7 @@ def content_map():
            + 'var marker=[];\n'\
            + '\n'\
            + content_newspaper\
-           + 'var N=' + str(len(Newspaper.objects.all()) + 1) + '; //Общее число газет\n'\
+           + 'var N=' + str(len(queryset) + 1) + '; //Общее число газет\n'\
            + 'var i;\n'\
            + 'var j;\n'\
            + 'var k;\n'\
@@ -245,7 +244,7 @@ def content_map():
            + '}\n'
 
 
-def maps():
+def maps(queryset):
     file_map = open(sys.path[0] + '/tmp/map.js', encoding='utf-8', mode='w')
-    file_map.write(content_map())
+    file_map.write(content_map(queryset))
     file_map.close()

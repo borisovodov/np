@@ -8,14 +8,9 @@ ID_BLOGGER_BLOG = config('blogger_blog_id')
 
 
 def authorization_blogger():
-    print('Authorization on Blogger...')
-    try:
-        http_auth = get_http()
-        blog = build('blogger', 'v3', http=http_auth)
-        print('Complete authorization on Blogger.')
-        return blog
-    except:
-        print('Anything wrong with authorization on Blogger. Try again later.')
+    http_auth = get_http()
+    blog = build('blogger', 'v3', http=http_auth)
+    return blog
 
 
 def update_page(blog, body):

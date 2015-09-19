@@ -4,14 +4,13 @@ import sys
 import datetime
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
-from app.models import Newspaper
 
 EXPORT_PATH = sys.path[0] + '/export_' + str(datetime.date.today()) + '.xml'
 
 
-def export():
+def export(queryset):
     root = ET.Element('newspapers', date_export=str(datetime.datetime.now()))
-    for newspaper in Newspaper.objects.all():
+    for newspaper in queryset:
         newspaper_element = ET.SubElement(root, 'newspaper')
         city_element = ET.SubElement(newspaper_element, 'city')
         ET.SubElement(city_element, 'name').text = newspaper.city.name
@@ -93,4 +92,3 @@ def export():
     f = open(EXPORT_PATH, 'wb')
     f.write(pretty_xml)
     f.close()
-    print('Export file created.')

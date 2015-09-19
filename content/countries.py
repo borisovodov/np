@@ -4,11 +4,11 @@ from collections import defaultdict
 from app.models import Newspaper
 
 
-def countries():
+def countries(queryset):
     dict_country = defaultdict(list)
     content_countries = ''
 
-    for newspaper in Newspaper.objects.all():
+    for newspaper in queryset:
         dict_country[newspaper.city.country.name].append(newspaper.city.name)
 
     for country in sorted(dict_country.items()):

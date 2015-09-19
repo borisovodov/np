@@ -20,17 +20,10 @@ if not os.path.isdir(sys.path[0] + '/tmp'):
 
 setup()
 
-from django.core.wsgi import get_wsgi_application
-os.environ['DJANGO_SETTINGS_MODULE'] = 'project.settings'
-get_wsgi_application()
-
 while True:
-    menu = input('\nWhat you want?\nStart app\nExport\nMigration\nSuperuser\nUpdate app\nExit\n').lower()
+    menu = input('\nWhat you want?\nStart app\nMigration\nSuperuser\nUpdate app\nExit\n').lower()
     if menu == 'start' or menu == 's' or menu == 'start app':
         os.system('python manage.py runserver 1515')
-    elif menu == 'export' or menu == 'exp':
-        from src.export import export
-        export()
     elif menu == 'migration' or menu == 'm':
         os.system('python manage.py migrate')
         os.system('python manage.py makemigrations app')

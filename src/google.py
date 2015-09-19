@@ -17,7 +17,6 @@ storage = Storage(storage_path)
 
 
 def authorization_google():
-    print('Authorization on Google...')
     try:
         flow = OAuth2WebServerFlow(client_id=KEY_GOOGLE_CLIENT_ID,
                                    client_secret=KEY_GOOGLE_CLIENT_SECRET,
@@ -30,10 +29,8 @@ def authorization_google():
         credentials = flow.step2_exchange(auth_code)
 
         storage.put(credentials)
-        print('Complete authorization on Google.')
         return True
     except:
-        print('Anything wrong with authorization on Google. Try again later.')
         return False
 
 

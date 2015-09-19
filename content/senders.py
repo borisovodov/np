@@ -3,12 +3,12 @@
 from app.models import Newspaper
 
 
-def senders():
+def senders(queryset):
     list_senders = []
     content_senders = ''
 
-    for newspaper in Newspaper.objects.all():
-        for sender in newspaper.senders:
+    for newspaper in queryset:
+        for sender in newspaper.senders.all():
             list_senders.append(sender.name)
 
     for sender in sorted(set(list_senders)):
