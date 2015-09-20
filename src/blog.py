@@ -22,8 +22,8 @@ def update_page(blog, body):
     blog.pages().update(blogId=ID_BLOGGER_BLOG, pageId=page_id, body=body).execute()
 
 
-def update_post(blog, body, newspaper):
-    post = blog.posts().getByPath(blogId=ID_BLOGGER_BLOG, path=newspaper.path()).execute()
+def update_post(blog, body, path):
+    post = blog.posts().getByPath(blogId=ID_BLOGGER_BLOG, path=path).execute()
     blog.posts().update(blogId=ID_BLOGGER_BLOG, postId=post['id'], body=body).execute()
 
 

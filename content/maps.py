@@ -5,21 +5,19 @@ import sys
 
 def content_map(queryset):
     content_newspaper = ''
-    for newspaper in queryset:
-        content_newspaper = content_newspaper + 'papername[' + str(newspaper.id) + '] = \'' + newspaper.city.name + ', '\
-                            + newspaper.city.country.name + '\';\n'\
-                            + 'papertitle[' + str(newspaper.id) + '] = \'' + newspaper.title + '\';\n'\
-                            + 'papernumber1[' + str(newspaper.id) + '] = \'' + newspaper.number + '\';\n'\
-                            + 'papernumber2[' + str(newspaper.id) + '] = \'' + newspaper.number_2 + '\';\n'\
-                            + 'paperdate[' + str(newspaper.id) + '] = \''\
-                            + newspaper.format_date() + '\';\n'\
-                            + 'paperlang[' + str(newspaper.id) + '] = \'' + newspaper.link(newspaper.language.name) + '\';\n'\
-                            + 'papersender[' + str(newspaper.id) + '] = \''\
-                            + newspaper.format_senders_nice() + '\';\n'\
-                            + 'paperland[' + str(newspaper.id) + '] = new google.maps.LatLng('\
-                            + str(newspaper.coordinates.latitude) + ',' + str(newspaper.coordinates.longitude) + ');\n'\
-                            + 'paperlink[' + str(newspaper.id) + '] = \'' + newspaper.URL + '\';\n'\
-                            + 'iconimage[' + str(newspaper.id) + '] = \'' + newspaper.city.country.marker() + '\';\n\n'
+    for i in range(0, len(queryset)):
+        content_newspaper = content_newspaper + 'papername[' + str(i) + '] = \'' + queryset[i].city.name + ', '\
+                            + queryset[i].city.country.name + '\';\n'\
+                            + 'papertitle[' + str(i) + '] = \'' + queryset[i].title + '\';\n'\
+                            + 'papernumber1[' + str(i) + '] = \'' + queryset[i].number + '\';\n'\
+                            + 'papernumber2[' + str(i) + '] = \'' + queryset[i].number_2 + '\';\n'\
+                            + 'paperdate[' + str(i) + '] = \'' + queryset[i].format_date() + '\';\n'\
+                            + 'paperlang[' + str(i) + '] = \'' + queryset[i].link(queryset[i].language.name) + '\';\n'\
+                            + 'papersender[' + str(i) + '] = \'' + queryset[i].format_senders_nice() + '\';\n'\
+                            + 'paperland[' + str(i) + '] = new google.maps.LatLng('\
+                            + str(queryset[i].coordinates.latitude) + ',' + str(queryset[i].coordinates.longitude) + ');\n'\
+                            + 'paperlink[' + str(i) + '] = \'' + queryset[i].URL + '\';\n'\
+                            + 'iconimage[' + str(i) + '] = \'' + queryset[i].city.country.marker() + '\';\n\n'
 
     return 'function initialize() {\n'\
            + '    var mapOptions = {\n'\
@@ -53,7 +51,7 @@ def content_map(queryset):
            + 'var marker=[];\n'\
            + '\n'\
            + content_newspaper\
-           + 'var N=' + str(len(queryset) + 1) + '; //Общее число газет\n'\
+           + 'var N=' + str(len(queryset)) + '; //Общее число газет\n'\
            + 'var i;\n'\
            + 'var j;\n'\
            + 'var k;\n'\

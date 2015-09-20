@@ -25,8 +25,8 @@ while True:
     if menu == 'start' or menu == 's' or menu == 'start app':
         os.system('python manage.py runserver 1515')
     elif menu == 'migration' or menu == 'm':
+        os.system('python manage.py makemigrations')
         os.system('python manage.py migrate')
-        os.system('python manage.py makemigrations app')
     elif menu == 'superuser':
         os.system('python manage.py createsuperuser')
     elif menu == 'update' or menu == 'u' or menu == 'update app':

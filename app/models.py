@@ -7,8 +7,8 @@ BLOG_NAME = config('blogger_blog_name')
 
 
 class Coordinates(models.Model):
-    latitude = models.FloatField(default=0.0)
-    longitude = models.FloatField(default=0.0)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
 
     def format(self, coord):
         from math import trunc
@@ -153,20 +153,20 @@ class Newspaper(models.Model):
     title = models.CharField(max_length=200)
     number = models.CharField(max_length=200, blank=True)
     number_2 = models.CharField(max_length=200, blank=True)
-    date = models.DateField(default='0001-01-01', blank=True)
+    date = models.DateField(default='0001-01-01')
     language = models.ForeignKey(Language)
     senders = models.ManyToManyField(Sender)
     coordinates = models.OneToOneField(Coordinates)
-    date_brought = models.DateField(default='0001-01-01', blank=True)
+    date_brought = models.DateField(default='0001-01-01')
     color = models.CharField(max_length=200, choices=COLORS)
-    pages = models.IntegerField(default=0, blank=True)
+    pages = models.IntegerField(default=0)
     format_paper = models.ForeignKey(FormatPaper)
     type = models.CharField(max_length=200, choices=TYPES)
     frequency = models.CharField(max_length=200, choices=FREQUENCIES)
-    circulation = models.IntegerField(default=0, blank=True)
+    circulation = models.IntegerField(default=0)
     site = models.CharField(max_length=200, blank=True)
     ISSN = models.CharField(max_length=200, blank=True)
-    date_start_publication = models.DateField(default='0001-01-01', blank=True)
+    date_start_publication = models.DateField(default='0001-01-01')
     geotag = models.BooleanField()
     crossword = models.BooleanField()
     sudoku = models.BooleanField()
@@ -201,20 +201,33 @@ class Newspaper(models.Model):
     def format_senders_nice(self):
         senders_string = self.link(self.senders.all()[0].name)
         if len(self.senders.all()) == 2:
-            senders_string = self.link(self.senders[0].name) + ' and ' + self.link(self.senders[1].name)
+            senders_string = self.link(self.senders.all()[0].name) + ' and ' + self.link(self.senders.all()[1].name)
         elif len(self.senders.all()) > 2:
             for i in range(1, len(self.senders.all()) - 1):
-                senders_string = senders_string + ', ' + self.link(self.senders[i].name)
-            senders_string = senders_string + ' and ' + self.link(self.senders[-1].name)
+                senders_string = senders_string + ', ' + self.link(self.senders.all()[i].name)
+            senders_string = senders_string + ' and ' + self.link(self.senders.all().reverse()[0].name)
         return senders_string
+
+    def format_senders_nice_without_link(self):
+        senders_string = self.senders.all()[0].name
+        if len(self.senders.all()) == 2:
+            senders_string = self.senders.all()[0].name + ' and ' + self.senders.all()[1].name
+        elif len(self.senders.all()) > 2:
+            for i in range(1, len(self.senders.all()) - 1):
+                senders_string = senders_string + ', ' + self.senders.all()[i].name
+            senders_string = senders_string + ' and ' + self.senders.all().reverse()[0].name
+        return senders_string
+    format_senders_nice_without_link.short_description = 'Senders'
 
     def format_date(self):
         import calendar
 
         return calendar.month_name[self.date.month] + ' ' + str(self.date.day) + ', ' + str(self.date.year)
+    format_date.short_description = 'Date'
+    format_date.admin_order_field = 'date'
 
     def path(self):
-        return self.url.replace('http://' + BLOG_NAME + '.blogspot.com', '')
+        return self.URL.replace('http://' + BLOG_NAME + '.blogspot.com', '')
 
     def upload_photos(self):
         import os
@@ -231,9 +244,6 @@ class Newspaper(models.Model):
             photo.name = photo_files[i]
             photo.upload()
             photo.save()
-            print(str(i + 1) + '/' + str(len(photo_files)) + ' photos upload (' + str(((i+1)*100)//len(photo_files))
-                  + '%)')
-        print('Complete upload photos.')
 
     def post(self):
         import datetime
@@ -248,9 +258,44 @@ class Newspaper(models.Model):
         post_name = self.city.name + ', ' + self.city.country.name
         post_tags = [
             self.city.country.name, self.city.name, str(self.date.year), self.language.name,
-            self.format_senders_name(), self.city.continent, self.city.hemisphere.name_full()
+            self.format_senders_name(), self.city.continent, self.city.hemisphere
             ]
-        # add tags.
+        if self.city.coastal:
+            post_tags.append('Coastal city')
+        if self.geotag:
+            post_tags.append('Geotagging')
+        if self.crossword:
+            post_tags.append('Crossword')
+        if self.sudoku:
+            post_tags.append('Sudoku')
+        if self.nonogram:
+            post_tags.append('Nonogram')
+        if self.kakuro:
+            post_tags.append('Kakuro')
+        if self.TV_schedule:
+            post_tags.append('TV schedule')
+        if self.anecdote:
+            post_tags.append('Anecdote')
+        if self.caricature:
+            post_tags.append('Caricature')
+        if self.comic_strip:
+            post_tags.append('Comic Strip')
+        if self.recipe:
+            post_tags.append('Recipe')
+        if self.horoscope:
+            post_tags.append('Horoscope')
+        if self.weather_forecast:
+            post_tags.append('Weather Forecast')
+        if self.obituary:
+            post_tags.append('Obituary')
+        if self.naked_women:
+            post_tags.append('Naked Women')
+        if self.church:
+            post_tags.append('Church')
+        if self.trash:
+            post_tags.append('TRASH')
+        if self.extra:
+            post_tags.append('Extra')
 
         content_title = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
                         '<strong>Title:</strong> ' + str(self.title) + '<br />\n'
@@ -283,12 +328,12 @@ class Newspaper(models.Model):
         }
         authorization_flickr()
         blog = authorization_blogger()
-        if self.url == '':
+        if self.URL == '':
             response = add_post(blog=blog, body=generate_post)
-            self.url = response['url']
+            self.URL = response['url']
             self.save()
         else:
-            update_post(blog=blog, body=generate_post, newspaper=self)
+            update_post(blog=blog, body=generate_post, path=self.path())
 
     def __str__(self):
         import datetime
@@ -298,7 +343,6 @@ class Newspaper(models.Model):
                 number_str = ' #' + str(self.number) + ' '
             else:
                 number_str = ' #' + str(self.number) + ' (' + str(self.number_2) + ') '
-
         date_str = ' '
         if self.date != datetime.date(1, 1, 1):
             date_str = 'at ' + self.format_date() + ' '
@@ -324,7 +368,8 @@ class Photo(models.Model):
 
         flickr = FlickrAPI(config('flickr_key'), config('flickr_secret'))
         flickr_photo = flickr.upload(filename=self.newspaper.path_to_photos + '/' + self.name + '.jpg',
-                                     title=str(self.newspaper.id) + ' ' + self.newspaper.title,
+                                     title=self.newspaper.title + ' ' + self.newspaper.city.name + ', '
+                                                                + self.newspaper.city.country.name,
                                      description='http://' + BLOG_NAME + '.blogspot.com/',
                                      tags=self.newspaper.city.country.name + ' ' + self.newspaper.city.name,
                                      is_public='1')
