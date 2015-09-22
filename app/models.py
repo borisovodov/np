@@ -229,6 +229,12 @@ class Newspaper(models.Model):
     def path(self):
         return self.URL.replace('http://' + BLOG_NAME + '.blogspot.com', '')
 
+    def pravda(self):
+        return 'правда' in self.title.lower()
+
+    def not_official_language(self):
+        return self.language not in self.city.country.languages.all()
+
     def upload_photos(self):
         import os
 
@@ -247,7 +253,6 @@ class Newspaper(models.Model):
         from src.flickr import authorization_flickr
         from src.blog import authorization_blogger, add_post, update_post
 
-        self.upload_photos()
         content_photos = ''
         for i in range(1, len(self.photo_set.all())):
             content_photos = content_photos + self.photo_set.all()[i].link()
@@ -293,6 +298,10 @@ class Newspaper(models.Model):
             post_tags.append('TRASH')
         if self.extra:
             post_tags.append('Extra')
+        if self.pravda():
+            post_tags.append('Правда')
+        if self.not_official_language():
+            post_tags.append('Not official language')
 
         content_title = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
                         '<strong>Title:</strong> ' + str(self.title) + '<br />\n'

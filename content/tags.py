@@ -6,7 +6,7 @@ from app.models import Newspaper
 def tags(queryset):
     list_tags = ['Coastal city', 'Geotagging', 'Crossword', 'Sudoku', 'Nonogram', 'Kakuro',
                  'TV schedule', 'Anecdote', 'Caricature', 'Comic Strip', 'Recipe', 'Horoscope', 'Weather Forecast',
-                 'Obituary', 'Naked Women', 'Church', 'TRASH', 'Extra']
+                 'Obituary', 'Naked Women', 'Church', 'TRASH', 'Extra', 'Правда', 'Not official language']
     content_tags = ''
 
     for newspaper in queryset:
