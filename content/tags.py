@@ -4,24 +4,11 @@ from app.models import Newspaper
 
 
 def tags(queryset):
-    list_tags = ['Coastal city', 'Geotagging', 'Crossword', 'Sudoku', 'Nonogram', 'Kakuro',
-                 'TV schedule', 'Anecdote', 'Caricature', 'Comic Strip', 'Recipe', 'Horoscope', 'Weather Forecast',
-                 'Obituary', 'Naked Women', 'Church', 'TRASH', 'Extra', 'Правда', 'Not official language', ]
+    list_tags = []
     content_tags = ''
 
     for newspaper in queryset:
-        list_tags.append(newspaper.city.name)
-        list_tags.append(newspaper.city.country.name)
-        list_tags.append(str(newspaper.date.year))
-        list_tags.append(newspaper.language.name)
-        list_tags.append(newspaper.city.continent)
-        list_tags.append(newspaper.city.hemisphere)
-        list_tags.append(newspaper.color)
-        list_tags.append(newspaper.type)
-        if newspaper.frequency != 'Other/Unknown':
-            list_tags.append(newspaper.frequency)
-        for sender in newspaper.senders.all():
-            list_tags.append(sender.name)
+        list_tags.append(newspaper.tags())
 
     for tag in sorted(set(list_tags)):
         content_tags = content_tags + '<li>' + Newspaper.link(tag) + '</li>\n'

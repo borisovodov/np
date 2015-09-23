@@ -193,32 +193,29 @@ class Newspaper(models.Model):
         return '<a style="text-decoration: underline" href="http://' + BLOG_NAME + '.blogspot.com/search/label/'\
                + not_link.replace(' ', '%20') + '">' + not_link + '</a>'
 
-    def format_senders_name(self):
-        senders_string = ''
-        for sender in self.senders.all():
-            senders_string = senders_string + str(sender.name) + ','
-        return senders_string[:-1]
+    def format_senders(self, link=True):
+        if link:
+            senders_string = self.link(self.senders.all()[0].name)
+            if len(self.senders.all()) == 2:
+                senders_string = self.link(self.senders.all()[0].name) + ' and ' + self.link(self.senders.all()[1].name)
+            elif len(self.senders.all()) > 2:
+                for i in range(1, len(self.senders.all()) - 1):
+                    senders_string = senders_string + ', ' + self.link(self.senders.all()[i].name)
+                senders_string = senders_string + ' and ' + self.link(self.senders.all().reverse()[0].name)
+            return senders_string
+        else:
+            senders_string = self.senders.all()[0].name
+            if len(self.senders.all()) == 2:
+                senders_string = self.senders.all()[0].name + ' and ' + self.senders.all()[1].name
+            elif len(self.senders.all()) > 2:
+                for i in range(1, len(self.senders.all()) - 1):
+                    senders_string = senders_string + ', ' + self.senders.all()[i].name
+                senders_string = senders_string + ' and ' + self.senders.all().reverse()[0].name
+            return senders_string
 
-    def format_senders_nice(self):
-        senders_string = self.link(self.senders.all()[0].name)
-        if len(self.senders.all()) == 2:
-            senders_string = self.link(self.senders.all()[0].name) + ' and ' + self.link(self.senders.all()[1].name)
-        elif len(self.senders.all()) > 2:
-            for i in range(1, len(self.senders.all()) - 1):
-                senders_string = senders_string + ', ' + self.link(self.senders.all()[i].name)
-            senders_string = senders_string + ' and ' + self.link(self.senders.all().reverse()[0].name)
-        return senders_string
-
-    def format_senders_nice_without_link(self):
-        senders_string = self.senders.all()[0].name
-        if len(self.senders.all()) == 2:
-            senders_string = self.senders.all()[0].name + ' and ' + self.senders.all()[1].name
-        elif len(self.senders.all()) > 2:
-            for i in range(1, len(self.senders.all()) - 1):
-                senders_string = senders_string + ', ' + self.senders.all()[i].name
-            senders_string = senders_string + ' and ' + self.senders.all().reverse()[0].name
-        return senders_string
-    format_senders_nice_without_link.short_description = 'Senders'
+    def format_senders_without_link(self):
+        return self.format_senders(link=False)
+    format_senders_without_link.short_description = 'Senders'
 
     def format_date(self):
         import calendar
@@ -235,6 +232,57 @@ class Newspaper(models.Model):
 
     def not_official_language(self):
         return self.language not in self.city.country.languages.all()
+
+    def tags(self):
+        tags_list = [
+            self.city.country.name, self.city.name, str(self.date.year), self.language.name, self.city.continent,
+            self.city.hemisphere, self.color, self.type
+            ]
+        if self.city.coastal:
+            tags_list.append('Coastal city')
+        if self.geotag:
+            tags_list.append('Geotagging')
+        if self.crossword:
+            tags_list.append('Crossword')
+        if self.sudoku:
+            tags_list.append('Sudoku')
+        if self.nonogram:
+            tags_list.append('Nonogram')
+        if self.kakuro:
+            tags_list.append('Kakuro')
+        if self.TV_schedule:
+            tags_list.append('TV schedule')
+        if self.anecdote:
+            tags_list.append('Anecdote')
+        if self.caricature:
+            tags_list.append('Caricature')
+        if self.comic_strip:
+            tags_list.append('Comic Strip')
+        if self.recipe:
+            tags_list.append('Recipe')
+        if self.horoscope:
+            tags_list.append('Horoscope')
+        if self.weather_forecast:
+            tags_list.append('Weather Forecast')
+        if self.obituary:
+            tags_list.append('Obituary')
+        if self.naked_women:
+            tags_list.append('Naked Women')
+        if self.church:
+            tags_list.append('Church')
+        if self.trash:
+            tags_list.append('TRASH')
+        if self.extra:
+            tags_list.append('Extra')
+        if self.pravda():
+            tags_list.append('Правда')
+        if self.not_official_language():
+            tags_list.append('Not official language')
+        if self.frequency != 'Other/Unknown':
+            tags_list.append(self.frequency)
+        for sender in self.senders.all():
+            tags_list.append(sender.name)
+        return tags_list
 
     def upload_photos(self):
         import os
@@ -259,52 +307,6 @@ class Newspaper(models.Model):
             content_photos = content_photos + self.photo_set.all()[i].link()
 
         post_name = self.city.name + ', ' + self.city.country.name
-        post_tags = [
-            self.city.country.name, self.city.name, str(self.date.year), self.language.name,
-            self.format_senders_name(), self.city.continent, self.city.hemisphere, self.color, self.type
-            ]
-        if self.city.coastal:
-            post_tags.append('Coastal city')
-        if self.geotag:
-            post_tags.append('Geotagging')
-        if self.crossword:
-            post_tags.append('Crossword')
-        if self.sudoku:
-            post_tags.append('Sudoku')
-        if self.nonogram:
-            post_tags.append('Nonogram')
-        if self.kakuro:
-            post_tags.append('Kakuro')
-        if self.TV_schedule:
-            post_tags.append('TV schedule')
-        if self.anecdote:
-            post_tags.append('Anecdote')
-        if self.caricature:
-            post_tags.append('Caricature')
-        if self.comic_strip:
-            post_tags.append('Comic Strip')
-        if self.recipe:
-            post_tags.append('Recipe')
-        if self.horoscope:
-            post_tags.append('Horoscope')
-        if self.weather_forecast:
-            post_tags.append('Weather Forecast')
-        if self.obituary:
-            post_tags.append('Obituary')
-        if self.naked_women:
-            post_tags.append('Naked Women')
-        if self.church:
-            post_tags.append('Church')
-        if self.trash:
-            post_tags.append('TRASH')
-        if self.extra:
-            post_tags.append('Extra')
-        if self.pravda():
-            post_tags.append('Правда')
-        if self.not_official_language():
-            post_tags.append('Not official language')
-        if self.frequency != 'Other/Unknown':
-            post_tags.append(self.frequency)
 
         content_title = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
                         '<strong>Title:</strong> ' + str(self.title) + '<br />\n'
@@ -323,7 +325,7 @@ class Newspaper(models.Model):
 
         content_language = '<strong>Language:</strong> ' + self.link(self.language.name) + '<br />\n'
 
-        content_senders = '<strong>Sender:</strong> ' + self.format_senders_nice() + '<br />\n'\
+        content_senders = '<strong>Sender:</strong> ' + self.format_senders() + '<br />\n'\
                           '<br />\n'
 
         content_post = content_title + content_number + content_date + content_language + content_senders\
@@ -333,7 +335,7 @@ class Newspaper(models.Model):
         generate_post = {
             'title': post_name,
             'content': content_post,
-            'labels': post_tags
+            'labels': self.tags()
         }
         authorization_flickr()
         blog = authorization_blogger()
