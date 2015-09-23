@@ -5,7 +5,7 @@ import sys
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 
-SETTINGS_PATH = sys.path[0] + '/data/settings.xml'
+SETTINGS_PATH = os.path.join(sys.path[0], 'data', 'settings.xml')
 
 
 def create_config():
