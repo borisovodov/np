@@ -233,6 +233,11 @@ class Newspaper(models.Model):
     def not_official_language(self):
         return self.language not in self.city.country.languages.all()
 
+    def URL_is(self):
+        return bool(self.URL)
+    URL_is.boolean = True
+    URL_is.short_description = 'URL'
+
     def tags(self):
         tags_list = [
             self.city.country.name, self.city.name, str(self.date.year), self.language.name, self.city.continent,
