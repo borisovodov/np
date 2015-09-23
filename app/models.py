@@ -146,6 +146,7 @@ class Newspaper(models.Model):
         ('Weekly', 'Weekly'),
         ('Monthly', 'Monthly'),
         ('Bimonthly', 'Bimonthly'),
+        ('Three times a week', 'Three times a week'),
         ('Other/Unknown', 'Other/Unknown'),
     )
 
@@ -260,7 +261,7 @@ class Newspaper(models.Model):
         post_name = self.city.name + ', ' + self.city.country.name
         post_tags = [
             self.city.country.name, self.city.name, str(self.date.year), self.language.name,
-            self.format_senders_name(), self.city.continent, self.city.hemisphere
+            self.format_senders_name(), self.city.continent, self.city.hemisphere, self.color, self.type
             ]
         if self.city.coastal:
             post_tags.append('Coastal city')
@@ -302,6 +303,8 @@ class Newspaper(models.Model):
             post_tags.append('Правда')
         if self.not_official_language():
             post_tags.append('Not official language')
+        if self.frequency != 'Other/Unknown':
+            post_tags.append(self.frequency)
 
         content_title = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
                         '<strong>Title:</strong> ' + str(self.title) + '<br />\n'

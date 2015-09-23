@@ -2,15 +2,6 @@
 
 from django.contrib import admin
 from .models import *
-from content.countries import countries
-from content.maps import maps
-from content.senders import senders
-from content.stat import stat
-from content.tags import tags
-from content.about import about
-from content.export import export
-from src.blog import authorization_blogger, update_page
-from src.drive import authorization_drive, update_map
 
 
 class CostInline(admin.StackedInline):
@@ -35,6 +26,15 @@ class NewspaperAdmin(admin.ModelAdmin):
     list_display = ('title', 'number', 'number_2', 'format_date', 'city', 'format_senders_nice_without_link',)
 
     def update(self, request, queryset):
+        from src.drive import authorization_drive, update_map
+        from src.blog import authorization_blogger, update_page
+        from content.countries import countries
+        from content.maps import maps
+        from content.senders import senders
+        from content.stat import stat
+        from content.tags import tags
+        from content.about import about
+
         drive = authorization_drive()
         maps(queryset)
         update_map(drive=drive)
@@ -58,6 +58,8 @@ class NewspaperAdmin(admin.ModelAdmin):
     posts_with_update_photos.short_description = 'Post with update photos'
 
     def export_newspapers(self, request, queryset):
+        from content.export import export
+
         export(queryset)
     export_newspapers.short_description = 'Export'
 

@@ -1,13 +1,14 @@
 """Module for work with Blogger."""
 
-from .google import get_http
-from googleapiclient.discovery import build
 from .config import config
 
 ID_BLOGGER_BLOG = config('blogger_blog_id')
 
 
 def authorization_blogger():
+    from googleapiclient.discovery import build
+    from .google import get_http
+
     http_auth = get_http()
     blog = build('blogger', 'v3', http=http_auth)
     return blog

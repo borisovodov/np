@@ -1,22 +1,21 @@
 """Module for work with Google Drive."""
 
-import sys
-from .google import get_http
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
-from .config import config
-
-ID_DRIVE_FOLDER_MAP = config('drive_folder_map_id')
-
 
 def authorization_drive():
+    from googleapiclient.discovery import build
+    from .google import get_http
+
     http_auth = get_http()
     drive = build('drive', 'v2', http=http_auth)
     return drive
 
 
 def update_map(drive):
-    files = drive.files().list(q='\'' + ID_DRIVE_FOLDER_MAP + '\'' + ' in parents').execute()
+    import sys
+    from googleapiclient.http import MediaFileUpload
+    from .config import config
+
+    files = drive.files().list(q='\'' + config('drive_folder_map_id') + '\'' + ' in parents').execute()
     for f in files['items']:
         if f['title'] == 'map.js':
             file = f

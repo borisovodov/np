@@ -1,10 +1,11 @@
 """Module for setup and update outer module."""
 
-import pip
 import os
 
 
 def setup():
+    import pip
+    
     modules = []
     for module in pip.get_installed_distributions():
         modules.append(module.key)
