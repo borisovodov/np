@@ -1,7 +1,5 @@
 """Module generate maps for site and big map."""
 
-import sys
-
 
 def content_map(queryset):
     content_newspaper = ''
@@ -243,6 +241,9 @@ def content_map(queryset):
 
 
 def maps(queryset):
-    file_map = open(sys.path[0] + '/tmp/map.js', encoding='utf-8', mode='w')
+    import os
+    import sys
+
+    file_map = open(os.path.join(sys.path[0], 'tmp', 'map.js'), encoding='utf-8', mode='w')
     file_map.write(content_map(queryset))
     file_map.close()

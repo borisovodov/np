@@ -12,11 +12,8 @@ import sys
 import os
 from src.setup_lib import setup, update
 
-if not os.path.isdir(sys.path[0] + '/data'):
-    os.makedirs(sys.path[0] + '/data')
-
-if not os.path.isdir(sys.path[0] + '/tmp'):
-    os.makedirs(sys.path[0] + '/tmp')
+if not os.path.isdir(os.path.join(sys.path[0], 'tmp')):
+    os.makedirs(os.path.join(sys.path[0], 'tmp'))
 
 setup()
 

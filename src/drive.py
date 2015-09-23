@@ -11,6 +11,7 @@ def authorization_drive():
 
 
 def update_map(drive):
+    import os
     import sys
     from googleapiclient.http import MediaFileUpload
     from .config import config
@@ -19,5 +20,5 @@ def update_map(drive):
     for f in files['items']:
         if f['title'] == 'map.js':
             file = f
-    media = MediaFileUpload(filename=sys.path[0] + '/tmp/map.js', resumable=True)
+    media = MediaFileUpload(filename=os.path.join(sys.path[0], 'tmp', 'map.js'), resumable=True)
     drive.files().update(fileId=file['id'], body=file, media_body=media).execute()

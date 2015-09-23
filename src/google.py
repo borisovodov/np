@@ -1,9 +1,10 @@
 """Module for authorization on Google."""
 
+import os
 import sys
 from oauth2client.file import Storage
 
-storage_path = sys.path[0] + '/tmp/google_credentials.db'
+storage_path = os.path.join(sys.path[0], 'tmp', 'google_credentials.db')
 storage = Storage(storage_path)
 
 

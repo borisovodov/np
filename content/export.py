@@ -1,11 +1,12 @@
 """Module for export database to XML file."""
 
 import sys
+import os
 import datetime
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 
-EXPORT_PATH = sys.path[0] + '/export_' + str(datetime.date.today()) + '.xml'
+EXPORT_PATH = os.path.join(sys.path[0], 'export_' + str(datetime.date.today()) + '.xml')
 
 
 def export(queryset):
