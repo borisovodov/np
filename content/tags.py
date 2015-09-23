@@ -8,7 +8,7 @@ def tags(queryset):
     content_tags = ''
 
     for newspaper in queryset:
-        list_tags.append(newspaper.tags())
+        list_tags.extend(newspaper.tags())
 
     for tag in sorted(set(list_tags)):
         content_tags = content_tags + '<li>' + Newspaper.link(tag) + '</li>\n'
