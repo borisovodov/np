@@ -20,7 +20,7 @@ setup()
 while True:
     menu = input('\nWhat you want?\nStart app\nMigration\nSuperuser\nUpdate app\nExit\n').lower()
     if menu == 'start' or menu == 's' or menu == 'start app':
-        os.system('python manage.py runserver 1515')
+        os.system('python manage.py runserver 1000')
     elif menu == 'migration' or menu == 'm':
         os.system('python manage.py makemigrations')
         os.system('python manage.py migrate')

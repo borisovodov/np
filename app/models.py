@@ -233,6 +233,11 @@ class Newspaper(models.Model):
     def not_official_language(self):
         return self.language not in self.city.country.languages.all()
 
+    def path_to_photos_is(self):
+        return bool(self.path_to_photos)
+    path_to_photos_is.boolean = True
+    path_to_photos_is.short_description = 'Photos'
+
     def URL_is(self):
         return bool(self.URL)
     URL_is.boolean = True
@@ -291,6 +296,7 @@ class Newspaper(models.Model):
 
     def upload_photos(self):
         import os
+        from src.flickr import authorization_flickr
 
         self.photo_set.all().delete()
         for file in os.listdir(str(self.path_to_photos)):
@@ -299,22 +305,17 @@ class Newspaper(models.Model):
                 photo.newspaper = self
                 photo.name = file[:-4]
                 photo.save()
+        authorization_flickr()
         for photo in self.photo_set.all().order_by('name'):
             photo.upload()
 
     def post(self):
         import datetime
-        from src.flickr import authorization_flickr
         from src.blog import authorization_blogger, add_post, update_post
 
         content_photos = ''
         for i in range(1, len(self.photo_set.all())):
             content_photos = content_photos + self.photo_set.all()[i].link()
-
-        post_name = self.city.name + ', ' + self.city.country.name
-
-        content_title = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
-                        '<strong>Title:</strong> ' + str(self.title) + '<br />\n'
 
         content_number = ''
         if self.number != '':
@@ -326,23 +327,24 @@ class Newspaper(models.Model):
 
         content_date = ''
         if self.date != datetime.date(1, 1, 1):
-            '<strong>Released:</strong> ' + self.format_date() + '<br />\n'
+            content_date = '<strong>Released:</strong> ' + self.format_date() + '<br />\n'
 
         content_language = '<strong>Language:</strong> ' + self.link(self.language.name) + '<br />\n'
 
         content_senders = '<strong>Sender:</strong> ' + self.format_senders() + '<br />\n'\
                           '<br />\n'
 
-        content_post = content_title + content_number + content_date + content_language + content_senders\
-                                     + self.photo_set.all()[0].link() + '<!--more-->\n'\
-                                     + content_photos + '</div>'
+        content_post = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
+                       '<strong>Title:</strong> ' + str(self.title) + '<br />\n' + content_number + content_date\
+                       + content_language + content_senders\
+                       + self.photo_set.all()[0].link() + '<!--more-->\n'\
+                       + content_photos + '</div>'
 
         generate_post = {
-            'title': post_name,
+            'title': str(self.city),
             'content': content_post,
             'labels': self.tags()
         }
-        authorization_flickr()
         blog = authorization_blogger()
         if self.URL == '':
             response = add_post(blog=blog, body=generate_post)
@@ -362,7 +364,7 @@ class Newspaper(models.Model):
         date_str = ' '
         if self.date != datetime.date(1, 1, 1):
             date_str = 'at ' + self.format_date() + ' '
-        return self.title + number_str + date_str + 'from ' + self.city.name + ', ' + self.city.country.name
+        return self.title + number_str + date_str + 'from ' + str(self.city)
 
 
 class Cost(models.Model):

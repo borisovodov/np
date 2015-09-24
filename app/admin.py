@@ -23,7 +23,8 @@ class NewspaperAdmin(admin.ModelAdmin):
         ('System', {'fields': ['path_to_photos', 'URL']}),
     ]
     actions = ['update', 'posts', 'posts_with_update_photos', 'export_newspapers']
-    list_display = ('title', 'number', 'number_2', 'format_date', 'city', 'format_senders_without_link', 'URL_is',)
+    list_display = ('title', 'number', 'number_2', 'format_date', 'city', 'format_senders_without_link',
+                    'path_to_photos_is', 'URL_is',)
 
     def update(self, request, queryset):
         from src.drive import authorization_drive, update_map
