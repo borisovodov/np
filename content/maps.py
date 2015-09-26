@@ -13,7 +13,8 @@ def content_map(queryset):
                             + 'paperlang[' + str(i) + '] = \'' + queryset[i].link(queryset[i].language.name) + '\';\n'\
                             + 'papersender[' + str(i) + '] = \'' + queryset[i].format_senders() + '\';\n'\
                             + 'paperland[' + str(i) + '] = new google.maps.LatLng('\
-                            + str(queryset[i].coordinates.latitude) + ',' + str(queryset[i].coordinates.longitude) + ');\n'\
+                            + str(queryset[i].coordinates.latitude) + ',' + str(queryset[i].coordinates.longitude)\
+                            + ');\n'\
                             + 'paperlink[' + str(i) + '] = \'' + queryset[i].URL + '\';\n'\
                             + 'iconimage[' + str(i) + '] = \'' + queryset[i].city.country.marker() + '\';\n\n'
 

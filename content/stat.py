@@ -36,7 +36,8 @@ def stat(queryset):
               'from around the world</span>. Look at this entertaining statistics:</p>\n'\
               '<ul>\n'\
               '<p><li>A total of ' + str(len(queryset)) + ' newspapers from <a style=\"text-decoration: underline\" ' \
-                                                          'href=\"http://' + BLOG_NAME + '.blogspot.com/p/countries.html\">'\
+                                                          'href=\"http://' + BLOG_NAME\
+                                                        + '.blogspot.com/p/countries.html\">'\
               + str(len(set(countries))) + ' countries</a> and <a style=\"text-decoration: underline\" ' \
                                            'href=\"http://' + BLOG_NAME + '.blogspot.com/p/countries.html\">'\
               + str(len(set(cities))) + ' cities</a>.</li></p>\n'\
@@ -73,8 +74,8 @@ def stat(queryset):
               + '<p><li>First <a style=\"text-decoration: underline\" ' \
                 'href=\"http://' + BLOG_NAME + '.blogspot.com/2012/01/beijing-china.html\">newspaper</a> ' \
                 '<a style=\"text-decoration: underline\" ' \
-                'href=\"http://' + BLOG_NAME + '.blogspot.com/search/label/Alexandra%20Ovodova\">Alexandra Ovodova</a> ' \
-                'filch from post.</li></p>\n'\
+                'href=\"http://' + BLOG_NAME + '.blogspot.com/search/label/Alexandra%20Ovodova\">Alexandra ' \
+                                               'Ovodova</a> filch from post.</li></p>\n'\
               + '<p><li>Latest newspaper ' + queryset.latest('date_brought').format_senders() + ' brought from '\
               + Newspaper.link(queryset.latest('date_brought').city.name) + ', '\
               + Newspaper.link(queryset.latest('date_brought').city.country.name) + '.</li></p>\n'\

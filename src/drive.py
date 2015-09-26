@@ -17,6 +17,7 @@ def update_map(drive):
     from .config import config
 
     files = drive.files().list(q='\'' + config('drive_folder_map_id') + '\'' + ' in parents').execute()
+    file = {}
     for f in files['items']:
         if f['title'] == 'map.js':
             file = f

@@ -5,13 +5,13 @@ creating posts and updating pages on Blogger.
 Main module of program.
 """
 
-__author__ = 'Boris Ovodov'
-__version__ = '1.1.3'
-
 import sys
 import os
 import webbrowser
 from src.setup_lib import setup, update
+
+__author__ = 'Boris Ovodov'
+__version__ = '1.1.3'
 
 if not os.path.isdir(os.path.join(sys.path[0], 'tmp')):
     os.makedirs(os.path.join(sys.path[0], 'tmp'))
