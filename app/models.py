@@ -144,9 +144,9 @@ class Newspaper(models.Model):
     FREQUENCIES = (
         ('Daily', 'Daily'),
         ('Weekly', 'Weekly'),
+        ('Weeklies', 'Weeklies'),
         ('Monthly', 'Monthly'),
         ('Bimonthly', 'Bimonthly'),
-        ('Three times a week', 'Three times a week'),
         ('Other/Unknown', 'Other/Unknown'),
     )
 
