@@ -54,7 +54,7 @@ class NewspaperAdmin(admin.ModelAdmin):
 
     def posts_with_update_photos(self, request, queryset):
         for newspaper in queryset:
-            newspaper.update_photos()
+            newspaper.upload_photos()
             newspaper.post()
     posts_with_update_photos.short_description = 'Post with update photos'
 

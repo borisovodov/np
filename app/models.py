@@ -386,7 +386,7 @@ class Photo(models.Model):
 
         flickr = FlickrAPI(config('flickr_key'), config('flickr_secret'))
         flickr_photo = flickr.upload(filename=self.newspaper.path_to_photos + '/' + self.name + '.jpg',
-                                     title=self.newspaper.title + ' ' + self.newspaper.city.name + ', '
+                                     title=self.newspaper.title + ' / ' + self.newspaper.city.name + ', '
                                                                 + self.newspaper.city.country.name,
                                      description='http://' + BLOG_NAME + '.blogspot.com/',
                                      tags=self.newspaper.city.country.name + ' ' + self.newspaper.city.name,
