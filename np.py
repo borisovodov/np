@@ -11,7 +11,7 @@ import webbrowser
 from src.setup_lib import setup, update
 
 __author__ = 'Boris Ovodov'
-__version__ = '1.1.3'
+__version__ = '2.0.0'
 
 if not os.path.isdir(os.path.join(sys.path[0], 'tmp')):
     os.makedirs(os.path.join(sys.path[0], 'tmp'))
