@@ -246,7 +246,7 @@ class Newspaper(models.Model):
     def tags(self):
         tags_list = [
             self.city.country.name, self.city.name, str(self.date.year), self.language.name, self.city.continent,
-            self.city.hemisphere, self.color, self.type
+            self.color
             ]
         if self.city.coastal:
             tags_list.append('Coastal city')
@@ -290,6 +290,8 @@ class Newspaper(models.Model):
             tags_list.append('Not official language')
         if self.frequency != 'Other/Unknown':
             tags_list.append(self.frequency)
+        if self.type != 'Newspaper':
+            tags_list.append(self.type)
         for sender in self.senders.all():
             tags_list.append(sender.name)
         return tags_list
