@@ -1,11 +1,21 @@
+"""Module for adding statistic."""
+
+from app.models import Newspaper
+
 content_adding = '<!--// Этот коммент не даёт показаться дополнительной статистике, пока она не готова\n'\
                  '<hr noshade style=\"margin-top: 30px; margin-bottom: 30px; color: black; background-color: black; ' \
                  'height: 1px; border: none\">\n'\
-                 + '<p>Random:</p>\n'\
-                 + '<ul>\n'\
-                 + '<p><li>\n'\
-                 + '<script type=\"text/javascript\"><!--\n'\
-                 + 'var h=(Math.random()*34);\n'\
+                 '<p>Random:</p>\n'\
+                 '<ul>\n'\
+                 '<p><li>\n'\
+                 '<script type=\"text/javascript\"><!--\n'\
+                 'var h=(Math.random()*35);\n'\
+                 'if (h < 1) document.writeln(\'' + str(Newspaper.objects.filter(color='Monochrome'))\
+                 + ' newspapers monochrome.\');\n' \
+                 'if (h > 1 && h < 2) document.writeln(\'' + str(Newspaper.objects.filter(color='Bicolor'))\
+                 + ' newspapers bicolor.\');\n' \
+                 'if (h > 2 && h < 3) document.writeln(\'' + str(Newspaper.objects.filter(color='Multicolor'))\
+                 + ' newspapers multicolor.\');\n'\
                  + 'if (h < 1) document.writeln(\'*** newspapers have Sudoku.\');\n'\
                  + 'if (h > 1 && h < 2) document.writeln(\'*** newspapers have horoscope.\');\n'\
                  + 'if (h > 2 && h < 3) document.writeln(\'*** newspapers have crossword puzzle.\');\n'\
@@ -55,6 +65,7 @@ content_adding = '<!--// Этот коммент не даёт показать�
                    '<a style=\"text-decoration: underline\" ' \
                    'href=\"http://papersaround.blogspot.com/search/label/Russia\">Russia</a>—8776 people.</li></p>\');\n'\
                  + 'if (h > 34 && h < 35) document.writeln(\'количество букв в названии.\');\n'\
+                 + 'if (h > 34 && h < 35) document.writeln(\'hemisphere\');\n'\
                  + '//--><!--</script>\n'\
                  + '</li></p>\n'\
                  + '</ul>-->\n'
