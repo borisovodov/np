@@ -2,6 +2,9 @@
 
 from app.models import Newspaper
 
+content = ''
+# for i in range(n, m):
+
 content_adding = '<!--// Этот коммент не даёт показаться дополнительной статистике, пока она не готова\n'\
                  '<hr noshade style=\"margin-top: 30px; margin-bottom: 30px; color: black; background-color: black; ' \
                  'height: 1px; border: none\">\n'\
@@ -10,12 +13,39 @@ content_adding = '<!--// Этот коммент не даёт показать�
                  '<p><li>\n'\
                  '<script type=\"text/javascript\"><!--\n'\
                  'var h=(Math.random()*35);\n'\
-                 'if (h < 1) document.writeln(\'' + str(Newspaper.objects.filter(color='Monochrome'))\
-                 + ' newspapers monochrome.\');\n' \
-                 'if (h > 1 && h < 2) document.writeln(\'' + str(Newspaper.objects.filter(color='Bicolor'))\
-                 + ' newspapers bicolor.\');\n' \
-                 'if (h > 2 && h < 3) document.writeln(\'' + str(Newspaper.objects.filter(color='Multicolor'))\
-                 + ' newspapers multicolor.\');\n'\
+                 'if (h > 0 && h < 1) document.writeln(\'' + str(len(Newspaper.objects.filter(color='Monochrome')))\
+                 + ' newspapers <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Monochrome\">monochrome</a>.\');\n'\
+                 'if (h > 1 && h < 2) document.writeln(\'' + str(len(Newspaper.objects.filter(color='Bicolor')))\
+                 + ' newspapers <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Bicolor\">bicolor</a>.\');\n'\
+                 'if (h > 2 && h < 3) document.writeln(\'' + str(len(Newspaper.objects.filter(color='Multicolor')))\
+                 + ' newspapers <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Multicolor\">multicolor</a>.\');\n'\
+                 'if (h > 3 && h < 4) document.writeln(\'' + str(len(Newspaper.objects.filter(type='Magazine')))\
+                 + ' <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Magazine\">magazines</a>.\');\n'\
+                 'if (h > 4 && h < 5) document.writeln(\'' + str(len(Newspaper.objects.filter(type='Brochure')))\
+                 + ' <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Brochure\">brochures</a>.\');\n'\
+                 'if (h > 5 && h < 6) document.writeln(\'' + str(len(Newspaper.objects.filter(frequency='Daily')))\
+                 + ' <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Daily\">daily</a> newspapers.\');\n'\
+                 'if (h > 6 && h < 7) document.writeln(\'' + str(len(Newspaper.objects.filter(frequency='Weekly')))\
+                 + ' <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Weekly\">weekly</a> newspapers.\');\n'\
+                 'if (h > 7 && h < 8) document.writeln(\'' + str(len(Newspaper.objects.filter(frequency='Weeklies')))\
+                 + ' <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Weeklies\">weeklies</a> newspapers.\');\n'\
+                 'if (h > 8 && h < 9) document.writeln(\'' + str(len(Newspaper.objects.filter(frequency='Monthly')))\
+                 + ' <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Monthly\">monthly</a> newspapers.\');\n'\
+                 'if (h > 9 && h < 10) document.writeln(\'' + str(len(Newspaper.objects.filter(frequency='Bimonthly')))\
+                 + ' <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Bimonthly\">bimonthly</a> newspapers.\');\n'\
+                 'if (h > 10 && h < 11) document.writeln(\'' + str(len(Newspaper.objects.filter(geotag=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Geotagging\">geotagging</a>.\');\n'\
                  + 'if (h < 1) document.writeln(\'*** newspapers have Sudoku.\');\n'\
                  + 'if (h > 1 && h < 2) document.writeln(\'*** newspapers have horoscope.\');\n'\
                  + 'if (h > 2 && h < 3) document.writeln(\'*** newspapers have crossword puzzle.\');\n'\
