@@ -233,11 +233,6 @@ class Newspaper(models.Model):
     def not_official_language(self):
         return self.language not in self.city.country.languages.all()
 
-    def path_to_photos_is(self):
-        return bool(self.path_to_photos)
-    path_to_photos_is.boolean = True
-    path_to_photos_is.short_description = 'Photos'
-
     def URL_is(self):
         return bool(self.URL)
     URL_is.boolean = True
