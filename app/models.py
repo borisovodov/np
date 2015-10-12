@@ -244,9 +244,9 @@ class Newspaper(models.Model):
             self.color
             ]
         if self.city.coastal:
-            tags_list.append('Coastal city')
+            tags_list.append('Coastal')
         if self.geotag:
-            tags_list.append('Geotagging')
+            tags_list.append('Geotag')
         if self.crossword:
             tags_list.append('Crossword')
         if self.sudoku:

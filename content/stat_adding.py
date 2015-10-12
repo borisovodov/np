@@ -1,6 +1,14 @@
 """Module for adding statistic."""
 
+from src.config import config
 from app.models import Newspaper
+
+
+def random_string(index, tag_site, tag_name, start_text, finish_text):
+    return 'if (h > ' + str(index) + ' && h < ' + str(index + 1) + ') document.writeln(\''\
+           + start_text + '<a style=\"text-decoration: underline\" ' \
+             'href=\"http://' + config('blogger_blog_name') + '.blogspot.com/search/label/'\
+           + tag_site + '\">' + tag_name + '</a>' + finish_text + '.\');\n'\
 
 content = ''
 # for i in range(n, m):
@@ -45,7 +53,57 @@ content_adding = '<!--// Этот коммент не даёт показать�
                  'href=\"http://papersaround.blogspot.com/search/label/Bimonthly\">bimonthly</a> newspapers.\');\n'\
                  'if (h > 10 && h < 11) document.writeln(\'' + str(len(Newspaper.objects.filter(geotag=True)))\
                  + ' newspapers have <a style=\"text-decoration: underline\" ' \
-                 'href=\"http://papersaround.blogspot.com/search/label/Geotagging\">geotagging</a>.\');\n'\
+                 'href=\"http://papersaround.blogspot.com/search/label/Geotag\">geotagging</a>.\');\n'\
+                 'if (h > 11 && h < 12) document.writeln(\'' + str(len(Newspaper.objects.filter(crossword=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Crossword\">crossword</a>.\');\n'\
+                 'if (h > 12 && h < 13) document.writeln(\'' + str(len(Newspaper.objects.filter(sudoku=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Sudoku\">sudoku</a>.\');\n'\
+                 'if (h > 13 && h < 14) document.writeln(\'' + str(len(Newspaper.objects.filter(nonogram=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Nonogram\">nonogram</a>.\');\n'\
+                 'if (h > 14 && h < 15) document.writeln(\'' + str(len(Newspaper.objects.filter(kakuro=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Kakuro\">kakuro</a>.\');\n'\
+                 'if (h > 15 && h < 16) document.writeln(\'' + str(len(Newspaper.objects.filter(TV_schedule=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/TV%20schedule\">TV schedule</a>.\');\n'\
+                 'if (h > 16 && h < 17) document.writeln(\'' + str(len(Newspaper.objects.filter(anecdote=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Anecdote\">anecdote</a>.\');\n'\
+                 'if (h > 17 && h < 18) document.writeln(\'' + str(len(Newspaper.objects.filter(caricature=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Caricature\">caricature</a>.\');\n'\
+                 'if (h > 18 && h < 19) document.writeln(\'' + str(len(Newspaper.objects.filter(comic_strip=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Comic%20Strip\">comic strip</a>.\');\n'\
+                 'if (h > 19 && h < 20) document.writeln(\'' + str(len(Newspaper.objects.filter(recipe=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/recipe\">recipe</a>.\');\n'\
+                 'if (h > 20 && h < 21) document.writeln(\'' + str(len(Newspaper.objects.filter(horoscope=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Horoscope\">horoscope</a>.\');\n'\
+                 'if (h > 21 && h < 22) document.writeln(\''\
+                 + str(len(Newspaper.objects.filter(weather_forecast=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Weather%20Forecast\">weather ' \
+                 'forecast</a>.\');\n'\
+                 'if (h > 22 && h < 23) document.writeln(\'' + str(len(Newspaper.objects.filter(obituary=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Obituary\">obituary</a>.\');\n'\
+                 'if (h > 23 && h < 24) document.writeln(\'' + str(len(Newspaper.objects.filter(naked_women=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Naked%20Women\">naked women</a>.\');\n'\
+                 'if (h > 24 && h < 25) document.writeln(\'' + str(len(Newspaper.objects.filter(church=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/Church\">church</a>.\');\n'\
+                 'if (h > 25 && h < 26) document.writeln(\'' + str(len(Newspaper.objects.filter(trash=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/TRASH\">trash</a>.\');\n'\
+                 'if (h > 26 && h < 27) document.writeln(\'' + str(len(Newspaper.objects.filter(extra=True)))\
+                 + ' newspapers have <a style=\"text-decoration: underline\" ' \
+                 'href=\"http://papersaround.blogspot.com/search/label/extra\">extra</a>.\');\n'\
                  + 'if (h < 1) document.writeln(\'*** newspapers have Sudoku.\');\n'\
                  + 'if (h > 1 && h < 2) document.writeln(\'*** newspapers have horoscope.\');\n'\
                  + 'if (h > 2 && h < 3) document.writeln(\'*** newspapers have crossword puzzle.\');\n'\
