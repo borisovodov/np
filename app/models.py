@@ -295,16 +295,18 @@ class Newspaper(models.Model):
         import os
         from src.flickr import authorization_flickr
 
-        self.photo_set.all().delete()
+        files = []
         for file in os.listdir(str(self.path_to_photos)):
             if file.endswith('.jpg'):
-                photo = Photo()
-                photo.newspaper = self
-                photo.name = file[:-4]
-                photo.save()
+                files.append(file[:-4])
         authorization_flickr()
-        for photo in self.photo_set.all().order_by('name'):
+        self.photo_set.all().delete()
+        for file in sorted(files):
+            photo = Photo()
+            photo.newspaper = self
+            photo.name = file
             photo.upload()
+            photo.save()
 
     def post(self):
         import datetime
@@ -389,7 +391,6 @@ class Photo(models.Model):
                                      tags=self.newspaper.city.country.name + ' ' + self.newspaper.city.name,
                                      is_public='1')
         self.flickr_id = flickr_photo.find('photoid').text
-        self.save()
         return self
 
     def link(self):
