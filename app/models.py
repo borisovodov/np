@@ -145,6 +145,7 @@ class Newspaper(models.Model):
         ('Daily', 'Daily'),
         ('Weekly', 'Weekly'),
         ('Weeklies', 'Weeklies'),
+        ('Biweekly', 'Biweekly'),
         ('Monthly', 'Monthly'),
         ('Bimonthly', 'Bimonthly'),
         ('Other/Unknown', 'Other/Unknown'),
