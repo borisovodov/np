@@ -232,10 +232,10 @@ class Newspaper(models.Model):
     def not_official_language(self):
         return self.language not in self.city.country.languages.all()
 
-    def URL_is(self):
+    def is_URL(self):
         return bool(self.URL)
-    URL_is.boolean = True
-    URL_is.short_description = 'URL'
+    is_URL.boolean = True
+    is_URL.short_description = 'URL'
 
     def tags(self):
         tags_list = [
