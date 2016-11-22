@@ -1,5 +1,5 @@
 # np
-np is a program for easy work with database of newspapers, uploading scans on Flickr and maps on Google Drive, creating posts and updating pages on Blogger.
+np is a program for easy work with database of newspapers, uploading scans on Flickr, creating posts and updating pages on Blogger.
 
 Work on Python 3.5.0. Also include module:<br>
 Django 1.8.4<br>

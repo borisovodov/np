@@ -89,9 +89,7 @@ class Country(models.Model):
     population = models.IntegerField()
 
     def marker(self):
-        from src.config import config
-
-        return 'https://googledrive.com/host/' + config('drive_folder_marker_id') + '/' + self.name.lower() + '.png'
+        return 'http://papersaround.esy.es/markers/' + self.name.lower() + '.png'
 
     def __str__(self):
         return self.name

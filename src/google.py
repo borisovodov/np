@@ -16,8 +16,7 @@ def authorization_google():
     try:
         flow = OAuth2WebServerFlow(client_id=config('google_client_id'),
                                    client_secret=config('google_client_secret'),
-                                   scope='https://www.googleapis.com/auth/blogger '
-                                         'https://www.googleapis.com/auth/drive',
+                                   scope='https://www.googleapis.com/auth/blogger ',
                                    redirect_uri='urn:ietf:wg:oauth:2.0:oob')
         auth_uri = flow.step1_get_authorize_url()
         webbrowser.open(auth_uri)

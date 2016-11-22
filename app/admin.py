@@ -26,7 +26,6 @@ class NewspaperAdmin(admin.ModelAdmin):
     list_display = ('title', 'number', 'number_2', 'format_date', 'city', 'format_senders_without_link', 'URL_is',)
 
     def update(self, request, queryset):
-        from src.drive import authorization_drive, update_map
         from src.blog import authorization_blogger, update_page
         from content.countries import countries
         from content.maps import maps
@@ -35,9 +34,7 @@ class NewspaperAdmin(admin.ModelAdmin):
         from content.tags import tags
         from content.about import about
 
-        drive = authorization_drive()
         maps(queryset)
-        update_map(drive=drive)
         blog = authorization_blogger()
         update_page(blog=blog, body=countries(queryset))
         update_page(blog=blog, body=senders(queryset))

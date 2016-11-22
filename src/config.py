@@ -15,8 +15,6 @@ def create_config():
     google_client_secret = input('Input Google Client Secret: ')
     flickr_key = input('Input Flickr Key: ')
     flickr_secret = input('Input Flickr Secret: ')
-    drive_folder_marker_id = input('Input Markers Folder ID: ')
-    drive_folder_map_id = input('Input Map Folder ID: ')
 
     settings = ElementTree.Element('settings')
 
@@ -43,14 +41,6 @@ def create_config():
     blogger_blog_id_element = ElementTree.SubElement(settings, 'setting')
     ElementTree.SubElement(blogger_blog_id_element, 'name').text = 'blogger_blog_id'
     ElementTree.SubElement(blogger_blog_id_element, 'value').text = blogger_blog_id
-
-    drive_folder_marker_id_element = ElementTree.SubElement(settings, 'setting')
-    ElementTree.SubElement(drive_folder_marker_id_element, 'name').text = 'drive_folder_marker_id'
-    ElementTree.SubElement(drive_folder_marker_id_element, 'value').text = drive_folder_marker_id
-
-    drive_folder_map_id_element = ElementTree.SubElement(settings, 'setting')
-    ElementTree.SubElement(drive_folder_map_id_element, 'name').text = 'drive_folder_map_id'
-    ElementTree.SubElement(drive_folder_map_id_element, 'value').text = drive_folder_map_id
 
     ElementTree.ElementTree(settings).write(SETTINGS_PATH, encoding='UTF-8', xml_declaration=True)
     xml = minidom.parse(SETTINGS_PATH)
