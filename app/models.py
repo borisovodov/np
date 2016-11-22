@@ -238,10 +238,14 @@ class Newspaper(models.Model):
     is_URL.short_description = 'URL'
 
     def tags(self):
+        import datetime
+
         tags_list = [
-            self.city.country.name, self.city.name, str(self.date.year), self.language.name, self.city.continent,
+            self.city.country.name, self.city.name, self.language.name, self.city.continent,
             self.color
             ]
+        if self.date != datetime.date(1, 1, 1):
+            tags_list.append(str(self.date.year))
         if self.city.coastal:
             tags_list.append('Coastal')
         if self.geotag:
