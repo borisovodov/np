@@ -20,7 +20,7 @@ class NewspaperAdmin(admin.ModelAdmin):
         ('In newspaper', {'fields': ['color', 'pages', 'ISSN', 'geotag', 'crossword', 'sudoku', 'nonogram', 'kakuro',
                                      'TV_schedule', 'anecdote', 'caricature', 'comic_strip', 'recipe', 'horoscope',
                                      'weather_forecast', 'obituary', 'naked_women', 'church', 'trash', 'extra']}),
-        ('System', {'fields': ['path_to_photos', 'URL']}),
+        ('System', {'fields': ['URL']}),
     ]
     actions = ['update', 'posts', 'posts_with_update_photos', 'export_newspapers']
     list_display = ('title', 'number', 'number_2', 'format_date', 'city', 'format_senders_without_link', 'is_URL',)
@@ -50,7 +50,7 @@ class NewspaperAdmin(admin.ModelAdmin):
 
     def posts_with_update_photos(self, request, queryset):
         for newspaper in queryset:
-            newspaper.upload_photos()
+            newspaper.upload_photo()
             newspaper.post()
     posts_with_update_photos.short_description = 'Post with update photos'
 

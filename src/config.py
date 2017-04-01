@@ -15,6 +15,7 @@ def create_config():
     google_client_secret = input('Input Google Client Secret: ')
     flickr_key = input('Input Flickr Key: ')
     flickr_secret = input('Input Flickr Secret: ')
+    path_to_photos = input('Input path to photos (without "/" at the end): ')
 
     settings = ElementTree.Element('settings')
 
@@ -41,6 +42,10 @@ def create_config():
     blogger_blog_id_element = ElementTree.SubElement(settings, 'setting')
     ElementTree.SubElement(blogger_blog_id_element, 'name').text = 'blogger_blog_id'
     ElementTree.SubElement(blogger_blog_id_element, 'value').text = blogger_blog_id
+
+    path_to_photos_element = ElementTree.SubElement(settings, 'setting')
+    ElementTree.SubElement(path_to_photos_element, 'name').text = 'path_to_photos'
+    ElementTree.SubElement(path_to_photos_element, 'value').text = path_to_photos
 
     ElementTree.ElementTree(settings).write(SETTINGS_PATH, encoding='UTF-8', xml_declaration=True)
     xml = minidom.parse(SETTINGS_PATH)

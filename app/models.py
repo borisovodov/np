@@ -4,6 +4,7 @@ from django.db import models
 from src.config import config
 
 BLOG_NAME = config('blogger_blog_name')
+PATH_TO_PHOTOS = config('path_to_photos')
 
 
 class Coordinates(models.Model):
@@ -184,7 +185,6 @@ class Newspaper(models.Model):
     church = models.BooleanField()
     trash = models.BooleanField()
     extra = models.BooleanField()
-    path_to_photos = models.CharField(max_length=200, blank=True)
     URL = models.CharField(max_length=200, blank=True)
 
     @staticmethod
@@ -294,30 +294,19 @@ class Newspaper(models.Model):
             tags_list.append(sender.name)
         return tags_list
 
-    def upload_photos(self):
-        import os
-        from src.flickr import authorization_flickr
-
-        files = []
-        for file in os.listdir(str(self.path_to_photos)):
-            if file.endswith('.jpg'):
-                files.append(file[:-4])
-        authorization_flickr()
+    def upload_photo(self):
         self.photo_set.all().delete()
-        for file in sorted(files):
-            photo = Photo()
-            photo.newspaper = self
-            photo.name = file
+
+        photo = Photo()
+        photo.newspaper = self
+        photo.save()
+
+        for photo in self.photo_set.all():
             photo.upload()
-            photo.save()
 
     def post(self):
         import datetime
         from src.blog import authorization_blogger, add_post, update_post
-
-        content_photos = ''
-        for i in range(1, len(self.photo_set.all())):
-            content_photos = content_photos + self.photo_set.all()[i].link()
 
         content_number = ''
         if self.number != '':
@@ -339,8 +328,7 @@ class Newspaper(models.Model):
         content_post = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
                        '<strong>Title:</strong> ' + str(self.title) + '<br />\n' + content_number + content_date\
                        + content_language + content_senders\
-                       + self.photo_set.all()[0].link() + '<!--more-->\n'\
-                       + content_photos + '</div>'
+                       + self.photo_set.all()[0].link() + '\n'
 
         generate_post = {
             'title': str(self.city),
@@ -385,15 +373,19 @@ class Photo(models.Model):
 
     def upload(self):
         from flickrapi import FlickrAPI
+        from src.flickr import authorization_flickr
+
+        authorization_flickr()
 
         flickr = FlickrAPI(config('flickr_key'), config('flickr_secret'))
-        flickr_photo = flickr.upload(filename=self.newspaper.path_to_photos + '/' + self.name + '.jpg',
+        flickr_photo = flickr.upload(filename=PATH_TO_PHOTOS + '/' + str(self.newspaper.id) + '.jpg',
                                      title=self.newspaper.title + ' / ' + self.newspaper.city.name + ', '
                                                                 + self.newspaper.city.country.name,
                                      description='http://' + BLOG_NAME + '.blogspot.com/',
                                      tags=self.newspaper.city.country.name + ' ' + self.newspaper.city.name,
                                      is_public='1')
         self.flickr_id = flickr_photo.find('photoid').text
+        self.save()
         return self
 
     def link(self):
@@ -411,8 +403,7 @@ class Photo(models.Model):
                 url_z = element.get('source')
         return '<div class=\"separator\" style=\"clear: both; text-align: center;\">\n'\
                + '<a href=\"' + url_o + '\" imageanchor=\"1\" style=\"margin-left: 1em; margin-right: 1em;\">'\
-               + '<img border=\"0\" src=\"' + url_z + '\" width=\"400\" /></a></div>\n'\
-               + '<br />\n'
+               + '<img border=\"0\" src=\"' + url_z + '\" width=\"400\" /></a></div>\n'
 
     def __str__(self):
         return self.flickr_id
