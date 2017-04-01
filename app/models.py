@@ -224,7 +224,7 @@ class Newspaper(models.Model):
     format_date.admin_order_field = 'date'
 
     def path(self):
-        return self.URL.replace('http://' + BLOG_NAME + '.blogspot.com', '')
+        return self.URL.replace('http://www.' + BLOG_NAME + '.com', '')
 
     def pravda(self):
         return 'правда' in self.title.lower()
