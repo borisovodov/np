@@ -22,7 +22,7 @@ class NewspaperAdmin(admin.ModelAdmin):
                                      'weather_forecast', 'obituary', 'naked_women', 'church', 'trash', 'extra']}),
         ('System', {'fields': ['URL']}),
     ]
-    actions = ['update', 'posts', 'posts_with_update_photos', 'export_newspapers']
+    actions = ['update', 'posts', 'export_newspapers']
     list_display = ('title', 'number', 'number_2', 'format_date', 'city', 'format_senders_without_link', 'is_URL',)
 
     def update(self, request, queryset):
@@ -47,12 +47,6 @@ class NewspaperAdmin(admin.ModelAdmin):
         for newspaper in queryset:
             newspaper.post()
     posts.short_description = 'Post'
-
-    def posts_with_update_photos(self, request, queryset):
-        for newspaper in queryset:
-            newspaper.upload_photo()
-            newspaper.post()
-    posts_with_update_photos.short_description = 'Post with update photos'
 
     def export_newspapers(self, request, queryset):
         from content.export import export

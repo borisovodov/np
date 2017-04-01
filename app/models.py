@@ -295,18 +295,24 @@ class Newspaper(models.Model):
         return tags_list
 
     def upload_photo(self):
-        self.photo_set.all().delete()
+        import os
 
-        photo = Photo()
-        photo.newspaper = self
-        photo.save()
-
-        for photo in self.photo_set.all():
-            photo.upload()
+        if os.path.isfile(PATH_TO_PHOTOS + '/' + str(self.id) + '.jpg'):
+            if self.photo_set.all():
+                for photo in self.photo_set.all():
+                    photo.replace()
+            else:
+                    photo = Photo()
+                    photo.newspaper = self
+                    photo.save()
+                    for photo in self.photo_set.all():
+                        photo.upload()
 
     def post(self):
         import datetime
         from src.blog import authorization_blogger, add_post, update_post
+
+        self.upload_photo()
 
         content_number = ''
         if self.number != '':
@@ -325,10 +331,14 @@ class Newspaper(models.Model):
         content_senders = '<strong>Sender:</strong> ' + self.format_senders() + '<br />\n'\
                           '<br />\n'
 
+        content_photo = ''
+        if self.photo_set.all():
+            content_photo = self.photo_set.all()[0].link() + '\n'
+
         content_post = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
                        '<strong>Title:</strong> ' + str(self.title) + '<br />\n' + content_number + content_date\
                        + content_language + content_senders\
-                       + self.photo_set.all()[0].link() + '\n'
+                       + content_photo + '\n'
 
         generate_post = {
             'title': str(self.city),
@@ -381,11 +391,22 @@ class Photo(models.Model):
         flickr_photo = flickr.upload(filename=PATH_TO_PHOTOS + '/' + str(self.newspaper.id) + '.jpg',
                                      title=self.newspaper.title + ' / ' + self.newspaper.city.name + ', '
                                                                 + self.newspaper.city.country.name,
-                                     description='http://' + BLOG_NAME + '.blogspot.com/',
+                                     description='http://www.papersaround.com/',
                                      tags=self.newspaper.city.country.name + ' ' + self.newspaper.city.name,
                                      is_public='1')
         self.flickr_id = flickr_photo.find('photoid').text
         self.save()
+        return self
+
+    def replace(self):
+        from flickrapi import FlickrAPI
+        from src.flickr import authorization_flickr
+
+        authorization_flickr()
+
+        flickr = FlickrAPI(config('flickr_key'), config('flickr_secret'))
+        flickr.replace(filename=PATH_TO_PHOTOS + '/' + str(self.newspaper.id) + '.jpg',
+                       photo_id=self.flickr_id)
         return self
 
     def link(self):
