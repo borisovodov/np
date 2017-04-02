@@ -1,6 +1,6 @@
 """Module for generate file with tags."""
 
-from app.models import Newspaper
+from app.models import Tool
 
 
 def tags(queryset):
@@ -11,7 +11,7 @@ def tags(queryset):
         list_tags.extend(newspaper.tags())
 
     for tag in sorted(set(list_tags)):
-        content_tags = content_tags + '<li>' + Newspaper.link(tag) + '</li>\n'
+        content_tags = content_tags + '<li>' + Tool.link(tag) + '</li>\n'
 
     content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
               '<p>Here are all the tags used on the site in alphabetical order. To ease the search, ' \

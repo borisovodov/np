@@ -1,6 +1,6 @@
 """Module for generate list of senders."""
 
-from app.models import Newspaper
+from app.models import Tool
 
 
 def senders(queryset):
@@ -12,7 +12,7 @@ def senders(queryset):
             list_senders.append(sender.name)
 
     for sender in sorted(set(list_senders)):
-        content_senders = content_senders + '<li>' + Newspaper.link(sender) + '</li>\n'
+        content_senders = content_senders + '<li>' + Tool.link(sender) + '</li>\n'
 
     content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\
               '<p>The author is grateful for everything these people:</p>\n'\

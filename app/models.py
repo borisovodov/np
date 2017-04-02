@@ -7,6 +7,18 @@ BLOG_NAME = config('blogger_blog_name')
 PATH_TO_PHOTOS = config('path_to_photos')
 
 
+class Tool:
+
+    @staticmethod
+    def link(not_link):
+        return '<a style="text-decoration: underline" href="http://' + BLOG_NAME + '.blogspot.com/search/label/' \
+               + not_link.replace(' ', '%20') + '">' + not_link + '</a>'
+
+    @staticmethod
+    def general_link(not_link):
+        return '<a style="text-decoration: underline" href="' + not_link + '">' + not_link + '</a>'
+
+
 class Coordinates(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -43,6 +55,12 @@ class Coordinates(models.Model):
 class Currency(models.Model):
     name = models.CharField(max_length=200)
     symbol = models.CharField(max_length=200)
+
+    def get_symbol(self):
+        if self.symbol == '':
+            return self.name
+        else:
+            return self.symbol
 
     def __str__(self):
         return self.name
@@ -187,20 +205,15 @@ class Newspaper(models.Model):
     extra = models.BooleanField()
     URL = models.CharField(max_length=200, blank=True)
 
-    @staticmethod
-    def link(not_link):
-        return '<a style="text-decoration: underline" href="http://' + BLOG_NAME + '.blogspot.com/search/label/'\
-               + not_link.replace(' ', '%20') + '">' + not_link + '</a>'
-
     def format_senders(self, link=True):
         if link:
-            senders_string = self.link(self.senders.all()[0].name)
+            senders_string = Tool.link(self.senders.all()[0].name)
             if len(self.senders.all()) == 2:
-                senders_string = self.link(self.senders.all()[0].name) + ' and ' + self.link(self.senders.all()[1].name)
+                senders_string = Tool.link(self.senders.all()[0].name) + ' and ' + Tool.link(self.senders.all()[1].name)
             elif len(self.senders.all()) > 2:
                 for i in range(1, len(self.senders.all()) - 1):
-                    senders_string = senders_string + ', ' + self.link(self.senders.all()[i].name)
-                senders_string = senders_string + ' and ' + self.link(self.senders.all().reverse()[0].name)
+                    senders_string = senders_string + ', ' + Tool.link(self.senders.all()[i].name)
+                senders_string = senders_string + ' and ' + Tool.link(self.senders.all().reverse()[0].name)
             return senders_string
         else:
             senders_string = self.senders.all()[0].name
@@ -223,6 +236,12 @@ class Newspaper(models.Model):
     format_date.short_description = 'Date'
     format_date.admin_order_field = 'date'
 
+    def format_date_start_publication(self):
+        import calendar
+
+        return calendar.month_name[self.date_start_publication.month] + ' ' + str(self.date_start_publication.day) \
+                                                                      + ', ' + str(self.date_start_publication.year)
+
     def path(self):
         return self.URL.replace('http://www.' + BLOG_NAME + '.com', '')
 
@@ -232,10 +251,13 @@ class Newspaper(models.Model):
     def not_official_language(self):
         return self.language not in self.city.country.languages.all()
 
-    def is_URL(self):
-        return bool(self.URL)
-    is_URL.boolean = True
-    is_URL.short_description = 'URL'
+    def is_polar(self):
+        return self.coordinates.latitude > 66.562 or self.coordinates.latitude < -66.562
+
+    def is_photo(self):
+        return bool(self.photo_set.all())
+    is_photo.boolean = True
+    is_photo.short_description = 'Photo'
 
     def tags(self):
         import datetime
@@ -290,6 +312,8 @@ class Newspaper(models.Model):
             tags_list.append(self.frequency)
         if self.type != 'Newspaper':
             tags_list.append(self.type)
+        if self.is_polar():
+            tags_list.append('Polar')
         for sender in self.senders.all():
             tags_list.append(sender.name)
         return tags_list
@@ -326,19 +350,40 @@ class Newspaper(models.Model):
         if self.date != datetime.date(1, 1, 1):
             content_date = '<strong>Released:</strong> ' + self.format_date() + '<br />\n'
 
-        content_language = '<strong>Language:</strong> ' + self.link(self.language.name) + '<br />\n'
+        content_language = '<strong>Language:</strong> ' + Tool.link(self.language.name) + '<br />\n'
 
         content_senders = '<strong>Sender:</strong> ' + self.format_senders() + '<br />\n'\
                           '<br />\n'
 
+        content_date_start_publication = ''
+        if self.date_start_publication != datetime.date(1, 1, 1):
+            content_date_start_publication = '<strong>Since:</strong> ' + self.format_date_start_publication()\
+                                                                        + '<br />\n'
+
+        content_circulation = ''
+        if self.circulation != 0:
+            content_circulation = '<strong>Circulation:</strong> ' + str(self.circulation) + '<br />\n'
+
+        content_ISSN = ''
+        if self.ISSN != '':
+            content_ISSN = '<strong>ISSN:</strong> ' + self.ISSN + '<br />\n'
+
+        content_cost = ''
+        if self.cost_set.all():
+            content_cost = '<strong>Cost:</strong> ' + str(self.cost_set.all()[0]) + '<br />\n'
+
+        content_site = ''
+        if self.site != '':
+            content_site = '<strong>Site:</strong> ' + Tool.general_link(self.site) + '<br />\n'
+
         content_photo = ''
         if self.photo_set.all():
-            content_photo = self.photo_set.all()[0].link() + '\n'
+            content_photo = Tool.link(self.photo_set.all()[0]) + '\n'
 
         content_post = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
                        '<strong>Title:</strong> ' + str(self.title) + '<br />\n' + content_number + content_date\
-                       + content_language + content_senders\
-                       + content_photo + '\n'
+                       + content_language + content_senders + content_date_start_publication + content_circulation\
+                       + content_ISSN + content_cost + content_site + content_photo + '\n'
 
         generate_post = {
             'title': str(self.city),
@@ -373,7 +418,7 @@ class Cost(models.Model):
     newspaper = models.ForeignKey(Newspaper)
 
     def __str__(self):
-        return str(self.value) + ' ' + str(self.currency)
+        return str(self.value) + ' ' + str(self.currency.get_symbol())
 
 
 class Photo(models.Model):

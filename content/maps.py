@@ -1,5 +1,6 @@
 """Module generate maps for site and big map."""
 
+from app.models import Tool
 
 def content_map(queryset):
     content_newspaper = ''
@@ -10,7 +11,7 @@ def content_map(queryset):
                             + 'papernumber1[' + str(i) + '] = \'' + queryset[i].number + '\';\n'\
                             + 'papernumber2[' + str(i) + '] = \'' + queryset[i].number_2 + '\';\n'\
                             + 'paperdate[' + str(i) + '] = \'' + queryset[i].format_date() + '\';\n'\
-                            + 'paperlang[' + str(i) + '] = \'' + queryset[i].link(queryset[i].language.name) + '\';\n'\
+                            + 'paperlang[' + str(i) + '] = \'' + Tool.link(queryset[i].language.name) + '\';\n'\
                             + 'papersender[' + str(i) + '] = \'' + queryset[i].format_senders() + '\';\n'\
                             + 'paperland[' + str(i) + '] = new google.maps.LatLng('\
                             + str(queryset[i].coordinates.latitude) + ',' + str(queryset[i].coordinates.longitude)\

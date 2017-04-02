@@ -2,7 +2,7 @@
 
 import collections
 from src.config import config
-from app.models import Newspaper
+from app.models import Tool
 from .stat_adding import content_adding
 
 BLOG_NAME = config('blogger_blog_name')
@@ -41,35 +41,35 @@ def stat(queryset):
               + str(len(set(countries))) + ' countries</a> and <a style=\"text-decoration: underline\" ' \
                                            'href=\"http://' + BLOG_NAME + '.blogspot.com/p/countries.html\">'\
               + str(len(set(cities))) + ' cities</a>.</li></p>\n'\
-              + '<p><li>Most newspapers from ' + Newspaper.link(counter_country.most_common(1)[0][0]) + '—'\
+              + '<p><li>Most newspapers from ' + Tool.link(counter_country.most_common(1)[0][0]) + '—'\
               + str(counter_country.most_common(1)[0][1]) + '.</li></p>\n'\
               + '<p><li>Here are the newspapers on ' + str(len(set(languages))) + ' languages.</li></p>\n'\
               + '<p><li>' + str(counter_language.most_common(1)[0][1]) + ' newspapers were brought on '\
-              + Newspaper.link(counter_language.most_common(1)[0][0]) + '.</li></p>\n'\
+              + Tool.link(counter_language.most_common(1)[0][0]) + '.</li></p>\n'\
               + '<p><li>Newspapers were brought from the ' + str(len(set(continents))) + ' continents—'\
               + ', '.join(set(continents)) + '. More then other from '\
-              + Newspaper.link(counter_continent.most_common(1)[0][0]) + ': '\
+              + Tool.link(counter_continent.most_common(1)[0][0]) + ': '\
               + str(counter_continent.most_common(1)[0][1]) + '.</li></p>\n'\
               + '<p><li>The northernmost newspaper brought ' + newspapers_latitude.reverse()[0].format_senders()\
-              + ' from ' + Newspaper.link(newspapers_latitude.reverse()[0].city.name) + ', '\
-              + Newspaper.link(newspapers_latitude.reverse()[0].city.country.name) + ': '\
+              + ' from ' + Tool.link(newspapers_latitude.reverse()[0].city.name) + ', '\
+              + Tool.link(newspapers_latitude.reverse()[0].city.country.name) + ': '\
               + newspapers_latitude.reverse()[0].coordinates.format('latitude') + '.</li></p>\n'\
               + '<p><li>The southernmost newspaper brought ' + newspapers_latitude[0].format_senders()\
-              + ' from ' + Newspaper.link(newspapers_latitude[0].city.name) + ', '\
-              + Newspaper.link(newspapers_latitude[0].city.country.name) + ': '\
+              + ' from ' + Tool.link(newspapers_latitude[0].city.name) + ', '\
+              + Tool.link(newspapers_latitude[0].city.country.name) + ': '\
               + newspapers_latitude[0].coordinates.format('latitude') + '.</li></p>\n'\
               + '<p><li>The westernmost newspaper brought ' + newspapers_longitude[0].format_senders()\
-              + ' from ' + Newspaper.link(newspapers_longitude[0].city.name) + ', '\
-              + Newspaper.link(newspapers_longitude[0].city.country.name) + ': '\
+              + ' from ' + Tool.link(newspapers_longitude[0].city.name) + ', '\
+              + Tool.link(newspapers_longitude[0].city.country.name) + ': '\
               + newspapers_longitude[0].coordinates.format('longitude') + '.</li></p>\n'\
               + '<p><li>The easternmost newspaper brought ' + newspapers_longitude.reverse()[0].format_senders()\
-              + ' from ' + Newspaper.link(newspapers_longitude.reverse()[0].city.name) + ', '\
-              + Newspaper.link(newspapers_longitude.reverse()[0].city.country.name) + ': '\
+              + ' from ' + Tool.link(newspapers_longitude.reverse()[0].city.name) + ', '\
+              + Tool.link(newspapers_longitude.reverse()[0].city.country.name) + ': '\
               + newspapers_longitude.reverse()[0].coordinates.format('longitude') + '.</li></p>\n'\
               + '<p><li>Newspapers brought <a style=\"text-decoration: underline\" ' \
                 'href=\"http://' + BLOG_NAME + '.blogspot.com/p/senders.html\">' + str(len(set(senders)))\
               + ' people</a>.</li></p>\n'\
-              + '<p><li>Most newspapers brought ' + Newspaper.link(counter_sender.most_common(1)[0][0]) + '—'\
+              + '<p><li>Most newspapers brought ' + Tool.link(counter_sender.most_common(1)[0][0]) + '—'\
               + str(counter_continent.most_common(1)[0][1]) + '.</li></p>\n'\
               + '<p><li>First <a style=\"text-decoration: underline\" ' \
                 'href=\"http://' + BLOG_NAME + '.blogspot.com/2012/01/beijing-china.html\">newspaper</a> ' \
@@ -77,8 +77,8 @@ def stat(queryset):
                 'href=\"http://' + BLOG_NAME + '.blogspot.com/search/label/Alexandra%20Ovodova\">Alexandra ' \
                                                'Ovodova</a> filch from post.</li></p>\n'\
               + '<p><li>Latest newspaper ' + queryset.latest('date_brought').format_senders() + ' brought from '\
-              + Newspaper.link(queryset.latest('date_brought').city.name) + ', '\
-              + Newspaper.link(queryset.latest('date_brought').city.country.name) + '.</li></p>\n'\
+              + Tool.link(queryset.latest('date_brought').city.name) + ', '\
+              + Tool.link(queryset.latest('date_brought').city.country.name) + '.</li></p>\n'\
               + '</ul>'\
               + content_adding\
               + '</div>'

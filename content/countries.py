@@ -1,7 +1,7 @@
 """Module for generate countries."""
 
 from collections import defaultdict
-from app.models import Newspaper
+from app.models import Tool
 
 
 def countries(queryset):
@@ -12,9 +12,9 @@ def countries(queryset):
         dict_country[newspaper.city.country.name].append(newspaper.city.name)
 
     for country in sorted(dict_country.items()):
-        content_countries += Newspaper.link(country[0]) + '\n<ul>\n'
+        content_countries += Tool.link(country[0]) + '\n<ul>\n'
         for city in sorted(set(country[1])):
-            content_countries += '<li>' + Newspaper.link(city) + '</li>\n'
+            content_countries += '<li>' + Tool.link(city) + '</li>\n'
         content_countries += '</ul>\n'
 
     content = '<div dir=\"ltr\" style=\"text-align: left;\" trbidi=\"on\">\n'\

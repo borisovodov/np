@@ -20,10 +20,9 @@ class NewspaperAdmin(admin.ModelAdmin):
         ('In newspaper', {'fields': ['color', 'pages', 'ISSN', 'geotag', 'crossword', 'sudoku', 'nonogram', 'kakuro',
                                      'TV_schedule', 'anecdote', 'caricature', 'comic_strip', 'recipe', 'horoscope',
                                      'weather_forecast', 'obituary', 'naked_women', 'church', 'trash', 'extra']}),
-        ('System', {'fields': ['URL']}),
     ]
     actions = ['update', 'posts', 'export_newspapers']
-    list_display = ('title', 'number', 'number_2', 'format_date', 'city', 'format_senders_without_link', 'is_URL',)
+    list_display = ('title', 'number', 'number_2', 'format_date', 'city', 'format_senders_without_link', 'is_photo',)
 
     def update(self, request, queryset):
         from src.blog import authorization_blogger, update_page
