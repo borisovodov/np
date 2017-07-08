@@ -246,6 +246,6 @@ def maps(queryset):
     import os
     import sys
 
-    file_map = open(os.path.join(sys.path[0], 'content', 'map.js'), encoding='utf-8', mode='w')
+    file_map = open(os.path.join(sys.path[0], 'content', 'map', 'map.js'), encoding='utf-8', mode='w')
     file_map.write(content_map(queryset))
     file_map.close()
