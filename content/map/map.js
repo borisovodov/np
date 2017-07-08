@@ -129,7 +129,7 @@ paperlink[8] = 'http://www.papersaround.com/2017/07/oelde-germany.html';
 iconimage[8] = 'https://rawgit.com/borisovodov/np/master/content/markers/germany.png';
 
 papername[9] = 'Kaliningrad, Russia';
-papertitle[9] = 'Дворник'ъ';
+papertitle[9] = 'Дворникъ';
 papernumber1[9] = '38';
 papernumber2[9] = '1044';
 paperdate[9] = 'October 4, 2016';
