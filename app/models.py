@@ -108,7 +108,7 @@ class Country(models.Model):
     population = models.IntegerField()
 
     def marker(self):
-        return 'https://rawgit.com/borisovodov/np/master/content/markers/' + self.name.lower() + '.png'
+        return 'https://raw.githubusercontent.com/borisovodov/np/master/content/markers/' + self.name.lower() + '.png'
 
     def __str__(self):
         return self.name
