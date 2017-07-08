@@ -366,7 +366,7 @@ class Newspaper(models.Model):
 
         content_ISSN = ''
         if self.ISSN != '':
-            content_ISSN = '<strong>ISSN:</strong> ' + self.ISSN + '<br />\n'
+            content_ISSN = '<strong>ISSN:</strong> ' + str(self.ISSN) + '<br />\n'
 
         content_cost = ''
         if self.cost_set.all():
@@ -378,7 +378,7 @@ class Newspaper(models.Model):
 
         content_photo = ''
         if self.photo_set.all():
-            content_photo = Tool.link(self.photo_set.all()[0]) + '\n'
+            content_photo = '\n' + self.photo_set.all()[0].link() + '\n'
 
         content_post = '<div dir="ltr" style="text-align: left;" trbidi="on">\n'\
                        '<strong>Title:</strong> ' + str(self.title) + '<br />\n' + content_number + content_date\
@@ -423,7 +423,6 @@ class Cost(models.Model):
 
 class Photo(models.Model):
     flickr_id = models.CharField(max_length=200)
-    name = models.CharField(max_length=200)
     newspaper = models.ForeignKey(Newspaper)
 
     def upload(self):
