@@ -70,6 +70,8 @@ def about():
               'Куйбышева,<br> д. 104, кв. 63</div></div>\n' \
               '    <p>or to <a style="text-decoration: underline" ' \
               'href="mailto:b.ovodov@gmail.com">b.ovodov@gmail.com</a>.</p>\n' \
+              '<p>Also I have a colorful <a style="text-decoration: underline" ' \
+              'href="https://www.instagram.com/papersaround/">account on Instagram</a>.</p>\n' \
               '</div>'
 
     return {
