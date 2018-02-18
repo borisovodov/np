@@ -133,7 +133,7 @@ class City(models.Model):
     )
 
     name = models.CharField(max_length=200)
-    country = models.ForeignKey(Country)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
     population = models.IntegerField()
     hemisphere = models.CharField(max_length=19, choices=HEMISPHERES)
     continent = models.CharField(max_length=13, choices=CONTINENTS)
@@ -168,18 +168,18 @@ class Newspaper(models.Model):
         ('Other/Unknown', 'Other/Unknown'),
     )
 
-    city = models.ForeignKey(City)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     number = models.CharField(max_length=200, blank=True)
     number_2 = models.CharField(max_length=200, blank=True)
     date = models.DateField(default='0001-01-01')
-    language = models.ForeignKey(Language)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE)
     senders = models.ManyToManyField(Sender)
-    coordinates = models.OneToOneField(Coordinates)
+    coordinates = models.OneToOneField(Coordinates, on_delete=models.CASCADE)
     date_brought = models.DateField(default='0001-01-01')
     color = models.CharField(max_length=200, choices=COLORS)
     pages = models.IntegerField(default=0)
-    format_paper = models.ForeignKey(FormatPaper)
+    format_paper = models.ForeignKey(FormatPaper, on_delete=models.CASCADE)
     type = models.CharField(max_length=200, choices=TYPES)
     frequency = models.CharField(max_length=200, choices=FREQUENCIES)
     circulation = models.IntegerField(default=0)
@@ -414,8 +414,8 @@ class Newspaper(models.Model):
 
 class Cost(models.Model):
     value = models.FloatField()
-    currency = models.ForeignKey(Currency)
-    newspaper = models.ForeignKey(Newspaper)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
+    newspaper = models.ForeignKey(Newspaper, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.value) + ' ' + str(self.currency.get_symbol())
@@ -423,7 +423,7 @@ class Cost(models.Model):
 
 class Photo(models.Model):
     flickr_id = models.CharField(max_length=200)
-    newspaper = models.ForeignKey(Newspaper)
+    newspaper = models.ForeignKey(Newspaper, on_delete=models.CASCADE)
 
     def upload(self):
         from flickrapi import FlickrAPI
