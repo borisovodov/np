@@ -22,7 +22,7 @@ class NewspaperAdmin(admin.ModelAdmin):
                                      'weather_forecast', 'obituary', 'naked_women', 'church', 'trash', 'extra']}),
     ]
     actions = ['update', 'posts', 'export_newspapers']
-    list_display = ('title', 'number', 'number_2', 'format_date', 'city', 'format_senders_without_link', 'is_photo',)
+    list_display = ('title', 'id', 'number', 'number_2', 'format_date', 'city', 'format_senders_without_link', 'is_photo',)
 
     def update(self, request, queryset):
         from src.blog import authorization_blogger, update_page
