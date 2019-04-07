@@ -3,6 +3,7 @@
 __pycache__/
 *.py[cod]
 migrations/
+.DS_Store
 
 # Output
 *.xml
