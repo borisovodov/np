@@ -1,0 +1,28 @@
+{% load static %}
+
+<div class="col-md-3 px-2 mb-3 d-flex">
+    <div class="card flex-grow-1">
+        {% if newspaper.photo %}<a href="{{ newspaper.get_absolute_url }}"><img class="card-img-top" src="{{ newspaper.photo.url }}"></a>{% endif %}
+        <div class="card-body">
+            <h4 class="card-title"><a class="card-title-link" href="{{ newspaper.get_absolute_url }}">{{ newspaper }}</a></h4>
+            <p class="card-text">
+                <ul class="list-unstyled">
+                    <li class="mb-2">City: <a href="{{ newspaper.city.get_absolute_url }}">{{ newspaper.city }}</a></li>
+                    {% if newspaper.number %}<li class="mb-2">Number: {{ newspaper.number }}{% if newspaper.number_2 %} ({{ newspaper.number_2 }}){% endif %}</li>{% endif %}
+                    <li class="mb-2">Released: {{ newspaper.date }}</li>
+                    <li class="mb-2">Language: <a href="{{ newspaper.language.get_absolute_url }}">{{ newspaper.language }}</a></li>
+                </ul>
+            </p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">{% if newspaper.tags.count != 1 %}Tags{% else %}Tag{% endif %}: 
+                {% for tag in newspaper.tags.all %}
+                    {% if forloop.last %}<a href="{{ tag.get_absolute_url }}">{{ tag }}</a>
+                    {% else %}<a href="{{ tag.get_absolute_url }}">{{ tag }}</a>, 
+                    {% endif %}
+                {% empty %}
+                {% endfor %}
+            </small>
+        </div>
+    </div>
+</div>

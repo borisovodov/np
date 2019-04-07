@@ -1,0 +1,28 @@
+{% extends "app/base.html" %}
+
+{% block title%}Papers Around — {{ language }}{% endblock %}
+{% block ogtitle %}Papers Around — {{ language }}{% endblock %}
+{% block url %}{{ language.get_absolute_url }}{% endblock %}
+{% block image %}{% endblock %}
+
+{% block content %}
+<div class="container mb-4">
+    <h1 class="pb-2">{{ language }}</h1>
+</div>
+<div class="container mb-4">
+    <h2 class="pb-2">On Map</h2>
+    <div class="rounded" id="map" style="height: 24rem;">
+        {% include "app/map_template.html" %}
+    </div>
+</div>
+<div class="container mb-4">
+    <h2 class="pb-2">{% if language.newspapers.count != 1 %}Newspapers{% else %}Newspaper{% endif %}</h2>
+    {% for row in newspapers %}
+    <div class="row">
+        {% for newspaper in row %}
+            {% include "app/newspaper_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

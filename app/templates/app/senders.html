@@ -1,0 +1,27 @@
+{% extends "app/base.html" %}
+
+{% block title%}Papers Around — Senders{% endblock %}
+{% block ogtitle %}Papers Around — Senders{% endblock %}
+{% block url %}{% url 'senders' %}{% endblock %}
+{% block image %}{% endblock %}
+
+{% block content %}
+<div class="container mb-4">
+    <h1 class="d-inline-block pb-2">Senders</h1>
+<!--
+    <div class="dropdown float-right d-inline-block pt-1">
+        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">Most senders</button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">By Name</a>
+        </div>
+    </div>
+-->
+    {% for row in senders %}
+    <div class="row">
+        {% for sender in row %}
+            {% include "app/sender_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "app/base.html" %}
+
+{% block title%}Papers Around — {{ achievement }}{% endblock %}
+{% block ogtitle %}Papers Around — {{ achievement }}{% endblock %}
+{% block url %}{{ achievement.get_absolute_url }}{% endblock %}
+{% block image %}{% endblock %}
+
+{% block content %}
+<div class="container mb-4">
+    <h1 class="pb-2">{{ achievement }}</h1>
+</div>
+<div class="container mb-4">
+    <h2 class="pb-2">{% if achievement.senders.count != 1 %}Senders{% else %}Sender{% endif %}</h2>
+    {% for row in senders %}
+    <div class="row">
+        {% for sender in row %}
+            {% include "app/sender_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

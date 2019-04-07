@@ -1,0 +1,108 @@
+{% extends "app/base.html" %}
+
+{% block title%}Papers Around — Statistic{% endblock %}
+{% block ogtitle %}Papers Around — Statistic{% endblock %}
+{% block url %}{% url 'statistic' %}{% endblock %}
+{% block image %}{% endblock %}
+
+{% block content %}
+<div class="container mb-4">
+    <h1 class="pb-2">Statistic</h1>
+    <p>In this site presents newspapers <s>from around the world</s>. Look at this entertaining statistics:</p>
+    <ul>
+        <li class="mb-2">A total of {{ number_of_newspapers }} newspapers from <a href="{% url 'countries' %}">{{ number_of_countries }} countries</a> and <a href="{% url 'countries' %}">{{ number_of_cities }} cities</a>.</li>
+        <li class="mb-2">Most newspapers from <a href="{{ country_lots_newspapers.get_absolute_url }}">{{ country_lots_newspapers }}</a>—{{ country_lots_newspapers.newspapers.count }}.</li>
+        <li class="mb-2">Here are the newspapers on <a href="{% url 'languages' %}">{{ number_of_languages }} languages</a>.</li>
+        <li class="mb-2">{{ language_lots_newspapers.newspapers.count }} newspapers were brought on <a href="{{ language_lots_newspapers.get_absolute_url }}">{{ language_lots_newspapers }}</a>.</li>
+        <li class="mb-2">Newspapers were brought from the 4 continents—Africa, Europe, Asia, North America. More then other from <a href="tag.html">Europe</a>: 112.</li>
+        <li class="mb-2">The northernmost newspaper brought <a href="sender.html">Yelena Kopylova</a> from <a href="city.html">Gadzhiyevo, Russia</a>: 69° 14′ N.</li>
+        <li class="mb-2"> The southernmost newspaper brought <a href="sender.html">Vadim Krushinskiy</a> from <a href="city.html">Pretoria, South Africa</a>: 25° 44′ S.</li>
+        <li class="mb-2">The westernmost newspaper brought <a href="sender.html">Maxim Tuhbatov</a> from <a href="city.html">Cancún, Mexico</a>: 86° 49′ W.</li>
+        <li class="mb-2">The easternmost newspaper brought <a href="sender.html">Valentin Tetyorkin</a> from <a href="city.html">Tokyo, Japan</a>: 139° 42′ E.</li>
+        <li class="mb-2">Newspapers brought <a href="{% url 'senders' %}">{{ number_of_senders }} people</a>.</li>
+        <li class="mb-2">Most newspapers brought <a href="{{ sender_lots_newspapers.get_absolute_url }}">{{ sender_lots_newspapers }}</a>—{{ sender_lots_newspapers.newspapers.count }}.</li>
+        <li class="mb-2">First <a href="{{ first_newspaper.get_absolute_url }}">newspaper</a> <a href="{{ first_sender.get_absolute_url }}">{{ first_sender }}</a> filch from post.</li>
+        <li class="mb-2">Latest <a href="{{ last_newspaper.get_absolute_url }}">newspaper</a> 
+            {% for sender in last_senders %}
+                {% if forloop.last %}<a href="{{ sender.get_absolute_url }}">{{ sender }}</a>
+                {% else %}<a href="{{ sender.get_absolute_url }}">{{ sender }}</a>, 
+                {% endif %}
+            {% endfor %} brought from <a href="{{ last_newspaper.city.get_absolute_url }}">{{ last_newspaper.city }}</a>.
+        </li>
+    </ul><!--// Этот коммент не даёт показаться дополнительной статистике, пока она не готова
+    <hr noshade style="margin-top: 30px; margin-bottom: 30px; color: black; background-color: black; height: 1px; border: none">
+    <p>Random:</p>
+    <ul>
+    <p><li>
+    <script type="text/javascript"><!--
+    var h=(Math.random()*35);
+    if (h > 0 && h < 1) document.writeln('20 newspapers <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Monochrome">monochrome</a>.');
+    if (h > 1 && h < 2) document.writeln('20 newspapers <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Bicolor">bicolor</a>.');
+    if (h > 2 && h < 3) document.writeln('168 newspapers <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Multicolor">multicolor</a>.');
+    if (h > 3 && h < 4) document.writeln('6 <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Magazine">magazines</a>.');
+    if (h > 4 && h < 5) document.writeln('3 <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Brochure">brochures</a>.');
+    if (h > 5 && h < 6) document.writeln('65 <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Daily">daily</a> newspapers.');
+    if (h > 6 && h < 7) document.writeln('55 <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Weekly">weekly</a> newspapers.');
+    if (h > 7 && h < 8) document.writeln('21 <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Weeklies">weeklies</a> newspapers.');
+    if (h > 8 && h < 9) document.writeln('3 <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Monthly">monthly</a> newspapers.');
+    if (h > 9 && h < 10) document.writeln('1 <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Bimonthly">bimonthly</a> newspapers.');
+    if (h > 10 && h < 11) document.writeln('108 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Geotag">geotagging</a>.');
+    if (h > 11 && h < 12) document.writeln('97 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Crossword">crossword</a>.');
+    if (h > 12 && h < 13) document.writeln('49 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Sudoku">sudoku</a>.');
+    if (h > 13 && h < 14) document.writeln('2 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Nonogram">nonogram</a>.');
+    if (h > 14 && h < 15) document.writeln('3 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Kakuro">kakuro</a>.');
+    if (h > 15 && h < 16) document.writeln('109 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/TV%20schedule">TV schedule</a>.');
+    if (h > 16 && h < 17) document.writeln('41 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Anecdote">anecdote</a>.');
+    if (h > 17 && h < 18) document.writeln('67 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Caricature">caricature</a>.');
+    if (h > 18 && h < 19) document.writeln('20 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Comic%20Strip">comic strip</a>.');
+    if (h > 19 && h < 20) document.writeln('21 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Recipe">recipe</a>.');
+    if (h > 20 && h < 21) document.writeln('76 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Horoscope">horoscope</a>.');
+    if (h > 21 && h < 22) document.writeln('95 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Weather%20Forecast">weather forecast</a>.');
+    if (h > 22 && h < 23) document.writeln('95 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Weather%20Forecast">weather forecast</a>.');
+    if (h > 23 && h < 24) document.writeln('40 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Obituary">obituary</a>.');
+    if (h > 24 && h < 25) document.writeln('15 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Naked%20Women">naked women</a>.');
+    if (h > 25 && h < 26) document.writeln('2 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Church">church</a>.');
+    if (h > 26 && h < 27) document.writeln('14 newspapers is <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/TRASH">TRASH!</a>.');
+    if (h > 27 && h < 28) document.writeln('47 newspapers have <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Extra">extra newspaper</a>.');
+    if (h < 1) document.writeln('*** newspapers have Sudoku.');
+    if (h > 1 && h < 2) document.writeln('*** newspapers have horoscope.');
+    if (h > 2 && h < 3) document.writeln('*** newspapers have crossword puzzle.');
+    if (h > 3 && h < 4) document.writeln('В скольких реклама автомобилей Тойота');
+    if (h > 4 && h < 5) document.writeln('*** newspapers have anecdotes.');
+    if (h > 5 && h < 6) document.writeln('*** newspapers monochrome.');
+    if (h > 6 && h < 7) document.writeln('*** newspapers bicolour.');
+    if (h > 7 && h < 8) document.writeln('*** newspapers multicolour.');
+    if (h > 8 && h < 9) document.writeln('Least of all pages in the newspaper from ***—***');
+    if (h > 9 && h < 10) document.writeln('The most popular newspaper format is ***. *** newspapers have this format.');
+    if (h > 10 && h < 11) document.writeln('Rarest newspaper format is ***. *** newspapers have this format.');
+    if (h > 11 && h < 12) document.writeln('*** newspapers contains in its title the word “правда”.');
+    if (h > 12 && h < 13) document.writeln('Most pages in the newspaper from ***—***.');
+    if (h > 13 && h < 14) document.writeln('Самая давноиздающаяся газета');
+    if (h > 14 && h < 15) document.writeln('In *** newspapers have recipes.');
+    if (h > 15 && h < 16) document.writeln('*** newspapers from the coastal cities.');
+    if (h > 16 && h < 17) document.writeln('Over the last month brought *** newspapers.');
+    if (h > 17 && h < 18) document.writeln('If you choose the most commonly used letters in the name of the newspaper, the averaged name of newspaper, the averaged name of newspaper will be "***".');
+    if (h > 18 && h < 19) document.writeln('Area of submitted newspapers comparable with area of a football field. //football field - не обязательно так');
+    if (h > 19 && h < 20) document.writeln('Total circulation of all newspapers is *** copies.');
+    if (h > 20 && h < 21) document.writeln('Количество газет с телепрограммой');
+    if (h > 21 && h < 22) document.writeln('Only in the newspaper from Tokyo shows a naked women.');
+    if (h > 22 && h < 23) document.writeln('The largest circulation newspaper from ***.');
+    if (h > 23 && h < 24) document.writeln('*** newspapers in a language that is not a staple in the country from which it was brought.');
+    if (h > 24 && h < 25) document.writeln('The smallest circulation newspaper from ***.');
+    if (h > 25 && h < 26) document.writeln('The shortest name of the newspaper—***.');
+    if (h > 26 && h < 27) document.writeln('The longest name of the newspaper—***.');
+    if (h > 27 && h < 28) document.writeln('*** newspapers from the cities landlocked.');
+    if (h > 28 && h < 29) document.writeln('Газета на языке с самым малым количеством носителей это "Красная правда" на тувинском языке');
+    if (h > 29 && h < 30) document.writeln('Сколько в среднем времени происходит между печатью газеты и приездом её сюда');
+    if (h > 30 && h < 31) document.writeln('В скольких газетах есть карикатурные зарисовки');
+    if (h > 31 && h < 32) document.writeln('Самое популярное имя отправителя');
+    if (h > 32 && h < 33) document.writeln('The largest city, from which brought newspaper is <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Shanghai">Shanghai</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/China">China</a>—24 150 000 people.');
+    if (h > 33 && h < 34) document.writeln('<p><li>The smallest city, from which brought newspaper is <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Verkhoturie">Verkhoturie</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russia">Russia</a>—8776 people.</li></p>');
+    if (h > 34 && h < 35) document.writeln('количество букв в названии.');
+    if (h > 34 && h < 35) document.writeln('hemisphere');
+    if (h > 36 && h < 36) document.writeln('общая толщина');
+    //--><!--</script>
+    </li></p>
+    </ul>-->
+</div>
+{% endblock %}

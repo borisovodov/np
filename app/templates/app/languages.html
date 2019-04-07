@@ -1,0 +1,19 @@
+{% extends "app/base.html" %}
+
+{% block title%}Papers Around — Languages{% endblock %}
+{% block ogtitle %}Papers Around — Languages{% endblock %}
+{% block url %}{% url 'languages' %}{% endblock %}
+{% block image %}{% endblock %}
+
+{% block content %}
+<div class="container mb-4">
+    <h1 class="d-inline-block pb-2">Languages</h1>
+    {% for row in languages %}
+    <div class="row">
+        {% for language in row %}
+            {% include "app/language_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

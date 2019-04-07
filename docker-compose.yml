@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  np-db:
+    image: postgres:11.2
+  np-web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/np
+    ports:
+      - "8000:8000"
+    depends_on:
+      - np-db

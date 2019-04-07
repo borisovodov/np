@@ -1,0 +1,87 @@
+{% extends "app/base.html" %}
+
+{% block title%}Papers Around — Search “{{ query }}”{% endblock %}
+{% block ogtitle %}Papers Around — Search “{{ query }}”{% endblock %}
+{% block url %}{% url 'achievements' %}{% endblock %}
+{% block image %}{% endblock %}
+
+{% block content %}
+<div class="container mb-4">
+    {% if achievements_number == 0 and cities_number == 0 and countries_number == 0 and languages_number == 0 and senders_number == 0 and tags_number == 0 and newspapers_number == 0 %}
+    <h1 class="pb-2 mb-4 text-center">By search “{{ query }}” not found.</h1>
+    <h1 class="pb-2 mb-4 text-center"><small>Please clarify the request.</small></h1>
+    {% else %}
+    <h1 class="pb-2 text-center">Search by “{{ query }}”</h1>
+    {% if achievements_number != 0 %}
+    <h2 class="pb-2 pt-3">{% if achievements_number != 1 %}Achievements{% else %}Achievement{% endif %}</h2>
+    {% for row in achievements %}
+    <div class="row">
+        {% for achievement in row %}
+            {% include "app/achievement_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% if cities_number != 0 %}
+    <h2 class="pb-2 pt-3">{% if cities_number != 1 %}Cities{% else %}City{% endif %}</h2>
+    {% for row in cities %}
+    <div class="row">
+        {% for city in row %}
+            {% include "app/city_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% if countries_number != 0 %}
+    <h2 class="pb-2 pt-3">{% if countries_number != 1 %}Countries{% else %}Country{% endif %}</h2>
+    {% for row in countries %}
+    <div class="row">
+        {% for country in row %}
+            {% include "app/country_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% if languages_number != 0 %}
+    <h2 class="pb-2 pt-3">{% if languages_number != 1 %}Languages{% else %}Language{% endif %}</h2>
+    {% for row in languages %}
+    <div class="row">
+        {% for language in row %}
+            {% include "app/language_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% if senders_number != 0 %}
+    <h2 class="pb-2 pt-3">{% if senders_number != 1 %}Senders{% else %}Sender{% endif %}</h2>
+    {% for row in senders %}
+    <div class="row">
+        {% for sender in row %}
+            {% include "app/sender_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% if tags_number != 0 %}
+    <h2 class="pb-2 pt-3">{% if tags_number != 1 %}Tags{% else %}Tag{% endif %}</h2>
+    {% for row in tags %}
+    <div class="row">
+        {% for tag in row %}
+            {% include "app/tag_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% if newspapers_number != 0 %}
+    <h2 class="pb-2 pt-3">{% if newspapers_number != 1 %}Newspapers{% else %}Newspaper{% endif %}</h2>
+    {% for row in newspapers %}
+    <div class="row">
+        {% for newspaper in row %}
+            {% include "app/newspaper_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+<div class="col-md-3 px-2 mb-3 d-flex">
+    <div class="card flex-grow-1">
+        {% if sender.avatar %}<a href="{{ sender.get_absolute_url }}"><div class="p-4"><div class="circle-avatar" style="background-image:url({{ sender.avatar.url }})"></div></div></a>{% endif %}
+        <div class="card-body">
+            <h4 class="card-title"><a class="card-title-link" href="{{ sender.get_absolute_url }}">{{ sender }}</a></h4>
+            <p class="card-text">
+                <ul class="list-unstyled">
+                    <li class="mb-2">{{ sender.newspapers.count }} {% if sender.newspapers.count != 1 %}newspapers{% else %}newspaper{% endif %}</li>
+                    <li class="mb-2">{{ sender.cities.count }} {% if sender.cities.count != 1 %}cities{% else %}city{% endif %}</li>
+                    <li class="mb-2">{{ sender.countries.count }} {% if sender.countries.count != 1 %}countries{% else %}country{% endif %}</li>
+                </ul>
+            </p>
+        </div>
+        {% if sender.achievements.count != 0 %}
+        <div class="card-footer">
+            <small class="text-muted">{% if sender.achievements.count != 1 %}Achievements{% else %}Achievement{% endif %}: 
+                {% for achievement in sender.achievements %}
+                    {% if forloop.last %}<a href="{{ achievement.get_absolute_url }}">{{ achievement }}</a>
+                    {% else %}<a href="{{ achievement.get_absolute_url }}">{{ achievement }}</a>, 
+                    {% endif %}
+                {% endfor %}
+            </small>
+        </div>
+        {% endif %}
+    </div>
+</div>

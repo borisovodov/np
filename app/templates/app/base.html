@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Metrics -->
+
+
+
+    <!-- OpenGraph -->
+
+    <meta property="og:title" content="{% block ogtitle %}{% endblock %}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{% block url %}{% endblock %}" />
+    <meta property="og:image" content="{% block image %}{% endblock %}" />
+    <meta property="og:description" content="Newspapers From Around The World" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Papers Around" />
+
+    <!-- Bootstrap -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <!-- Local Stylesheet -->
+
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'app/stylesheet.css' %}">
+
+    <!-- Favicon -->
+
+    <link rel="shortcut icon" type="image/png" href="{% static 'app/favicon.png' %}">
+
+    <!-- Google Fonts -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IM+Fell+DW+Pica|PT+Serif">
+
+    <!-- Map -->
+
+    <script src='https://api.mapbox.com/mapbox.js/v3.2.0/mapbox.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/v3.2.0/mapbox.css' rel='stylesheet' />
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <div class="container mb-4 mt-2">
+        <nav class="navbar navbar-expand-md navbar-light pl-0 pr-0">
+            <a class="navbar-brand" href="{% url 'index' %}">Papers Around</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'map' %}">Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'senders' %}">Senders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'countries' %}">Countries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'languages' %}">Languages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'statistic' %}">Statistic</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tags' %}">Tags</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.instagram.com/papersaround/">Instagram</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container mb-5">
+        <form id="searchform" action="{% url 'search' %}" method="get" accept-charset="utf-8">
+            <div class="input-group pr-5 pl-5">
+                    <input type="text" class="form-control" name="q" placeholder="Search" >
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">🔍</button>
+                    </div>
+            </div>
+        </form>
+    </div>
+    {% block content %}{% endblock %}
+    <br>
+    <footer class="container-fluid text-center">
+        <hr>
+        <br>
+        <p>2014–2019, <a href="https://ovodov.me">Boris Ovodov</a></p>
+    </footer>
+</body>
+</html>

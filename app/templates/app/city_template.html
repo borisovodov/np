@@ -1,0 +1,12 @@
+<div class="col-md-3 px-2 mb-3 d-flex">
+    <div class="card bg-light flex-grow-1">
+        {% if city.photo %}
+        	<img class="card-img-top mx-auto d-block square" src="{{ city.photo.url }}">
+    	{% else %}<img class="card-img-top mx-auto d-block square" src="">
+    	{% endif %}
+        <div class="card-img-overlay">
+            <h4 class="card-title"><a class="card-title-link" href="{{ city.get_absolute_url }}">{{ city }}</a></h4>
+            <p class="card-text">{{ city.newspapers.count }} {% if city.newspapers.count != 1 %}newspapers{% else %}newspaper{% endif %}</p>
+        </div>
+    </div>
+</div>

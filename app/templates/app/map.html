@@ -1,0 +1,17 @@
+{% extends "app/base.html" %}
+
+{% block title%}Papers Around — Map{% endblock %}
+{% block ogtitle %}Papers Around — Map{% endblock %}
+{% block url %}{% url 'map' %}{% endblock %}
+{% block image %}{% endblock %}
+
+{% block content %}
+<div class="container">
+	<h1 class="pb-2">Map</h1>
+</div>
+<div class="container-fluid mb-4 px-0">
+	<div id="map" style="height: 40rem;">
+		{% include "app/map_template.html" %}
+	</div>
+</div>
+{% endblock %}
