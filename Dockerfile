@@ -1,9 +1,14 @@
 FROM python:3.7
-ENV PYTHONUNBUFFERED 1
-RUN mkdir /np3
-WORKDIR /np3
-RUN pip install psycopg2=2.7
-RUN pip install django=2.1
-RUN pip install mapbox=0.17
 
-COPY . /np3/
+RUN apt-get update && \
+	apt-get install -y
+RUN pip install psycopg2==2.7 django==2.1 mapbox==0.17 uwsgi==2.0.18
+
+COPY . /opt/np
+
+ENV DJANGO_ENV=prod
+ENV DOCKER_CONTAINER=1
+
+EXPOSE 8000
+
+CMD ["uwsgi", "--ini", "/opt/np/uwsgi.ini"]

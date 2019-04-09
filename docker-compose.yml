@@ -1,14 +1,20 @@
-version: '3.7'
+version: '3'
 
 services:
   np-db:
     image: postgres:11.2
-  np-web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    expose:
+      - 5432
     volumes:
-      - .:/np
+      - pg_data:/var/lib/postgresql/data
+      - pg_backups:/pg_backups
+  np-web:
+    image: borisovodov/np
     ports:
       - "8000:8000"
     depends_on:
       - np-db
+
+volumes:
+  pg_data: {}
+  pg_backups: {}

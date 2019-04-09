@@ -74,11 +74,19 @@ WSGI_APPLICATION = 'np.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+if os.getenv('DOCKER_CONTAINER'):
+    POSTGRES_HOST = 'db'
+else:
+    POSTGRES_HOST = '127.0.0.1'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'testdb',
-        'USER': 'user',
+        'NAME': 'np-db',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': POSTGRES_HOST,
+        'PORT': '5432',
     }
 }
 
@@ -123,4 +131,12 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+if os.getenv('DJANGO_ENV') == 'prod':
+    DEBUG = False
+    ALLOWED_HOSTS = []
+    # ...
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = []
 
