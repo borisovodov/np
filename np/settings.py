@@ -23,9 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'oygyunh)r@vgf_xk+r%5jr5%iw8j=&t3$1ct1hn$b@86hk4&k6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+if os.getenv('DJANGO_ENV') == 'prod':
+    DEBUG = True
+    ALLOWED_HOSTS = ['beta.papersaround.com']
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -82,7 +85,7 @@ else:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'np-db',
+        'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': POSTGRES_HOST,
@@ -128,15 +131,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
-if os.getenv('DJANGO_ENV') == 'prod':
-    DEBUG = False
-    ALLOWED_HOSTS = []
-    # ...
-else:
-    DEBUG = True
-    ALLOWED_HOSTS = []
+MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
+MEDIA_URL = '/static/media/'
 

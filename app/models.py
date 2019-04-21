@@ -343,7 +343,7 @@ class Newspaper(models.Model):
 
 	color = models.CharField(max_length=200, choices=COLORS)
 	pages = models.IntegerField(default=0)
-	format_paper = models.ForeignKey(FormatPaper, on_delete=models.PROTECT)
+	format_paper = models.ForeignKey(FormatPaper, blank=True, null=True, on_delete=models.SET_NULL)
 	type_newspaper = models.CharField(max_length=200, choices=TYPES)
 	frequency = models.CharField(max_length=200, choices=FREQUENCIES)
 	circulation = models.IntegerField(default=0, blank=True)

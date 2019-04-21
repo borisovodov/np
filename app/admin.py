@@ -17,7 +17,7 @@ class LanguageAdmin(admin.ModelAdmin):
 
 class CountryAdmin(admin.ModelAdmin):
 	filter_horizontal = ('languages',)
-	list_display = ('name', 'emoji', 'population')
+	list_display = ('name', 'emoji', 'population', 'marker')
 
 
 class CityAdmin(admin.ModelAdmin):
