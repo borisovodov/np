@@ -28,12 +28,6 @@
         </div>
     </div>
 </div>
-<div class="container mb-4">
-    <h2 class="pb-2">On Map</h2>
-    <div class="rounded" id="map" style="height: 24rem;">
-        {% include "app/map_template.html" %}
-    </div>
-</div>
 {% if sender.achievements.count != 0 %}
 <div class="container mb-4">
     <h2 class="pb-2">{% if sender.achievements.count != 1 %}Achievements{% else %}Achievement{% endif %}</h2>
@@ -55,5 +49,11 @@
         {% endfor %}
     </div>
     {% endfor %}
+</div>
+<div class="container mb-4">
+    <h2 class="pb-2">On Map</h2>
+    <div class="rounded" id="map" style="height: 24rem;">
+        {% include "app/map_template.html" %}
+    </div>
 </div>
 {% endblock %}

@@ -5,8 +5,14 @@
 	var map = L.mapbox.map('map', null, {
 		center: [26.1731511,33.818104],
 		zoom: 2,
-		layers: layer
+		layers: layer,
 	});
+	if (map.tap) {
+		map.tap.disable();
+	}
+	if (map.scrollWheelZoom) {
+		map.scrollWheelZoom.disable();
+	}
 	{% for marker in map_content %}
 	var popupText = '{{marker.city}}<br>{% for newspaper in marker.newspapers %}<li><a href="{{newspaper.get_absolute_url}}">{{newspaper.title}}</a></li>{% endfor %}</body>';
 	var marker = L.marker([{{marker.city.coordinates}}], {

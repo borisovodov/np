@@ -17,7 +17,7 @@ class LanguageAdmin(admin.ModelAdmin):
 
 class CountryAdmin(admin.ModelAdmin):
 	filter_horizontal = ('languages',)
-	list_display = ('name', 'emoji', 'population', 'marker')
+	list_display = ('name', 'emoji', 'population', 'is_marker')
 
 
 class CityAdmin(admin.ModelAdmin):
@@ -28,16 +28,19 @@ class CityAdmin(admin.ModelAdmin):
 		import json
 
 		name = "{0}, {1}".format(form.cleaned_data['name'], form.cleaned_data['country'].name)
-		geocoder = Geocoder(access_token=BaseSettings.objects.get(pk=1).mapbox_access_key)
-		response = geocoder.forward(name)
-		mapbox_coords = response.json()['features'][0]['center']
+		try:
+			geocoder = Geocoder(access_token=BaseSettings.objects.get(pk=1).mapbox_access_key)
+			response = geocoder.forward(name)
+			mapbox_coords = response.json()['features'][0]['center']
 
-		coordinates = Coordinates.objects.create(longitude=mapbox_coords[0], latitude=mapbox_coords[1])
-		coordinates.save()
+			coordinates = Coordinates.objects.create(longitude=mapbox_coords[0], latitude=mapbox_coords[1])
+			coordinates.save()
 
-		obj.coordinates = coordinates
+			obj.coordinates = coordinates
 
-		super(CityAdmin, self).save_model(request, obj, form, change)
+			super(CityAdmin, self).save_model(request, obj, form, change)
+		except:
+			super(CityAdmin, self).save_model(request, obj, form, change)
 
 
 class SenderAdmin(admin.ModelAdmin):
@@ -54,7 +57,7 @@ class SenderAdmin(admin.ModelAdmin):
 
 class NewspaperAdmin(admin.ModelAdmin):
 	filter_horizontal = ('senders', 'tags',)
-	list_display = ('title', 'city', 'id', 'number', 'number_2', 'date', 'language', 'is_photo')
+	list_display = ('title', 'city', 'id', 'number', 'number_2', 'date', 'language', 'is_photo', 'is_thumbnail')
 	inlines = [CostInline]
 
 	def save_model(self, request, obj, form, change):
@@ -92,7 +95,7 @@ class NewspaperAdmin(admin.ModelAdmin):
 			polar_tag.save()
 			tag_ids.append(polar_tag.id)
 
-		if obj.frequency != 'Other/Unknown':
+		if obj.frequency:
 			frequency_tag, created = Tag.objects.get_or_create(name=obj.frequency)
 			frequency_tag.save()
 			tag_ids.append(frequency_tag.id)
@@ -102,6 +105,12 @@ class NewspaperAdmin(admin.ModelAdmin):
 			type_tag.save()
 			tag_ids.append(type_tag.id)
 
+		# for photo
+		if bool(obj.photo):
+			obj.is_photo = True
+		else:
+			obj.is_photo = False
+
 		form.cleaned_data['tags'] = Tag.objects.order_by('name').filter(id__in=tag_ids)
 
 		super(NewspaperAdmin, self).save_model(request, obj, form, change)
@@ -109,9 +118,6 @@ class NewspaperAdmin(admin.ModelAdmin):
 
 class CurrencyAdmin(admin.ModelAdmin):
 	list_display = ('name', 'symbol', 'code', 'order')
-
-
-# class CostAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Achievement)

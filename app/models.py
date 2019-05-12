@@ -24,7 +24,7 @@ class Achievement(models.Model):
 		return Sender.objects.order_by('name').filter(id__in=list(senders_ids))
 
 	def get_absolute_url(self):
-		return "/app/achievements/%i/" % self.id
+		return "/achievements/%i/" % self.id
 
 	def __str__(self):
 		return self.name
@@ -34,25 +34,29 @@ class Coordinates(models.Model):
 	latitude = models.FloatField()
 	longitude = models.FloatField()
 
-	def pretty(self):
+	def get_pretty_latitude(self):
 		from math import trunc
 
 		if self.latitude > 0:
-			latitude = str(trunc(float(self.latitude))) + '° ' + str(trunc((float(self.latitude) -
+			return str(trunc(float(self.latitude))) + '° ' + str(trunc((float(self.latitude) -
 																	trunc(float(self.latitude)))*60)) + '′ N'
 		else:
-			latitude = str(abs(trunc(float(self.latitude)))) + '° ' + str(abs(trunc((float(self.latitude) -
+			return str(abs(trunc(float(self.latitude)))) + '° ' + str(abs(trunc((float(self.latitude) -
 																			trunc(float(self.latitude)))*60)))\
 															+ '′ S'
+
+	def get_pretty_longitude(self):
+		from math import trunc
+
 		if self.longitude > 0:
-			longitude = str(trunc(float(self.longitude))) + '° ' + str(trunc((float(self.longitude) -
+			return str(trunc(float(self.longitude))) + '° ' + str(trunc((float(self.longitude) -
 																	trunc(float(self.longitude)))*60)) + '′ E'
 		else:
-			longitude = str(abs(trunc(float(self.longitude)))) + '° ' + str(abs(trunc((float(self.longitude) -
+			return str(abs(trunc(float(self.longitude)))) + '° ' + str(abs(trunc((float(self.longitude) -
 																			trunc(float(self.longitude)))*60)))\
 																+ '′ W'
-
-		return '{0}, {1}'.format(latitude, longitude)
+	def pretty(self):
+		return '{0}, {1}'.format(self.get_pretty_latitude(), self.get_pretty_longitude())
 
 	def __str__(self):
 		return '{0}, {1}'.format(str(self.latitude), str(self.longitude))
@@ -76,7 +80,7 @@ class Language(models.Model):
 		return City.objects.order_by('name').filter(id__in=list(cities_ids))
 
 	def get_absolute_url(self):
-		return "/app/languages/%i/" % self.id
+		return "/languages/%i/" % self.id
 
 	def __str__(self):
 		return self.name
@@ -103,7 +107,12 @@ class Country(models.Model):
 		return Sender.objects.order_by('name').filter(id__in=list(senders_ids))
 
 	def get_absolute_url(self):
-		return "/app/countries/%i/" % self.id
+		return "/countries/%i/" % self.id
+
+	def is_marker(self):
+		return bool(self.marker)
+	is_marker.boolean = True # for pretty
+	is_marker.short_description = 'Marker'
 
 	def __str__(self):
 		return self.name
@@ -145,11 +154,13 @@ class City(models.Model):
 		return Sender.objects.order_by('name').filter(id__in=list(senders_ids))
 
 	def hemisphere(self):
-		pass
-		# = models.BooleanField('Southern Hemisphere') # false — north hemisphere, true — south hemisphere
+		if self.coordinates.latitude > 0.0: # false — north hemisphere, true — south hemisphere
+			return False
+		else:
+			return True
 
 	def photo(self):
-		return self.newspapers().first().photo
+		if self.newspapers(): return self.newspapers().first().photo
 
 	def get_continent_tag(self):
 		tag, created = Tag.objects.get_or_create(name=self.continent)
@@ -157,7 +168,7 @@ class City(models.Model):
 		return tag
 
 	def get_absolute_url(self):
-		return "/app/countries/{0}/{1}/".format(self.country.id, self.id)
+		return "/countries/{0}/{1}/".format(self.country.id, self.id)
 
 	def __str__(self):
 		return "{0}, {1}".format(self.name, self.country.name)
@@ -181,6 +192,9 @@ class Sender(models.Model):
 		cities_ids = self.newspapers().values_list('city_id', flat=True)
 		return City.objects.order_by('name').filter(id__in=list(cities_ids))
 
+	def cities_count(self):
+		return self.cities().count()
+
 	def countries(self):
 		countries_ids = self.newspapers().values_list('city__country_id', flat=True)
 		return Country.objects.order_by('name').filter(id__in=list(countries_ids))
@@ -193,68 +207,68 @@ class Sender(models.Model):
 		achievements_ids = []
 
 		if self.newspapers().count() > 1:
-			achievement, created = Achievement.objects.get_or_create(name='2 Newspapers')
+			achievement, created = Achievement.objects.get_or_create(name='2 Newspapers')
 			achievements_ids.append(achievement.id)
 		if self.newspapers().count() > 4:
-			achievement, created = Achievement.objects.get_or_create(name='5 Newspapers')
+			achievement, created = Achievement.objects.get_or_create(name='5 Newspapers')
 			achievements_ids.append(achievement.id)
 		if self.newspapers().count() > 9:
-			achievement, created = Achievement.objects.get_or_create(name='10 Newspapers')
+			achievement, created = Achievement.objects.get_or_create(name='10 Newspapers')
 			achievements_ids.append(achievement.id)
 		if self.countries().count() > 1:
-			achievement, created = Achievement.objects.get_or_create(name='2 Countries')
+			achievement, created = Achievement.objects.get_or_create(name='2 Countries')
 			achievements_ids.append(achievement.id)
 		if self.countries().count() > 4:
-			achievement, created = Achievement.objects.get_or_create(name='5 Countries')
+			achievement, created = Achievement.objects.get_or_create(name='5 Countries')
 			achievements_ids.append(achievement.id)
 		if self.countries().count() > 9:
-			achievement, created = Achievement.objects.get_or_create(name='10 Countries')
+			achievement, created = Achievement.objects.get_or_create(name='10 Countries')
 			achievements_ids.append(achievement.id)
 		if self.cities().count() > 1:
-			achievement, created = Achievement.objects.get_or_create(name='2 Cities')
+			achievement, created = Achievement.objects.get_or_create(name='2 Cities')
 			achievements_ids.append(achievement.id)
 		if self.cities().count() > 4:
-			achievement, created = Achievement.objects.get_or_create(name='5 Cities')
+			achievement, created = Achievement.objects.get_or_create(name='5 Cities')
 			achievements_ids.append(achievement.id)
 		if self.cities().count() > 9:
-			achievement, created = Achievement.objects.get_or_create(name='10 Cities')
+			achievement, created = Achievement.objects.get_or_create(name='10 Cities')
 			achievements_ids.append(achievement.id)
 		if self.languages().count() > 1:
-			achievement, created = Achievement.objects.get_or_create(name='2 Languages')
+			achievement, created = Achievement.objects.get_or_create(name='2 Languages')
 			achievements_ids.append(achievement.id)
 		if self.languages().count() > 4:
-			achievement, created = Achievement.objects.get_or_create(name='5 Languages')
+			achievement, created = Achievement.objects.get_or_create(name='5 Languages')
 			achievements_ids.append(achievement.id)
 		if self.languages().count() > 9:
-			achievement, created = Achievement.objects.get_or_create(name='10 Languages')
+			achievement, created = Achievement.objects.get_or_create(name='10 Languages')
 			achievements_ids.append(achievement.id)
 		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) == 2:
-			achievement, created = Achievement.objects.get_or_create(name='2 Continents')
+			achievement, created = Achievement.objects.get_or_create(name='2 Continents')
 			achievements_ids.append(achievement.id)
 		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) == 3:
-			achievement, created = Achievement.objects.get_or_create(name='3 Continents')
+			achievement, created = Achievement.objects.get_or_create(name='3 Continents')
 			achievements_ids.append(achievement.id)
 		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) == 4:
-			achievement, created = Achievement.objects.get_or_create(name='4 Continents')
+			achievement, created = Achievement.objects.get_or_create(name='4 Continents')
 			achievements_ids.append(achievement.id)
 		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) == 5:
-			achievement, created = Achievement.objects.get_or_create(name='5 Continents')
+			achievement, created = Achievement.objects.get_or_create(name='5 Continents')
 			achievements_ids.append(achievement.id)
 		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) == 6:
-			achievement, created = Achievement.objects.get_or_create(name='6 Continents')
+			achievement, created = Achievement.objects.get_or_create(name='6 Continents')
 			achievements_ids.append(achievement.id)
-		#if len(set([ newspaper.city.hemisphere for newspaper in self.newspapers() ])) == 2:
-		#	achievement, created = Achievement.objects.get_or_create(name='Both Hemisphere')
-		#	achievements_ids.append(achievement.id)
+		if len(set([ newspaper.city.hemisphere() for newspaper in self.newspapers() ])) == 2:
+			achievement, created = Achievement.objects.get_or_create(name='Both Hemisphere')
+			achievements_ids.append(achievement.id)
 		years = len(set([ newspaper.date.year for newspaper in self.newspapers() ]))
 		if years > 1:
-			achievement, created = Achievement.objects.get_or_create(name=(str(years) + ' Years'))
+			achievement, created = Achievement.objects.get_or_create(name=(str(years) + ' Years'))
 			achievements_ids.append(achievement.id)
 
 		return Achievement.objects.order_by('name').filter(id__in=list(achievements_ids))
 
 	def get_absolute_url(self):
-		return "/app/senders/%i/" % self.id
+		return "/senders/%i/" % self.id
 
 	def is_avatar(self):
 		return bool(self.avatar)
@@ -280,12 +294,15 @@ class Tag(models.Model):
 	def newspapers(self):
 		return Newspaper.objects.order_by('-date').filter(tags=self)
 
+	def newspapers_count(self):
+		return self.newspapers().count()
+
 	def cities(self):
 		cities_ids = self.newspapers().values_list('city_id', flat=True)
 		return City.objects.order_by('name').filter(id__in=list(cities_ids))
 
 	def get_absolute_url(self):
-		return "/app/tags/%i/" % self.id
+		return "/tags/%i/" % self.id
 
 	def __str__(self):
 		return self.name
@@ -328,7 +345,7 @@ class Newspaper(models.Model):
 		('Biweekly', 'Biweekly'),
 		('Monthly', 'Monthly'),
 		('Bimonthly', 'Bimonthly'),
-		('Other/Unknown', 'Other/Unknown'),
+		('Other', 'Other'),
 	)
 
 	city = models.ForeignKey(City, on_delete=models.PROTECT)
@@ -339,22 +356,19 @@ class Newspaper(models.Model):
 	language = models.ForeignKey(Language, on_delete=models.PROTECT)
 	senders = models.ManyToManyField(Sender)
 	photo = models.FileField(upload_to='newspapers', blank=True, null=True)
+	thumbnail = models.ImageField(upload_to='newspapers-thumbnail', blank=True, null=True)
+	is_photo = models.BooleanField(default=False)
 	tags = models.ManyToManyField(Tag, blank=True)
 
 	color = models.CharField(max_length=200, choices=COLORS)
 	pages = models.IntegerField(default=0)
 	format_paper = models.ForeignKey(FormatPaper, blank=True, null=True, on_delete=models.SET_NULL)
-	type_newspaper = models.CharField(max_length=200, choices=TYPES)
-	frequency = models.CharField(max_length=200, choices=FREQUENCIES)
+	type_newspaper = models.CharField(max_length=200, choices=TYPES, default='Newspaper')
+	frequency = models.CharField(max_length=200, choices=FREQUENCIES, blank=True)
 	circulation = models.IntegerField(default=0, blank=True)
 	website = models.CharField(max_length=200, blank=True)
 	ISSN = models.CharField(max_length=200, blank=True)
 	date_start_publication = models.DateField(null=True, blank=True)
-
-	def is_photo(self):
-		return bool(self.photo)
-	is_photo.boolean = True # for pretty
-	is_photo.short_description = 'Photo'
 
 	def costs(self):
 		return Cost.objects.filter(newspaper=self)
@@ -370,11 +384,46 @@ class Newspaper(models.Model):
 		tag.save()
 		return tag
 
+	def get_tags_alph(self):
+		return self.tags.order_by('name')
+
 	def get_absolute_url(self):
-		return "/app/newspapers/%i/" % self.id
+		return "/newspapers/%i/" % self.id
+
+	def is_thumbnail(self):
+		return bool(self.thumbnail)
+	is_thumbnail.boolean = True # for pretty
+	is_thumbnail.short_description = 'Thumbnail'
 
 	def __str__(self):
-	    return self.title
+		return self.title
+
+	def save(self):
+		from PIL import Image
+		from io import BytesIO
+		from django.core.files import File
+		import shutil
+
+		try:
+			size = (522, 522)
+			im = Image.open(self.photo)
+			output = BytesIO()
+
+			#Resize/modify the image
+			im.thumbnail(size)
+
+			#after modifications, save it to the output
+			im.save(output, format='JPEG', quality=100)
+			output.seek(0)
+
+			with open('temp/%s.jpg' %self.photo.name.split('.')[0], 'wb+') as f:
+				shutil.copyfileobj(output, f, length=131072)
+			f = open('temp/%s.jpg' %self.photo.name.split('.')[0], 'rb')
+			self.thumbnail = File(f)
+
+			super(Newspaper, self).save()
+		except:
+			super(Newspaper, self).save()
 
 
 class Currency(models.Model):

@@ -14,11 +14,35 @@
         <li class="mb-2">Most newspapers from <a href="{{ country_lots_newspapers.get_absolute_url }}">{{ country_lots_newspapers }}</a>—{{ country_lots_newspapers.newspapers.count }}.</li>
         <li class="mb-2">Here are the newspapers on <a href="{% url 'languages' %}">{{ number_of_languages }} languages</a>.</li>
         <li class="mb-2">{{ language_lots_newspapers.newspapers.count }} newspapers were brought on <a href="{{ language_lots_newspapers.get_absolute_url }}">{{ language_lots_newspapers }}</a>.</li>
-        <li class="mb-2">Newspapers were brought from the 4 continents—Africa, Europe, Asia, North America. More then other from <a href="tag.html">Europe</a>: 112.</li>
-        <li class="mb-2">The northernmost newspaper brought <a href="sender.html">Yelena Kopylova</a> from <a href="city.html">Gadzhiyevo, Russia</a>: 69° 14′ N.</li>
-        <li class="mb-2"> The southernmost newspaper brought <a href="sender.html">Vadim Krushinskiy</a> from <a href="city.html">Pretoria, South Africa</a>: 25° 44′ S.</li>
-        <li class="mb-2">The westernmost newspaper brought <a href="sender.html">Maxim Tuhbatov</a> from <a href="city.html">Cancún, Mexico</a>: 86° 49′ W.</li>
-        <li class="mb-2">The easternmost newspaper brought <a href="sender.html">Valentin Tetyorkin</a> from <a href="city.html">Tokyo, Japan</a>: 139° 42′ E.</li>
+        <li class="mb-2">Newspapers were brought from the {{ number_of_continents }} continents—{% for continent in continents %}
+            {% if forloop.last %}<a href="{{ continent.get_absolute_url }}">{{ continent }}</a>
+                {% else %}<a href="{{ continent.get_absolute_url }}">{{ continent }}</a>, 
+            {% endif %}
+            {% empty %}{% endfor %}. More then other from <a href="{{ continent_lots_newspaper.get_absolute_url }}">{{ continent_lots_newspaper }}</a>: {{ continent_lots_newspaper.newspapers_count }}.</li>
+        <li class="mb-2">The northernmost newspaper brought 
+            {% for sender in northernmost_city.senders.all %}
+                {% if forloop.last %}<a href="{{ sender.get_absolute_url }}">{{ sender }}</a>
+                {% else %}<a href="{{ sender.get_absolute_url }}">{{ sender }}</a>, 
+                {% endif %}
+            {% endfor %} from <a href="{{ northernmost_city.get_absolute_url }}">{{ northernmost_city }}</a>: {{ northernmost_city.coordinates.get_pretty_latitude }}.</li>
+        <li class="mb-2"> The southernmost newspaper brought 
+            {% for sender in southernmost_city.senders.all %}
+                {% if forloop.last %}<a href="{{ sender.get_absolute_url }}">{{ sender }}</a>
+                {% else %}<a href="{{ sender.get_absolute_url }}">{{ sender }}</a>, 
+                {% endif %}
+            {% endfor %} from <a href="{{ southernmost_city.get_absolute_url }}">{{ southernmost_city }}</a>: {{ southernmost_city.coordinates.get_pretty_latitude }}.</li>
+        <li class="mb-2">The westernmost newspaper brought 
+            {% for sender in westernmost_city.senders.all %}
+                {% if forloop.last %}<a href="{{ sender.get_absolute_url }}">{{ sender }}</a>
+                {% else %}<a href="{{ sender.get_absolute_url }}">{{ sender }}</a>, 
+                {% endif %}
+            {% endfor %} from <a href="{{ westernmost_city.get_absolute_url }}">{{ westernmost_city }}</a>: {{ westernmost_city.coordinates.get_pretty_longitude }}.</li>
+        <li class="mb-2">The easternmost newspaper brought 
+            {% for sender in easternmost_city.senders.all %}
+                {% if forloop.last %}<a href="{{ sender.get_absolute_url }}">{{ sender }}</a>
+                {% else %}<a href="{{ sender.get_absolute_url }}">{{ sender }}</a>, 
+                {% endif %}
+            {% endfor %} from <a href="{{ easternmost_city.get_absolute_url }}">{{ easternmost_city }}</a>: {{ easternmost_city.coordinates.get_pretty_longitude }}.</li>
         <li class="mb-2">Newspapers brought <a href="{% url 'senders' %}">{{ number_of_senders }} people</a>.</li>
         <li class="mb-2">Most newspapers brought <a href="{{ sender_lots_newspapers.get_absolute_url }}">{{ sender_lots_newspapers }}</a>—{{ sender_lots_newspapers.newspapers.count }}.</li>
         <li class="mb-2">First <a href="{{ first_newspaper.get_absolute_url }}">newspaper</a> <a href="{{ first_sender.get_absolute_url }}">{{ first_sender }}</a> filch from post.</li>

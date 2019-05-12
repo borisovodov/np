@@ -1,14 +1,11 @@
 # np
-np is a program for easy work with database of newspapers, uploading scans on Flickr, creating posts and updating pages on Blogger.
+np is a django-app for easy work with database of newspapers and their images.
 
-Work on Python 3.5.0. Also include module:<br>
-Django 1.8.4<br>
-FlickrAPI 2.1.1<br>
-Google API Python Client 1.4.2
+Work on Python 3.7. Also uses:
+* PostgreSQL 11;
+* Django 2;
+* Bootstrap 4;
+* Images stored on Google Cloude Storage;
+* Maps builds through MapBox JS API.
 
-For work with program just run np.py. In menu enter:
-- 's' for start server
-- 'm' for migration database
-- 'superuser' for create superuser
-- 'u' for update app
--  and 'e' for exit from program.
+Thanks for your attention :)

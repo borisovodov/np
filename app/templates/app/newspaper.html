@@ -28,8 +28,8 @@
                 {% if newspaper.frequency %}<li class="mb-2">Frequency: <a href="{{ newspaper.get_frequency_tag.get_absolute_url }}">{{ newspaper.get_frequency_tag }}</a></li>{% endif %}
                 {% if newspaper.circulation %}<li class="mb-2">Circulation: {{ newspaper.circulation }}</li>{% endif %}
                 {% if newspaper.date_start_publication %}<li class="mb-2">Since: {{ newspaper.date_start_publication }}</li>{% endif %}
-                {% if newspaper.website %}<li class="mb-2">Site: <a href="{{ newspaper.website }}">{{ newspaper.website }}</a></li>{% endif %}
-                {% if newspaper.ISSN %}<li class="mb-2">ISSN: <a href="{{ newspaper.ISSN }}">{{ newspaper.ISSN }}</a></li>{% endif %}
+                {% if newspaper.website %}<li class="mb-2">Website: <a href="{{ newspaper.website }}">{{ newspaper.website }}</a></li>{% endif %}
+                {% if newspaper.ISSN %}<li class="mb-2">ISSN: {{ newspaper.ISSN }}</li>{% endif %}
             </ul>
         </div>
         <div class="col-md-6">{% if newspaper.photo %}<a href="{{ newspaper.photo.url }}"><img class="img-thumbnail mx-auto d-block" src="{{ newspaper.photo.url }}"></a>{% endif %}</div>

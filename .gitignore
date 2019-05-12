@@ -2,11 +2,12 @@
 .idea/
 __pycache__/
 *.py[cod]
-migrations/
+
 .DS_Store
 
 # Output
 *.xml
+*.json
 
 # Private
 data/

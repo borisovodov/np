@@ -8,6 +8,10 @@ def divide_by_column(object_list):
 		yield object_list[i:i + 4]
 
 
+def page404(request):
+	return render(request, 'app/404.html')
+	
+
 def about(request):
 	context = {
 		'first_newspaper': Newspaper.objects.get(id=1),
@@ -81,17 +85,12 @@ def countries(request):
 
 
 def index(request):
-	map_content = []
-	for city in City.objects.order_by('name').exclude(coordinates__isnull=True):
-		map_content.append({'city': city, 'newspapers': city.newspapers()})
-
-	popular_newspapers = list(divide_by_column(Newspaper.objects.order_by('-date')))[:2]
-	popular_senders = list(divide_by_column(Sender.objects.all()))[:2]
+	popular_newspapers = list(divide_by_column(Newspaper.objects.filter(is_photo=True).order_by('-date')))[:2]
+	popular_senders = list(divide_by_column(sorted(Sender.objects.all(), key=lambda sender: sender.newspapers_count(), reverse=True)))[:3]
 
 	context = {
 		'popular_newspapers': popular_newspapers,
 		'popular_senders': popular_senders,
-		'map_content': map_content,
 	}
 	return render(request, 'app/index.html', context)
 
@@ -217,15 +216,31 @@ def senders(request):
 
 
 def statistic(request):
-	from operator import methodcaller
+	from operator import methodcaller, attrgetter
+
+	languages_with_newspapers = []
+	for language in Language.objects.all():
+		if language.newspapers_count():
+			languages_with_newspapers.append(language)
+
+	continents = []		
+	for city in City.objects.all():
+		continents.append(city.get_continent_tag())
 
 	context = {
 		'number_of_newspapers': Newspaper.objects.all().count(),
 		'number_of_countries': Country.objects.all().count(),
 		'number_of_cities': City.objects.all().count(),
 		'country_lots_newspapers': max(Country.objects.all(), key=methodcaller('newspapers_count')),
-		'number_of_languages': Language.objects.all().count(),
+		'number_of_languages': len(languages_with_newspapers),
 		'language_lots_newspapers': max(Language.objects.all(), key=methodcaller('newspapers_count')),
+		'number_of_continents': len(set(continents)),
+		'continents': set(continents),
+		'continent_lots_newspaper': max(continents, key=methodcaller('newspapers_count')),
+		'northernmost_city': max(City.objects.all(), key=attrgetter('coordinates.latitude')),
+		'southernmost_city': min(City.objects.all(), key=attrgetter('coordinates.latitude')),
+		'westernmost_city': min(City.objects.all(), key=attrgetter('coordinates.longitude')),
+		'easternmost_city': max(City.objects.all(), key=attrgetter('coordinates.longitude')),
 		'number_of_senders': Sender.objects.all().count(),
 		'sender_lots_newspapers': max(Sender.objects.all(), key=methodcaller('newspapers_count')),
 		'first_newspaper': Newspaper.objects.get(id=1),

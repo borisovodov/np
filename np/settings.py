@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from google.oauth2 import service_account
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,8 +25,8 @@ SECRET_KEY = 'oygyunh)r@vgf_xk+r%5jr5%iw8j=&t3$1ct1hn$b@86hk4&k6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.getenv('DJANGO_ENV') == 'prod':
-    DEBUG = True
-    ALLOWED_HOSTS = ['beta.papersaround.com']
+    DEBUG = False
+    ALLOWED_HOSTS = ['beta.papersaround.com', '0.0.0.0:8000', 'localhost:8000']
 else:
     DEBUG = True
     ALLOWED_HOSTS = ['*']
@@ -133,6 +134,28 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
-MEDIA_URL = '/static/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'np-storage'
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    "home-776766e09e47.json"
+)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'err.log'),
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
