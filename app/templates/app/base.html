@@ -37,11 +37,13 @@
 
     <!-- Local Stylesheet -->
 
-    <link rel="stylesheet" href="https://storage.googleapis.com/np-storage/static/stylesheet.css">
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'stylesheet.css' %}">
 
     <!-- Favicon -->
 
-    <link rel="shortcut icon" type="image/png" href="https://storage.googleapis.com/np-storage/static/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}">
 
     <!-- Google Fonts -->
 
@@ -96,7 +98,7 @@
             <div class="input-group pr-5 pl-5">
                     <input type="text" class="form-control" name="q" placeholder="Search" >
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit">🔍</button>
+                        <button class="btn btn-outline-secondary" type="submit"><img width="16" height="16" src="{% static 'searchIcon.png' %}"></button>
                     </div>
             </div>
         </form>
