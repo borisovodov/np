@@ -26,7 +26,7 @@ SECRET_KEY = 'oygyunh)r@vgf_xk+r%5jr5%iw8j=&t3$1ct1hn$b@86hk4&k6'
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.getenv('DJANGO_ENV') == 'prod':
     DEBUG = False
-    ALLOWED_HOSTS = ['beta.papersaround.com', '0.0.0.0:8000', 'localhost:8000']
+    ALLOWED_HOSTS = ['papersaround.com', 'www.papersaround.com']
 else:
     DEBUG = True
     ALLOWED_HOSTS = ['*']
@@ -145,7 +145,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'file': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'err.log'),
         },
@@ -153,7 +153,7 @@ LOGGING = {
     'loggers': {
         'django.request': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'propagate': True,
         },
     },

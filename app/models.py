@@ -2,7 +2,7 @@ from django.db import models
 
 
 class BaseSettings(models.Model):
-	mapbox_access_key = models.CharField(max_length=200)
+	mapbox_access_key = models.CharField(max_length=200, blank=True)
 
 	def save(self, *args, **kwargs):
 		if BaseSettings.objects.exists() and not self.pk:
