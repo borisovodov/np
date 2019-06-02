@@ -8,7 +8,7 @@
 {% block content %}
 <div class="container mb-4">
     <h1 class="pb-2">Statistic</h1>
-    <p>In this site presents newspapers <s>from around the world</s>. Look at this entertaining statistics:</p>
+    <p>In this website presents newspapers <s>from around the world</s>. Look at this entertaining statistics:</p>
     <ul>
         <li class="mb-2">A total of {{ number_of_newspapers }} newspapers from <a href="{% url 'countries' %}">{{ number_of_countries }} countries</a> and <a href="{% url 'countries' %}">{{ number_of_cities }} cities</a>.</li>
         <li class="mb-2">Most newspapers from <a href="{{ country_lots_newspapers.get_absolute_url }}">{{ country_lots_newspapers }}</a>—{{ country_lots_newspapers.newspapers.count }}.</li>
@@ -16,7 +16,7 @@
         <li class="mb-2">{{ language_lots_newspapers.newspapers.count }} newspapers were brought on <a href="{{ language_lots_newspapers.get_absolute_url }}">{{ language_lots_newspapers }}</a>.</li>
         <li class="mb-2">Newspapers were brought from the {{ number_of_continents }} continents—{% for continent in continents %}
             {% if forloop.last %}<a href="{{ continent.get_absolute_url }}">{{ continent }}</a>
-                {% else %}<a href="{{ continent.get_absolute_url }}">{{ continent }}</a>, 
+            {% else %}<a href="{{ continent.get_absolute_url }}">{{ continent }}</a>, 
             {% endif %}
             {% empty %}{% endfor %}. More then other from <a href="{{ continent_lots_newspaper.get_absolute_url }}">{{ continent_lots_newspaper }}</a>: {{ continent_lots_newspaper.newspapers_count }}.</li>
         <li class="mb-2">The northernmost newspaper brought 

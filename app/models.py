@@ -358,8 +358,6 @@ class Newspaper(models.Model):
 	photo = models.FileField(upload_to='newspapers', blank=True, null=True)
 	thumbnail = models.ImageField(upload_to='newspapers-thumbnail', blank=True, null=True)
 	is_photo = models.BooleanField(default=False)
-	tags = models.ManyToManyField(Tag, blank=True)
-
 	color = models.CharField(max_length=200, choices=COLORS)
 	pages = models.IntegerField(default=0)
 	format_paper = models.ForeignKey(FormatPaper, blank=True, null=True, on_delete=models.SET_NULL)
@@ -369,6 +367,7 @@ class Newspaper(models.Model):
 	website = models.CharField(max_length=200, blank=True)
 	ISSN = models.CharField(max_length=200, blank=True)
 	date_start_publication = models.DateField(null=True, blank=True)
+	tags = models.ManyToManyField(Tag, blank=True)
 
 	def costs(self):
 		return Cost.objects.filter(newspaper=self)

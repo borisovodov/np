@@ -85,7 +85,7 @@ def countries(request):
 
 
 def index(request):
-	popular_newspapers = list(divide_by_column(Newspaper.objects.filter(is_photo=True).order_by('-date')))[:2]
+	popular_newspapers = list(divide_by_column(Newspaper.objects.filter(is_photo=True).order_by('-date')))[:3]
 	popular_senders = list(divide_by_column(sorted(Sender.objects.all(), key=lambda sender: sender.newspapers_count(), reverse=True)))[:3]
 
 	context = {
@@ -144,7 +144,7 @@ def newspaper(request, newspaper_id):
 
 def newspapers(request):
 	context = {
-		'newspapers': divide_by_column(Newspaper.objects.order_by('title')),
+		'newspapers': divide_by_column(Newspaper.objects.order_by('-date')),
 	}
 	return render(request, 'app/newspapers.html', context)
 
