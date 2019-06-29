@@ -311,7 +311,6 @@ class Tag(models.Model):
 	# 'Geotag'
 	# 'Crossword'
 	# 'Sudoku'
-	# 'Nonogram'
 	# 'Kakuro'
 	# 'TV schedule'
 	# 'Anecdote'
@@ -445,7 +444,7 @@ class Cost(models.Model):
 
 	def __str__(self):
 		if self.currency.order:
-			return self.currency.symbol + str(self.value)
+			return self.currency.symbol + ' ' + str(self.value)
 		else:
 			return str(self.value) + ' ' + self.currency.symbol
 
