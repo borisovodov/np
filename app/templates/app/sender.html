@@ -41,6 +41,26 @@
 </div>
 {% endif %}
 <div class="container mb-4">
+    <h2 class="pb-2">{% if sender.countries.count != 1 %}Countries{% else %}Country{% endif %}</h2>
+    {% for row in countries %}
+    <div class="row">
+        {% for country in row %}
+            {% include "app/country_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+<div class="container mb-4">
+    <h2 class="pb-2">{% if sender.cities.count != 1 %}Cities{% else %}City{% endif %}</h2>
+    {% for row in cities %}
+    <div class="row">
+        {% for city in row %}
+            {% include "app/city_template.html" %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+<div class="container mb-4">
     <h2 class="pb-2">{% if sender.newspapers.count != 1 %}Newspapers{% else %}Newspaper{% endif %}</h2>
     {% for row in newspapers %}
     <div class="row">

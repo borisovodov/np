@@ -203,6 +203,8 @@ def sender(request, sender_id):
 		'sender': sender,
 		'achievements': divide_by_column(sender.achievements()),
 		'newspapers': divide_by_column(sender.newspapers()),
+		'cities': divide_by_column(sender.cities()),
+		'countries': divide_by_column(sender.countries()),
 		'map_content': map_content,
 	}
 	return render(request, 'app/sender.html', context)
