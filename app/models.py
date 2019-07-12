@@ -374,6 +374,9 @@ class Newspaper(models.Model):
 	def pravda(self):
 		return 'правда' in self.title.lower()
 
+	def metro(self):
+		return 'metro' in self.title.lower()
+
 	def not_official_language(self):
 		return self.language not in self.city.country.languages.all()
 

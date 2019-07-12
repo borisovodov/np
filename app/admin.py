@@ -85,6 +85,11 @@ class NewspaperAdmin(admin.ModelAdmin):
 			pravda_tag.save()
 			tag_ids.append(pravda_tag.id)
 
+		if obj.metro():
+			metro_tag, created = Tag.objects.get_or_create(name='Metro')
+			metro_tag.save()
+			tag_ids.append(metro_tag.id)
+
 		if obj.not_official_language():
 			not_official_language_tag, created = Tag.objects.get_or_create(name='Not Official Language')
 			not_official_language_tag.save()
