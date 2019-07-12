@@ -206,15 +206,6 @@ class Sender(models.Model):
 	def achievements(self):
 		achievements_ids = []
 
-		if self.newspapers().count() > 1:
-			achievement, created = Achievement.objects.get_or_create(name='2 Newspapers')
-			achievements_ids.append(achievement.id)
-		if self.newspapers().count() > 4:
-			achievement, created = Achievement.objects.get_or_create(name='5 Newspapers')
-			achievements_ids.append(achievement.id)
-		if self.newspapers().count() > 9:
-			achievement, created = Achievement.objects.get_or_create(name='10 Newspapers')
-			achievements_ids.append(achievement.id)
 		if self.countries().count() > 1:
 			achievement, created = Achievement.objects.get_or_create(name='2 Countries')
 			achievements_ids.append(achievement.id)

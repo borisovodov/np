@@ -5,9 +5,8 @@
             <h4 class="card-title"><a class="card-title-link" href="{{ sender.get_absolute_url }}">{{ sender }}</a></h4>
             <p class="card-text">
                 <ul class="list-unstyled">
-                    <li class="mb-2">{{ sender.newspapers.count }} {% if sender.newspapers.count != 1 %}newspapers{% else %}newspaper{% endif %}</li>
-                    <li class="mb-2">{{ sender.cities.count }} {% if sender.cities.count != 1 %}cities{% else %}city{% endif %}</li>
                     <li class="mb-2">{{ sender.countries.count }} {% if sender.countries.count != 1 %}countries{% else %}country{% endif %}</li>
+                    <li class="mb-2">{{ sender.cities.count }} {% if sender.cities.count != 1 %}cities{% else %}city{% endif %}</li>
                 </ul>
             </p>
         </div>

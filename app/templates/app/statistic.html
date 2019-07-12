@@ -44,7 +44,7 @@
                 {% endif %}
             {% endfor %} from <a href="{{ easternmost_city.get_absolute_url }}">{{ easternmost_city }}</a>: {{ easternmost_city.coordinates.get_pretty_longitude }}.</li>
         <li class="mb-2">Newspapers brought <a href="{% url 'senders' %}">{{ number_of_senders }} people</a>.</li>
-        <li class="mb-2">Most newspapers brought <a href="{{ sender_lots_newspapers.get_absolute_url }}">{{ sender_lots_newspapers }}</a>—{{ sender_lots_newspapers.newspapers.count }}.</li>
+        <li class="mb-2"><a href="{{ sender_lots_cities.get_absolute_url }}">{{ sender_lots_cities }}</a> brought newspapers from the largest number of cities–{{ sender_lots_cities.cities.count }}.</li>
         <li class="mb-2">First <a href="{{ first_newspaper.get_absolute_url }}">newspaper</a> <a href="{{ first_sender.get_absolute_url }}">{{ first_sender }}</a> filch from post.</li>
         <li class="mb-2">Latest <a href="{{ last_newspaper.get_absolute_url }}">newspaper</a> 
             {% for sender in last_senders %}

@@ -86,7 +86,7 @@ def countries(request):
 
 def index(request):
 	popular_newspapers = list(divide_by_column(Newspaper.objects.filter(is_photo=True).order_by('-date')))[:3]
-	popular_senders = list(divide_by_column(sorted(Sender.objects.exclude(name='Anonym / Unknown'), key=lambda sender: sender.newspapers_count(), reverse=True)))[:3]
+	popular_senders = list(divide_by_column(sorted(Sender.objects.exclude(name='Anonym / Unknown'), key=lambda sender: sender.cities_count(), reverse=True)))[:3]
 
 	context = {
 		'popular_newspapers': popular_newspapers,
@@ -244,7 +244,7 @@ def statistic(request):
 		'westernmost_city': min(City.objects.all(), key=attrgetter('coordinates.longitude')),
 		'easternmost_city': max(City.objects.all(), key=attrgetter('coordinates.longitude')),
 		'number_of_senders': Sender.objects.all().count(),
-		'sender_lots_newspapers': max(Sender.objects.all(), key=methodcaller('newspapers_count')),
+		'sender_lots_cities': max(Sender.objects.all(), key=methodcaller('cities_count')),
 		'first_newspaper': Newspaper.objects.get(id=1),
 		'first_sender': Sender.objects.get(name='Aleksandra Ovodova'),
 		'last_newspaper': Newspaper.objects.order_by('-id')[0],
