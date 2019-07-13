@@ -12,7 +12,7 @@
         <div class="col-md-6">
             <ul class="list-unstyled ml-4">
                 <li class="mb-2">Population: {{ country.population }}</li>
-                <li class="mb-2">{% if country.languages.all.count > 1 %}Languages{% else %}Language{% endif %}: 
+                <li class="mb-2">{% if country.languages.all.count > 1 %}Official languages{% else %}Official language{% endif %}: 
                     {% for language in country.languages.all %}
                         {% if forloop.last %}<a href="{{ language.get_absolute_url }}">{{ language }}</a>
                         {% else %}<a href="{{ language.get_absolute_url }}">{{ language }}</a>, 
