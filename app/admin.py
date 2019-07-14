@@ -110,6 +110,11 @@ class NewspaperAdmin(admin.ModelAdmin):
 			type_tag.save()
 			tag_ids.append(type_tag.id)
 
+		if obj.format_paper:
+			format_tag, created = Tag.objects.get_or_create(name=obj.format_paper.name)
+			format_tag.save()
+			tag_ids.append(format_tag.id)
+
 		# for photo
 		if bool(obj.photo):
 			obj.is_photo = True

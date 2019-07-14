@@ -24,7 +24,7 @@
                 {% empty %}
                 {% endfor %}</li>
                 {% endif %}
-                {% if newspaper.format_paper %}<li class="mb-2">Paper Format: {{ newspaper.format_paper }}</li>{% endif %}
+                {% if newspaper.format_paper %}<li class="mb-2">Paper Format: <a href="{{ newspaper.format_paper.get_absolute_url }}">{{ newspaper.format_paper.name }}</a></li>{% endif %}
                 {% if newspaper.frequency %}<li class="mb-2">Frequency: <a href="{{ newspaper.get_frequency_tag.get_absolute_url }}">{{ newspaper.get_frequency_tag }}</a></li>{% endif %}
                 {% if newspaper.circulation %}<li class="mb-2">Circulation: {{ newspaper.circulation }}</li>{% endif %}
                 {% if newspaper.date_start_publication %}<li class="mb-2">Since: {{ newspaper.date_start_publication }}</li>{% endif %}
