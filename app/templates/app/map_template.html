@@ -14,7 +14,7 @@
 		map.scrollWheelZoom.disable();
 	}
 	{% for marker in map_content %}
-	var popupText = '{{marker.city}}<br>{% for newspaper in marker.newspapers %}<li><a href="{{newspaper.get_absolute_url}}">{{newspaper.title}}</a></li>{% endfor %}</body>';
+	var popupText = '{{marker.city}}<br>{% for newspaper in marker.newspapers %}<li><a href="{{newspaper.get_absolute_url}}">{{newspaper.title}} (newspaper.date)</a></li>{% endfor %}</body>';
 	var marker = L.marker([{{marker.city.coordinates}}], {
 		{% if marker.city.country.marker %}
 			icon: L.icon({
