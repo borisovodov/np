@@ -14,7 +14,6 @@
                 <li class="mb-2">From: <a href="{{ sender.country.get_absolute_url }}">{{ sender.country }}</a></li>
                 <li class="mb-2">{% if sender.countries.count != 1 %}Countries{% else %}Country{% endif %}: {{ sender.countries.count }}</li>
                 <li class="mb-2">{% if sender.cities.count != 1 %}Cities{% else %}City{% endif %}: {{ sender.cities.count }}</li>
-                <li class="mb-2">{% if sender.newspapers.count != 1 %}Newspapers{% else %}Newspaper{% endif %}: {{ sender.newspapers.count }}</li>
             </ul>
         </div>
         <div class="col-md-4">
