@@ -276,7 +276,7 @@ class FormatPaper(models.Model):
 	width = models.IntegerField('Width (mm)') # mm
 
 	def get_absolute_url(self):
-		return "/tags/%i/" % Tag.objects.get_or_create(name=self.name)[0].id
+		return "/tags/%i/" % Tag.objects.get(name=self.name)[0].id
 
 	def __str__(self):
 		return self.name + ' (' + str(self.height) + '×' + str(self.width) + ')'
