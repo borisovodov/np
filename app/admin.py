@@ -57,7 +57,7 @@ class SenderAdmin(admin.ModelAdmin):
 
 class NewspaperAdmin(admin.ModelAdmin):
 	filter_horizontal = ('senders', 'tags',)
-	list_display = ('title', 'city', 'id', 'number', 'number_2', 'date', 'language', 'is_photo', 'is_thumbnail')
+	list_display = ('title', 'city', 'id', 'number', 'number_2', 'date', 'language', 'senders', 'is_photo', 'is_thumbnail')
 	inlines = [CostInline]
 
 	def save_model(self, request, obj, form, change):
