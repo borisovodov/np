@@ -354,8 +354,8 @@ class Newspaper(models.Model):
 	date = models.DateField(default='0001-01-01')
 	language = models.ForeignKey(Language, on_delete=models.PROTECT)
 	senders = models.ManyToManyField(Sender)
-	photo = models.FileField(upload_to='newspapers', blank=True, null=True)
-	thumbnail = models.ImageField(upload_to='newspapers-thumbnail', blank=True, null=True)
+	photo = models.FileField(upload_to='newspapers/original', blank=True, null=True)
+	thumbnail = models.ImageField(upload_to='newspapers/thumbnail', blank=True, null=True)
 	is_photo = models.BooleanField(default=False)
 	color = models.CharField(max_length=200, choices=COLORS)
 	pages = models.IntegerField(default=0)
@@ -399,8 +399,8 @@ class Newspaper(models.Model):
 	def save(self):
 		from PIL import Image
 		from io import BytesIO
-		from django.core.files import File
-		import shutil
+		from django.core.files.uploadedfile import InMemoryUploadedFile
+		import sys
 
 		try:
 			size = (522, 522)
@@ -414,10 +414,8 @@ class Newspaper(models.Model):
 			im.save(output, format='JPEG', quality=100)
 			output.seek(0)
 
-			with open('temp/%s.jpg' %self.photo.name.split('.')[0], 'wb+') as f:
-				shutil.copyfileobj(output, f, length=131072)
-			f = open('temp/%s.jpg' %self.photo.name.split('.')[0], 'rb')
-			self.thumbnail = File(f)
+			self.thumbnail = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.photo.name.split('.')[0],
+													'image/jpeg', sys.getsizeof(output), None)
 
 			super(Newspaper, self).save()
 		except:
