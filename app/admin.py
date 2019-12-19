@@ -26,10 +26,11 @@ class CityAdmin(admin.ModelAdmin):
 	def save_model(self, request, obj, form, change):
 		from mapbox import Geocoder
 		import json
+		import os
 
 		name = "{0}, {1}".format(form.cleaned_data['name'], form.cleaned_data['country'].name)
 		try:
-			geocoder = Geocoder(access_token=BaseSettings.objects.get(pk=1).mapbox_access_key)
+			geocoder = Geocoder(access_token=os.getenv('MAPBOX_ACCESS_KEY'))
 			response = geocoder.forward(name)
 			mapbox_coords = response.json()['features'][0]['center']
 
@@ -57,7 +58,7 @@ class SenderAdmin(admin.ModelAdmin):
 
 class NewspaperAdmin(admin.ModelAdmin):
 	filter_horizontal = ('senders', 'tags',)
-	list_display = ('title', 'city', 'id', 'number', 'number_2', 'date', 'language', 'senders', 'is_photo', 'is_thumbnail')
+	list_display = ('title', 'city', 'id', 'number', 'number_2', 'date', 'language', 'is_photo', 'is_thumbnail')
 	inlines = [CostInline]
 
 	def save_model(self, request, obj, form, change):
@@ -131,7 +132,6 @@ class CurrencyAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Achievement)
-admin.site.register(BaseSettings)
 admin.site.register(Coordinates, CoordinatesAdmin)
 admin.site.register(Language, LanguageAdmin)
 admin.site.register(Country, CountryAdmin)

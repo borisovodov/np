@@ -1,18 +1,6 @@
 from django.db import models
 
 
-class BaseSettings(models.Model):
-	mapbox_access_key = models.CharField(max_length=200, blank=True)
-
-	def save(self, *args, **kwargs):
-		if BaseSettings.objects.exists() and not self.pk:
-			raise ValidationError('There is can be only one instance.')
-		return super(BaseSettings, self).save(*args, **kwargs)
-
-	class Meta:
-		verbose_name_plural = "Base Settings"
-
-
 class Achievement(models.Model):
 	name = models.CharField(max_length=200)
 
