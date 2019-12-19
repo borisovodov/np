@@ -338,7 +338,6 @@ class Newspaper(models.Model):
 	senders = models.ManyToManyField(Sender)
 	photo = models.FileField(upload_to='newspapers/original', blank=True, null=True)
 	thumbnail = models.ImageField(upload_to='newspapers/thumbnail', blank=True, null=True)
-	is_photo = models.BooleanField(default=False)
 	color = models.CharField(max_length=200, choices=COLORS)
 	pages = models.IntegerField(default=0)
 	format_paper = models.ForeignKey(FormatPaper, blank=True, null=True, on_delete=models.SET_NULL)
@@ -348,6 +347,7 @@ class Newspaper(models.Model):
 	website = models.CharField(max_length=200, blank=True)
 	ISSN = models.CharField(max_length=200, blank=True)
 	date_start_publication = models.DateField(null=True, blank=True)
+	top = models.BooleanField(default=False)
 	tags = models.ManyToManyField(Tag, blank=True)
 
 	def costs(self):
@@ -372,6 +372,11 @@ class Newspaper(models.Model):
 
 	def get_absolute_url(self):
 		return "/newspapers/%i/" % self.id
+
+	def is_photo(self):
+		return bool(self.photo)
+	is_photo.boolean = True # for pretty
+	is_photo.short_description = 'Photo'
 
 	def is_thumbnail(self):
 		return bool(self.thumbnail)

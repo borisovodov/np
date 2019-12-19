@@ -89,7 +89,7 @@ def index(request):
 	for city in City.objects.order_by('name').exclude(coordinates__isnull=True):
 		map_content.append({'city': city, 'newspapers': city.newspapers()})
 
-	popular_newspapers = list(divide_by_column(Newspaper.objects.filter(is_photo=True).order_by('-date')))[:4]
+	popular_newspapers = list(divide_by_column(Newspaper.objects.filter(top=True).order_by('-date')))[:4]
 	popular_senders = list(divide_by_column(sorted(Sender.objects.exclude(name='Anonym / Unknown'), key=lambda sender: sender.cities_count(), reverse=True)))[:4]
 
 	context = {

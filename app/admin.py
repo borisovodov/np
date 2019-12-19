@@ -116,12 +116,6 @@ class NewspaperAdmin(admin.ModelAdmin):
 			format_tag.save()
 			tag_ids.append(format_tag.id)
 
-		# for photo
-		if bool(obj.photo):
-			obj.is_photo = True
-		else:
-			obj.is_photo = False
-
 		form.cleaned_data['tags'] = Tag.objects.order_by('name').filter(id__in=tag_ids)
 
 		super(NewspaperAdmin, self).save_model(request, obj, form, change)
