@@ -32,7 +32,7 @@
                 {% if newspaper.ISSN %}<li class="mb-2">ISSN: {{ newspaper.ISSN }}</li>{% endif %}
             </ul>
         </div>
-        <div class="col-md-6">{% if newspaper.photo %}<a href="{{ newspaper.photo.url }}"><img class="img-thumbnail mx-auto d-block" src="{{ newspaper.photo.url }}"></a>{% endif %}</div>
+        <div class="col-md-6">{% if newspaper.thumbnail %}<a href="{{ newspaper.photo.url }}"><img class="img-thumbnail mx-auto d-block" src="{{ newspaper.thumbnail.url }}"></a>{% endif %}</div>
     </div>
 </div>
 <div class="container mb-4">
