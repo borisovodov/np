@@ -5,7 +5,7 @@ Work on Python 3.7. Also uses:
 * PostgreSQL 11;
 * Django 2;
 * Bootstrap 4;
-* Images stored on Google Cloude Storage;
+* Images stored on DigitalOcean Spaces;
 * Maps builds through MapBox JS API.
 
 Thanks for your attention :)
