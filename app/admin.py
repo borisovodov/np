@@ -21,7 +21,7 @@ class CountryAdmin(admin.ModelAdmin):
 
 
 class CityAdmin(admin.ModelAdmin):
-	list_display = ('name', 'country', 'population', 'hemisphere', 'continent', 'coastal', 'altitude', 'coordinates')
+	list_display = ('name', 'country', 'population', 'hemisphere', 'continent', 'coastal', 'elevation', 'coordinates')
 
 	def save_model(self, request, obj, form, change):
 		from mapbox import Geocoder

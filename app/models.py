@@ -125,7 +125,7 @@ class City(models.Model):
 	population = models.IntegerField()
 	continent = models.CharField(max_length=200, choices=CONTINENTS)
 	coastal = models.BooleanField()
-	altitude = models.IntegerField(default=0) # metres
+	elevation = models.IntegerField(default=0) # metres
 	coordinates = models.OneToOneField(Coordinates, blank=True, null=True, on_delete=models.SET_NULL)
 
 	def is_polar(self):

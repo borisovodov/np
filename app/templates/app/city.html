@@ -14,7 +14,7 @@
                 <li class="mb-2">Country: <a href="{{ city.country.get_absolute_url }}">{{ city.country }}</a></li>
                 <li class="mb-2">Population: {{ city.population }}</li>
                 <li class="mb-2">Continent: <a href="{{ city.get_continent_tag.get_absolute_url }}">{{ city.get_continent_tag }}</a></li>
-                {% if not city.coastal %}<li class="mb-2">Altitude: {{ city.altitude }} m</li>{% endif %}
+                {% if not city.coastal %}<li class="mb-2">Elevation: {{ city.elevation }} m</li>{% endif %}
             </ul>
         </div>
         <div class="col-md-6">
