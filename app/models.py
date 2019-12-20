@@ -17,6 +17,9 @@ class Achievement(models.Model):
 	def __str__(self):
 		return self.name
 
+	class Meta:
+		ordering = ('name',)
+
 
 class Coordinates(models.Model):
 	latitude = models.FloatField()
@@ -73,6 +76,9 @@ class Language(models.Model):
 	def __str__(self):
 		return self.name
 
+	class Meta:
+		ordering = ('name',)
+
 
 class Country(models.Model):
 	name = models.CharField(max_length=200)
@@ -107,6 +113,7 @@ class Country(models.Model):
 
 	class Meta:
 		verbose_name_plural = "Countries"
+		ordering = ('name',)
 
 
 class City(models.Model):
@@ -163,6 +170,8 @@ class City(models.Model):
 
 	class Meta:
 		verbose_name_plural = "Cities"
+		ordering = ('name',)
+
 
 class Sender(models.Model):
 	name = models.CharField(max_length=200)
@@ -257,6 +266,9 @@ class Sender(models.Model):
 	def __str__(self):
 		return self.name
 
+	class Meta:
+		ordering = ('name',)
+
 
 class FormatPaper(models.Model):
 	name = models.CharField(max_length=200)
@@ -268,6 +280,9 @@ class FormatPaper(models.Model):
 
 	def __str__(self):
 		return self.name + ' (' + str(self.height) + '×' + str(self.width) + ')'
+
+	class Meta:
+		ordering = ('name',)
 
 
 class Tag(models.Model):
@@ -423,6 +438,7 @@ class Currency(models.Model):
 
 	class Meta:
 		verbose_name_plural = "Currencies"
+		ordering = ('name',)
 
 
 class Cost(models.Model):
