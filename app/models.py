@@ -5,11 +5,7 @@ class Achievement(models.Model):
 	name = models.CharField(max_length=200)
 
 	def senders(self):
-		senders_ids = []
-		for sender in Sender.objects.order_by('name'):
-			if self in sender.achievements():
-				senders_ids.append(sender.id)
-		return Sender.objects.order_by('name').filter(id__in=list(senders_ids))
+		return Sender.objects.order_by('name').filter(achievements=self)
 
 	def get_absolute_url(self):
 		return "/achievements/%i/" % self.id
@@ -178,6 +174,7 @@ class Sender(models.Model):
 	country = models.ForeignKey(Country, on_delete=models.PROTECT)
 	gender = models.BooleanField('Woman') # false — man, true — woman
 	avatar = models.FileField(upload_to='senders', blank=True, null=True)
+	achievements = models.ManyToManyField(Achievement)
 
 	def newspapers(self):
 		return Newspaper.objects.order_by('-date').filter(senders=self)
@@ -200,60 +197,78 @@ class Sender(models.Model):
 		languages_ids = self.newspapers().values_list('language_id', flat=True)
 		return Language.objects.order_by('name').filter(id__in=list(languages_ids))
 
-	def achievements(self):
-		achievements_ids = []
+	def get_achievements_alph(self):
+		return self.achievements.order_by('name')
+
+	def update_achievements(self):
+		self.achievements.clear()
 
 		if self.countries().count() > 1:
 			achievement, created = Achievement.objects.get_or_create(name='2 Countries')
-			achievements_ids.append(achievement.id)
+			self.achievements.add(achievement)
 		if self.countries().count() > 4:
 			achievement, created = Achievement.objects.get_or_create(name='5 Countries')
-			achievements_ids.append(achievement.id)
+			self.achievements.add(achievement)
 		if self.countries().count() > 9:
 			achievement, created = Achievement.objects.get_or_create(name='10 Countries')
-			achievements_ids.append(achievement.id)
+			self.achievements.add(achievement)
+		if self.countries().count() > 49:
+			achievement, created = Achievement.objects.get_or_create(name='50 Countries')
+			self.achievements.add(achievement)
 		if self.cities().count() > 1:
 			achievement, created = Achievement.objects.get_or_create(name='2 Cities')
-			achievements_ids.append(achievement.id)
+			self.achievements.add(achievement)
 		if self.cities().count() > 4:
 			achievement, created = Achievement.objects.get_or_create(name='5 Cities')
-			achievements_ids.append(achievement.id)
+			self.achievements.add(achievement)
 		if self.cities().count() > 9:
 			achievement, created = Achievement.objects.get_or_create(name='10 Cities')
-			achievements_ids.append(achievement.id)
+			self.achievements.add(achievement)
+		if self.cities().count() > 49:
+			achievement, created = Achievement.objects.get_or_create(name='50 Cities')
+			self.achievements.add(achievement)
 		if self.languages().count() > 1:
 			achievement, created = Achievement.objects.get_or_create(name='2 Languages')
-			achievements_ids.append(achievement.id)
+			self.achievements.add(achievement)
 		if self.languages().count() > 4:
 			achievement, created = Achievement.objects.get_or_create(name='5 Languages')
-			achievements_ids.append(achievement.id)
+			self.achievements.add(achievement)
 		if self.languages().count() > 9:
 			achievement, created = Achievement.objects.get_or_create(name='10 Languages')
-			achievements_ids.append(achievement.id)
-		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) == 2:
+			self.achievements.add(achievement)
+		if self.languages().count() > 49:
+			achievement, created = Achievement.objects.get_or_create(name='50 Languages')
+			self.achievements.add(achievement)
+		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) > 1:
 			achievement, created = Achievement.objects.get_or_create(name='2 Continents')
-			achievements_ids.append(achievement.id)
-		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) == 3:
+			self.achievements.add(achievement)
+		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) > 2:
 			achievement, created = Achievement.objects.get_or_create(name='3 Continents')
-			achievements_ids.append(achievement.id)
-		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) == 4:
+			self.achievements.add(achievement)
+		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) > 3:
 			achievement, created = Achievement.objects.get_or_create(name='4 Continents')
-			achievements_ids.append(achievement.id)
-		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) == 5:
+			self.achievements.add(achievement)
+		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) > 4:
 			achievement, created = Achievement.objects.get_or_create(name='5 Continents')
-			achievements_ids.append(achievement.id)
-		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) == 6:
+			self.achievements.add(achievement)
+		if len(set([ newspaper.city.continent for newspaper in self.newspapers() ])) > 5:
 			achievement, created = Achievement.objects.get_or_create(name='6 Continents')
-			achievements_ids.append(achievement.id)
+			self.achievements.add(achievement)
 		if len(set([ newspaper.city.hemisphere() for newspaper in self.newspapers() ])) == 2:
 			achievement, created = Achievement.objects.get_or_create(name='Both Hemisphere')
-			achievements_ids.append(achievement.id)
+			self.achievements.add(achievement)
 		years = len(set([ newspaper.date.year for newspaper in self.newspapers() ]))
 		if years > 1:
-			achievement, created = Achievement.objects.get_or_create(name=(str(years) + ' Years'))
-			achievements_ids.append(achievement.id)
-
-		return Achievement.objects.order_by('name').filter(id__in=list(achievements_ids))
+			achievement, created = Achievement.objects.get_or_create(name='2 Years')
+			self.achievements.add(achievement)
+		if years > 4:
+			achievement, created = Achievement.objects.get_or_create(name='5 Years')
+			self.achievements.add(achievement)
+		if years > 9:
+			achievement, created = Achievement.objects.get_or_create(name='10 Years')
+			self.achievements.add(achievement)
+		
+		self.save()
 
 	def get_absolute_url(self):
 		return "/senders/%i/" % self.id
@@ -276,7 +291,7 @@ class FormatPaper(models.Model):
 	width = models.IntegerField('Width (mm)') # mm
 
 	def get_absolute_url(self):
-		return "/tags/%i/" % Tag.objects.get(name=self.name)[0].id
+		return "/tags/%i/" % Tag.objects.get(name=self.name).id
 
 	def __str__(self):
 		return self.name + ' (' + str(self.height) + '×' + str(self.width) + ')'

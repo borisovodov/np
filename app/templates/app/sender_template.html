@@ -10,10 +10,10 @@
                 </ul>
             </p>
         </div>
-        {% if sender.achievements.count != 0 %}
+        {% if sender.achievements.all.count != 0 %}
         <div class="card-footer">
-            <small class="text-muted">{% if sender.achievements.count != 1 %}Achievements{% else %}Achievement{% endif %}: 
-                {% for achievement in sender.achievements %}
+            <small class="text-muted">{% if sender.achievements.all.count != 1 %}Achievements{% else %}Achievement{% endif %}: 
+                {% for achievement in sender.get_achievements_alph %}
                     {% if forloop.last %}<a href="{{ achievement.get_absolute_url }}">{{ achievement }}</a>
                     {% else %}<a href="{{ achievement.get_absolute_url }}">{{ achievement }}</a>, 
                     {% endif %}

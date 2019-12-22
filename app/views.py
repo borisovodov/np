@@ -206,7 +206,7 @@ def sender(request, sender_id):
 
 	context = {
 		'sender': sender,
-		'achievements': divide_by_column(sender.achievements()),
+		'achievements': divide_by_column(sender.achievements.order_by('name')),
 		'newspapers': divide_by_column(sender.newspapers()),
 		'cities': divide_by_column(sender.cities()),
 		'countries': divide_by_column(sender.countries()),

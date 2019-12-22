@@ -46,6 +46,12 @@ class CityAdmin(admin.ModelAdmin):
 
 class SenderAdmin(admin.ModelAdmin):
 	list_display = ('name', 'country', 'gender', 'is_avatar')
+	actions = ['update_achievements']
+
+	def update_achievements(self, request, queryset):
+		for sender in queryset:
+			sender.update_achievements()
+
 
 
 # class FormatPaperAdmin(admin.ModelAdmin):
@@ -58,7 +64,7 @@ class SenderAdmin(admin.ModelAdmin):
 
 class NewspaperAdmin(admin.ModelAdmin):
 	filter_horizontal = ('senders', 'tags',)
-	list_display = ('title', 'city', 'id', 'number', 'number_2', 'date', 'language', 'is_photo', 'is_thumbnail')
+	list_display = ('title', 'city', 'id', 'number', 'number_2', 'date', 'language', 'is_photo', 'is_thumbnail', 'top')
 	inlines = [CostInline]
 
 	def save_model(self, request, obj, form, change):

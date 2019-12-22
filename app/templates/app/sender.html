@@ -27,9 +27,9 @@
         </div>
     </div>
 </div>
-{% if sender.achievements.count != 0 %}
+{% if sender.achievements.all.count != 0 %}
 <div class="container mb-4">
-    <h2 class="pb-2">{% if sender.achievements.count != 1 %}Achievements{% else %}Achievement{% endif %}</h2>
+    <h2 class="pb-2">{% if sender.achievements.all.count != 1 %}Achievements{% else %}Achievement{% endif %}</h2>
     {% for row in achievements %}
     <div class="row">
         {% for achievement in row %}
