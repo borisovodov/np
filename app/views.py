@@ -1,5 +1,5 @@
+import os
 from django.shortcuts import render
-
 from .models import *
 
 
@@ -51,6 +51,7 @@ def city(request, country_id, city_id):
 		'senders': divide_by_column(city.senders()),
 		'newspapers': divide_by_column(city.newspapers()),
 		'map_content': map_content,
+		'mapbox_access_key': os.getenv('MAPBOX_ACCESS_KEY'),
 	}
 	return render(request, 'app/city.html', context)
 
@@ -68,6 +69,7 @@ def country(request, country_id):
 		'cities': divide_by_column(country.cities()),
 		'newspapers': divide_by_column(country.newspapers()),
 		'map_content': map_content,
+		'mapbox_access_key': os.getenv('MAPBOX_ACCESS_KEY'),
 	}
 	return render(request, 'app/country.html', context)
 
@@ -96,6 +98,7 @@ def index(request):
 		'popular_newspapers': popular_newspapers,
 		'popular_senders': popular_senders,
 		'map_content': map_content,
+		'mapbox_access_key': os.getenv('MAPBOX_ACCESS_KEY'),
 	}
 	return render(request, 'app/index.html', context)
 
@@ -111,6 +114,7 @@ def language(request, language_id):
 		'language': language,
 		'newspapers': divide_by_column(language.newspapers()),
 		'map_content': map_content,
+		'mapbox_access_key': os.getenv('MAPBOX_ACCESS_KEY'),
 	}
 	return render(request, 'app/language.html', context)
 
@@ -129,6 +133,7 @@ def map(request):
 
 	context = {
 		'map_content': map_content,
+		'mapbox_access_key': os.getenv('MAPBOX_ACCESS_KEY'),
 	}
 	return render(request, 'app/map.html', context)
 
@@ -143,6 +148,7 @@ def newspaper(request, newspaper_id):
 		'senders': divide_by_column(newspaper.senders.order_by('name')),
 		'tags': divide_by_column(newspaper.tags.order_by('name')),
 		'map_content': map_content,
+		'mapbox_access_key': os.getenv('MAPBOX_ACCESS_KEY'),
 	}
 	return render(request, 'app/newspaper.html', context)
 
@@ -211,6 +217,7 @@ def sender(request, sender_id):
 		'cities': divide_by_column(sender.cities()),
 		'countries': divide_by_column(sender.countries()),
 		'map_content': map_content,
+		'mapbox_access_key': os.getenv('MAPBOX_ACCESS_KEY'),
 	}
 	return render(request, 'app/sender.html', context)
 
@@ -269,6 +276,7 @@ def tag(request, tag_id):
 		'tag': tag,
 		'newspapers': divide_by_column(tag.newspapers()),
 		'map_content': map_content,
+		'mapbox_access_key': os.getenv('MAPBOX_ACCESS_KEY'),
 	}
 	return render(request, 'app/tag.html', context)
 
