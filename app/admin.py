@@ -28,7 +28,12 @@ class CityAdmin(admin.ModelAdmin):
 		import json
 		import os
 
-		name = "{0}, {1}".format(form.cleaned_data['country'].name, form.cleaned_data['name'])
+		if ', ' in form.cleaned_data['name']:
+			location_list = form.cleaned_data['name'].split(', ')
+			location_list.reverse()
+			name = "{0}, {1}".format(form.cleaned_data['country'].name, ', '.join(location_list))
+		else:
+			name = "{0}, {1}".format(form.cleaned_data['country'].name, form.cleaned_data['name'])
 		try:
 			geocoder = Geocoder(access_token=os.getenv('MAPBOX_ACCESS_KEY'))
 			response = geocoder.forward(name)
