@@ -28,24 +28,27 @@ class CityAdmin(admin.ModelAdmin):
 		import json
 		import os
 
-		if ', ' in form.cleaned_data['name']:
-			location_list = form.cleaned_data['name'].split(', ')
-			location_list.reverse()
-			name = "{0}, {1}".format(form.cleaned_data['country'].name, ', '.join(location_list))
+		if not form.cleaned_data['manual_coordinates']:
+			if ', ' in form.cleaned_data['name']:
+				location_list = form.cleaned_data['name'].split(', ')
+				location_list.reverse()
+				name = "{0}, {1}".format(form.cleaned_data['country'].name, ', '.join(location_list))
+			else:
+				name = "{0}, {1}".format(form.cleaned_data['country'].name, form.cleaned_data['name'])
+			try:
+				geocoder = Geocoder(access_token=os.getenv('MAPBOX_ACCESS_KEY'))
+				response = geocoder.forward(name)
+				mapbox_coords = response.json()['features'][0]['center']
+
+				coordinates = Coordinates.objects.create(longitude=mapbox_coords[0], latitude=mapbox_coords[1])
+				coordinates.save()
+
+				obj.coordinates = coordinates
+
+				super(CityAdmin, self).save_model(request, obj, form, change)
+			except:
+				super(CityAdmin, self).save_model(request, obj, form, change)
 		else:
-			name = "{0}, {1}".format(form.cleaned_data['country'].name, form.cleaned_data['name'])
-		try:
-			geocoder = Geocoder(access_token=os.getenv('MAPBOX_ACCESS_KEY'))
-			response = geocoder.forward(name)
-			mapbox_coords = response.json()['features'][0]['center']
-
-			coordinates = Coordinates.objects.create(longitude=mapbox_coords[0], latitude=mapbox_coords[1])
-			coordinates.save()
-
-			obj.coordinates = coordinates
-
-			super(CityAdmin, self).save_model(request, obj, form, change)
-		except:
 			super(CityAdmin, self).save_model(request, obj, form, change)
 
 

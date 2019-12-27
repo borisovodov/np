@@ -130,6 +130,7 @@ class City(models.Model):
 	coastal = models.BooleanField()
 	elevation = models.IntegerField(default=0) # metres
 	coordinates = models.OneToOneField(Coordinates, blank=True, null=True, on_delete=models.SET_NULL)
+	manual_coordinates = models.BooleanField(default=False)
 
 	def is_polar(self):
 		return self.coordinates.latitude > 66.562 or self.coordinates.latitude < -66.562
