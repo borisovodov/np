@@ -357,11 +357,17 @@ class Newspaper(models.Model):
 		('Biweekly', 'Biweekly'),
 		('Monthly', 'Monthly'),
 		('Bimonthly', 'Bimonthly'),
-		('Other', 'Other'),
 	)
 
 	city = models.ForeignKey(City, on_delete=models.PROTECT)
 	title = models.CharField(max_length=200)
+	format_paper = models.ForeignKey(FormatPaper, blank=True, null=True, on_delete=models.SET_NULL)
+	type_newspaper = models.CharField(max_length=200, choices=TYPES, default='Newspaper')
+	frequency = models.CharField(max_length=200, choices=FREQUENCIES, blank=True)
+	circulation = models.IntegerField(default=0, blank=True)
+	website = models.CharField(max_length=200, blank=True)
+	ISSN = models.CharField(max_length=200, blank=True)
+	date_start_publication = models.DateField(null=True, blank=True)
 	number = models.CharField(max_length=200, blank=True)
 	number_2 = models.CharField(max_length=200, blank=True)
 	date = models.DateField(default='0001-01-01')
@@ -371,13 +377,6 @@ class Newspaper(models.Model):
 	thumbnail = models.ImageField(upload_to='newspapers/thumbnail', blank=True, null=True)
 	color = models.CharField(max_length=200, choices=COLORS)
 	pages = models.IntegerField(default=0)
-	format_paper = models.ForeignKey(FormatPaper, blank=True, null=True, on_delete=models.SET_NULL)
-	type_newspaper = models.CharField(max_length=200, choices=TYPES, default='Newspaper')
-	frequency = models.CharField(max_length=200, choices=FREQUENCIES, blank=True)
-	circulation = models.IntegerField(default=0, blank=True)
-	website = models.CharField(max_length=200, blank=True)
-	ISSN = models.CharField(max_length=200, blank=True)
-	date_start_publication = models.DateField(null=True, blank=True)
 	top = models.BooleanField(default=False)
 	tags = models.ManyToManyField(Tag, blank=True)
 
