@@ -175,7 +175,7 @@ class Sender(models.Model):
 	country = models.ForeignKey(Country, on_delete=models.PROTECT)
 	gender = models.BooleanField('Woman') # false — man, true — woman
 	avatar = models.FileField(upload_to='senders', blank=True, null=True)
-	achievements = models.ManyToManyField(Achievement)
+	achievements = models.ManyToManyField(Achievement, blank=True)
 
 	def newspapers(self):
 		return Newspaper.objects.order_by('-date').filter(senders=self)
