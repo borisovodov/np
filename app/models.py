@@ -298,7 +298,7 @@ class FormatPaper(models.Model):
 		return self.name + ' (' + str(self.height) + '×' + str(self.width) + ')'
 
 	class Meta:
-		ordering = ('name',)
+		ordering = ('height',)
 
 
 class Tag(models.Model):
