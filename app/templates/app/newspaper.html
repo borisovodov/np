@@ -29,7 +29,7 @@
                 {% if newspaper.circulation %}<li class="mb-2">Circulation: {{ newspaper.circulation }}</li>{% endif %}
                 {% if newspaper.date_start_publication %}<li class="mb-2">Since: {{ newspaper.date_start_publication }}</li>{% endif %}
                 {% if newspaper.website %}<li class="mb-2">Website: <a href="{{ newspaper.website }}">{{ newspaper.website }}</a></li>{% endif %}
-                {% if newspaper.ISSN %}<li class="mb-2">ISSN: {{ newspaper.ISSN }}</li>{% endif %}
+                {% if newspaper.ISSN %}<li class="mb-2">ISSN: <a href="https://www.worldcat.org/search?q={{ newspaper.ISSN }}">{{ newspaper.ISSN }}</a></li>{% endif %}
             </ul>
         </div>
         <div class="col-md-6">{% if newspaper.thumbnail %}<a href="{{ newspaper.photo.url }}"><img class="img-thumbnail mx-auto d-block" src="{{ newspaper.thumbnail.url }}"></a>{% endif %}</div>
