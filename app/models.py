@@ -204,8 +204,8 @@ class Sender(models.Model):
 	def update_achievements(self):
 		self.achievements.clear()
 
-		if self.countries().count() > 1:
-			achievement, created = Achievement.objects.get_or_create(name='2 Countries')
+		if self.countries().count() > 2:
+			achievement, created = Achievement.objects.get_or_create(name='3 Countries')
 			self.achievements.add(achievement)
 		if self.countries().count() > 4:
 			achievement, created = Achievement.objects.get_or_create(name='5 Countries')
@@ -216,8 +216,8 @@ class Sender(models.Model):
 		if self.countries().count() > 49:
 			achievement, created = Achievement.objects.get_or_create(name='50 Countries')
 			self.achievements.add(achievement)
-		if self.cities().count() > 1:
-			achievement, created = Achievement.objects.get_or_create(name='2 Cities')
+		if self.cities().count() > 2:
+			achievement, created = Achievement.objects.get_or_create(name='3 Cities')
 			self.achievements.add(achievement)
 		if self.cities().count() > 4:
 			achievement, created = Achievement.objects.get_or_create(name='5 Cities')
@@ -228,8 +228,8 @@ class Sender(models.Model):
 		if self.cities().count() > 49:
 			achievement, created = Achievement.objects.get_or_create(name='50 Cities')
 			self.achievements.add(achievement)
-		if self.languages().count() > 1:
-			achievement, created = Achievement.objects.get_or_create(name='2 Languages')
+		if self.languages().count() > 2:
+			achievement, created = Achievement.objects.get_or_create(name='3 Languages')
 			self.achievements.add(achievement)
 		if self.languages().count() > 4:
 			achievement, created = Achievement.objects.get_or_create(name='5 Languages')
@@ -259,8 +259,8 @@ class Sender(models.Model):
 			achievement, created = Achievement.objects.get_or_create(name='Both Hemisphere')
 			self.achievements.add(achievement)
 		years = len(set([ newspaper.date.year for newspaper in self.newspapers() ]))
-		if years > 1:
-			achievement, created = Achievement.objects.get_or_create(name='2 Years')
+		if years > 3:
+			achievement, created = Achievement.objects.get_or_create(name='3 Years')
 			self.achievements.add(achievement)
 		if years > 4:
 			achievement, created = Achievement.objects.get_or_create(name='5 Years')
@@ -368,13 +368,13 @@ class Newspaper(models.Model):
 	website = models.CharField(max_length=200, blank=True)
 	ISSN = models.CharField(max_length=200, blank=True)
 	date_start_publication = models.DateField(null=True, blank=True)
-	number = models.CharField(max_length=200, blank=True)
-	number_2 = models.CharField(max_length=200, blank=True)
-	date = models.DateField(default='0001-01-01')
 	language = models.ForeignKey(Language, on_delete=models.PROTECT)
 	senders = models.ManyToManyField(Sender)
 	photo = models.FileField(upload_to='newspapers/original', blank=True, null=True)
 	thumbnail = models.ImageField(upload_to='newspapers/thumbnail', blank=True, null=True)
+	number = models.CharField(max_length=200, blank=True)
+	number_2 = models.CharField(max_length=200, blank=True)
+	date = models.DateField(default='0001-01-01')
 	color = models.CharField(max_length=200, choices=COLORS)
 	pages = models.IntegerField(default=0)
 	top = models.BooleanField(default=False)
