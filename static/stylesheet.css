@@ -8,6 +8,8 @@
     src: url('IMFellDWPica-Regular.ttf') format('ttf');
 }
 
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&display=swap');
+
 body {
 	font-family: "PT Serif", serif;
 }
