@@ -1,3 +1,13 @@
+@font-face {
+    font-family: 'PT Serif';
+    src: url('pt-serif_regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'IM Fell DW Pica';
+    src: url('IMFellDWPica-Regular.ttf') format('ttf');
+}
+
 body {
 	font-family: "PT Serif", serif;
 }
