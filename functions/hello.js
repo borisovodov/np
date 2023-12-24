@@ -1,3 +1,3 @@
 export function onRequest(context) {
-  return "Hello, world!"
+  return new Response("Hello, world!")
 }
