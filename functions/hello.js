@@ -3,19 +3,13 @@ export function onRequest(context) {
   		return await env.db.prepare('SELECT * FROM newspaper').all()
 	}
 
-	async function getFilesList(env) {
-	  return await env.bucket.list()
-	}
+	//async function getFilesList(env) {
+	//  return await env.bucket.list()
+	//}
 
-	function getResponse(answer) {
-	  return new Response(
-	    JSON.stringify(answer))
-	}
+	let allNewspapers = await getAllNewspapers(env)
 
-	let text = {"results": allNewspapers,
-      "files": files.objects,}
+	let text = {"results": allNewspapers}
 
-    let response = getResponse(text)
-
-  return response
+  return new Response(JSON.stringify(answer))
 }
