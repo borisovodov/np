@@ -1,4 +1,4 @@
-export function onRequest(context) {
+export async function onRequest(context) {
 	async function getAllNewspapers(env) {
   		return await env.db.prepare('SELECT * FROM newspaper').all()
 	}
