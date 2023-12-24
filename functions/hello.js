@@ -9,8 +9,8 @@ export async function onRequest(context) {
 
 	let allNewspapers = await getAllNewspapers(env)
 
-	let text = {"results": allNewspapers}
+	//let text = {"results": allNewspapers}
 
-  //return new Response()
-	return new Response(JSON.stringify(text))
+  //return new Response(JSON.stringify(text))
+	return new Response("Helllllooooooo!!")
 }
