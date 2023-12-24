@@ -7,9 +7,10 @@ export async function onRequest(context) {
 	//  return await env.bucket.list()
 	//}
 
-	let allNewspapers = await getAllNewspapers(env)
+	//let allNewspapers = await getAllNewspapers(env)
 
-	let text = {"results": allNewspapers}
+	//let text = {"results": allNewspapers}
 
-  return new Response(JSON.stringify(answer))
+  //return new Response(JSON.stringify(answer))
+	return new Response("Helllllooooooo!!")
 }
