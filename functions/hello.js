@@ -12,8 +12,8 @@ export function onRequest(context) {
 	    JSON.stringify(answer))
 	}
 
-	let text = "results": allNewspapers,
-      "files": files.objects,
+	let text = {"results": allNewspapers,
+      "files": files.objects,}
 
     let response = getResponse(text)
 
