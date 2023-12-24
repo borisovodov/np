@@ -1,12 +1,9 @@
 export async function onRequest(context) {
-	//async function getFilesList(env) {
-	//  return await env.bucket.list()
-	//}
-
 	let allNewspapers = await context.env.db.prepare('SELECT * FROM newspaper').all()
+	let files = await context.env.bucket.list()
 
-	let text = {"results": allNewspapers}
+	let text = {"results": allNewspapers,
+				"files": files.objects,}
 
   return new Response(JSON.stringify(text))
-	//return new Response("Helllllooooooo!!")
 }
