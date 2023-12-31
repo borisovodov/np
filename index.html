@@ -90,7 +90,7 @@
         <div id="helloTest"></div>
         <script>
             var paragraph = document.createElement('p')
-            const response = fetch("/hello")
+            const response = await fetch("/hello")
             const data = await response.json()
             console.log(data)
             paragraph.innerHTML = response.then(response => response.text())
