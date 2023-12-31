@@ -100,7 +100,7 @@
             console.log(output)
 
             files.forEach((file) => 
-                output = output + file.key + ", ")
+                {output = output + file.key + ", "})
 
             for (const file in files) {
                 console.log(files[file])
@@ -115,7 +115,7 @@
             console.log(output)
 
             newspapers.forEach((newspaper) => 
-                output = output + newspaper.title + ", ")
+                {output = output + newspaper.title + ", "})
 
             for (const newspaper in newspapers) {
                 console.log(newspapers[newspaper])
