@@ -5,10 +5,5 @@ export async function onRequest(context) {
 	let text = {"newspapers": allNewspapers,
 				"files": files.objects,}
 
-  return new Response(JSON.stringify(text), {
-  	status: 200,
-  	headers: {
-		'Content-Type': 'application/json',
-	},
-  })
+  return new Response(JSON.stringify(text))
 }

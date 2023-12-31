@@ -91,39 +91,18 @@
         <script async type="module">
             const response = await fetch("/hello")
             const data = await response.json()
-            const files = data.files
-            const newspapers = data.newspapers.results
-            console.log(data)
 
             var output = "Files in bucket: "
 
-            console.log(output)
-
-            files.forEach((file) => 
-                {output = output + file.key + ", "})
-
-            for (const file in files) {
-                console.log(files[file])
-                //output = output + files[file].key + ", "
-                console.log(output)
-            }
-
-            console.log(output)
-
+            data.files.forEach((file) => {
+                output = output + file.key + ", "
+            })
+            
             output = output + "Newspapers in db: "
 
-            console.log(output)
-
-            newspapers.forEach((newspaper) => 
-                {output = output + newspaper.title + ", "})
-
-            for (const newspaper in newspapers) {
-                console.log(newspapers[newspaper])
-                //output = output + newspapers[newspaper].title + ", "
-                console.log(output)
-            }
-
-            console.log(output)
+            data.newspapers.results.forEach((newspaper) => {
+                output = output + newspaper.title + ", "
+            })
 
             var paragraph = document.createElement('p')
             paragraph.innerHTML = output
