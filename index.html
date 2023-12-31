@@ -90,7 +90,7 @@
         <div id="helloTest"></div>
         <script>
             function successCallback(result) {
-              console.log(`Audio file ready at URL: ${result}`);
+              console.log(result.json());
             }
 
             function failureCallback(error) {
@@ -98,7 +98,11 @@
             }
 
             var paragraph = document.createElement('p')
-            console.log(fetch("/hello").then(successCallback, failureCallback))
+            fetch("/hello")
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                })
             paragraph.innerHTML = fetch("/hello").then(response => response.json())
             document.getElementById("helloTest").appendChild(paragraph)
         </script>
