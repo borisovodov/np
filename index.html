@@ -94,15 +94,24 @@
             console.log(data)
 
             var output = "Files in bucket: "
+
+            console.log(output)
+
             for (file in data.files) {
                 output += file.key + ", "
             }
 
+            console.log(output)
+
             output += "Newspapers in db: "
+
+            console.log(output)
 
             for (newspaper in data.newspapers.results) {
                 output += newspaper.title + ", "
             }
+
+            console.log(output)
 
             var paragraph = document.createElement('p')
             paragraph.innerHTML = output
