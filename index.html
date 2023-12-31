@@ -90,7 +90,10 @@
         <div id="helloTest"></div>
         <script>
             var paragraph = document.createElement('p')
-            paragraph.innerHTML = fetch("/hello").then(response => response.text())
+            const response = fetch("/hello")
+            const data = await response.json()
+            console.log(data)
+            paragraph.innerHTML = response.then(response => response.text())
             document.getElementById("helloTest").appendChild(paragraph)
         </script>
     </div>
