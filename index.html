@@ -89,12 +89,12 @@
         <p><b>Sincerely, The Development Team</b></p>
         <div id="helloTest"></div>
         <script>
-            var paragraph = document.createElement('p')
-            const response = await fetch("/hello")
-            const data = await response.json()
-            console.log(data)
-            paragraph.innerHTML = response.then(response => response.text())
-            document.getElementById("helloTest").appendChild(paragraph)
+            var paragraph = document.createElement('p');
+            const response = await fetch("/hello");
+            const data = await response.json();
+            console.log(data);
+            paragraph.innerHTML = response.then(response => response.text());
+            document.getElementById("helloTest").appendChild(paragraph);
         </script>
     </div>
     <!--<div class="container mb-4">
