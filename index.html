@@ -95,13 +95,13 @@
             var output = "Files in bucket: "
 
             data.files.forEach((file) => {
-                output = output + file.key + ", "
+                output += file.key + ", "
             })
             
-            output = output + "Newspapers in db: "
+            output += "Newspapers in db: "
 
             data.newspapers.results.forEach((newspaper) => {
-                output = output + newspaper.title + ", "
+                output += newspaper.title + ", "
             })
 
             var paragraph = document.createElement('p')
