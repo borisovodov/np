@@ -103,7 +103,11 @@
                 .then((data) => {
                     console.log(data)
                 })
-            paragraph.innerHTML = fetch("/hello").then(response => response.json())
+            paragraph.innerHTML = fetch("/hello")
+                .then((response) => response.json())
+                .then((data) => {
+                    data
+                })
             document.getElementById("helloTest").appendChild(paragraph)
         </script>
     </div>
