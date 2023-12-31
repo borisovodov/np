@@ -97,7 +97,7 @@
 
             console.log(output)
 
-            for (const file in data.files) {
+            for (const { index, file } in data.files) {
                 console.log(file)
                 output = output + file.key + ", "
                 console.log(output)
@@ -109,7 +109,7 @@
 
             console.log(output)
 
-            for (const newspaper in data.newspapers.results) {
+            for (const { index, newspaper } in data.newspapers.results) {
                 console.log(newspaper)
                 output = output + newspaper.title + ", "
                 console.log(output)
