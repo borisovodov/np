@@ -97,21 +97,21 @@
 
             console.log(output)
 
-            for (file in data.files) {
+            for (const file in data.files) {
                 console.log(file.key)
-                output += file.key + ", "
+                output = output + file.key + ", "
                 console.log(output)
             }
 
             console.log(output)
 
-            output += "Newspapers in db: "
+            output = output + "Newspapers in db: "
 
             console.log(output)
 
-            for (newspaper in data.newspapers.results) {
+            for (const newspaper in data.newspapers.results) {
                 console.log(newspaper.title)
-                output += newspaper.title + ", "
+                output = output + newspaper.title + ", "
                 console.log(output)
             }
 
