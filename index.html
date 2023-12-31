@@ -88,7 +88,7 @@
         <p><b>We would like to inform you that our website is currently under development. You can follow the progress of our work on our YouTube channel <a href="https://www.youtube.com/@borisovodovlive">@borisovodovlive</a>. We apologize for any inconvenience this may cause and thank you for your patience.</b></p>
         <p><b>Sincerely, The Development Team</b></p>
         <div id="helloTest"></div>
-        <script>
+        <script async>
             function successCallback(result) {
               console.log(result.json());
             }
@@ -103,7 +103,7 @@
                 .then((data) => {
                     console.log(data)
                 })
-            paragraph.innerHTML = fetch("/hello")
+            paragraph.innerHTML = await fetch("/hello")
                 .then((response) => response.json())
                 .then((data) => {
                     return data.files
