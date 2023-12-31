@@ -89,8 +89,16 @@
         <p><b>Sincerely, The Development Team</b></p>
         <div id="helloTest"></div>
         <script>
+            function successCallback(result) {
+              console.log(`Audio file ready at URL: ${result}`);
+            }
+
+            function failureCallback(error) {
+              console.error(`Error generating audio file: ${error}`);
+            }
+
             var paragraph = document.createElement('p')
-            console.log(fetch("/hello").then(response => response.json()))
+            console.log(fetch("/hello").then(successCallback, failureCallback))
             paragraph.innerHTML = fetch("/hello").then(response => response.json())
             document.getElementById("helloTest").appendChild(paragraph)
         </script>
