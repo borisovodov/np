@@ -89,25 +89,13 @@
         <p><b>Sincerely, The Development Team</b></p>
         <div id="helloTest"></div>
         <script async type="module">
-            function successCallback(result) {
-              console.log(result.json());
-            }
+            const response = await fetch("/hello")
+            const data = await response.json()
 
-            function failureCallback(error) {
-              console.error(`Error generating audio file: ${error}`);
-            }
+            console.log(data)
 
             var paragraph = document.createElement('p')
-            fetch("/hello")
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data)
-                })
-            paragraph.innerHTML = await fetch("/hello")
-                .then((response) => response.json())
-                .then((data) => {
-                    return data.files
-                })
+            paragraph.innerHTML = data.files[0].key
             document.getElementById("helloTest").appendChild(paragraph)
         </script>
     </div>
