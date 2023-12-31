@@ -91,15 +91,17 @@
         <script async type="module">
             const response = await fetch("/hello")
             const data = await response.json()
+            const files = data.files
+            const newspapers = data.newspapers.results
             console.log(data)
 
             var output = "Files in bucket: "
 
             console.log(output)
 
-            for (const { index, file } in data.files) {
-                console.log(file)
-                output = output + file.key + ", "
+            for (const file in files) {
+                console.log(files[file])
+                output = output + files[file].key + ", "
                 console.log(output)
             }
 
@@ -109,9 +111,9 @@
 
             console.log(output)
 
-            for (const { index, newspaper } in data.newspapers.results) {
-                console.log(newspaper)
-                output = output + newspaper.title + ", "
+            for (const newspaper in newspapers) {
+                console.log(newspapers[newspaper])
+                output = output + newspapers[newspaper].title + ", "
                 console.log(output)
             }
 
