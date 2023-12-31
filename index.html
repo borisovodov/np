@@ -91,11 +91,21 @@
         <script async type="module">
             const response = await fetch("/hello")
             const data = await response.json()
-
             console.log(data)
 
+            var output = "Files in bucket: "
+            for (file in data.files) {
+                output += file.key + ", "
+            }
+
+            output += "Newspapers in db: "
+
+            for (newspaper in data.newspapers.results) {
+                output += newspaper.title + ", "
+            }
+
             var paragraph = document.createElement('p')
-            paragraph.innerHTML = data.files[0].key
+            paragraph.innerHTML = output
             document.getElementById("helloTest").appendChild(paragraph)
         </script>
     </div>
