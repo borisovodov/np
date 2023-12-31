@@ -98,7 +98,9 @@
             console.log(output)
 
             for (file in data.files) {
+                console.log(file.key)
                 output += file.key + ", "
+                console.log(output)
             }
 
             console.log(output)
@@ -108,7 +110,9 @@
             console.log(output)
 
             for (newspaper in data.newspapers.results) {
+                console.log(newspaper.title)
                 output += newspaper.title + ", "
+                console.log(output)
             }
 
             console.log(output)
