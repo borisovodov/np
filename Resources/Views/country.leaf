@@ -1,0 +1,65 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — #(country)
+    #endexport
+    
+    #export("url"):
+        #(country.URL)
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2">#(country.emoji) #(country)</h1>
+            <div class="row pt-3">
+                <div class="col-md-6">
+                    <ul class="list-unstyled ml-4">
+                        <li class="mb-2">Population: #(country.population)</li>
+                        <li class="mb-2">#if(count(country.languages) > 1):Official languages#else:Official language#endif:
+                            #for(language in country.languages):
+                                {%! if forloop.last !%}<a href="#(language.URL)">#(language)</a>
+                                {%! else !%}<a href="#(language.URL)">#(language)</a>,
+                                {%! endif !%}
+                            {% empty %}
+                            #endfor
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <div class="rounded" id="map" style="height: 24rem;">
+                        #extend("map_template")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">Thanks To</h2>
+            #for(row in senders):
+            <div class="row">
+                #for(sender in row):
+                    #extend("sender_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">#if(count(country.cities) != 1):Cities#else:City#endif</h2>
+            #for(row in cities):
+            <div class="row">
+                #for(city in row):
+                    #extend("city_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">#if(count(country.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
+            #for(row in newspapers):
+            <div class="row">
+                #for(newspaper in row):
+                    #extend("newspaper_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+    #endexport
+#endextend

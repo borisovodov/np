@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'PT Serif';
-    src: url('pt-serif_regular.woff2') format('woff2');
+    src: url('/pt-serif_regular.woff2') format('woff2');
 }
 
 @font-face {
     font-family: 'IM Fell DW Pica';
-    src: url('IMFellDWPica-Regular.woff2') format('woff2');
+    src: url('/IMFellDWPica-Regular.woff2') format('woff2');
 }
 
 body {

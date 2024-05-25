@@ -1,0 +1,22 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — Achievements
+    #endexport
+    
+    #export("url"):
+        /achievements
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="d-inline-block pb-2">Achievements</h1>
+            #for(row in achievements):
+            <div class="row">
+                #for(achievement in row):
+                    #extend("achievement_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+    #endexport
+#endextend

@@ -1,0 +1,81 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — #(sender)
+    #endexport
+    
+    #export("url"):
+        #(sender.URL)
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2">#(sender)</h1>
+            <div class="row pt-3">
+                <div class="col-md-8">
+                    <ul class="list-unstyled ml-4">
+                        <li class="mb-2">From: <a href="#(sender.country.URL)">#(sender.country)</a></li>
+                        <li class="mb-2">#if(count(sender.countries) != 1):Countries#else:Country#endif: #count(sender.countries)</li>
+                        <li class="mb-2">#if(count(sender.cities) != 1)Cities#else:City#endif: #count(sender.cities)</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    #if(sender.avatar):
+                    <div class="card">
+                        <div class="p-4">
+                            <div class="circle-avatar" style="background-image:url(#(sender.avatar))"></div>
+                        </div>
+                    </div>
+                    #endif
+                </div>
+            </div>
+        </div>
+        #if(count(sender.achievements) != 0):
+        <div class="container mb-4">
+            <h2 class="pb-2">#if(count(sender.achievements) != 1):Achievements#else:Achievement#endif</h2>
+            #for(row in achievements):
+            <div class="row">
+                #for(achievement in row):
+                    #extend("achievement_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+        #endif
+        <div class="container mb-4">
+            <h2 class="pb-2">#if(count(sender.countries) != 1):Countries#else:Country#endif</h2>
+            #for(row in countries):
+            <div class="row">
+                #for(country in row):
+                    #extend("country_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">#if(count(sender.cities) != 1):Cities#else:City#endif</h2>
+            #for(row in cities):
+            <div class="row">
+                #for(city in row):
+                    #extend("city_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">#if(count(sender.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
+            #for(row in newspapers):
+            <div class="row">
+                #for(newspaper in row):
+                    #extend("newspaper_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">On Map</h2>
+            <div class="rounded" id="map" style="height: 24rem;">
+                #extend("map_template")
+            </div>
+        </div>
+    #endexport
+#endextend

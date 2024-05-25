@@ -1,0 +1,67 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — #(newspaper) from #(newspaper.city)
+    #endexport
+    
+    #export("url"):
+        #(newspaper.URL)
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2">#(newspaper)</h1>
+            <div class="row pt-3">
+                <div class="col-md-6">
+                    <ul class="list-unstyled ml-4">
+                        <li class="mb-2">City: <a href="#(newspaper.city.URL)">#(newspaper.city)</a></li>
+                        #if(newspaper.number):<li class="mb-2">Number: #(newspaper.number)#if(newspaper.secondaryNumber): (#(newspaper.secondaryNumber))#endif</li>#endif
+                        <li class="mb-2">Released: #(newspaper.date)</li>
+                        <li class="mb-2">Language: <a href="#(newspaper.language.URL)">#(newspaper.language)</a></li>
+                        #if(newspaper.pages):<li class="mb-2">Pages: #(newspaper.pages)</li>#endif
+                        #if(count(newspaper.costs) != 0):<li class="mb-2">#if(count(newspaper.costs) != 1):Costs#else:Cost#endif:
+                        #for(cost in newspaper.costs):
+                            {% if(forloop.last) %}#(cost)
+                            {% else %}#(cost),
+                            {% endif %}
+                        {% empty %}
+                        #endfor</li>
+                        #endif
+                        #if(newspaper.paperFormat):<li class="mb-2">Paper Format: <a href="#(newspaper.paperFormat.URL)">#(newspaper.paperFormat)</a></li>#endif
+                        #if(newspaper.frequency):<li class="mb-2">Frequency: <a href="#(newspaper.frequencyTag.URL)">#(newspaper.frequencyTag)</a></li>#endif
+                        #if(newspaper.circulation):<li class="mb-2">Circulation: #(newspaper.circulation)</li>#endif
+                        #if(newspaper.publicationStart):<li class="mb-2">Since: #(newspaper.publicationStart)</li>#endif
+                        #if(newspaper.website):<li class="mb-2">Website: <a href="#(newspaper.website)">#(newspaper.website)</a></li>#endif
+                        #if(newspaper.ISSN):<li class="mb-2">ISSN: #(newspaper.ISSN)</li>#endif
+                    </ul>
+                </div>
+                <div class="col-md-6">#if(newspaper.thumbnail):<a href="#(newspaper.photo)"><img class="img-thumbnail mx-auto d-block" src="#(newspaper.thumbnail)"></a>#endif</div>
+            </div>
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">Thanks To</h2>
+            #for(row in senders):
+            <div class="row">
+                #for(sender in row):
+                    #extend("sender_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">#if(count(newspaper.tags) != 1):Tags#else:Tag#endif</h2>
+            #for(row in tags):
+            <div class="row">
+                #for(tag in row):
+                    #extend("tag_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">On Map</h2>
+            <div class="rounded" id="map" style="height: 24rem;">
+                #extend("map_template")
+            </div>
+        </div>
+    #endexport
+#endextend

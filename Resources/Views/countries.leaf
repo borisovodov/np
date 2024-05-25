@@ -1,0 +1,25 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — Countries
+    #endexport
+    
+    #export("url"):
+        /countries
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="d-inline-block pb-2">Countries</h1>
+            #for(country in countries):
+            <h2 class="pb-2 pt-3"><a href="#(country.URL)">#(country.emoji) #(country)</a></h2>
+            #for(row in country.cities):
+            <div class="row">
+                #for(city in row):
+                    #extend("city_template")
+                #endfor
+            </div>
+            #endfor
+            #endfor
+        </div>
+    #endexport
+#endextend

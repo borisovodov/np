@@ -1,0 +1,31 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — #(tag)
+    #endexport
+    
+    #export("url"):
+        #(tag.URL)
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2">#(tag)</h1>
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">#if(count(tag.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
+            #for(row in tag.newspapers):
+            <div class="row">
+                #for(newspaper in row):
+                    #extend("newspaper_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">On Map</h2>
+            <div class="rounded" id="map" style="height: 24rem;">
+                #extend("map_template")
+            </div>
+        </div>
+    #endexport
+#endextend

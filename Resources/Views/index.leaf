@@ -1,0 +1,47 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — Main Page
+    #endexport
+    
+    #export("url"):
+        /
+    #endexport
+    
+    #export("content"):
+        <!--<div class="container mb-4">
+            <p><b>Drafts of history: the world in newspapers on a single day (10 March 1881/2020)</b></p>
+            <p>Join us in creating a publicly sourced archive of a single day, articulated and comprehended through newspapers from all around the world. Calling all readers, designers, print-aficionados, or anyone interested, to take part in our project ‘Drafts of history’, exploring the contested domains of news, ephemeral artefacts, circulation networks, publics, and archives.</p>
+            <p>Be our international correspondent: sign up to send us a physical copy of your local newspapers dated 10 March 2020, and be part of a major exhibition of newspapers from around the world that will be held in London in March 2021.</p>
+            <p>Here are the links to the project and more details: <a href="https://www.contextualternate.com/collection01">https://www.contextualternate.com/collection01</a></p>
+            <a href="https://www.contextualternate.com/collection01"><img class="img-thumbnail mx-auto d-block" src="/DraftsOfHistory.jpg"></a>
+        </div>-->
+        <div class="container mb-4">
+            <h1 class="pb-2">Recent</h1>
+            #for(row in popularNewspapers):
+            <div class="row">
+                #for(newspaper in row):
+                    #extend("newspaper_template")
+                #endfor
+            </div>
+            #endfor
+            <p class="text-right"><a href="/newspapers">More</a></p>
+        </div>
+        <div class="container mb-4">
+            <h1 class="d-inline-block pb-2">Coolest Senders</h1>
+            #for(row in popularSenders):
+            <div class="row">
+                #for(sender in row):
+                    #extend("sender_template")
+                #endfor
+            </div>
+            #endfor
+            <p class="text-right"><a href="/senders">More</a></p>
+        </div>
+        <div class="container mb-4">
+            <h1 class="d-inline-block pb-2">Map</h1>
+            <div class="rounded" id="map" style="height: 24rem;">
+                #extend("map_template")
+            </div>
+        </div>
+    #endexport
+#endextend

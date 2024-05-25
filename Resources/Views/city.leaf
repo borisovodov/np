@@ -1,0 +1,50 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — #(city)
+    #endexport
+    
+    #export("url"):
+        #(city.URL)
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2">#(city)</h1>
+            <div class="row pt-3">
+                <div class="col-md-6">
+                    <ul class="list-unstyled ml-4">
+                        <li class="mb-2">Country: <a href="#(city.country.URL)">#(city.country)</a></li>
+                        <li class="mb-2">Population: #(city.population)</li>
+                        <li class="mb-2">Continent: <a href="#(city.continentTag.URL)">#(city.continentTag)</a></li>
+                        #if(!city.coastal):<li class="mb-2">Elevation: #(city.elevation) m</li>#endif
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <div class="rounded" id="map" style="height: 24rem;">
+                        #extend("map_template")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">Thanks To</h2>
+            #for(row in senders):
+            <div class="row">
+                #for(sender in row):
+                    #extend("sender_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">#if(count(city.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
+            #for(row in newspapers):
+            <div class="row">
+                #for(newspaper in row):
+                    #extend("newspaper_template")
+                #endfor
+            </div>
+            #endfor
+        </div>
+    #endexport
+#endextend

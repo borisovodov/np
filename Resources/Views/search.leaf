@@ -1,0 +1,90 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — Search “#(query)”
+    #endexport
+    
+    #export("url"):
+        /search
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            #if(count(achievements) == 0 && count(cities) == 0 && count(countries) == 0 && count(languages) == 0 && count(senders) == 0 && count(tags) == 0 && count(newspapers) == 0):
+            <h1 class="pb-2 mb-4 text-center">By search “#(query)” not found.</h1>
+            <h1 class="pb-2 mb-4 text-center"><small>Please clarify the request.</small></h1>
+            #else:
+            <h1 class="pb-2 text-center">Search by “#(query)”</h1>
+            #if(count(achievements) != 0):
+            <h2 class="pb-2 pt-3">#if(count(achievements) != 1):Achievements#else:Achievement#endif</h2>
+            #for(row in achievements):
+            <div class="row">
+                #for(achievement in row):
+                    #extend("achievement_template")
+                #endfor
+            </div>
+            #endfor
+            #endif
+            #if(cities) != 0):
+            <h2 class="pb-2 pt-3">#if(count(cities) != 1):Cities#else:City#endif</h2>
+            #for(row in cities):
+            <div class="row">
+                #for(city in row):
+                    #extend("city_template")
+                #endfor
+            </div>
+            #endfor
+            #endif
+            #if(count(countries) != 0):
+            <h2 class="pb-2 pt-3">#if(count(countries) != 1):Countries#else:Country#endif</h2>
+            #for(row in countries):
+            <div class="row">
+                #for(country in row):
+                    #extend("country_template")
+                #endfor
+            </div>
+            #endfor
+            #endif
+            #if(count(languages) != 0):
+            <h2 class="pb-2 pt-3">#if(count(languages) != 1):Languages#else:Language#endif</h2>
+            #for(row in languages):
+            <div class="row">
+                #for(language in row):
+                    #extend("language_template")
+                #endfor
+            </div>
+            #endfor
+            #endif
+            #if(count(senders) != 0):
+            <h2 class="pb-2 pt-3">#if(count(senders) != 1):Senders#else:Sender#endif</h2>
+            #for(row in senders):
+            <div class="row">
+                #for(sender in row):
+                    #extend("sender_template")
+                #endfor
+            </div>
+            #endfor
+            #endif
+            #if(count(tags) != 0):
+            <h2 class="pb-2 pt-3">#if(tags_number != 1 %}Tags#else:Tag#endif</h2>
+            #for(row in tags):
+            <div class="row">
+                #for(tag in row):
+                    #extend("tag_template")
+                #endfor
+            </div>
+            #endfor
+            #endif
+            #if(count(newspapers) != 0):
+            <h2 class="pb-2 pt-3">#if(newspapers_number != 1 %}Newspapers#else:Newspaper#endif</h2>
+            #for(row in newspapers):
+            <div class="row">
+                #for(newspaper in row):
+                    #extend("newspaper_template")
+                #endfor
+            </div>
+            #endfor
+            #endif
+            #endif
+        </div>
+    #endexport
+#endextend
