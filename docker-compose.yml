@@ -27,9 +27,9 @@ services:
     environment:
       <<: *shared_environment
     volumes:
-      - sqlite-data:/npdata
-    depends_on:
-      - sqlite
+      - sqlite-data:/data
+#    depends_on:
+#      - sqlite
     ports:
       - '8080:8080'
     command: ["serve", "--env", "production", "--hostname", "0.0.0.0", "--port", "8080"]
@@ -56,12 +56,12 @@ services:
 #    volumes:
 #      - sqlite-data:/npdata
 #    command: ["sqlite3", "/data/db.sqlite"]
-  sqlite:
-    image: nouchka/sqlite3:latest
-    stdin_open: true
-    tty: true
-    volumes:
-      - /sqlite-data/data/:/root/db/
+#  sqlite:
+#    image: nouchka/sqlite3:latest
+#    stdin_open: true
+#    tty: true
+#    volumes:
+#      - /sqlite-data/data/:/root/db/
 
 volumes:
   sqlite-data:
