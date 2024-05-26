@@ -12,7 +12,7 @@ public func configure(_ app: Application) async throws {
 //    app.http.server.configuration.supportVersions = [.two]
     
     // Подключаем работу БД.
-    app.databases.use(DatabaseConfigurationFactory.sqlite(.file("/data/db.sqlite")), as: .sqlite)
+    app.databases.use(DatabaseConfigurationFactory.sqlite(.file("db.sqlite")), as: .sqlite)
     
     // Подключаем работу темплэйтов на базе Leaf.
     app.views.use(.leaf)
