@@ -1,19 +1,7 @@
-# Docker Compose file for Vapor
-#
-# Install Docker on your system to run and test
-# your Vapor app in a production-like environment.
-#
-# Note: This file is intended for testing and does not
-# implement best practices for a production deployment.
-#
-# Learn more: https://docs.docker.com/compose/reference/
-#
-#   Build images: docker-compose build
-#      Start app: docker-compose up app
-#       Stop all: docker-compose down
-#
+# 1. Прописать в `source` расположение папки с БД и файлами на хост машине.
+# 2. docker compose up -d
+# 3. docker compose run migrate
 
-# // TODO: нужно будет потом переехать на новый compose: https://docs.docker.com/compose/compose-application-model/
 version: '3.7'
 
 x-shared_environment: &shared_environment
@@ -27,9 +15,9 @@ services:
     environment:
       <<: *shared_environment
     volumes:
-      - sqlite-data:/data
-#    depends_on:
-#      - sqlite
+      - type: bind
+        source: /Users/borisovodov/Data
+        target: /np/Data
     ports:
       - '8080:8080'
     command: ["serve", "--env", "production", "--hostname", "0.0.0.0", "--port", "8080"]
@@ -39,6 +27,10 @@ services:
       context: .
     environment:
       <<: *shared_environment
+    volumes:
+      - type: bind
+        source: /Users/borisovodov/Data
+        target: /np/Data
     command: ["migrate", "--yes"]
     deploy:
       replicas: 0
@@ -48,20 +40,10 @@ services:
       context: .
     environment:
       <<: *shared_environment
+    volumes:
+      - type: bind
+        source: /Users/borisovodov/Data
+        target: /np/Data
     command: ["migrate", "--revert", "--yes"]
     deploy:
       replicas: 0
-#  sqlite:
-#    image: keinos/sqlite3:3.45.3
-#    volumes:
-#      - sqlite-data:/npdata
-#    command: ["sqlite3", "/data/db.sqlite"]
-#  sqlite:
-#    image: nouchka/sqlite3:latest
-#    stdin_open: true
-#    tty: true
-#    volumes:
-#      - /sqlite-data/data/:/root/db/
-
-volumes:
-  sqlite-data:
