@@ -43,9 +43,15 @@ func routes(_ app: Application) throws {
     }
     
     app.get("map") { req async throws -> View in
-        let markers = try await Marker.all(req.db)
+        struct Context: Content {
+            var markers: [Marker]
+        }
         
-        return try await req.view.render("map", ["markers": markers])
+        let context = Context(
+            markers: try await Marker.all(req.db)
+        )
+        
+        return try await req.view.render("map", context)
     }
     
     app.get("search") { req async throws -> View in
@@ -111,8 +117,6 @@ func routes(_ app: Application) throws {
         
         return try await req.view.render("statistics", context)
     }
-    
-    // TODO: Нужно добавить сюда обработку 404 страницы: https://github.com/brokenhandsio/leaf-error-middleware
 
     try app.register(collection: AchievementController())
     try app.register(collection: CountryController())

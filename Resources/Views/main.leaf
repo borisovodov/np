@@ -89,7 +89,7 @@
     <footer class="container-fluid text-center">
         <hr>
         <br>
-        <p>2014–2024, <a href="https://ovodov.me">Boris Ovodov</a></p>
+        <p>2014–#now("yyyy"), <a href="https://ovodov.me">Boris Ovodov</a></p>
     </footer>
 </body>
 </html>

@@ -44,10 +44,11 @@ final class Sender: Model, @unchecked Sendable, Content {
     }
     
     static func popular(_ database: Database) async throws -> [Sender] {
-        // TODO: sorted(Sender.objects.exclude(name='Anonym / Unknown'), key=lambda sender: sender.cities_count(), reverse=True)
-        return try await Sender.query(on: database)
+        let senders = try await Sender.query(on: database)
             .filter(\.$name != "Anonym / Unknown")
             .all()
+        
+        return senders.sorted { $0.cities.count > $1.cities.count }
     }
     
 //    var countries: [Country] {

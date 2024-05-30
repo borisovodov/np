@@ -20,6 +20,9 @@ public func configure(_ app: Application) async throws {
     // Добавляем миграции.
     app.migrations.add(CreateDB())
     
+    // Инициализируем кастомные тэги.
+    app.leaf.tags["now"] = NowTag()
+    
     // Регистрируем рауты.
     try routes(app)
 }
