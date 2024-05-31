@@ -2,21 +2,21 @@
     <div class="card flex-grow-1">
         #if(newspaper.thumbnail):<a href="#(newspaper.URL)"><img class="card-img-top" src="#(newspaper.thumbnail)"></a>#endif
         <div class="card-body">
-            <h4 class="card-title"><a class="card-title-link" href="#(newspaper.URL)">#(newspaper)</a></h4>
+            <h4 class="card-title"><a class="card-title-link" href="#(newspaper.URL)">#(newspaper.name)</a></h4>
             <p class="card-text">
                 <ul class="list-unstyled">
-                    <li class="mb-2">City: <a href="#(newspaper.city.URL)">#(newspaper.city)</a></li>
+                    <li class="mb-2">City: <a href="#(newspaper.city.URL)">#(newspaper.city.name)</a></li>
                     #if(newspaper.number):<li class="mb-2">Number: #(newspaper.number)#if(newspaper.secondaryNumber): (#(newspaper.secondaryNumber))#endif</li>#endif
                     <li class="mb-2">Released: #(newspaper.date)</li>
-                    <li class="mb-2">Language: <a href="#(newspaper.language.URL)">#(newspaper.language)</a></li>
+                    <li class="mb-2">Language: <a href="#(newspaper.language.URL)">#(newspaper.language.name)</a></li>
                 </ul>
             </p>
         </div>
         <div class="card-footer">
             <small class="text-muted">#if(count(newspaper.tags) != 1):Tags#else:Tag#endif:
                 #for(tag in newspaper.tags):
-                    {% if(forloop.last) %}<a href="#(tag.URL)">#(tag)</a>
-                    {% else %}<a href="#(tag.URL)">#(tag)</a>,
+                    {% if(forloop.last) %}<a href="#(tag.URL)">#(tag.name)</a>
+                    {% else %}<a href="#(tag.URL)">#(tag.name)</a>,
                     {% endif %}
                     {% empty %}
                 #endfor

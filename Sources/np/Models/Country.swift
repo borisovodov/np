@@ -32,6 +32,14 @@ final class Country: Model, @unchecked Sendable, Content {
     
     init() { }
     
+    init(name: String, emoji: String? = nil, markerIcon: String? = nil, population: Int, officialLanguages: [Language]) {
+        self.id = UUID()
+        self.name = name
+        self.emoji = emoji
+        self.markerIcon = markerIcon
+        self.population = population
+    }
+    
     var URL: String {
         return "/countries/\(self.id ?? UUID())"
     }

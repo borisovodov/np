@@ -26,6 +26,12 @@ final class Language: Model, @unchecked Sendable, Content {
     
     init() { }
     
+    init(name: String, population: Int) {
+        self.id = UUID()
+        self.name = name
+        self.population = population
+    }
+    
     var URL: String {
         return "/languages/\(self.id ?? UUID())"
     }

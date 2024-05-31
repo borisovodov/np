@@ -13,7 +13,7 @@
             <div class="row pt-3">
                 <div class="col-md-8">
                     <ul class="list-unstyled ml-4">
-                        <li class="mb-2">From: <a href="#(sender.country.URL)">#(sender.country)</a></li>
+                        <li class="mb-2">From: <a href="#(sender.country.URL)">#(sender.country.name)</a></li>
                         <li class="mb-2">#if(count(sender.countries) != 1):Countries#else:Country#endif: #count(sender.countries)</li>
                         <li class="mb-2">#if(count(sender.cities) != 1)Cities#else:City#endif: #count(sender.cities)</li>
                     </ul>

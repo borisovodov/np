@@ -9,17 +9,26 @@ extension Array {
     }
 }
 
+enum RouteError: Error {
+    case invalidFirstNewspaperReleaseDate
+}
+
 func routes(_ app: Application) throws {
     app.get { req async throws -> View in
         struct Context: Content {
-            var popularNewspapers: [Newspaper]
-            var popularSenders: [Sender]
+            var popularNewspapers: [[Newspaper]]
+            var popularSenders: [[Sender]]
             var markers: [Marker]
         }
         
+//        let lang = Language(name: "Chinese", population: 121322)
+//        let country = Country(name: "China", population: 21324, officialLanguages: [lang])
+//        try await lang.create(on: req.db)
+//        try await country.create(on: req.db)
+        
         let context = Context(
-            popularNewspapers: try await Newspaper.popular(req.db),
-            popularSenders: try await Sender.popular(req.db),
+            popularNewspapers: try await Newspaper.popular(req.db).dividedByColumns,
+            popularSenders: try await Sender.popular(req.db).dividedByColumns,
             markers: try await Marker.all(req.db)
         )
         
@@ -31,12 +40,20 @@ func routes(_ app: Application) throws {
             var author: Sender?
             var authorCity: City?
             var firstNewspaper: Newspaper?
+            var firstSender: Sender?
+            var firstCountry: Country?
+        }
+        
+        guard let firstNewspaperReleaseDate = Calendar.current.date(from: DateComponents(year: 2012, month: 1, day: 13)) else {
+            throw RouteError.invalidFirstNewspaperReleaseDate
         }
         
         let context = Context(
             author: try await Sender.query(on: req.db).filter(\.$name == "Boris Ovodov").first(),
             authorCity: try await City.query(on: req.db).filter(\.$name == "Yekaterinburg").first(),
-            firstNewspaper: try await Newspaper.query(on: req.db).filter(\.$isFirst == true).first()
+            firstNewspaper: try await Newspaper.query(on: req.db).filter(\.$title == "体坛周报").filter(\.$date == firstNewspaperReleaseDate).first(),
+            firstSender: try await Sender.query(on: req.db).filter(\.$name == "Sasha Ovodova").first(),
+            firstCountry: try await Country.query(on: req.db).filter(\.$name == "China").first()
         )
         
         return try await req.view.render("about", context)
@@ -55,8 +72,33 @@ func routes(_ app: Application) throws {
     }
     
     app.get("search") { req async throws -> View in
-        let searchQuery = try req.query.decode(SearchQuery.self)
-        return try await req.view.render("search", ["query": searchQuery.query])
+        struct Context: Content {
+            var query: String?
+            var achievements: [[Achievement]]
+            var cities: [[City]]
+            var countries: [[Country]]
+            var languages: [[Language]]
+            var senders: [[Sender]]
+            var tags: [[Tag]]
+            var newspapers: [[Newspaper]]
+        }
+        
+        let query = try req.query.decode(SearchQuery.self).query ?? ""
+        
+        let context = Context(
+            query: query,
+            achievements: try await Achievement.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
+            cities: try await City.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
+            countries: try await Country.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
+            languages: try await Language.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
+            senders: try await Sender.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
+            tags: try await Tag.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
+            newspapers: try await Newspaper.query(on: req.db).group(.or) { group in
+                group.filter(\.$title ~~ query).filter(\.$number ~~ query).filter(\.$secondaryNumber ~~ query).filter(\.$website ~~ query).filter(\.$ISSN ~~ query)
+            }.all().dividedByColumns
+        )
+        
+        return try await req.view.render("search", context)
     }
     
     app.get("statistics") { req async throws -> View in
@@ -95,6 +137,10 @@ func routes(_ app: Application) throws {
         
         let senders: Set<Sender> = []
         
+        guard let firstNewspaperReleaseDate = Calendar.current.date(from: DateComponents(year: 2012, month: 1, day: 13)) else {
+            throw RouteError.invalidFirstNewspaperReleaseDate
+        }
+        
         let context = Context(
             numberOfNewspapers: try await Newspaper.query(on: req.db).count(),
             numberOfCountries: try await Country.query(on: req.db).count(),
@@ -111,7 +157,7 @@ func routes(_ app: Application) throws {
             easternmostCity: try await City.query(on: req.db).sort(\.$latitude, .descending).first(),
             numberOfSenders: try await Sender.query(on: req.db).count(),
             senderWithMaxNumberOfCities: senders.first,
-            firstNewspaper: try await Newspaper.query(on: req.db).filter(\.$isFirst == true).first(),
+            firstNewspaper: try await Newspaper.query(on: req.db).filter(\.$title == "体坛周报").filter(\.$date == firstNewspaperReleaseDate).first(),
             lastNewspaper: try await Newspaper.query(on: req.db).sort(\.$date, .descending).first()
         )
         

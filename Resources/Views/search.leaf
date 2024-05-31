@@ -24,7 +24,7 @@
             </div>
             #endfor
             #endif
-            #if(cities) != 0):
+            #if(count(cities) != 0):
             <h2 class="pb-2 pt-3">#if(count(cities) != 1):Cities#else:City#endif</h2>
             #for(row in cities):
             <div class="row">
@@ -65,7 +65,7 @@
             #endfor
             #endif
             #if(count(tags) != 0):
-            <h2 class="pb-2 pt-3">#if(tags_number != 1 %}Tags#else:Tag#endif</h2>
+            <h2 class="pb-2 pt-3">#if(count(tags) != 1):Tags#else:Tag#endif</h2>
             #for(row in tags):
             <div class="row">
                 #for(tag in row):
@@ -75,7 +75,7 @@
             #endfor
             #endif
             #if(count(newspapers) != 0):
-            <h2 class="pb-2 pt-3">#if(newspapers_number != 1 %}Newspapers#else:Newspaper#endif</h2>
+            <h2 class="pb-2 pt-3">#if(count(newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
             #for(row in newspapers):
             <div class="row">
                 #for(newspaper in row):

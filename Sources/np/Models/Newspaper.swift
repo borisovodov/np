@@ -93,9 +93,6 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     @Boolean(key: "isTop")
     var isTop: Bool
     
-    @Boolean(key: "isFirst")
-    var isFirst: Bool
-    
     @Parent(key: "cityID")
     var city: City
     

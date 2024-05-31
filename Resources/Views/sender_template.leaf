@@ -3,7 +3,7 @@
         #if(sender.avatar):<a href="#(sender.URL)"><div class="p-4"><div class="circle-avatar" style="background-image:url(#(sender.avatar))"></div></div></a>
         #endif
         <div class="card-body">
-            <h4 class="card-title"><a class="card-title-link" href="#(sender.URL)">#(sender)</a></h4>
+            <h4 class="card-title"><a class="card-title-link" href="#(sender.URL)">#(sender.name)</a></h4>
             <p class="card-text">
                 <ul class="list-unstyled">
                     <li class="mb-2">#count(sender.countries) #if(count(sender.countries) != 1):countries#else:country#endif</li>
@@ -15,8 +15,8 @@
         <div class="card-footer">
             <small class="text-muted">#if(count(sender.achievements) != 1):Achievements#else:Achievement#endif
                 #for(achievement in sender.achievements):
-                    {% if forloop.last %}<a href="#(achievement.URL)">#(achievement)</a>
-                    {% else %}<a href="#(achievement.URL)">#(achievement)</a>,
+                    {% if forloop.last %}<a href="#(achievement.URL)">#(achievement.name)</a>
+                    {% else %}<a href="#(achievement.URL)">#(achievement.name)</a>,
                     {% endif %}
                 #endfor
             </small>

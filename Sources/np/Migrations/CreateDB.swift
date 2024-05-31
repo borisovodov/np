@@ -114,7 +114,6 @@ struct CreateDB: AsyncMigration {
             .field("color", publicationColor, .required)
             .field("pages", .int, .required)
             .field("isTop", .bool, .required)
-            .field("isFirst", .bool, .required)
             .field("cityID", .uuid, .required, .references("cities", "id", onDelete: .restrict))
             .field("paperformatID", .uuid, .references("paperFormats", "id", onDelete: .restrict))
             .field("languageID", .uuid, .required, .references("languages", "id", onDelete: .restrict))

@@ -1,7 +1,7 @@
 <div class="col-md-3 px-2 mb-3 d-flex">
     <div class="card flex-grow-1">
         <div class="card-body">
-            <h4 class="card-title"><a class="card-title-link" href="#(tag.URL)">#(tag)</a></h4>
+            <h4 class="card-title"><a class="card-title-link" href="#(tag.URL)">#(tag.name)</a></h4>
             <p class="card-text">#count(tag.newspapers) #if(count(tag.newspapers) != 1):newspapers#else:newspaper#endif</p>
         </div>
     </div>
