@@ -14,7 +14,7 @@
 		map.scrollWheelZoom.disable();
 	}
 	#for(marker in markers):
-	var popupText = '#(marker.city)<br>#for(newspaper in marker.newspapers):<li><a href="#(newspaper.URL)">#(newspaper.title) (#(newspaper.date))</a></li>#endfor</body>';
+	var popupText = '#(marker.city.name)<br>#for(newspaper in marker.newspapers):<li><a href="#(newspaper.URL)">#(newspaper.title) (#(newspaper.date))</a></li>#endfor</body>';
 	var marker = L.marker([#(marker.city.coordinates)], {
 		#if(marker.city.country.markerIcon):
 			icon: L.icon({

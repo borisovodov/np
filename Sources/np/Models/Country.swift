@@ -30,6 +30,9 @@ final class Country: Model, @unchecked Sendable, Content {
     @Siblings(through: CountryLanguagePivot.self, from: \.$country, to: \.$language)
     var languages: [Language]
     
+    @Children(for: \.$country)
+    var cities: [City]
+    
     init() { }
     
     init(name: String, emoji: String? = nil, markerIcon: String? = nil, population: Int, officialLanguages: [Language]) {
@@ -42,6 +45,20 @@ final class Country: Model, @unchecked Sendable, Content {
     
     var URL: String {
         return "/countries/\(self.id ?? UUID())"
+    }
+    
+    func newspapers(_ database: Database) async throws -> [Newspaper] {
+        var newspapers: [Newspaper] = []
+        
+        for city in try await self.$cities.query(on: database).all() {
+            newspapers.append(contentsOf: try await city.$newspapers.query(on: database).all())
+        }
+        
+        return newspapers
+    }
+    
+    func toDTO(_ database: Database) async throws -> CountryDTO {
+        return try await CountryDTO(name: self.name, URL: self.URL, emoji: self.emoji, newspapersCount: self.newspapers(database).count)
     }
     
 //    var cities: [City] {

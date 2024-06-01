@@ -2,7 +2,7 @@
     <div class="card flex-grow-1">
         #if(newspaper.thumbnail):<a href="#(newspaper.URL)"><img class="card-img-top" src="#(newspaper.thumbnail)"></a>#endif
         <div class="card-body">
-            <h4 class="card-title"><a class="card-title-link" href="#(newspaper.URL)">#(newspaper.name)</a></h4>
+            <h4 class="card-title"><a class="card-title-link" href="#(newspaper.URL)">#(newspaper.title)</a></h4>
             <p class="card-text">
                 <ul class="list-unstyled">
                     <li class="mb-2">City: <a href="#(newspaper.city.URL)">#(newspaper.city.name)</a></li>

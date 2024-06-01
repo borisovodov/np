@@ -27,6 +27,13 @@ final class PaperFormat: Model, @unchecked Sendable, Content {
     var width: Int
     
     init() { }
+    
+    init(name: String, height: Int, width: Int) {
+        self.id = UUID()
+        self.name = name
+        self.height = height
+        self.width = width
+    }
 }
 
 extension PaperFormat: CustomStringConvertible {

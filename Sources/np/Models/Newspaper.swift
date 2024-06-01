@@ -110,15 +110,49 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     init() { }
     
+    init(title: String, publicationType: PublicationType, frequency: Frequency? = nil, circulation: Int? = nil, website: String? = nil, ISSN: String? = nil, publicationStart: Date? = nil, photo: String? = nil, thumbnail: String? = nil, number: String? = nil, secondaryNumber: String? = nil, date: Date, color: PublicationColor, pages: Int, city: City, paperFormat: PaperFormat? = nil, language: Language, senders: [Sender], tags: [Tag]) throws {
+        self.id = UUID()
+        self.title = title
+        self.publicationType = publicationType
+        self.frequency = frequency
+        self.circulation = circulation
+        self.website = website
+        self.ISSN = ISSN
+        self.publicationStart = publicationStart
+        self.photo = photo
+        self.thumbnail = thumbnail
+        self.number = number
+        self.secondaryNumber = secondaryNumber
+        self.date = date
+        self.color = color
+        self.pages = pages
+        self.isTop = false
+        self.$city.id = try city.requireID()
+        self.$paperFormat.id = try paperFormat?.requireID()
+        self.$language.id = try language.requireID()
+//        self.senders = senders
+//        self.tags = tags
+    }
+    
     var URL: String {
         return "/newspapers/\(self.id ?? UUID())"
     }
     
-    static func popular(_ database: Database) async throws -> [Newspaper] {
-        return try await Newspaper.query(on: database)
-            .filter(\.$isTop == true)
-            .sort(\.$date, .descending)
-            .all()
+    func toDTO(_ database: Database) async throws -> NewspaperDTO {
+        var tags: [TagDTO] = []
+        for tag in try await self.$tags.query(on: database).all() {
+            try await tags.append(tag.toDTO(database))
+        }
+        
+        return try await NewspaperDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: self.date, URL: self.URL, thumbnail: self.thumbnail, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), tags: tags)
+    }
+    
+    static func popular(_ database: Database) async throws -> [NewspaperDTO] {
+        var newspapers: [NewspaperDTO] = []
+        for newspaper in try await Newspaper.query(on: database).filter(\.$isTop == true).sort(\.$date, .descending).all() {
+            newspapers.append(try await newspaper.toDTO(database))
+        }
+        return newspapers
     }
     
     

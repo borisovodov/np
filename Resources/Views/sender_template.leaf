@@ -6,8 +6,8 @@
             <h4 class="card-title"><a class="card-title-link" href="#(sender.URL)">#(sender.name)</a></h4>
             <p class="card-text">
                 <ul class="list-unstyled">
-                    <li class="mb-2">#count(sender.countries) #if(count(sender.countries) != 1):countries#else:country#endif</li>
-                    <li class="mb-2">#count(sender.cities) #if(count(sender.cities) != 1):cities#else:city#endif</li>
+                    <li class="mb-2">#(sender.countriesCount) #if(sender.countriesCount != 1):countries#else:country#endif</li>
+                    <li class="mb-2">#(sender.citiesCount) #if(sender.citiesCount != 1):cities#else:city#endif</li>
                 </ul>
             </p>
         </div>

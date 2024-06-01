@@ -16,15 +16,27 @@ enum RouteError: Error {
 func routes(_ app: Application) throws {
     app.get { req async throws -> View in
         struct Context: Content {
-            var popularNewspapers: [[Newspaper]]
-            var popularSenders: [[Sender]]
+            var popularNewspapers: [[NewspaperDTO]]
+            var popularSenders: [[SenderDTO]]
             var markers: [Marker]
         }
         
 //        let lang = Language(name: "Chinese", population: 121322)
-//        let country = Country(name: "China", population: 21324, officialLanguages: [lang])
+//        let country = Country(name: "China2", population: 21324, officialLanguages: [lang])
+//        let achiv = Achievement(name: "achTest")
+//        let tag = Tag(name: "tagTest")
+//        let city = try City(name: "Beijing", country: country, population: 86876, continent: .asia, isCoastal: false, elevation: 200, latitude: 39.9042, longitude: 116.4074, manualLocation: true)
+//        let sender = Sender(name: "boris", isWoman: false, avatar: "avatarURL")
+//        let paperFormat = PaperFormat(name: "just pf", height: 100, width: 200)
+//        let newspaper = try Newspaper(title: "newspaper1", publicationType: .newspaper, frequency: .daily, circulation: 12323, website: "ovodov.me", ISSN: "897-876", publicationStart: Date(timeIntervalSince1970: 100), photo: "photo", thumbnail: "thumbnail", number: "12", secondaryNumber: "89778", date: .now, color: .monochrome, pages: 12, city: city, paperFormat: paperFormat, language: lang, senders: [sender], tags: [tag])
 //        try await lang.create(on: req.db)
 //        try await country.create(on: req.db)
+//        try await achiv.create(on: req.db)
+//        try await tag.create(on: req.db)
+//        try await city.create(on: req.db)
+//        try await sender.create(on: req.db)
+//        try await paperFormat.create(on: req.db)
+//        try await newspaper.create(on: req.db)
         
         let context = Context(
             popularNewspapers: try await Newspaper.popular(req.db).dividedByColumns,
@@ -74,28 +86,53 @@ func routes(_ app: Application) throws {
     app.get("search") { req async throws -> View in
         struct Context: Content {
             var query: String?
-            var achievements: [[Achievement]]
-            var cities: [[City]]
-            var countries: [[Country]]
-            var languages: [[Language]]
-            var senders: [[Sender]]
-            var tags: [[Tag]]
-            var newspapers: [[Newspaper]]
+            var achievements: [[AchievementDTO]]
+            var cities: [[CityDTO]]
+            var countries: [[CountryDTO]]
+            var languages: [[LanguageDTO]]
+            var senders: [[SenderDTO]]
+            var tags: [[TagDTO]]
+            var newspapers: [[NewspaperDTO]]
         }
         
         let query = try req.query.decode(SearchQuery.self).query ?? ""
+        var cities: [CityDTO] = []
+        var countries: [CountryDTO] = []
+        var languages: [LanguageDTO] = []
+        var newspapers: [NewspaperDTO] = []
+        var senders: [SenderDTO] = []
+        var tags: [TagDTO] = []
+        
+        for city in try await City.query(on: req.db).filter(\.$name ~~ query).all() {
+            try await cities.append(city.toDTO(req.db))
+        }
+        for country in try await Country.query(on: req.db).filter(\.$name ~~ query).all() {
+            try await countries.append(country.toDTO(req.db))
+        }
+        for language in try await Language.query(on: req.db).filter(\.$name ~~ query).all() {
+            try await languages.append(language.toDTO(req.db))
+        }
+        for newspaper in try await Newspaper.query(on: req.db).group(.or, { group in
+            group.filter(\.$title ~~ query).filter(\.$number ~~ query).filter(\.$secondaryNumber ~~ query).filter(\.$website ~~ query).filter(\.$ISSN ~~ query)
+        }).all() {
+            try await newspapers.append(newspaper.toDTO(req.db))
+        }
+        for sender in try await Sender.query(on: req.db).filter(\.$name ~~ query).all() {
+            try await senders.append(sender.toDTO(req.db))
+        }
+        for tag in try await Tag.query(on: req.db).filter(\.$name ~~ query).all() {
+            try await tags.append(tag.toDTO(req.db))
+        }
         
         let context = Context(
             query: query,
-            achievements: try await Achievement.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
-            cities: try await City.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
-            countries: try await Country.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
-            languages: try await Language.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
-            senders: try await Sender.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
-            tags: try await Tag.query(on: req.db).filter(\.$name ~~ query).all().dividedByColumns,
-            newspapers: try await Newspaper.query(on: req.db).group(.or) { group in
-                group.filter(\.$title ~~ query).filter(\.$number ~~ query).filter(\.$secondaryNumber ~~ query).filter(\.$website ~~ query).filter(\.$ISSN ~~ query)
-            }.all().dividedByColumns
+            achievements: try await Achievement.query(on: req.db).filter(\.$name ~~ query).all().map({ $0.toDTO }).dividedByColumns,
+            cities: cities.dividedByColumns,
+            countries: countries.dividedByColumns,
+            languages: languages.dividedByColumns,
+            senders: senders.dividedByColumns,
+            tags: tags.dividedByColumns,
+            newspapers: newspapers.dividedByColumns
         )
         
         return try await req.view.render("search", context)

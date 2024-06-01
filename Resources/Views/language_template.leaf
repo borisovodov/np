@@ -2,7 +2,7 @@
     <div class="card flex-grow-1">
         <div class="card-body">
             <h4 class="card-title"><a class="card-title-link" href="#(language.URL)">#(language.name)</a></h4>
-            <p class="card-text">#count(language.newspapers) #if(count(language.newspapers) != 1):newspapers#else:newspaper#endif</p>
+            <p class="card-text">#(language.newspapersCount) #if(language.newspapersCount != 1):newspapers#else:newspaper#endif</p>
         </div>
     </div>
 </div>

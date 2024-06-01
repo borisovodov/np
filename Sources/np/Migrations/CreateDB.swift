@@ -63,7 +63,7 @@ struct CreateDB: AsyncMigration {
             .field("name", .string, .required)
             .field("population", .int, .required)
             .field("continent", continent, .required)
-            .field("coastal", .bool, .required)
+            .field("isCoastal", .bool, .required)
             .field("elevation", .int, .required)
             .field("latitude", .float, .required)
             .field("longitude", .float, .required)
@@ -76,7 +76,6 @@ struct CreateDB: AsyncMigration {
             .field("name", .string, .required)
             .field("isWoman", .bool, .required)
             .field("avatar", .string)
-            .field("countryID", .uuid, .required, .references("countries", "id", onDelete: .restrict))
             .create()
         
         try await database.schema("sender-achievement-pivot")

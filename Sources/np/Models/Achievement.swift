@@ -20,8 +20,17 @@ final class Achievement: Model, @unchecked Sendable, Content {
     
     init() { }
     
+    init(name: String) {
+        self.id = UUID()
+        self.name = name
+    }
+    
     var URL: String {
         return "/achievements/\(self.id ?? UUID())"
+    }
+    
+    var toDTO: AchievementDTO {
+        return AchievementDTO(name: self.name, URL: self.URL)
     }
     
 //    var senders: [Sender] {

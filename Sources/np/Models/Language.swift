@@ -36,7 +36,9 @@ final class Language: Model, @unchecked Sendable, Content {
         return "/languages/\(self.id ?? UUID())"
     }
     
-    
+    func toDTO(_ database: Database) async throws -> LanguageDTO {
+        return try await LanguageDTO(name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
+    }
     
 //    var newspapers: [Newspaper] {
 //        return Newspaper.objects.order_by('-date').filter(language=self)

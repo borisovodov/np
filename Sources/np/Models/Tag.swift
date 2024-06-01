@@ -48,6 +48,10 @@ final class Tag: Model, @unchecked Sendable, Content {
     var URL: String {
         return "/tags/\(self.id ?? UUID())"
     }
+    
+    func toDTO(_ database: Database) async throws -> TagDTO {
+        return try await TagDTO(name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
+    }
 
 //    var cities: [City] {
 //        cities_ids = self.newspapers().values_list('city_id', flat=True)

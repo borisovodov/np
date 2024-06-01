@@ -3,7 +3,7 @@
         <img class="card-img-top mx-auto d-block square" src="">
         <div class="card-img-overlay">
             <h4 class="card-title"><a class="card-title-link" href="#(country.URL)">#(country.emoji) #(country.name)</a></h4>
-            <p class="card-text">#count(country.newspapers) #if(count(country.newspapers) != 1):newspapers#else:newspaper#endif</p>
+            <p class="card-text">#(country.newspapersCount) #if(country.newspapersCount != 1):newspapers#else:newspaper#endif</p>
         </div>
     </div>
 </div>

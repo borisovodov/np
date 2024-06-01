@@ -42,8 +42,8 @@ final class City: Model, @unchecked Sendable, Content {
     @Enum(key: "continent")
     var continent: Continent
     
-    @Boolean(key: "coastal")
-    var coastal: Bool
+    @Boolean(key: "isCoastal")
+    var isCoastal: Bool
     
     @Field(key: "elevation")
     /// Elevation in meters
@@ -66,6 +66,19 @@ final class City: Model, @unchecked Sendable, Content {
     
     init() { }
     
+    init(name: String, country: Country, population: Int, continent: Continent, isCoastal: Bool, elevation: Int, latitude: Float, longitude: Float, manualLocation: Bool) throws {
+        self.id = UUID()
+        self.name = name
+        self.$country.id = try country.requireID()
+        self.population = population
+        self.continent = continent
+        self.isCoastal = isCoastal
+        self.elevation = elevation
+        self.latitude = latitude
+        self.longitude = longitude
+        self.manualLocation = manualLocation
+    }
+    
     var isPolar: Bool {
         return self.latitude > 66.562 || self.latitude < -66.562
     }
@@ -78,7 +91,7 @@ final class City: Model, @unchecked Sendable, Content {
     }
     
     var URL: String {
-        return "/countries/\(self.country.id ?? UUID())/\(self.id ?? UUID())"
+        return "/countries/\(self.$country.id)/\(self.id ?? UUID())"
     }
     
     var prettyLatitude: String {
@@ -105,6 +118,10 @@ final class City: Model, @unchecked Sendable, Content {
     
     var coordinates: String {
         return "\(self.prettyLatitude), \(self.prettyLongitude)"
+    }
+    
+    func toDTO(_ database: Database) async throws -> CityDTO {
+        return try await CityDTO(name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
     }
 
 //    var newspapers: [Newspapers] {

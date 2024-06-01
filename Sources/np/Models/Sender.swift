@@ -24,9 +24,6 @@ final class Sender: Model, @unchecked Sendable, Content {
     @OptionalField(key: "avatar")
     var avatar: String?
     
-    @Parent(key: "countryID")
-    var country: Country
-    
     @Siblings(through: SenderAchievementPivot.self, from: \.$sender, to: \.$achievement)
     var achievements: [Achievement]
     
@@ -35,20 +32,37 @@ final class Sender: Model, @unchecked Sendable, Content {
     
     init() { }
     
-    var cities: [City] {
-        return Set(self.newspapers.map { $0.city }).sorted { $0.name > $1.name }
+    init(name: String, isWoman: Bool, avatar: String? = nil) {
+        self.id = UUID()
+        self.name = name
+        self.isWoman = isWoman
+        self.avatar = avatar
     }
     
     var URL: String {
         return "/senders/\(self.id ?? UUID())"
     }
     
-    static func popular(_ database: Database) async throws -> [Sender] {
-        let senders = try await Sender.query(on: database)
-            .filter(\.$name != "Anonym / Unknown")
-            .all()
+    func cities(_ database: Database) async throws -> [City] {
+        return Set(try await self.$newspapers.query(on: database).all().map { $0.city }).sorted { $0.name < $1.name }
+    }
+    
+    func countries(_ database: Database) async throws -> [Country] {
+        return Set(try await self.cities(database).map { $0.country }).sorted { $0.name < $1.name }
+    }
+    
+    func toDTO(_ database: Database) async throws -> SenderDTO {
+        return try await SenderDTO(name: self.name, avatar: self.avatar, URL: self.URL, countriesCount: self.countries(database).count, citiesCount: self.cities(database).count, achievements: self.$achievements.query(on: database).all().map { $0.toDTO })
+    }
+    
+    static func popular(_ database: Database) async throws -> [SenderDTO] {
+        var senders: [SenderDTO] = []
         
-        return senders.sorted { $0.cities.count > $1.cities.count }
+        for sender in try await Sender.query(on: database).filter(\.$name != "Anonym / Unknown").all() {
+            senders.append(try await sender.toDTO(database))
+        }
+        
+        return senders.sorted { $0.citiesCount > $1.citiesCount }
     }
     
 //    var countries: [Country] {
