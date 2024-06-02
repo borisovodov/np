@@ -68,6 +68,10 @@ final class Country: Model, @unchecked Sendable, Content {
         return countries.sorted { $0.newspapersCount > $1.newspapersCount }
     }
     
+    static func firstNewspaperFrom(_ database: Database) async throws -> Country? {
+        try await Country.query(on: database).filter(\.$name == "China").first()
+    }
+    
 //    var cities: [City] {
 //        return City.objects.order_by('name').filter(country=self)
 //    }

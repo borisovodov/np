@@ -45,19 +45,19 @@ func routes(_ app: Application) throws {
     
     app.get("about") { req async throws -> View in
         struct Context: Content {
-            var author: Sender?
-            var authorCity: City?
+            var author: SenderDTO?
+            var authorCity: CityDTO?
             var firstNewspaper: NewspaperDTO?
-            var firstSender: Sender?
-            var firstCountry: Country?
+            var firstSender: SenderDTO?
+            var firstCountry: CountryDTO?
         }
         
         let context = Context(
-            author: try await Sender.query(on: req.db).filter(\.$name == "Boris Ovodov").first(),
-            authorCity: try await City.query(on: req.db).filter(\.$name == "Yekaterinburg").first(),
+            author: try await Sender.author(req.db)?.toDTO(req.db),
+            authorCity: try await City.authorFrom(req.db)?.toDTO(req.db),
             firstNewspaper: try await Newspaper.first(req.db)?.toDTO(req.db),
-            firstSender: try await Sender.query(on: req.db).filter(\.$name == "Sasha Ovodova").first(),
-            firstCountry: try await Country.query(on: req.db).filter(\.$name == "China").first()
+            firstSender: try await Sender.first(req.db)?.toDTO(req.db),
+            firstCountry: try await Country.firstNewspaperFrom(req.db)?.toDTO(req.db)
         )
         
         return try await req.view.render("about", context)

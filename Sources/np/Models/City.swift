@@ -147,35 +147,23 @@ final class City: Model, @unchecked Sendable, Content {
     }
     
     static func northernmost(_ database: Database) async throws -> City? {
-        guard let city = try await City.query(on: database).sort(\.$latitude, .descending).first() else {
-            return nil
-        }
-        
-        return city
+        try await City.query(on: database).sort(\.$latitude, .descending).first()
     }
     
     static func southernmost(_ database: Database) async throws -> City? {
-        guard let city = try await City.query(on: database).sort(\.$latitude, .ascending).first() else {
-            return nil
-        }
-        
-        return city
+        return try await City.query(on: database).sort(\.$latitude, .ascending).first()
     }
     
     static func westernmost(_ database: Database) async throws -> City? {
-        guard let city = try await City.query(on: database).sort(\.$longitude, .ascending).first() else {
-            return nil
-        }
-        
-        return city
+        return try await City.query(on: database).sort(\.$longitude, .ascending).first()
     }
     
     static func easternmost(_ database: Database) async throws -> City? {
-        guard let city = try await City.query(on: database).sort(\.$longitude, .descending).first() else {
-            return nil
-        }
-        
-        return city
+        return try await City.query(on: database).sort(\.$longitude, .descending).first()
+    }
+    
+    static func authorFrom(_ database: Database) async throws -> City? {
+        try await City.query(on: database).filter(\.$name == "Yekaterinburg").first()
     }
 
 //    var photo: String {

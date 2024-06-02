@@ -64,6 +64,14 @@ final class Sender: Model, @unchecked Sendable, Content {
         return senders.sorted { $0.citiesCount > $1.citiesCount }
     }
     
+    static func author(_ database: Database) async throws -> Sender? {
+        try await Sender.query(on: database).filter(\.$name == "Boris Ovodov").first()
+    }
+    
+    static func first(_ database: Database) async throws -> Sender? {
+        try await Sender.query(on: database).filter(\.$name == "Sasha Ovodova").first()
+    }
+    
 //    var countries: [Country] {
 //        countries_ids = self.newspapers().values_list('city__country_id', flat=True)
 //        return Country.objects.order_by('name').filter(id__in=list(countries_ids))
