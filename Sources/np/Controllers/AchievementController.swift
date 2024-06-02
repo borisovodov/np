@@ -36,9 +36,7 @@ struct AchievementController: RouteCollection {
             throw Abort(.notFound)
         }
         
-        let context = Context(
-            achievement: try await achievement.toPageDTO(req.db)
-        )
+        let context = Context(achievement: try await achievement.toPageDTO(req.db))
         
         return try await req.view.render("achievement", context)
     }

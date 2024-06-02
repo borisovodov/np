@@ -186,7 +186,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
             try await tags.append(tag.toDTO(database))
         }
         
-        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: self.thumbnail, URL: self.URL, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequency: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags, markers: self.markers(database))
+        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: self.thumbnail, URL: self.URL, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequency: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
     }
     
     static func popular(_ database: Database) async throws -> [NewspaperDTO] {

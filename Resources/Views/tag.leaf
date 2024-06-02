@@ -9,7 +9,7 @@
     
     #export("content"):
         <div class="container mb-4">
-            <h1 class="pb-2">#(tag)</h1>
+            <h1 class="pb-2">#(tag.name)</h1>
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(tag.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>

@@ -26,6 +26,16 @@ struct CityDTO: Content {
     var newspapersCount: Int
 }
 
+extension CityDTO: Hashable {
+    static func == (lhs: CityDTO, rhs: CityDTO) -> Bool {
+        return lhs.URL == rhs.URL
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.URL)
+    }
+}
+
 struct CityPageDTO: Content {
     var name: String
     var URL: String
@@ -36,7 +46,6 @@ struct CityPageDTO: Content {
     var continentTag: TagDTO?
     var senders: [SenderDTO]
     var newspapers: [NewspaperDTO]
-    var markers: [Marker]
 }
 
 struct CostDTO: Content {
@@ -88,7 +97,6 @@ struct NewspaperPageDTO: Content {
     var costs: [CostDTO]
     var senders: [SenderDTO]
     var tags: [TagDTO]
-    var markers: [Marker]
 }
 
 struct PaperFormatDTO: Content {
@@ -119,4 +127,10 @@ struct TagDTO: Content {
     var name: String
     var URL: String
     var newspapersCount: Int
+}
+
+struct TagPageDTO: Content {
+    var name: String
+    var URL: String
+    var newspapers: [NewspaperDTO]
 }

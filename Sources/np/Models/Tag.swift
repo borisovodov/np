@@ -62,8 +62,31 @@ final class Tag: Model, @unchecked Sendable, Content {
         return "/tags/\(self.id ?? UUID())"
     }
     
+    func markers(_ database: Database) async throws -> [Marker] {
+        var markers: [Marker] = []
+        var cities: [CityDTO:[NewspaperDTO]] = [:]
+        
+        for newspaper in try await self.$newspapers.query(on: database).all() {
+            try await cities[newspaper.$city.get(on: database).toDTO(database)]?.append(newspaper.toDTO(database))
+        }
+        
+        for city in cities {
+            markers.append(Marker(city: city.key, newspapers: city.value))
+        }
+        
+        return markers
+    }
+    
     func toDTO(_ database: Database) async throws -> TagDTO {
         return try await TagDTO(name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
+    }
+    
+    func toPageDTO(_ database: Database) async throws -> TagPageDTO {
+        var newspapers: [NewspaperDTO] = []
+        for newspaper in try await self.$newspapers.query(on: database).all() {
+            try await newspapers.append(newspaper.toDTO(database))
+        }
+        return TagPageDTO(name: self.name, URL: self.URL, newspapers: newspapers)
     }
     
     static func continents(_ database: Database) async throws -> [TagDTO] {

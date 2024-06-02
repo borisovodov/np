@@ -23,13 +23,18 @@ struct TagController: RouteCollection {
 
     @Sendable
     func getList(req: Request) async throws -> View {
-        return try await req.view.render("tags", ["tags": Tag.query(on: req.db).sort(\.$name).all()])
+        var tags: [TagDTO] = []
+        for tag in try await Tag.query(on: req.db).sort(\.$name).all() {
+            try await tags.append(tag.toDTO(req.db))
+        }
+        
+        return try await req.view.render("tags", ["tags": tags])
     }
     
     @Sendable
     func getObject(req: Request) async throws -> View {
         struct Context: Content {
-            var tag: Tag
+            var tag: TagPageDTO
             var markers: [Marker]
         }
         
@@ -37,11 +42,7 @@ struct TagController: RouteCollection {
             throw Abort(.notFound)
         }
         
-        let context = Context(
-            tag: tag,
-            // TODO: вот тут нужно возвращать не все
-            markers: try await Marker.all(req.db)
-        )
+        let context = try await Context(tag: tag.toPageDTO(req.db), markers: tag.markers(req.db))
         
         return try await req.view.render("tag", context)
     }
