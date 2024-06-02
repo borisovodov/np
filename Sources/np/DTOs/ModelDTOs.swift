@@ -65,6 +65,12 @@ struct LanguageDTO: Content {
     var newspapersCount: Int
 }
 
+struct LanguagePageDTO: Content {
+    var name: String
+    var URL: String
+    var newspapers: [NewspaperDTO]
+}
+
 struct NewspaperDTO: Content {
     var title: String
     var number: String?

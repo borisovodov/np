@@ -23,22 +23,25 @@ struct LanguageController: RouteCollection {
 
     @Sendable
     func getList(req: Request) async throws -> View {
-        return try await req.view.render("languages", ["languages": Language.query(on: req.db).sort(\.$name).all()])
+        var languages: [LanguageDTO] = []
+        for language in try await Language.query(on: req.db).sort(\.$name).all() {
+            try await languages.append(language.toDTO(req.db))
+        }
+        return try await req.view.render("languages", ["languages": languages])
     }
     
     @Sendable
     func getObject(req: Request) async throws -> View {
         struct Context: Content {
-            var language: Language
+            var language: LanguagePageDTO
+            var markers: [Marker]
         }
         
         guard let language = try await Language.find(req.parameters.get("languageID"), on: req.db) else {
             throw Abort(.notFound)
         }
         
-        let context = Context(
-            language: language
-        )
+        let context = try await Context(language: language.toPageDTO(req.db), markers: language.markers(req.db))
         
         return try await req.view.render("language", context)
     }
