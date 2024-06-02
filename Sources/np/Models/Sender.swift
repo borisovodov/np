@@ -43,11 +43,11 @@ final class Sender: Model, @unchecked Sendable, Content {
     }
     
     func cities(_ database: Database) async throws -> [City] {
-        return Set(try await self.$newspapers.query(on: database).all().map { $0.city }).sorted { $0.name < $1.name }
+        return try await Set(self.$newspapers.query(on: database).all().map { $0.city }).sorted { $0.name < $1.name }
     }
     
     func countries(_ database: Database) async throws -> [Country] {
-        return Set(try await self.cities(database).map { $0.country }).sorted { $0.name < $1.name }
+        return try await Set(self.cities(database).map { $0.country }).sorted { $0.name < $1.name }
     }
     
     func toDTO(_ database: Database) async throws -> SenderDTO {
@@ -58,7 +58,7 @@ final class Sender: Model, @unchecked Sendable, Content {
         var senders: [SenderDTO] = []
         
         for sender in try await Sender.query(on: database).filter(\.$name != "Anonym / Unknown").all() {
-            senders.append(try await sender.toDTO(database))
+            try await senders.append(sender.toDTO(database))
         }
         
         return senders.sorted { $0.citiesCount > $1.citiesCount }

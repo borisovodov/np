@@ -17,6 +17,9 @@ final class Achievement: Model, @unchecked Sendable, Content {
     @Field(key: "name")
     var name: String
     
+    @Siblings(through: SenderAchievementPivot.self, from: \.$achievement, to: \.$sender)
+    var senders: [Sender]
+    
     init() { }
     
     init(name: String) {
@@ -32,9 +35,13 @@ final class Achievement: Model, @unchecked Sendable, Content {
         return AchievementDTO(name: self.name, URL: self.URL)
     }
     
-//    var senders: [Sender] {
-//        return Sender.objects.order_by('name').filter(achievements=self)
-//    }
+    func toPageDTO(_ database: Database) async throws -> AchievementPageDTO {
+        var senders: [SenderDTO] = []
+        for sender in try await self.$senders.query(on: database).all() {
+            try await senders.append(sender.toDTO(database))
+        }
+        return AchievementPageDTO(name: self.name, URL: self.URL, senders: senders)
+    }
 }
 
 extension Achievement: CustomStringConvertible {

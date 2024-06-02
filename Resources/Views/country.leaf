@@ -33,31 +33,25 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">Thanks To</h2>
-            #for(row in senders):
+            #for(sender in senders):
             <div class="row">
-                #for(sender in row):
-                    #extend("sender_template")
-                #endfor
+                #extend("sender_template")
             </div>
             #endfor
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(country.cities) != 1):Cities#else:City#endif</h2>
-            #for(row in cities):
+            #for(city in cities):
             <div class="row">
-                #for(city in row):
-                    #extend("city_template")
-                #endfor
+                #extend("city_template")
             </div>
             #endfor
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(country.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
-            #for(row in newspapers):
+            #for(newspaper in newspapers):
             <div class="row">
-                #for(newspaper in row):
-                    #extend("newspaper_template")
-                #endfor
+                #extend("newspaper_template")
             </div>
             #endfor
         </div>

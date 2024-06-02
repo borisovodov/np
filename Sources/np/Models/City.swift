@@ -123,7 +123,7 @@ final class City: Model, @unchecked Sendable, Content {
         var senders: Set<SenderDTO> = []
         for newspaper in try await self.$newspapers.query(on: database).all() {
             for sender in try await newspaper.$senders.query(on: database).all() {
-                senders.insert(try await sender.toDTO(database))
+                try await senders.insert(sender.toDTO(database))
             }
         }
         return senders.sorted { $0.name < $1.name }
@@ -132,10 +132,10 @@ final class City: Model, @unchecked Sendable, Content {
     func markers(_ database: Database) async throws -> [Marker] {
         var newspapers: [NewspaperDTO] = []
         for newspaper in try await self.$newspapers.query(on: database).all() {
-            newspapers.append(try await newspaper.toDTO(database))
+            try await newspapers.append(newspaper.toDTO(database))
         }
         
-        return [Marker(city: try await self.toDTO(database), newspapers: newspapers)]
+        return try await [Marker(city: self.toDTO(database), newspapers: newspapers)]
     }
     
     func toDTO(_ database: Database) async throws -> CityDTO {
@@ -145,10 +145,10 @@ final class City: Model, @unchecked Sendable, Content {
     func toPageDTO(_ database: Database) async throws -> CityPageDTO {
         var newspapers: [NewspaperDTO] = []
         for newspaper in try await self.$newspapers.query(on: database).all() {
-            newspapers.append(try await newspaper.toDTO(database))
+            try await newspapers.append(newspaper.toDTO(database))
         }
         
-        return try await CityPageDTO(name: self.name, URL: self.URL, population: self.population, isCoastal: self.isCoastal, elevation: self.elevation, country: self.$country.get(on: database).toDTO(database), continentTag: try await self.continent.tag(database)?.toDTO(database), senders: try await self.senders(database), newspapers: newspapers, markers: self.markers(database))
+        return try await CityPageDTO(name: self.name, URL: self.URL, population: self.population, isCoastal: self.isCoastal, elevation: self.elevation, country: self.$country.get(on: database).toDTO(database), continentTag: self.continent.tag(database)?.toDTO(database), senders: self.senders(database), newspapers: newspapers, markers: self.markers(database))
     }
     
     static func northernmost(_ database: Database) async throws -> City? {

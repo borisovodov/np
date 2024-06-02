@@ -11,11 +11,9 @@
         <div class="container mb-4">
             <h1 class="d-inline-block pb-2">Tags</h1>
             <p class="pb-2">Here are all the tags used on the site in alphabetical order. To ease the search, press <kbd>Ctrl + F</kbd>.</p>
-            #for(row in tags):
+            #for(tag in tags):
             <div class="row">
-                #for(tag in row):
-                    #extend("tag_template")
-                #endfor
+                #extend("tag_template")
             </div>
             #endfor
         </div>

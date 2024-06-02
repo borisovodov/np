@@ -29,11 +29,7 @@ struct CountryController: RouteCollection {
 
     @Sendable
     func getList(req: Request) async throws -> View {
-        let countries = try await Country.query(on: req.db)
-            .sort(\.$name)
-            .all()
-        
-        return try await req.view.render("countries", ["countries": countries.dividedByColumns])
+        return try await req.view.render("countries", ["countries": Country.query(on: req.db).sort(\.$name).all()])
     }
     
     @Sendable

@@ -12,6 +12,12 @@ struct AchievementDTO: Content {
     var URL: String
 }
 
+struct AchievementPageDTO: Content {
+    var name: String
+    var URL: String
+    var senders: [SenderDTO]
+}
+
 struct CityDTO: Content {
     var name: String
     var coordinates: String

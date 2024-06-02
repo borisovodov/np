@@ -10,11 +10,9 @@
     #export("content"):
         <div class="container mb-4">
             <h1 class="d-inline-block pb-2">Languages</h1>
-            #for(row in languages):
+            #for(language in languages):
             <div class="row">
-                #for(language in row):
-                    #extend("language_template")
-                #endfor
+                #extend("language_template")
             </div>
             #endfor
         </div>

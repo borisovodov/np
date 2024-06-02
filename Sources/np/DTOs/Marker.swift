@@ -16,7 +16,7 @@ struct Marker: Content {
         var markers: [Marker] = []
         
         for city in try await City.query(on: database).all() {
-            markers.append(contentsOf: try await city.markers(database))
+            try await markers.append(contentsOf: city.markers(database))
         }
         
         return markers

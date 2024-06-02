@@ -23,11 +23,7 @@ struct NewspaperController: RouteCollection {
 
     @Sendable
     func getList(req: Request) async throws -> View {
-        let newspapers = try await Newspaper.query(on: req.db)
-            .sort(\.$date, .descending)
-            .all()
-        
-        return try await req.view.render("newspapers", ["newspapers": newspapers.dividedByColumns])
+        return try await req.view.render("newspapers", ["newspapers": Newspaper.query(on: req.db).sort(\.$date, .descending).all()])
     }
     
     @Sendable

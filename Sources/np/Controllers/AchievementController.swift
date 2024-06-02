@@ -23,17 +23,13 @@ struct AchievementController: RouteCollection {
 
     @Sendable
     func getList(req: Request) async throws -> View {
-        let achievements = try await Achievement.query(on: req.db)
-            .sort(\.$name)
-            .all()
-        
-        return try await req.view.render("achievements", ["achievements": achievements.dividedByColumns])
+        return try await req.view.render("achievements", ["achievements": Achievement.query(on: req.db).sort(\.$name).all().map({ $0.toDTO })])
     }
     
     @Sendable
     func getObject(req: Request) async throws -> View {
         struct Context: Content {
-            var achievement: Achievement
+            var achievement: AchievementPageDTO
         }
         
         guard let achievement = try await Achievement.find(req.parameters.get("achievementID"), on: req.db) else {
@@ -41,7 +37,7 @@ struct AchievementController: RouteCollection {
         }
         
         let context = Context(
-            achievement: achievement
+            achievement: try await achievement.toPageDTO(req.db)
         )
         
         return try await req.view.render("achievement", context)

@@ -13,11 +13,9 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(language.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
-            #for(row in newspapers):
+            #for(newspaper in newspapers):
             <div class="row">
-                #for(newspaper in row):
-                    #extend("newspaper_template")
-                #endfor
+                #extend("newspaper_template")
             </div>
             #endfor
         </div>

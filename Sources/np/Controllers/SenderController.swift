@@ -23,11 +23,7 @@ struct SenderController: RouteCollection {
 
     @Sendable
     func getList(req: Request) async throws -> View {
-        let senders = try await Sender.query(on: req.db)
-            .sort(\.$name)
-            .all()
-        
-        return try await req.view.render("senders", ["senders": senders.dividedByColumns])
+        return try await req.view.render("senders", ["senders": Sender.query(on: req.db).sort(\.$name).all()])
     }
     
     @Sendable

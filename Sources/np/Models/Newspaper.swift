@@ -145,7 +145,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     }
     
     func markers(_ database: Database) async throws -> [Marker] {
-        return [Marker(city: try await self.$city.get(on: database).toDTO(database), newspapers: [try await self.toDTO(database)])]
+        return try await [Marker(city: self.$city.get(on: database).toDTO(database), newspapers: [self.toDTO(database)])]
     }
     
     func toDTO(_ database: Database) async throws -> NewspaperDTO {
@@ -173,17 +173,17 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         
         var costs: [CostDTO] = []
         for cost in try await self.$costs.query(on: database).all() {
-            costs.append(try await cost.toDTO(database))
+            try await costs.append(cost.toDTO(database))
         }
         
         var senders: [SenderDTO] = []
         for sender in try await self.$senders.query(on: database).all() {
-            senders.append(try await sender.toDTO(database))
+            try await senders.append(sender.toDTO(database))
         }
         
         var tags: [TagDTO] = []
         for tag in try await self.$tags.query(on: database).all() {
-            tags.append(try await tag.toDTO(database))
+            try await tags.append(tag.toDTO(database))
         }
         
         return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: self.thumbnail, URL: self.URL, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequency: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags, markers: self.markers(database))
@@ -192,7 +192,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     static func popular(_ database: Database) async throws -> [NewspaperDTO] {
         var newspapers: [NewspaperDTO] = []
         for newspaper in try await Newspaper.query(on: database).filter(\.$isTop == true).sort(\.$date, .descending).all() {
-            newspapers.append(try await newspaper.toDTO(database))
+            try await newspapers.append(newspaper.toDTO(database))
         }
         return newspapers
     }

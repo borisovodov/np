@@ -23,11 +23,7 @@ struct LanguageController: RouteCollection {
 
     @Sendable
     func getList(req: Request) async throws -> View {
-        let languages = try await Language.query(on: req.db)
-            .sort(\.$name)
-            .all()
-        
-        return try await req.view.render("languages", ["languages": languages.dividedByColumns])
+        return try await req.view.render("languages", ["languages": Language.query(on: req.db).sort(\.$name).all()])
     }
     
     @Sendable

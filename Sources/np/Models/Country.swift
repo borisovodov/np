@@ -50,7 +50,7 @@ final class Country: Model, @unchecked Sendable, Content {
         var newspapers: [Newspaper] = []
         
         for city in try await self.$cities.query(on: database).all() {
-            newspapers.append(contentsOf: try await city.$newspapers.query(on: database).all())
+            try await newspapers.append(contentsOf: city.$newspapers.query(on: database).all())
         }
         
         return newspapers
@@ -63,7 +63,7 @@ final class Country: Model, @unchecked Sendable, Content {
     static func popular(_ database: Database) async throws -> [CountryDTO] {
         var countries: [CountryDTO] = []
         for country in try await Country.query(on: database).all() {
-            countries.append(try await country.toDTO(database))
+            try await countries.append(country.toDTO(database))
         }
         return countries.sorted { $0.newspapersCount > $1.newspapersCount }
     }

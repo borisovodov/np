@@ -39,7 +39,7 @@ final class PaperFormat: Model, @unchecked Sendable, Content {
     }
     
     func toDTO(_ database: Database) async throws -> PaperFormatDTO {
-        return PaperFormatDTO(name: self.name, URL: try await self.tag(database)?.URL ?? "")
+        return try await PaperFormatDTO(name: self.name, URL: self.tag(database)?.URL ?? "")
     }
 }
 

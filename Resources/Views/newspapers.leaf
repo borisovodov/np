@@ -10,11 +10,9 @@
     #export("content"):
         <div class="container mb-4">
             <h1 class="d-inline-block pb-2">All Newspapers</h1>
-            #for(row in newspapers):
+            #for(newspaper in newspapers):
             <div class="row">
-                #for(newspaper in row):
-                    #extend("newspaper_template")
-                #endfor
+                #extend("newspaper_template")
             </div>
             #endfor
         </div>

@@ -1,19 +1,11 @@
 import Fluent
 import Vapor
 
-extension Array {
-    var dividedByColumns: [[Element]] {
-        return stride(from: 0, to: count, by: 4).map {
-            Array(self[$0 ..< Swift.min($0 + 4, count)])
-        }
-    }
-}
-
 func routes(_ app: Application) throws {
     app.get { req async throws -> View in
         struct Context: Content {
-            var popularNewspapers: [[NewspaperDTO]]
-            var popularSenders: [[SenderDTO]]
+            var popularNewspapers: [NewspaperDTO]
+            var popularSenders: [SenderDTO]
             var markers: [Marker]
         }
         
@@ -35,8 +27,8 @@ func routes(_ app: Application) throws {
 //        try await newspaper.create(on: req.db)
         
         let context = Context(
-            popularNewspapers: try await Newspaper.popular(req.db).dividedByColumns,
-            popularSenders: try await Sender.popular(req.db).dividedByColumns,
+            popularNewspapers: try await Newspaper.popular(req.db),
+            popularSenders: try await Sender.popular(req.db),
             markers: try await Marker.all(req.db)
         )
         
@@ -78,13 +70,13 @@ func routes(_ app: Application) throws {
     app.get("search") { req async throws -> View in
         struct Context: Content {
             var query: String?
-            var achievements: [[AchievementDTO]]
-            var cities: [[CityDTO]]
-            var countries: [[CountryDTO]]
-            var languages: [[LanguageDTO]]
-            var senders: [[SenderDTO]]
-            var tags: [[TagDTO]]
-            var newspapers: [[NewspaperDTO]]
+            var achievements: [AchievementDTO]
+            var cities: [CityDTO]
+            var countries: [CountryDTO]
+            var languages: [LanguageDTO]
+            var senders: [SenderDTO]
+            var tags: [TagDTO]
+            var newspapers: [NewspaperDTO]
         }
         
         let query = try req.query.decode(SearchQuery.self).query ?? ""
@@ -118,13 +110,13 @@ func routes(_ app: Application) throws {
         
         let context = Context(
             query: query,
-            achievements: try await Achievement.query(on: req.db).filter(\.$name ~~ query).all().map({ $0.toDTO }).dividedByColumns,
-            cities: cities.dividedByColumns,
-            countries: countries.dividedByColumns,
-            languages: languages.dividedByColumns,
-            senders: senders.dividedByColumns,
-            tags: tags.dividedByColumns,
-            newspapers: newspapers.dividedByColumns
+            achievements: try await Achievement.query(on: req.db).filter(\.$name ~~ query).all().map({ $0.toDTO }),
+            cities: cities,
+            countries: countries,
+            languages: languages,
+            senders: senders,
+            tags: tags,
+            newspapers: newspapers
         )
         
         return try await req.view.render("search", context)

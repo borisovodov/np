@@ -69,7 +69,7 @@ final class Tag: Model, @unchecked Sendable, Content {
     static func continents(_ database: Database) async throws -> [TagDTO] {
         var continents: [TagDTO] = []
         for continent in try await Tag.query(on: database).filter(\.$tagType == .continent).all() {
-            continents.append(try await continent.toDTO(database))
+            try await continents.append(continent.toDTO(database))
         }
         return continents.sorted { $0.newspapersCount > $1.newspapersCount }
     }

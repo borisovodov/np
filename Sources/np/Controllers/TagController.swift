@@ -23,11 +23,7 @@ struct TagController: RouteCollection {
 
     @Sendable
     func getList(req: Request) async throws -> View {
-        let tags = try await Tag.query(on: req.db)
-            .sort(\.$name)
-            .all()
-        
-        return try await req.view.render("tags", ["tags": tags.dividedByColumns])
+        return try await req.view.render("tags", ["tags": Tag.query(on: req.db).sort(\.$name).all()])
     }
     
     @Sendable
