@@ -14,6 +14,8 @@ struct AchievementDTO: Content {
 
 struct CityDTO: Content {
     var name: String
+    var coordinates: String
+    var markerIcon: String?
     var URL: String
     var newspapersCount: Int
 }

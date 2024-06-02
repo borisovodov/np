@@ -1,5 +1,5 @@
 <script>
-	L.mapbox.accessToken = '#(mapboxAccessKey)';
+	L.mapbox.accessToken = '#mapboxAccessKey()';
 
 	var layer = L.mapbox.styleLayer('mapbox://styles/mapbox/outdoors-v9');
 	var map = L.mapbox.map('map', null, {
@@ -16,9 +16,9 @@
 	#for(marker in markers):
 	var popupText = '#(marker.city.name)<br>#for(newspaper in marker.newspapers):<li><a href="#(newspaper.URL)">#(newspaper.title) (#(newspaper.date))</a></li>#endfor</body>';
 	var marker = L.marker([#(marker.city.coordinates)], {
-		#if(marker.city.country.markerIcon):
+		#if(marker.city.markerIcon):
 			icon: L.icon({
-				iconUrl: '#(marker.city.country.markerIcon)',
+				iconUrl: '#(marker.city.markerIcon)',
 				//iconSize: [19, 30],
 				iconAnchor: [9, 30],
 				popupAnchor: [0, -30],

@@ -116,7 +116,7 @@ final class City: Model, @unchecked Sendable, Content {
     }
     
     var coordinates: String {
-        return "\(self.prettyLatitude), \(self.prettyLongitude)"
+        return "\(self.latitude), \(self.longitude)"
     }
     
     func senders(_ database: Database) async throws -> [SenderDTO] {
@@ -130,11 +130,16 @@ final class City: Model, @unchecked Sendable, Content {
     }
     
     func markers(_ database: Database) async throws -> [Marker] {
-        return [Marker(city: self, newspapers: try await self.$newspapers.query(on: database).all())]
+        var newspapers: [NewspaperDTO] = []
+        for newspaper in try await self.$newspapers.query(on: database).all() {
+            newspapers.append(try await newspaper.toDTO(database))
+        }
+        
+        return [Marker(city: try await self.toDTO(database), newspapers: newspapers)]
     }
     
     func toDTO(_ database: Database) async throws -> CityDTO {
-        return try await CityDTO(name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
+        return try await CityDTO(name: self.name, coordinates: self.coordinates, markerIcon: self.$country.get(on: database).markerIcon, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
     }
     
     func toPageDTO(_ database: Database) async throws -> CityPageDTO {

@@ -145,7 +145,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     }
     
     func markers(_ database: Database) async throws -> [Marker] {
-        return [Marker(city: try await self.$city.get(on: database), newspapers: [self])]
+        return [Marker(city: try await self.$city.get(on: database).toDTO(database), newspapers: [try await self.toDTO(database)])]
     }
     
     func toDTO(_ database: Database) async throws -> NewspaperDTO {

@@ -22,6 +22,7 @@ public func configure(_ app: Application) async throws {
     
     // Инициализируем кастомные тэги.
     app.leaf.tags["now"] = NowTag()
+    app.leaf.tags["mapboxAccessKey"] = MapboxAccessKeyTag()
     
     // Регистрируем рауты.
     try routes(app)

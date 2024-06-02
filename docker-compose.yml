@@ -6,6 +6,7 @@ version: '3.7'
 
 x-shared_environment: &shared_environment
   LOG_LEVEL: ${LOG_LEVEL:-debug}
+  MAPBOX_ACCESS_KEY: MAPBOX_ACCESS_KEY
   
 services:
   app:
