@@ -6,7 +6,6 @@
 //
 
 import Fluent
-import Foundation
 import Vapor
 
 /// Tags by default:
@@ -27,6 +26,16 @@ import Vapor
 /// * TRASH
 /// * Extra
 final class Tag: Model, @unchecked Sendable, Content {
+    enum TagType: String, Codable {
+        case continent
+        case frequency
+        case paperFormat
+        case year
+        case color
+        case publicationType
+        case other
+    }
+    
     static let schema = "tags"
     
     @ID(key: .id)
@@ -35,14 +44,18 @@ final class Tag: Model, @unchecked Sendable, Content {
     @Field(key: "name")
     var name: String
     
+    @Enum(key: "tagType")
+    var tagType: TagType
+    
     @Siblings(through: NewspaperTagPivot.self, from: \.$tag, to: \.$newspaper)
     var newspapers: [Newspaper]
     
     init() { }
     
-    init(name: String) {
+    init(name: String, tagType: TagType = .other) {
         self.id = UUID()
         self.name = name
+        self.tagType = tagType
     }
     
     var URL: String {
@@ -51,6 +64,14 @@ final class Tag: Model, @unchecked Sendable, Content {
     
     func toDTO(_ database: Database) async throws -> TagDTO {
         return try await TagDTO(name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
+    }
+    
+    static func continents(_ database: Database) async throws -> [TagDTO] {
+        var continents: [TagDTO] = []
+        for continent in try await Tag.query(on: database).filter(\.$tagType == .continent).all() {
+            continents.append(try await continent.toDTO(database))
+        }
+        return continents.sorted { $0.newspapersCount > $1.newspapersCount }
     }
 
 //    var cities: [City] {

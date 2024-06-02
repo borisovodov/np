@@ -1,6 +1,6 @@
 #extend("main"):
     #export("title"):
-        Papers Around — #(achievement)
+        Papers Around — #(achievement.name)
     #endexport
     
     #export("url"):

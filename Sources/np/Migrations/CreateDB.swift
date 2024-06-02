@@ -33,6 +33,16 @@ struct CreateDB: AsyncMigration {
             .case("bimonthly")
             .create()
         
+        let tagTypes = try await database.enum("tagtype")
+            .case("continent")
+            .case("frequency")
+            .case("paperFormat")
+            .case("year")
+            .case("color")
+            .case("publicationType")
+            .case("other")
+            .create()
+        
         try await database.schema("achievements")
             .id()
             .field("name", .string, .required)
@@ -94,6 +104,7 @@ struct CreateDB: AsyncMigration {
         try await database.schema("tags")
             .id()
             .field("name", .string, .required)
+            .field("tagType", tagTypes, .required)
             .create()
         
         try await database.schema("newspapers")

@@ -6,7 +6,6 @@
 //
 
 import Fluent
-import Foundation
 import Vapor
 
 final class Cost: Model, @unchecked Sendable, Content {
@@ -25,6 +24,10 @@ final class Cost: Model, @unchecked Sendable, Content {
     var newspaper: Newspaper
     
     init() { }
+    
+    func toDTO(_ database: Database) async throws -> CostDTO {
+        return CostDTO(value: String(format: "%.2f", self.value))
+    }
 }
 
 extension Cost: CustomStringConvertible {

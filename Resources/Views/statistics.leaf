@@ -13,14 +13,14 @@
             <p>In this website presents newspapers <s>from around the world</s>. Look at this entertaining statistics:</p>
             <ul>
                 <li class="mb-2">A total of #(numberOfNewspapers) newspapers from <a href="/countries">#(numberOfCountries) countries</a> and <a href="/countries">#(numberOfCities) cities</a>.</li>
-                <li class="mb-2">Most newspapers from <a href="#(countryWithMaxNumberOfNewspapers.URL)">#(countryWithMaxNumberOfNewspapers.name)</a>—// TODO:count(countryWithMaxNumberOfNewspapers.newspapers).</li>
+                <li class="mb-2">Most newspapers from <a href="#(countryWithMaxNumberOfNewspapers.URL)">#(countryWithMaxNumberOfNewspapers.name)</a>—#(countryWithMaxNumberOfNewspapers.newspapersCount).</li>
                 <li class="mb-2">Here are the newspapers on <a href="/languages">#(numberOfLanguages) languages</a>.</li>
-                <li class="mb-2">#count(languageWithMaxNumberOfNewspapers.newspapers) newspapers were brought on <a href="#(languageWithMaxNumberOfNewspapers.URL)">#(languageWithMaxNumberOfNewspapers.name)</a>.</li>
+                <li class="mb-2">#(languageWithMaxNumberOfNewspapers.newspapersCount) newspapers were brought on <a href="#(languageWithMaxNumberOfNewspapers.URL)">#(languageWithMaxNumberOfNewspapers.name)</a>.</li>
                 <li class="mb-2">Newspapers were brought from the #(numberOfContinents) continents—#for(continent in continents):
                     {% if forloop.last %}<a href="#(continent.URL)">#(continent.name)</a>
                     {% else %}<a href="#(continent.URL)">#(continent.name)</a>,
                     {% endif %}
-                    {% empty %}#endfor. More then other from <a href="#(continentWithMaxNumberOfNewspapers.URL)">#(continentWithMaxNumberOfNewspapers.name)</a>: // TODO:count(continentWithMaxNumberOfNewspapers.newspapers).</li>
+                    {% empty %}#endfor. More then other from <a href="#(continentWithMaxNumberOfNewspapers.URL)">#(continentWithMaxNumberOfNewspapers.name)</a>: #(continentWithMaxNumberOfNewspapers.newspapersCount).</li>
                 <li class="mb-2">The northernmost newspaper brought
                 #if(northernmostCity):
                     #for(sender in northernmostCity.senders):
@@ -54,13 +54,13 @@
                     #endfor from <a href="#(easternmostCity.URL)">#(easternmostCity.name)</a>: #(easternmostCity.prettyLongitude).</li>
                 #endif
                 <li class="mb-2">Newspapers brought <a href="/senders">#(numberOfSenders) people</a>.</li>
-                <li class="mb-2"><a href="#(senderWithMaxNumberOfCities.URL)">#(senderWithMaxNumberOfCities.name)</a> brought newspapers from the largest number of cities–// TODO:count(senderWithMaxNumberOfCities.cities).</li>
+                <li class="mb-2"><a href="#(senderWithMaxNumberOfCities.URL)">#(senderWithMaxNumberOfCities.name)</a> brought newspapers from the largest number of cities–#(senderWithMaxNumberOfCities.citiesCount).</li>
                 #if(firstNewspaper):
                 <li class="mb-2">First <a href="#(firstNewspaper.URL)">newspaper</a> #for(sender in firstNewspaper.senders):<a href="#(sender.URL)">#(sender.name)</a>#endfor filch from post.</li>
                 #endif
                 #if(lastNewspaper):
                 <li class="mb-2">Latest <a href="#(lastNewspaper.URL)">newspaper</a>
-                    #for(sender in lastNewspaper):
+                    #for(sender in lastNewspaper.senders):
                         {% if forloop.last %}<a href="#(sender.URL)">#(sender.name)</a>
                         {% else %}<a href="#(sender.URL)">#(sender.name)</a>,
                         {% endif %}

@@ -6,7 +6,7 @@
 //
 
 import Fluent
-import Foundation
+import Vapor
 
 final class SenderAchievementPivot: Model, @unchecked Sendable {
     static let schema = "sender-achievement-pivot"

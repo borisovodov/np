@@ -6,7 +6,6 @@
 //
 
 import Fluent
-import Foundation
 import Vapor
 
 final class Sender: Model, @unchecked Sendable, Content {

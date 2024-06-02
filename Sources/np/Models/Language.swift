@@ -6,7 +6,6 @@
 //
 
 import Fluent
-import Foundation
 import Vapor
 
 final class Language: Model, @unchecked Sendable, Content {
@@ -40,9 +39,16 @@ final class Language: Model, @unchecked Sendable, Content {
         return try await LanguageDTO(name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
     }
     
-//    var newspapers: [Newspaper] {
-//        return Newspaper.objects.order_by('-date').filter(language=self)
-//    }
+    static func popular(_ database: Database) async throws -> [LanguageDTO] {
+        var languages: [LanguageDTO] = []
+        for language in try await Language.query(on: database).all() {
+            let languageDTO = try await language.toDTO(database)
+            if languageDTO.newspapersCount > 0 {
+                languages.append(languageDTO)
+            }
+        }
+        return languages.sorted { $0.newspapersCount > $1.newspapersCount }
+    }
 
 //    var cities: [City] {
 //        cities_ids = self.newspapers().values_list('city_id', flat=True)

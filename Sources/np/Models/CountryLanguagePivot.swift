@@ -6,7 +6,7 @@
 //
 
 import Fluent
-import Foundation
+import Vapor
 
 final class CountryLanguagePivot: Model, @unchecked Sendable {
     static let schema = "country-language-pivot"

@@ -1,6 +1,6 @@
 #extend("main"):
     #export("title"):
-        Papers Around — #(city)
+        Papers Around — #(city.name)
     #endexport
     
     #export("url"):
@@ -9,14 +9,14 @@
     
     #export("content"):
         <div class="container mb-4">
-            <h1 class="pb-2">#(city)</h1>
+            <h1 class="pb-2">#(city.name)</h1>
             <div class="row pt-3">
                 <div class="col-md-6">
                     <ul class="list-unstyled ml-4">
                         <li class="mb-2">Country: <a href="#(city.country.URL)">#(city.country.name)</a></li>
                         <li class="mb-2">Population: #(city.population)</li>
                         <li class="mb-2">Continent: <a href="#(city.continentTag.URL)">#(city.continentTag.name)</a></li>
-                        #if(!city.coastal):<li class="mb-2">Elevation: #(city.elevation) m</li>#endif
+                        #if(!city.isCoastal):<li class="mb-2">Elevation: #(city.elevation) m</li>#endif
                     </ul>
                 </div>
                 <div class="col-md-6">

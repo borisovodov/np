@@ -6,7 +6,6 @@
 //
 
 import Fluent
-import Foundation
 import Vapor
 
 final class Newspaper: Model, @unchecked Sendable, Content {
@@ -40,6 +39,10 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         
         var description: String {
             self.rawValue
+        }
+        
+        func tag(_ database: Database) async throws -> Tag? {
+            return try await Tag.query(on: database).filter(\.$tagType == .frequency).filter(\.$name == self.rawValue).first()
         }
     }
     
@@ -102,6 +105,9 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     @Parent(key: "languageID")
     var language: Language
     
+    @Children(for: \.$newspaper)
+    var costs: [Cost]
+    
     @Siblings(through: NewspaperSenderPivot.self, from: \.$newspaper, to: \.$sender)
     var senders: [Sender]
     
@@ -138,13 +144,49 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         return "/newspapers/\(self.id ?? UUID())"
     }
     
+    func markers(_ database: Database) async throws -> [Marker] {
+        return [Marker(city: try await self.$city.get(on: database), newspapers: [self])]
+    }
+    
     func toDTO(_ database: Database) async throws -> NewspaperDTO {
         var tags: [TagDTO] = []
         for tag in try await self.$tags.query(on: database).all() {
             try await tags.append(tag.toDTO(database))
         }
         
-        return try await NewspaperDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: self.date, URL: self.URL, thumbnail: self.thumbnail, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), tags: tags)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.locale = Locale(identifier: "en_EN")
+        
+        return try await NewspaperDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), URL: self.URL, thumbnail: self.thumbnail, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), tags: tags)
+    }
+    
+    func toPageDTO(_ database: Database) async throws -> NewspaperPageDTO {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.locale = Locale(identifier: "en_EN")
+        
+        var publicationStartString: String? = nil
+        if let publicationStart = self.publicationStart {
+            publicationStartString = dateFormatter.string(from: publicationStart)
+        }
+        
+        var costs: [CostDTO] = []
+        for cost in try await self.$costs.query(on: database).all() {
+            costs.append(try await cost.toDTO(database))
+        }
+        
+        var senders: [SenderDTO] = []
+        for sender in try await self.$senders.query(on: database).all() {
+            senders.append(try await sender.toDTO(database))
+        }
+        
+        var tags: [TagDTO] = []
+        for tag in try await self.$tags.query(on: database).all() {
+            tags.append(try await tag.toDTO(database))
+        }
+        
+        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: self.thumbnail, URL: self.URL, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequency: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags, markers: self.markers(database))
     }
     
     static func popular(_ database: Database) async throws -> [NewspaperDTO] {
@@ -155,11 +197,26 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         return newspapers
     }
     
+    static func first(_ database: Database) async throws -> Newspaper? {
+        guard let firstNewspaperReleaseDate = Calendar.current.date(from: DateComponents(year: 2012, month: 1, day: 13)) else {
+            return nil
+        }
+        
+        guard let newspaper = try await Newspaper.query(on: database).filter(\.$title == "体坛周报").filter(\.$date == firstNewspaperReleaseDate).first() else {
+            return nil
+        }
+        
+        return newspaper
+    }
     
-//    var costs: [Cost] {
-//        return Cost.objects.filter(newspaper=self)
-//    }
-
+    static func last(_ database: Database) async throws -> Newspaper? {
+        guard let newspaper = try await Newspaper.query(on: database).sort(\.$date, .descending).first() else {
+            return nil
+        }
+        
+        return newspaper
+    }
+    
 //    var isPravda: Bool {
 //        return 'правда' in self.title.lower()
 //    }
@@ -170,12 +227,6 @@ final class Newspaper: Model, @unchecked Sendable, Content {
 
 //    var isNotOfficialLanguage: Bool {
 //        return self.language not in self.city.country.languages.all()
-//    }
-
-//    var frequencyTag: Tag {
-//        tag, created = Tag.objects.get_or_create(name=self.frequency)
-//        tag.save()
-//        return tag
 //    }
 
 //    def get_tags_alph(self):

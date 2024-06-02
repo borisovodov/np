@@ -1,6 +1,6 @@
 #extend("main"):
     #export("title"):
-        Papers Around — #(language)
+        Papers Around — #(language.name)
     #endexport
     
     #export("url"):

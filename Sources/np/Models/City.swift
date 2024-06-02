@@ -6,7 +6,6 @@
 //
 
 import Fluent
-import Foundation
 import Vapor
 
 final class City: Model, @unchecked Sendable, Content {
@@ -24,7 +23,7 @@ final class City: Model, @unchecked Sendable, Content {
         }
         
         func tag(_ database: Database) async throws -> Tag? {
-            return try await Tag.query(on: database).filter(\.$name == self.rawValue).first()
+            return try await Tag.query(on: database).filter(\.$tagType == .continent).filter(\.$name == self.rawValue).first()
         }
     }
     
@@ -84,7 +83,7 @@ final class City: Model, @unchecked Sendable, Content {
     }
     
     var hemisphere: Bool {
-        if self.latitude > 0.0 { // # false — north hemisphere, true — south hemisphere
+        if self.latitude > 0.0 { // false — north hemisphere, true — south hemisphere
             return false
         }
         return true
@@ -120,27 +119,67 @@ final class City: Model, @unchecked Sendable, Content {
         return "\(self.prettyLatitude), \(self.prettyLongitude)"
     }
     
+    func senders(_ database: Database) async throws -> [SenderDTO] {
+        var senders: Set<SenderDTO> = []
+        for newspaper in try await self.$newspapers.query(on: database).all() {
+            for sender in try await newspaper.$senders.query(on: database).all() {
+                senders.insert(try await sender.toDTO(database))
+            }
+        }
+        return senders.sorted { $0.name < $1.name }
+    }
+    
+    func markers(_ database: Database) async throws -> [Marker] {
+        return [Marker(city: self, newspapers: try await self.$newspapers.query(on: database).all())]
+    }
+    
     func toDTO(_ database: Database) async throws -> CityDTO {
         return try await CityDTO(name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
     }
-
-//    var newspapers: [Newspapers] {
-//        return Newspaper.objects.order_by('-date').filter(city=self)
-//    }
-
-//    var senders: [Sender] {
-//        senders_ids = self.newspapers().values_list('senders__id', flat=True)
-//        return Sender.objects.order_by('name').filter(id__in=list(senders_ids))
-//    }
+    
+    func toPageDTO(_ database: Database) async throws -> CityPageDTO {
+        var newspapers: [NewspaperDTO] = []
+        for newspaper in try await self.$newspapers.query(on: database).all() {
+            newspapers.append(try await newspaper.toDTO(database))
+        }
+        
+        return try await CityPageDTO(name: self.name, URL: self.URL, population: self.population, isCoastal: self.isCoastal, elevation: self.elevation, country: self.$country.get(on: database).toDTO(database), continentTag: try await self.continent.tag(database)?.toDTO(database), senders: try await self.senders(database), newspapers: newspapers, markers: self.markers(database))
+    }
+    
+    static func northernmost(_ database: Database) async throws -> City? {
+        guard let city = try await City.query(on: database).sort(\.$latitude, .descending).first() else {
+            return nil
+        }
+        
+        return city
+    }
+    
+    static func southernmost(_ database: Database) async throws -> City? {
+        guard let city = try await City.query(on: database).sort(\.$latitude, .ascending).first() else {
+            return nil
+        }
+        
+        return city
+    }
+    
+    static func westernmost(_ database: Database) async throws -> City? {
+        guard let city = try await City.query(on: database).sort(\.$longitude, .ascending).first() else {
+            return nil
+        }
+        
+        return city
+    }
+    
+    static func easternmost(_ database: Database) async throws -> City? {
+        guard let city = try await City.query(on: database).sort(\.$longitude, .descending).first() else {
+            return nil
+        }
+        
+        return city
+    }
 
 //    var photo: String {
 //        if self.newspapers(): return self.newspapers().first().photo
-//    }
-
-//    var continentTag: Tag {
-//        tag, created = Tag.objects.get_or_create(name=self.continent)
-//        tag.save()
-//        return tag
 //    }
 }
 

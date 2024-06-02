@@ -1,6 +1,6 @@
 #extend("main"):
     #export("title"):
-        Papers Around — #(tag)
+        Papers Around — #(tag.name)
     #endexport
     
     #export("url"):

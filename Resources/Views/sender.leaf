@@ -1,6 +1,6 @@
 #extend("main"):
     #export("title"):
-        Papers Around — #(sender)
+        Papers Around — #(sender.name)
     #endexport
     
     #export("url"):

@@ -1,6 +1,6 @@
 #extend("main"):
     #export("title"):
-        Papers Around — #(country)
+        Papers Around — #(country.name)
     #endexport
     
     #export("url"):

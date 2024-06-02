@@ -6,7 +6,7 @@
 //
 
 import Fluent
-import Foundation
+import Vapor
 
 final class NewspaperTagPivot: Model, @unchecked Sendable {
     static let schema = "newspaper-tag-pivot"

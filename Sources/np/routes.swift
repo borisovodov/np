@@ -9,10 +9,6 @@ extension Array {
     }
 }
 
-enum RouteError: Error {
-    case invalidFirstNewspaperReleaseDate
-}
-
 func routes(_ app: Application) throws {
     app.get { req async throws -> View in
         struct Context: Content {
@@ -51,19 +47,15 @@ func routes(_ app: Application) throws {
         struct Context: Content {
             var author: Sender?
             var authorCity: City?
-            var firstNewspaper: Newspaper?
+            var firstNewspaper: NewspaperDTO?
             var firstSender: Sender?
             var firstCountry: Country?
-        }
-        
-        guard let firstNewspaperReleaseDate = Calendar.current.date(from: DateComponents(year: 2012, month: 1, day: 13)) else {
-            throw RouteError.invalidFirstNewspaperReleaseDate
         }
         
         let context = Context(
             author: try await Sender.query(on: req.db).filter(\.$name == "Boris Ovodov").first(),
             authorCity: try await City.query(on: req.db).filter(\.$name == "Yekaterinburg").first(),
-            firstNewspaper: try await Newspaper.query(on: req.db).filter(\.$title == "体坛周报").filter(\.$date == firstNewspaperReleaseDate).first(),
+            firstNewspaper: try await Newspaper.first(req.db)?.toDTO(req.db),
             firstSender: try await Sender.query(on: req.db).filter(\.$name == "Sasha Ovodova").first(),
             firstCountry: try await Country.query(on: req.db).filter(\.$name == "China").first()
         )
@@ -143,59 +135,40 @@ func routes(_ app: Application) throws {
             var numberOfNewspapers: Int
             var numberOfCountries: Int
             var numberOfCities: Int
-            var countryWithMaxNumberOfNewspapers: Country?
+            var countryWithMaxNumberOfNewspapers: CountryDTO?
             var numberOfLanguages: Int
-            var languageWithMaxNumberOfNewspapers: Language?
+            var languageWithMaxNumberOfNewspapers: LanguageDTO?
             var numberOfContinents: Int
-            var continents: Set<Tag>
-            var continentWithMaxNumberOfNewspapers: Tag?
-            var northernmostCity: City?
-            var southernmostCity: City?
-            var westernmostCity: City?
-            var easternmostCity: City?
+            var continents: [TagDTO]
+            var continentWithMaxNumberOfNewspapers: TagDTO?
+            var northernmostCity: CityPageDTO?
+            var southernmostCity: CityPageDTO?
+            var westernmostCity: CityPageDTO?
+            var easternmostCity: CityPageDTO?
             var numberOfSenders: Int
-            var senderWithMaxNumberOfCities: Sender?
-            var firstNewspaper: Newspaper?
-            var lastNewspaper: Newspaper?
-        }
-        
-        // TODO: с континентами, языками, странами и отправителями нужно будет разобраться в части работы с сетами и массивами. Сейчас всё косячно. https://docs.vapor.codes/fluent/query/
-        var continents: Set<Tag> = []
-        for continent in try await City.query(on: req.db).all().map({ $0.continent }) {
-            if let tag = try await continent.tag(req.db) { continents.insert(tag) }
-        }
-        
-        let languages = try await Newspaper.query(on: req.db)
-            .all()
-            .map{ $0.language }
-            .sorted { $0.newspapers.count > $1.newspapers.count }
-        
-        let countries: Set<Country> = []
-        
-        let senders: Set<Sender> = []
-        
-        guard let firstNewspaperReleaseDate = Calendar.current.date(from: DateComponents(year: 2012, month: 1, day: 13)) else {
-            throw RouteError.invalidFirstNewspaperReleaseDate
+            var senderWithMaxNumberOfCities: SenderDTO?
+            var firstNewspaper: NewspaperPageDTO?
+            var lastNewspaper: NewspaperPageDTO?
         }
         
         let context = Context(
             numberOfNewspapers: try await Newspaper.query(on: req.db).count(),
             numberOfCountries: try await Country.query(on: req.db).count(),
             numberOfCities: try await City.query(on: req.db).count(),
-            countryWithMaxNumberOfNewspapers: countries.first,
-            numberOfLanguages: Set(languages).count,
-            languageWithMaxNumberOfNewspapers: languages.first,
-            numberOfContinents: continents.count,
-            continents: continents,
-            continentWithMaxNumberOfNewspapers: continents.first,
-            northernmostCity: try await City.query(on: req.db).sort(\.$latitude, .descending).first(),
-            southernmostCity: try await City.query(on: req.db).sort(\.$latitude, .ascending).first(),
-            westernmostCity: try await City.query(on: req.db).sort(\.$latitude, .ascending).first(),
-            easternmostCity: try await City.query(on: req.db).sort(\.$latitude, .descending).first(),
+            countryWithMaxNumberOfNewspapers: try await Country.popular(req.db).first,
+            numberOfLanguages: try await Language.popular(req.db).count,
+            languageWithMaxNumberOfNewspapers: try await Language.popular(req.db).first,
+            numberOfContinents: try await Tag.continents(req.db).count,
+            continents: try await Tag.continents(req.db),
+            continentWithMaxNumberOfNewspapers: try await Tag.continents(req.db).first,
+            northernmostCity: try await City.northernmost(req.db)?.toPageDTO(req.db),
+            southernmostCity: try await City.southernmost(req.db)?.toPageDTO(req.db),
+            westernmostCity: try await City.westernmost(req.db)?.toPageDTO(req.db),
+            easternmostCity: try await City.easternmost(req.db)?.toPageDTO(req.db),
             numberOfSenders: try await Sender.query(on: req.db).count(),
-            senderWithMaxNumberOfCities: senders.first,
-            firstNewspaper: try await Newspaper.query(on: req.db).filter(\.$title == "体坛周报").filter(\.$date == firstNewspaperReleaseDate).first(),
-            lastNewspaper: try await Newspaper.query(on: req.db).sort(\.$date, .descending).first()
+            senderWithMaxNumberOfCities: try await Sender.popular(req.db).first,
+            firstNewspaper: try await Newspaper.first(req.db)?.toPageDTO(req.db),
+            lastNewspaper: try await Newspaper.last(req.db)?.toPageDTO(req.db)
         )
         
         return try await req.view.render("statistics", context)

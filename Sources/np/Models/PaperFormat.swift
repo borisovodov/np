@@ -6,7 +6,6 @@
 //
 
 import Fluent
-import Foundation
 import Vapor
 
 final class PaperFormat: Model, @unchecked Sendable, Content {
@@ -33,6 +32,14 @@ final class PaperFormat: Model, @unchecked Sendable, Content {
         self.name = name
         self.height = height
         self.width = width
+    }
+    
+    func tag(_ database: Database) async throws -> Tag? {
+        return try await Tag.query(on: database).filter(\.$tagType == .paperFormat).filter(\.$name == self.name).first()
+    }
+    
+    func toDTO(_ database: Database) async throws -> PaperFormatDTO {
+        return PaperFormatDTO(name: self.name, URL: try await self.tag(database)?.URL ?? "")
     }
 }
 

@@ -6,7 +6,6 @@
 //
 
 import Fluent
-import Foundation
 import Vapor
 
 final class Country: Model, @unchecked Sendable, Content {
@@ -61,12 +60,16 @@ final class Country: Model, @unchecked Sendable, Content {
         return try await CountryDTO(name: self.name, URL: self.URL, emoji: self.emoji, newspapersCount: self.newspapers(database).count)
     }
     
+    static func popular(_ database: Database) async throws -> [CountryDTO] {
+        var countries: [CountryDTO] = []
+        for country in try await Country.query(on: database).all() {
+            countries.append(try await country.toDTO(database))
+        }
+        return countries.sorted { $0.newspapersCount > $1.newspapersCount }
+    }
+    
 //    var cities: [City] {
 //        return City.objects.order_by('name').filter(country=self)
-//    }
-
-//    var newspapers: [Newspaper] {
-//        return Newspaper.objects.order_by('-date').filter(city__country=self)
 //    }
 
 //    var senders: [Sender] {
