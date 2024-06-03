@@ -39,7 +39,7 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">Thanks To</h2>
-            #for(sender in senders):
+            #for(sender in newspaper.senders):
             <div class="row">
                 #extend("sender_template")
             </div>
@@ -47,7 +47,7 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(newspaper.tags) != 1):Tags#else:Tag#endif</h2>
-            #for(tag in tags):
+            #for(tag in newspaper.tags):
             <div class="row">
                 #extend("tag_template")
             </div>

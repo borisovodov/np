@@ -9,12 +9,12 @@
     
     #export("content"):
         <div class="container mb-4">
-            <h1 class="pb-2">#(country.emoji) #(country)</h1>
+            <h1 class="pb-2">#(country.emoji) #(country.name)</h1>
             <div class="row pt-3">
                 <div class="col-md-6">
                     <ul class="list-unstyled ml-4">
                         <li class="mb-2">Population: #(country.population)</li>
-                        <li class="mb-2">#if(count(country.languages) > 1):Official languages#else:Official language#endif:
+                        <li class="mb-2">#if(count(country.languages) > 1):Official languages#else:Official language#endif
                             #for(language in country.languages):
                                 {%! if forloop.last !%}<a href="#(language.URL)">#(language.name)</a>
                                 {%! else !%}<a href="#(language.URL)">#(language.name)</a>,
@@ -33,7 +33,7 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">Thanks To</h2>
-            #for(sender in senders):
+            #for(sender in country.senders):
             <div class="row">
                 #extend("sender_template")
             </div>
@@ -41,7 +41,7 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(country.cities) != 1):Cities#else:City#endif</h2>
-            #for(city in cities):
+            #for(city in country.cities):
             <div class="row">
                 #extend("city_template")
             </div>
@@ -49,7 +49,7 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(country.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
-            #for(newspaper in newspapers):
+            #for(newspaper in country.newspapers):
             <div class="row">
                 #extend("newspaper_template")
             </div>

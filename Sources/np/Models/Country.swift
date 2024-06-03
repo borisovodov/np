@@ -56,8 +56,46 @@ final class Country: Model, @unchecked Sendable, Content {
         return newspapers
     }
     
+    func senders(_ database: Database) async throws -> [SenderDTO] {
+        var senders: [SenderDTO] = []
+        
+        for newspaper in try await self.newspapers(database) {
+            for sender in try await newspaper.$senders.query(on: database).all() {
+                try await senders.append(sender.toDTO(database))
+            }
+        }
+        
+        return senders
+    }
+    
+    func markers(_ database: Database) async throws -> [Marker] {
+        var markers: [Marker] = []
+        
+        for city in try await self.$cities.query(on: database).all() {
+            try await markers.append(contentsOf: city.markers(database))
+        }
+        
+        return markers
+    }
+    
     func toDTO(_ database: Database) async throws -> CountryDTO {
         return try await CountryDTO(name: self.name, URL: self.URL, emoji: self.emoji, newspapersCount: self.newspapers(database).count)
+    }
+    
+    func toPageDTO(_ database: Database) async throws -> CountryPageDTO {
+        var cities: [CityDTO] = []
+        for city in try await self.$cities.query(on: database).all() {
+            try await cities.append(city.toDTO(database))
+        }
+        
+        var newspapers: [NewspaperDTO] = []
+        var languages: [LanguageDTO] = []
+        for newspaper in try await self.newspapers(database) {
+            try await newspapers.append(newspaper.toDTO(database))
+            try await languages.append(newspaper.$language.get(on: database).toDTO(database))
+        }
+        
+        return try await CountryPageDTO(name: self.name, URL: self.URL, emoji: self.emoji, population: self.population, languages: languages, senders: self.senders(database), cities: cities, newspapers: newspapers)
     }
     
     static func popular(_ database: Database) async throws -> [CountryDTO] {

@@ -19,32 +19,36 @@ struct CountryController: RouteCollection {
             country.get(use: self.getCountry)
             countries.post(use: self.createCity)
             country.delete(use: self.deleteCountry)
-            
-            country.group(":cityID") { city in
-                country.get(use: self.getCity)
-                country.delete(use: self.deleteCity)
-            }
+        }
+        
+        countries.group(":countryID", ":cityID") { city in
+            city.get(use: self.getCity)
+            city.delete(use: self.deleteCity)
         }
     }
 
     @Sendable
     func getList(req: Request) async throws -> View {
-        return try await req.view.render("countries", ["countries": Country.query(on: req.db).sort(\.$name).all()])
+        var countries: [CountryPageDTO] = []
+        for country in try await Country.query(on: req.db).sort(\.$name).all() {
+            try await countries.append(country.toPageDTO(req.db))
+        }
+        
+        return try await req.view.render("countries", ["countries": countries])
     }
     
     @Sendable
     func getCountry(req: Request) async throws -> View {
         struct Context: Content {
-            var country: Country
+            var country: CountryPageDTO
+            var markers: [Marker]
         }
         
         guard let country = try await Country.find(req.parameters.get("countryID"), on: req.db) else {
             throw Abort(.notFound)
         }
         
-        let context = Context(
-            country: country
-        )
+        let context = try await Context(country: country.toPageDTO(req.db), markers: country.markers(req.db))
         
         return try await req.view.render("country", context)
     }
@@ -52,16 +56,15 @@ struct CountryController: RouteCollection {
     @Sendable
     func getCity(req: Request) async throws -> View {
         struct Context: Content {
-            var city: City
+            var city: CityPageDTO
+            var markers: [Marker]
         }
         
         guard let city = try await City.find(req.parameters.get("cityID"), on: req.db) else {
             throw Abort(.notFound)
         }
         
-        let context = Context(
-            city: city
-        )
+        let context = try await Context(city: city.toPageDTO(req.db), markers: city.markers(req.db))
         
         return try await req.view.render("city", context)
     }
