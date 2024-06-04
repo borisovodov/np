@@ -50,8 +50,39 @@ final class Sender: Model, @unchecked Sendable, Content {
         return try await Set(self.cities(database).map { $0.country }).sorted { $0.name < $1.name }
     }
     
+    func markers(_ database: Database) async throws -> [Marker] {
+        var markers: [Marker] = []
+        var cities: [CityDTO:[NewspaperDTO]] = [:]
+        
+        for newspaper in try await self.$newspapers.query(on: database).all() {
+            try await cities[newspaper.$city.get(on: database).toDTO(database)]?.append(newspaper.toDTO(database))
+        }
+        
+        for city in cities {
+            markers.append(Marker(city: city.key, newspapers: city.value))
+        }
+        
+        return markers
+    }
+    
     func toDTO(_ database: Database) async throws -> SenderDTO {
         return try await SenderDTO(name: self.name, avatar: self.avatar, URL: self.URL, countriesCount: self.countries(database).count, citiesCount: self.cities(database).count, achievements: self.$achievements.query(on: database).all().map { $0.toDTO })
+    }
+    
+    func toPageDTO(_ database: Database) async throws -> SenderPageDTO {
+        var cities: [CityDTO] = []
+        var countries: [CountryDTO] = []
+        for city in try await self.cities(database) {
+            try await cities.append(city.toDTO(database))
+            try await countries.append(city.$country.get(on: database).toDTO(database))
+        }
+        
+        var newspapers: [NewspaperDTO] = []
+        for newspaper in try await self.$newspapers.query(on: database).all() {
+            try await newspapers.append(newspaper.toDTO(database))
+        }
+        
+        return try await SenderPageDTO(name: self.name, avatar: self.avatar, URL: self.URL, countries: countries, cities: cities, achievements: self.$achievements.query(on: database).all().map { $0.toDTO }, newspapers: newspapers)
     }
     
     static func popular(_ database: Database) async throws -> [SenderDTO] {

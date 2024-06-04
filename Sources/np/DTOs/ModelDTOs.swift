@@ -140,6 +140,16 @@ extension SenderDTO: Hashable {
     }
 }
 
+struct SenderPageDTO: Content {
+    var name: String
+    var avatar: String?
+    var URL: String
+    var countries: [CountryDTO]
+    var cities: [CityDTO]
+    var achievements: [AchievementDTO]
+    var newspapers: [NewspaperDTO]
+}
+
 struct TagDTO: Content {
     var name: String
     var URL: String

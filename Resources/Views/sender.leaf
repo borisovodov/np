@@ -9,7 +9,7 @@
     
     #export("content"):
         <div class="container mb-4">
-            <h1 class="pb-2">#(sender)</h1>
+            <h1 class="pb-2">#(sender.name)</h1>
             <div class="row pt-3">
                 <div class="col-md-8">
                     <ul class="list-unstyled ml-4">
