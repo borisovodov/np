@@ -23,24 +23,28 @@ struct NewspaperController: RouteCollection {
 
     @Sendable
     func getList(req: Request) async throws -> View {
-        return try await req.view.render("newspapers", ["newspapers": Newspaper.query(on: req.db).sort(\.$date, .descending).all()])
+        var newspapers: [NewspaperDTO] = []
+        for newspaper in try await Newspaper.query(on: req.db).sort(\.$date, .descending).all() {
+            try await newspapers.append(newspaper.toDTO(req.db))
+        }
+        
+        return try await req.view.render("newspapers", ["newspapers": newspapers])
     }
     
     @Sendable
     func getObject(req: Request) async throws -> View {
         struct Context: Content {
-            var newspaper: Newspaper
+            var newspaper: NewspaperPageDTO
+            var markers: [Marker]
         }
         
         guard let newspaper = try await Newspaper.find(req.parameters.get("newspaperID"), on: req.db) else {
             throw Abort(.notFound)
         }
         
-        let context = Context(
-            newspaper: newspaper
-        )
+        let context = try await Context(newspaper: newspaper.toPageDTO(req.db), markers: newspaper.markers(req.db))
         
-        return try await req.view.render("tag", context)
+        return try await req.view.render("newspaper", context)
     }
 
     @Sendable

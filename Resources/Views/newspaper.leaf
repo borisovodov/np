@@ -18,7 +18,7 @@
                         <li class="mb-2">Released: #(newspaper.date)</li>
                         <li class="mb-2">Language: <a href="#(newspaper.language.URL)">#(newspaper.language.name)</a></li>
                         <li class="mb-2">Pages: #(newspaper.pages)</li>
-                        #if(count(newspaper.costs) != 0):<li class="mb-2">#if(count(newspaper.costs) != 1):Costs#else:Cost#endif:
+                        #if(count(newspaper.costs) != 0):<li class="mb-2">#if(count(newspaper.costs) != 1):Costs:#else:Cost:#endif
                         #for(cost in newspaper.costs):
                             #if(isLast):#(cost)
                             #else:#(cost),
