@@ -14,12 +14,11 @@
                 <div class="col-md-6">
                     <ul class="list-unstyled ml-4">
                         <li class="mb-2">Population: #(country.population)</li>
-                        <li class="mb-2">#if(count(country.languages) > 1):Official languages#else:Official language#endif
+                        <li class="mb-2">#if(count(country.languages) > 1):Official languages:#else:Official language:#endif
                             #for(language in country.languages):
-                                {%! if forloop.last !%}<a href="#(language.URL)">#(language.name)</a>
-                                {%! else !%}<a href="#(language.URL)">#(language.name)</a>,
-                                {%! endif !%}
-                            {% empty %}
+                                #if(isLast):<a href="#(language.URL)">#(language.name)</a>
+                                #else:<a href="#(language.URL)">#(language.name)</a>,
+                                #endif
                             #endfor
                         </li>
                     </ul>

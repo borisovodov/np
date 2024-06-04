@@ -20,10 +20,9 @@
                         <li class="mb-2">Pages: #(newspaper.pages)</li>
                         #if(count(newspaper.costs) != 0):<li class="mb-2">#if(count(newspaper.costs) != 1):Costs#else:Cost#endif:
                         #for(cost in newspaper.costs):
-                            {% if(forloop.last) %}#(cost)
-                            {% else %}#(cost),
-                            {% endif %}
-                        {% empty %}
+                            #if(isLast):#(cost)
+                            #else:#(cost),
+                            #endif
                         #endfor</li>
                         #endif
                         #if(newspaper.paperFormat):<li class="mb-2">Paper Format: <a href="#(newspaper.paperFormat.URL)">#(newspaper.paperFormat.name)</a></li>#endif

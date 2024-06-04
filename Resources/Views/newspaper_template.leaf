@@ -15,10 +15,9 @@
         <div class="card-footer">
             <small class="text-muted">#if(count(newspaper.tags) != 1):Tags#else:Tag#endif:
                 #for(tag in newspaper.tags):
-                    {% if(forloop.last) %}<a href="#(tag.URL)">#(tag.name)</a>
-                    {% else %}<a href="#(tag.URL)">#(tag.name)</a>,
-                    {% endif %}
-                    {% empty %}
+                    #if(isLast):<a href="#(tag.URL)">#(tag.name)</a>
+                    #else:<a href="#(tag.URL)">#(tag.name)</a>,
+                    #endif
                 #endfor
             </small>
         </div>

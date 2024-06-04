@@ -15,9 +15,9 @@
         <div class="card-footer">
             <small class="text-muted">#if(count(sender.achievements) != 1):Achievements#else:Achievement#endif
                 #for(achievement in sender.achievements):
-                    {% if forloop.last %}<a href="#(achievement.URL)">#(achievement.name)</a>
-                    {% else %}<a href="#(achievement.URL)">#(achievement.name)</a>,
-                    {% endif %}
+                    #if(isLast):<a href="#(achievement.URL)">#(achievement.name)</a>
+                    #else:<a href="#(achievement.URL)">#(achievement.name)</a>,
+                    #endif
                 #endfor
             </small>
         </div>
