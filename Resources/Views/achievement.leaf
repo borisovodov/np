@@ -1,0 +1,23 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — #(achievement.name)
+    #endexport
+    
+    #export("url"):
+        #(achievement.URL)
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2">#(achievement.name)</h1>
+        </div>
+        <div class="container mb-4">
+            <h2 class="pb-2">#if(count(achievement.senders) != 1):Senders#else:Sender#endif</h2>
+            #for(sender in achievement.senders):
+            <div class="row">
+                #extend("sender_template")
+            </div>
+            #endfor
+        </div>
+    #endexport
+#endextend

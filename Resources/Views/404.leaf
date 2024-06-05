@@ -1,0 +1,16 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — 404
+    #endexport
+    
+    #export("url"):
+        /404
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2 display-1 mb-4 text-center">404</h1>
+            <h1 class="text-center"><small>Syka, blyat!</small></h1>
+        </div>
+    #endexport
+#endextend

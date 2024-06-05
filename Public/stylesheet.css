@@ -1,16 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&display=swap');
-
 @font-face {
     font-family: 'PT Serif';
-    src: url('pt-serif_regular.woff2') format('woff2');
+    src: url('/pt-serif_regular.woff2') format('woff2');
 }
 
-/*
 @font-face {
     font-family: 'IM Fell DW Pica';
-    src: url('IMFellDWPica-Regular.ttf') format('ttf');
+    src: url('/IMFellDWPica-Regular.woff2') format('woff2');
 }
-*/
 
 body {
 	font-family: "PT Serif", serif;

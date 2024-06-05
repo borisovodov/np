@@ -1,0 +1,20 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — Languages
+    #endexport
+    
+    #export("url"):
+        /languages
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="d-inline-block pb-2">Languages</h1>
+            #for(language in languages):
+            <div class="row">
+                #extend("language_template")
+            </div>
+            #endfor
+        </div>
+    #endexport
+#endextend
