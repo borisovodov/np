@@ -1,0 +1,8 @@
+papersaround.com, www.papersaround.com {
+    respond <<HTML
+		<html>
+		  <head><title>Foo</title></head>
+		  <body>Foo</body>
+		</html>
+		HTML 200
+}

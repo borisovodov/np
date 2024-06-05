@@ -1,4 +1,4 @@
-# 1. Прописать в `source` расположение папки с БД и файлами на хост машине.
+# 1. Прописать в `source` расположение папки с БД и файлами на хост машине. // TODO: эта строчка уйдёт в будущем, когда прикручу работу с volumes.
 # 2. docker compose up -d
 # 3. docker compose run migrate
 
@@ -52,8 +52,8 @@ services:
       - "443:443"
       - "443:443/udp"
     volumes:
-      - $PWD/Caddyfile:/etc/caddy/Caddyfile
-      - $PWD/site:/srv
+      - /Caddyfile:/np/Caddyfile
+      - /site:/np
       - caddy_data:/data
       - caddy_config:/config
 volumes:
