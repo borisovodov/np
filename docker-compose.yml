@@ -48,3 +48,21 @@ services:
     command: ["migrate", "--revert", "--yes"]
     deploy:
       replicas: 0
+  caddy:
+    image: caddy:2.8.4
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - $PWD/site:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:
