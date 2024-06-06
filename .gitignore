@@ -10,7 +10,6 @@ __pycache__/
 *.json
 
 # Private
-data/
 tmp/
 media/
 
