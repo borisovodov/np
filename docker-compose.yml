@@ -1,9 +1,8 @@
-# 1. Открыть порты через:
-# `sudo ufw allow http`
-# `sudo ufw allow https`
-# 2. Прописать в `source` расположение папки с БД и файлами на хост машине. // TODO: эта строчка уйдёт в будущем, когда прикручу работу с volumes.
-# 3. `sudo docker compose up -d`
-# 4. `sudo docker compose run migrate`
+# 1. `sudo ufw allow http`
+# 2. `sudo ufw allow https`
+# 3. `git clone https://github.com/borisovodov/np.git`
+# 4. `sudo docker compose up -d`
+# 5. `sudo docker compose run migrate`
 
 version: '3.7'
 
