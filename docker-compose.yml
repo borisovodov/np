@@ -52,11 +52,11 @@ services:
       - "443:443"
       - "443:443/udp"
     volumes:
-#      - /Caddyfile:/np/Caddyfile
+      - ./Caddyfile:/etc/caddy/Caddyfile
 #      - /site:/np
       - caddy_data:/data
       - caddy_config:/config
 volumes:
   caddy_data:
-    external: true
+#    external: true
   caddy_config:
