@@ -1,4 +1,4 @@
 papersaround.com, www.papersaround.com {
-    # respond "Hello, world!"
+    tls internal
     reverse_proxy np-app-1:8080
 }
