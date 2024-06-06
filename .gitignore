@@ -5,10 +5,6 @@ __pycache__/
 
 .DS_Store
 
-# Output
-*.xml
-*.json
-
 # Private
 tmp/
 media/
