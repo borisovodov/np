@@ -1,4 +1,4 @@
-papersaround.com, www.papersaround.com, localhost {
-    respond "Hello, world!"
-  # reverse_proxy :8080
+papersaround.com, www.papersaround.com {
+    # respond "Hello, world!"
+    reverse_proxy :8080
 }
