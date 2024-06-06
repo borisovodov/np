@@ -1,6 +1,9 @@
-# 1. Прописать в `source` расположение папки с БД и файлами на хост машине. // TODO: эта строчка уйдёт в будущем, когда прикручу работу с volumes.
-# 2. docker compose up -d
-# 3. docker compose run migrate
+# 1. Открыть порты через:
+# `sudo ufw allow http`
+# `sudo ufw allow https`
+# 2. Прописать в `source` расположение папки с БД и файлами на хост машине. // TODO: эта строчка уйдёт в будущем, когда прикручу работу с volumes.
+# 3. `sudo docker compose up -d`
+# 4. `sudo docker compose run migrate`
 
 version: '3.7'
 
@@ -53,10 +56,8 @@ services:
       - "443:443/udp"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-#      - /site:/np
       - caddy_data:/data
       - caddy_config:/config
 volumes:
   caddy_data:
-#    external: true
   caddy_config:
