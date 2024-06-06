@@ -1,4 +1,3 @@
 papersaround.com, www.papersaround.com {
-    tls internal
     reverse_proxy np-app-1:8080
 }
