@@ -1,9 +1,4 @@
 papersaround.com, www.papersaround.com, localhost {
-    respond <<HTML
-		<html>
-		  <head><title>Foo</title></head>
-		  <body>Foo</body>
-		</html>
-		HTML 200
+    respond "Hello, world!"
   # reverse_proxy :8080
 }
