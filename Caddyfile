@@ -3,5 +3,5 @@ www.papersaround.com {
 }
 
 papersaround.com {
-    redir https://www.{host}{uri}
+    redir https://www.papersaround.com{uri}
 }
