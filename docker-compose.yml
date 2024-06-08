@@ -16,9 +16,7 @@ services:
     environment:
       <<: *shared_environment
     volumes:
-      - type: bind
-        source: ./Data
-        target: /np/Data
+      - db: /np/Data
     ports:
       - "8080:8080"
     command: ["serve", "--env", "production", "--hostname", "0.0.0.0", "--port", "8080"]
@@ -27,9 +25,7 @@ services:
     environment:
       <<: *shared_environment
     volumes:
-      - type: bind
-        source: ./Data
-        target: /np/Data
+      - db: /np/Data
     command: ["migrate", "--yes"]
     deploy:
       replicas: 0
@@ -38,9 +34,7 @@ services:
     environment:
       <<: *shared_environment
     volumes:
-      - type: bind
-        source: ./Data
-        target: /np/Data
+      - db: /np/Data
     command: ["migrate", "--revert", "--yes"]
     deploy:
       replicas: 0
