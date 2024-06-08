@@ -66,15 +66,16 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && rm -r /var/lib/apt/lists/*
 
 # Create a vapor user and group with /np as its home directory
-RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /np vapor
+# RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /np vapor
 # Добавил это на шару для проверки.
-RUN usermod -aG sudo vapor
+# RUN usermod -aG sudo vapor
 
 # Switch to the new home directory
 WORKDIR /np
 
 # Copy built executable and any staged resources from builder
-COPY --from=build --chown=vapor:vapor /staging /np
+# COPY --from=build --chown=vapor:vapor /staging /np
+COPY --from=build /staging /np
 
 # Provide configuration needed by the built-in crash reporter and some sensible default behaviors.
 ENV SWIFT_BACKTRACE=enable=yes,sanitize=yes,threads=all,images=all,interactive=no,swift-backtrace=./swift-backtrace-static
