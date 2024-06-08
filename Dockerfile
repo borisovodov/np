@@ -65,8 +65,10 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
       # libxml2 \
     && rm -r /var/lib/apt/lists/*
 
-# Create a vapor user and group with /app as its home directory
+# Create a vapor user and group with /np as its home directory
 RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /np vapor
+# Добавил это на шару для проверки.
+RUN usermod -aG sudo vapor
 
 # Switch to the new home directory
 WORKDIR /np
