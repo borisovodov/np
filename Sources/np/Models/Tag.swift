@@ -89,12 +89,24 @@ final class Tag: Model, @unchecked Sendable, Content {
         return TagPageDTO(name: self.name, URL: self.URL, newspapers: newspapers)
     }
     
+    func update(_ database: Database, properties: TagFormDTO) async throws {
+        self.name = properties.name
+        try await self.save(on: database)
+    }
+    
     static func continents(_ database: Database) async throws -> [TagDTO] {
         var continents: [TagDTO] = []
         for continent in try await Tag.query(on: database).filter(\.$tagType == .continent).all() {
             try await continents.append(continent.toDTO(database))
         }
         return continents.sorted { $0.newspapersCount > $1.newspapersCount }
+    }
+    
+    static func create(_ database: Database, tag form: TagFormDTO) async throws -> Tag {
+        let tag = Tag(name: form.name, tagType: .other)
+        try await tag.save(on: database)
+        
+        return tag
     }
 
 //    var cities: [City] {

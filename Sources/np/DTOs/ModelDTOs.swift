@@ -161,3 +161,7 @@ struct TagPageDTO: Content {
     var URL: String
     var newspapers: [NewspaperDTO]
 }
+
+struct TagFormDTO: Content {
+    var name: String
+}
