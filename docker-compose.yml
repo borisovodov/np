@@ -3,6 +3,7 @@
 # 3. `git clone https://github.com/borisovodov/np.git`
 # 4. `docker compose up -d`
 # 5. `docker compose run migrate`
+# 6. Удалить все контейнеры и имиджи: `docker rm -vf $(docker ps -aq)` и `docker rmi -f $(docker images -aq)`.
 
 version: '3.7'
 
