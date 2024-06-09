@@ -30,14 +30,6 @@ let package = Package(
                 .product(name: "NIOPosix", package: "swift-nio"),
             ],
             swiftSettings: swiftSettings
-        ),
-        .testTarget(
-            name: "npTests",
-            dependencies: [
-                .target(name: "np"),
-                .product(name: "XCTVapor", package: "vapor"),
-            ],
-            swiftSettings: swiftSettings
         )
     ]
 )
