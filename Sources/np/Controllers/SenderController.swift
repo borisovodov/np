@@ -13,11 +13,23 @@ struct SenderController: RouteCollection {
         let senders = routes.grouped("senders")
 
         senders.get(use: self.getList)
-        senders.post(use: self.create)
         
         senders.group(":senderID") { sender in
             sender.get(use: self.getObject)
-            sender.delete(use: self.delete)
+        }
+        
+        senders.group(":senderID", "edit") { tag in
+            tag.get(use: self.getEditForm)
+            tag.post(use: self.edit)
+        }
+        
+        senders.group(":senderID", "delete") { tag in
+            tag.get(use: self.delete)
+        }
+        
+        senders.group("add") { tag in
+            tag.get(use: self.getAddForm)
+            tag.post(use: self.add)
         }
     }
 
@@ -46,22 +58,64 @@ struct SenderController: RouteCollection {
         
         return try await req.view.render("sender", context)
     }
-
+    
     @Sendable
-    func create(req: Request) async throws -> Sender {
-        let sender = try req.content.decode(Sender.self)
-
-        try await sender.save(on: req.db)
-        return sender
+    func getAddForm(req: Request) async throws -> View {
+        return try await req.view.render("sender_add")
     }
 
     @Sendable
-    func delete(req: Request) async throws -> HTTPStatus {
+    func add(req: Request) async throws -> View {
+        let form = try req.content.decode(SenderFormDTO.self)
+        
+        let sender = try await Sender.add(req.db, form: form)
+        
+        guard let id = sender.id else {
+            throw Abort(.notFound)
+        }
+        
+        throw Abort.redirect(to: "/senders/\(id)")
+    }
+    
+    @Sendable
+    func getEditForm(req: Request) async throws -> View {
+        struct Context: Content {
+            var sender: SenderPageDTO
+        }
+        
+        guard let sender = try await Sender.find(req.parameters.get("senderID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        
+        let context = try await Context(sender: sender.toPageDTO(req.db))
+        return try await req.view.render("sender_edit", context)
+    }
+    
+    @Sendable
+    func edit(req: Request) async throws -> View {
+        let form = try req.content.decode(SenderFormDTO.self)
+        
+        guard let sender = try await Sender.find(req.parameters.get("senderID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        
+        try await sender.edit(req.db, form: form)
+        
+        guard let id = sender.id else {
+            throw Abort(.notFound)
+        }
+        
+        throw Abort.redirect(to: "/senders/\(id)")
+    }
+    
+    @Sendable
+    func delete(req: Request) async throws -> View {
         guard let sender = try await Sender.find(req.parameters.get("senderID"), on: req.db) else {
             throw Abort(.notFound)
         }
 
         try await sender.delete(on: req.db)
-        return .noContent
+        
+        throw Abort.redirect(to: "/senders")
     }
 }

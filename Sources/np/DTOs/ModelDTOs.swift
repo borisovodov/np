@@ -150,6 +150,11 @@ struct SenderPageDTO: Content {
     var newspapers: [NewspaperDTO]
 }
 
+struct SenderFormDTO: Content {
+    var name: String
+    var avatar: String?
+}
+
 struct TagDTO: Content {
     var name: String
     var URL: String

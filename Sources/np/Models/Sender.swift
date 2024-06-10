@@ -17,9 +17,6 @@ final class Sender: Model, @unchecked Sendable, Content {
     @Field(key: "name")
     var name: String
     
-    @Boolean(key: "isWoman")
-    var isWoman: Bool
-    
     @OptionalField(key: "avatar")
     var avatar: String?
     
@@ -31,10 +28,9 @@ final class Sender: Model, @unchecked Sendable, Content {
     
     init() { }
     
-    init(name: String, isWoman: Bool, avatar: String? = nil) {
+    init(name: String, avatar: String? = nil) {
         self.id = UUID()
         self.name = name
-        self.isWoman = isWoman
         self.avatar = avatar
     }
     
@@ -85,6 +81,12 @@ final class Sender: Model, @unchecked Sendable, Content {
         return try await SenderPageDTO(name: self.name, avatar: self.avatar, URL: self.URL, countries: countries, cities: cities, achievements: self.$achievements.query(on: database).all().map { $0.toDTO }, newspapers: newspapers)
     }
     
+    func edit(_ database: Database, form: SenderFormDTO) async throws {
+        self.name = form.name
+        self.avatar = (form.avatar == "") ? nil : form.avatar
+        try await self.save(on: database)
+    }
+    
     static func popular(_ database: Database) async throws -> [SenderDTO] {
         var senders: [SenderDTO] = []
         
@@ -101,6 +103,13 @@ final class Sender: Model, @unchecked Sendable, Content {
     
     static func first(_ database: Database) async throws -> Sender? {
         try await Sender.query(on: database).filter(\.$name == "Sasha Ovodova").first()
+    }
+    
+    static func add(_ database: Database, form: SenderFormDTO) async throws -> Sender {
+        let sender = Sender(name: form.name, avatar: (form.avatar == "") ? nil : form.avatar)
+        try await sender.save(on: database)
+        
+        return sender
     }
     
 //    var countries: [Country] {

@@ -84,7 +84,6 @@ struct CreateDB: AsyncMigration {
         try await database.schema("senders")
             .id()
             .field("name", .string, .required)
-            .field("isWoman", .bool, .required)
             .field("avatar", .string)
             .create()
         
