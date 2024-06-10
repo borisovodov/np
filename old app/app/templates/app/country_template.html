@@ -1,9 +1,0 @@
-<div class="col-md-3 px-2 mb-3 d-flex">
-    <div class="card bg-light flex-grow-1">
-        <img class="card-img-top mx-auto d-block square" src="">
-        <div class="card-img-overlay">
-            <h4 class="card-title"><a class="card-title-link" href="{{ country.get_absolute_url }}">{{ country.emoji }} {{ country }}</a></h4>
-            <p class="card-text">{{ country.newspapers.count }} {% if country.newspapers.count != 1 %}newspapers{% else %}newspaper{% endif %}</p>
-        </div>
-    </div>
-</div>

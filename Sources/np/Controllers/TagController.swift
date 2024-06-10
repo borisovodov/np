@@ -13,11 +13,23 @@ struct TagController: RouteCollection {
         let tags = routes.grouped("tags")
 
         tags.get(use: self.getList)
-        tags.post(use: self.create)
         
         tags.group(":tagID") { tag in
             tag.get(use: self.getObject)
-            tag.delete(use: self.delete)
+        }
+        
+        tags.group(":tagID", "edit") { tag in
+            tag.get(use: self.getEditForm)
+            tag.post(use: self.edit)
+        }
+        
+        tags.group(":tagID", "delete") { tag in
+            tag.get(use: self.delete)
+        }
+        
+        tags.group("add") { tag in
+            tag.get(use: self.getAddForm)
+            tag.post(use: self.add)
         }
     }
 
@@ -46,22 +58,64 @@ struct TagController: RouteCollection {
         
         return try await req.view.render("tag", context)
     }
-
+    
     @Sendable
-    func create(req: Request) async throws -> Tag {
-        let tag = try req.content.decode(Tag.self)
-
-        try await tag.save(on: req.db)
-        return tag
+    func getAddForm(req: Request) async throws -> View {
+        return try await req.view.render("tag_add")
     }
 
     @Sendable
-    func delete(req: Request) async throws -> HTTPStatus {
+    func add(req: Request) async throws -> View {
+        let tagForm = try req.content.decode(TagFormDTO.self)
+        
+        let tag = try await Tag.add(req.db, tag: tagForm)
+        
+        guard let id = tag.id else {
+            throw Abort(.notFound)
+        }
+        
+        throw Abort.redirect(to: "/tags/\(id)")
+    }
+    
+    @Sendable
+    func getEditForm(req: Request) async throws -> View {
+        struct Context: Content {
+            var tag: TagPageDTO
+        }
+        
+        guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        
+        let context = try await Context(tag: tag.toPageDTO(req.db))
+        return try await req.view.render("tag_edit", context)
+    }
+    
+    @Sendable
+    func edit(req: Request) async throws -> View {
+        let tagForm = try req.content.decode(TagFormDTO.self)
+        
+        guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        
+        try await tag.edit(req.db, properties: tagForm)
+        
+        guard let id = tag.id else {
+            throw Abort(.notFound)
+        }
+        
+        throw Abort.redirect(to: "/tags/\(id)")
+    }
+
+    @Sendable
+    func delete(req: Request) async throws -> View {
         guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else {
             throw Abort(.notFound)
         }
 
         try await tag.delete(on: req.db)
-        return .noContent
+        
+        throw Abort.redirect(to: "/tags")
     }
 }

@@ -1,0 +1,24 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — Add new tag
+    #endexport
+    
+    #export("url"):
+        /tags/add
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2">Add tag</h1>
+        </div>
+        <div class="container mb-4">
+            <form method="POST">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input class="form-control" id="name" name="name">
+                </div>
+                <button type="submit" class="btn btn-primary" action="/add" method="POST">Create</button>
+            </form>
+        </div>
+    #endexport
+#endextend
