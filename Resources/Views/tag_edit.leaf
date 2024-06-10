@@ -1,6 +1,6 @@
 #extend("main"):
     #export("title"):
-        Papers Around — #(tag.name)
+        Papers Around — Edit #(tag.name)
     #endexport
     
     #export("url"):
@@ -9,15 +9,15 @@
     
     #export("content"):
         <div class="container mb-4">
-            <h1 class="pb-2"> Edit #(tag.name)</h1>
+            <h1 class="pb-2">Edit #(tag.name) tag</h1>
         </div>
         <div class="container mb-4">
-            <form method="PATCH">
+            <form method="POST">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input class="form-control" id="name" name="name">
                 </div>
-                <button type="submit" class="btn btn-primary" action="/edit">Edit</button>
+                <button type="submit" class="btn btn-primary" action="/edit" method="POST">Edit</button>
             </form>
         </div>
     #endexport
