@@ -38,6 +38,13 @@ final class Sender: Model, @unchecked Sendable, Content {
         return "/senders/\(self.id ?? UUID())"
     }
     
+    var avatarURL: String? {
+        guard let avatar = self.avatar else {
+            return nil
+        }
+        return "/avatars/\(avatar)"
+    }
+    
     func cities(_ database: Database) async throws -> [City] {
         return try await Set(self.$newspapers.query(on: database).all().map { $0.city }).sorted { $0.name < $1.name }
     }
@@ -62,7 +69,7 @@ final class Sender: Model, @unchecked Sendable, Content {
     }
     
     func toDTO(_ database: Database) async throws -> SenderDTO {
-        return try await SenderDTO(name: self.name, avatar: self.avatar, URL: self.URL, countriesCount: self.countries(database).count, citiesCount: self.cities(database).count, achievements: self.$achievements.query(on: database).all().map { $0.toDTO })
+        return try await SenderDTO(name: self.name, avatar: self.avatarURL, URL: self.URL, countriesCount: self.countries(database).count, citiesCount: self.cities(database).count, achievements: self.$achievements.query(on: database).all().map { $0.toDTO })
     }
     
     func toPageDTO(_ database: Database) async throws -> SenderPageDTO {
@@ -78,12 +85,12 @@ final class Sender: Model, @unchecked Sendable, Content {
             try await newspapers.append(newspaper.toDTO(database))
         }
         
-        return try await SenderPageDTO(name: self.name, avatar: self.avatar, URL: self.URL, countries: countries, cities: cities, achievements: self.$achievements.query(on: database).all().map { $0.toDTO }, newspapers: newspapers)
+        return try await SenderPageDTO(name: self.name, avatar: self.avatarURL, URL: self.URL, countries: countries, cities: cities, achievements: self.$achievements.query(on: database).all().map { $0.toDTO }, newspapers: newspapers)
     }
     
-    func edit(_ database: Database, form: SenderFormDTO) async throws {
+    func edit(_ database: Database, form: SenderFormDTO, avatarURL: String?) async throws {
         self.name = form.name
-        self.avatar = (form.avatar == "") ? nil : form.avatar
+        self.avatar = avatarURL
         try await self.save(on: database)
     }
     
@@ -105,8 +112,8 @@ final class Sender: Model, @unchecked Sendable, Content {
         try await Sender.query(on: database).filter(\.$name == "Sasha Ovodova").first()
     }
     
-    static func add(_ database: Database, form: SenderFormDTO) async throws -> Sender {
-        let sender = Sender(name: form.name, avatar: (form.avatar == "") ? nil : form.avatar)
+    static func add(_ database: Database, form: SenderFormDTO, avatarURL: String?) async throws -> Sender {
+        let sender = Sender(name: form.name, avatar: avatarURL)
         try await sender.save(on: database)
         
         return sender

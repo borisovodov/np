@@ -66,9 +66,17 @@ struct SenderController: RouteCollection {
 
     @Sendable
     func add(req: Request) async throws -> View {
+        var avatarURL: String?
         let form = try req.content.decode(SenderFormDTO.self)
         
-        let sender = try await Sender.add(req.db, form: form)
+        if let avatar = form.avatar {
+            let path = req.application.directory.publicDirectory + "avatars/" + avatar.filename
+            try await req.fileio.writeFile(avatar.data, at: path)
+            
+            avatarURL = avatar.filename
+        }
+        
+        let sender = try await Sender.add(req.db, form: form, avatarURL: avatarURL)
         
         guard let id = sender.id else {
             throw Abort(.notFound)
@@ -99,7 +107,7 @@ struct SenderController: RouteCollection {
             throw Abort(.notFound)
         }
         
-        try await sender.edit(req.db, form: form)
+        try await sender.edit(req.db, form: form, avatarURL: nil)
         
         guard let id = sender.id else {
             throw Abort(.notFound)
