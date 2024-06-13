@@ -90,7 +90,9 @@ final class Sender: Model, @unchecked Sendable, Content {
     
     func edit(_ database: Database, form: SenderFormDTO, avatarURL: String?) async throws {
         self.name = form.name
-        self.avatar = avatarURL
+        if form.isAvatarChanged == "True" {
+            self.avatar = avatarURL
+        }
         try await self.save(on: database)
     }
     

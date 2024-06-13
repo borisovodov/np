@@ -153,6 +153,7 @@ struct SenderPageDTO: Content {
 struct SenderFormDTO: Content {
     var name: String
     var avatar: File?
+    var isAvatarChanged: String?
 }
 
 struct TagDTO: Content {
