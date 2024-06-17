@@ -16,59 +16,59 @@
             <h1 class="pb-2 text-center">Search by “#(query)”</h1>
             #if(count(achievements) != 0):
             <h2 class="pb-2 pt-3">#if(count(achievements) != 1):Achievements#else:Achievement#endif</h2>
-            #for(achievement in achievements):
             <div class="row">
+            #for(achievement in achievements):
                 #extend("achievement_template")
-            </div>
             #endfor
+            </div>
             #endif
             #if(count(cities) != 0):
             <h2 class="pb-2 pt-3">#if(count(cities) != 1):Cities#else:City#endif</h2>
-            #for(city in cities):
             <div class="row">
+            #for(city in cities):
                 #extend("city_template")
-            </div>
             #endfor
+            </div>
             #endif
             #if(count(countries) != 0):
             <h2 class="pb-2 pt-3">#if(count(countries) != 1):Countries#else:Country#endif</h2>
-            #for(country in countries):
             <div class="row">
+            #for(country in countries):
                 #extend("country_template")
-            </div>
             #endfor
+            </div>
             #endif
             #if(count(languages) != 0):
             <h2 class="pb-2 pt-3">#if(count(languages) != 1):Languages#else:Language#endif</h2>
-            #for(language in languages):
             <div class="row">
+            #for(language in languages):
                 #extend("language_template")
-            </div>
             #endfor
+            </div>
             #endif
             #if(count(senders) != 0):
             <h2 class="pb-2 pt-3">#if(count(senders) != 1):Senders#else:Sender#endif</h2>
-            #for(sender in senders):
             <div class="row">
+            #for(sender in senders):
                 #extend("sender_template")
-            </div>
             #endfor
+            </div>
             #endif
             #if(count(tags) != 0):
             <h2 class="pb-2 pt-3">#if(count(tags) != 1):Tags#else:Tag#endif</h2>
-            #for(tag in tags):
             <div class="row">
+            #for(tag in tags):
                 #extend("tag_template")
-            </div>
             #endfor
+            </div>
             #endif
             #if(count(newspapers) != 0):
             <h2 class="pb-2 pt-3">#if(count(newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
-            #for(newspaper in newspapers):
             <div class="row">
+            #for(newspaper in newspapers):
                 #extend("newspaper_template")
-            </div>
             #endfor
+            </div>
             #endif
             #endif
         </div>

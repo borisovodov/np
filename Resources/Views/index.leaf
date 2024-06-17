@@ -17,20 +17,20 @@
         </div>-->
         <div class="container mb-4">
             <h1 class="pb-2">Recent</h1>
-            #for(newspaper in popularNewspapers):
             <div class="row">
+            #for(newspaper in popularNewspapers):
                 #extend("newspaper_template")
-            </div>
             #endfor
+            </div>
             <p class="text-right"><a href="/newspapers">More</a></p>
         </div>
         <div class="container mb-4">
             <h1 class="d-inline-block pb-2">Coolest Senders</h1>
-            #for(sender in popularSenders):
             <div class="row">
+            #for(sender in popularSenders):
                 #extend("sender_template")
-            </div>
             #endfor
+            </div>
             <p class="text-right"><a href="/senders">More</a></p>
         </div>
         <div class="container mb-4">

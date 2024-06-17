@@ -26,9 +26,6 @@ final class Country: Model, @unchecked Sendable, Content {
     @OptionalField(key: "markerIcon")
     var markerIcon: String?
     
-    @Siblings(through: CountryLanguagePivot.self, from: \.$country, to: \.$language)
-    var languages: [Language]
-    
     @Children(for: \.$country)
     var cities: [City]
     
@@ -89,13 +86,11 @@ final class Country: Model, @unchecked Sendable, Content {
         }
         
         var newspapers: [NewspaperDTO] = []
-        var languages: [LanguageDTO] = []
         for newspaper in try await self.newspapers(database) {
             try await newspapers.append(newspaper.toDTO(database))
-            try await languages.append(newspaper.$language.get(on: database).toDTO(database))
         }
         
-        return try await CountryPageDTO(name: self.name, URL: self.URL, emoji: self.emoji, population: self.population, languages: languages, senders: self.senders(database), cities: cities, newspapers: newspapers)
+        return try await CountryPageDTO(name: self.name, URL: self.URL, emoji: self.emoji, population: self.population, senders: self.senders(database), cities: cities, newspapers: newspapers)
     }
     
     static func popular(_ database: Database) async throws -> [CountryDTO] {

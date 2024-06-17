@@ -46,11 +46,21 @@ final class Sender: Model, @unchecked Sendable, Content {
     }
     
     func cities(_ database: Database) async throws -> [City] {
-        return try await Set(self.$newspapers.query(on: database).all().map { $0.city }).sorted { $0.name < $1.name }
+        var cities: [City] = []
+        for newspaper in try await self.$newspapers.query(on: database).all() {
+            try await cities.append(newspaper.$city.get(on: database))
+        }
+        
+        return Set(cities).sorted { $0.name < $1.name }
     }
     
     func countries(_ database: Database) async throws -> [Country] {
-        return try await Set(self.cities(database).map { $0.country }).sorted { $0.name < $1.name }
+        var countries: [Country] = []
+        for city in try await self.cities(database) {
+            try await countries.append(city.$country.get(on: database))
+        }
+        
+        return Set(countries).sorted { $0.name < $1.name }
     }
     
     func markers(_ database: Database) async throws -> [Marker] {

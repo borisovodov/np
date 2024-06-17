@@ -1,4 +1,4 @@
-<div class="col-md-3 px-2 mb-3 d-flex">
+<div class="col-md-3 col-sm-6 col-12 px-2 mb-3 d-flex">
     <div class="card bg-light flex-grow-1">
         <img class="card-img-top mx-auto d-block square" src="">
         <div class="card-img-overlay">

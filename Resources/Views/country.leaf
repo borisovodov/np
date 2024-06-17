@@ -14,13 +14,6 @@
                 <div class="col-md-6">
                     <ul class="list-unstyled ml-4">
                         <li class="mb-2">Population: #(country.population)</li>
-                        <li class="mb-2">#if(count(country.languages) > 1):Official languages:#else:Official language:#endif
-                            #for(language in country.languages):
-                                #if(isLast):<a href="#(language.URL)">#(language.name)</a>
-                                #else:<a href="#(language.URL)">#(language.name)</a>,
-                                #endif
-                            #endfor
-                        </li>
                     </ul>
                 </div>
                 <div class="col-md-6">
@@ -32,27 +25,27 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">Thanks To</h2>
-            #for(sender in country.senders):
             <div class="row">
+            #for(sender in country.senders):
                 #extend("sender_template")
-            </div>
             #endfor
+            </div>
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(country.cities) != 1):Cities#else:City#endif</h2>
-            #for(city in country.cities):
             <div class="row">
+            #for(city in country.cities):
                 #extend("city_template")
-            </div>
             #endfor
+            </div>
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(country.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
-            #for(newspaper in country.newspapers):
             <div class="row">
+            #for(newspaper in country.newspapers):
                 #extend("newspaper_template")
-            </div>
             #endfor
+            </div>
         </div>
     #endexport
 #endextend

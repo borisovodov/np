@@ -13,11 +13,11 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(language.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
-            #for(newspaper in language.newspapers):
             <div class="row">
+            #for(newspaper in language.newspapers):
                 #extend("newspaper_template")
-            </div>
             #endfor
+            </div>
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">On Map</h2>

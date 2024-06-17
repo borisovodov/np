@@ -31,36 +31,36 @@
         #if(count(sender.achievements) != 0):
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(sender.achievements) != 1):Achievements#else:Achievement#endif</h2>
-            #for(achievement in sender.achievements):
             <div class="row">
+            #for(achievement in sender.achievements):
                 #extend("achievement_template")
-            </div>
             #endfor
+            </div>
         </div>
         #endif
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(sender.countries) != 1):Countries#else:Country#endif</h2>
-            #for(country in sender.countries):
             <div class="row">
+            #for(country in sender.countries):
                 #extend("country_template")
-            </div>
             #endfor
+            </div>
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(sender.cities) != 1):Cities#else:City#endif</h2>
-            #for(city in sender.cities):
             <div class="row">
+            #for(city in sender.cities):
                 #extend("city_template")
-            </div>
             #endfor
+            </div>
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(sender.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
-            #for(newspaper in sender.newspapers):
             <div class="row">
+            #for(newspaper in sender.newspapers):
                 #extend("newspaper_template")
-            </div>
             #endfor
+            </div>
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">On Map</h2>

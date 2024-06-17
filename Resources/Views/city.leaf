@@ -28,19 +28,19 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">Thanks To</h2>
-            #for(sender in city.senders):
             <div class="row">
+            #for(sender in city.senders):
                 #extend("sender_template")
-            </div>
             #endfor
+            </div>
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(city.newspapers) != 1):Newspapers#else:Newspaper#endif</h2>
-            #for(newspaper in city.newspapers):
             <div class="row">
+            #for(newspaper in city.newspapers):
                 #extend("newspaper_template")
-            </div>
             #endfor
+            </div>
         </div>
     #endexport
 #endextend

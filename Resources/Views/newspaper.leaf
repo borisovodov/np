@@ -17,7 +17,7 @@
                         #if(newspaper.number):<li class="mb-2">Number: #(newspaper.number)#if(newspaper.secondaryNumber): (#(newspaper.secondaryNumber))#endif</li>#endif
                         <li class="mb-2">Released: #(newspaper.date)</li>
                         <li class="mb-2">Language: <a href="#(newspaper.language.URL)">#(newspaper.language.name)</a></li>
-                        <li class="mb-2">Pages: #(newspaper.pages)</li>
+                        #if(newspaper.pages):<li class="mb-2">Pages: #(newspaper.pages)</li>#endif
                         #if(count(newspaper.costs) != 0):<li class="mb-2">#if(count(newspaper.costs) != 1):Costs:#else:Cost:#endif
                         #for(cost in newspaper.costs):
                             #if(isLast):#(cost)
@@ -38,19 +38,19 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">Thanks To</h2>
-            #for(sender in newspaper.senders):
             <div class="row">
+            #for(sender in newspaper.senders):
                 #extend("sender_template")
-            </div>
             #endfor
+            </div>
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(newspaper.tags) != 1):Tags#else:Tag#endif</h2>
-            #for(tag in newspaper.tags):
             <div class="row">
+            #for(tag in newspaper.tags):
                 #extend("tag_template")
-            </div>
             #endfor
+            </div>
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">On Map</h2>

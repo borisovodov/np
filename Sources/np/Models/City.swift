@@ -10,16 +10,31 @@ import Vapor
 
 final class City: Model, @unchecked Sendable, Content {
     enum Continent: String, CustomStringConvertible, Codable {
-        case africa = "Africa"
-        case antarctica = "Antarctica"
-        case asia = "Asia"
-        case australiaAndOceania = "Australia/Oceania"
-        case europe = "Europe"
-        case northAmerica = "North America"
-        case southAmerica = "South America"
+        case africa
+        case antarctica
+        case asia
+        case australiaAndOceania
+        case europe
+        case northAmerica
+        case southAmerica
         
         var description: String {
-            self.rawValue
+            switch self {
+            case .africa:
+                return "Africa"
+            case .antarctica:
+                return "Antarctica"
+            case .asia:
+                return "Asia"
+            case .australiaAndOceania:
+                return "Australia/Oceania"
+            case .europe:
+                return "Europe"
+            case .northAmerica:
+                return "North America"
+            case .southAmerica:
+                return "South America"
+            }
         }
         
         func tag(_ database: Database) async throws -> Tag? {
@@ -149,6 +164,7 @@ final class City: Model, @unchecked Sendable, Content {
         }
         
         return try await CityPageDTO(name: self.name, URL: self.URL, population: self.population, isCoastal: self.isCoastal, elevation: self.elevation, country: self.$country.get(on: database).toDTO(database), continentTag: self.continent.tag(database)?.toDTO(database), senders: self.senders(database), newspapers: newspapers)
+//        return try await CityPageDTO(name: self.name, URL: self.URL, population: self.population, isCoastal: self.isCoastal, elevation: self.elevation, country: self.$country.get(on: database).toDTO(database), senders: self.senders(database), newspapers: newspapers)
     }
     
     static func northernmost(_ database: Database) async throws -> City? {

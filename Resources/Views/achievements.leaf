@@ -10,11 +10,11 @@
     #export("content"):
         <div class="container mb-4">
             <h1 class="d-inline-block pb-2">Achievements</h1>
-            #for(achievement in achievements):
             <div class="row">
+            #for(achievement in achievements):
                 #extend("achievement_template")
-            </div>
             #endfor
+            </div>
         </div>
     #endexport
 #endextend

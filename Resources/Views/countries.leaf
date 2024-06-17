@@ -12,11 +12,11 @@
             <h1 class="d-inline-block pb-2">Countries</h1>
             #for(country in countries):
             <h2 class="pb-2 pt-3"><a href="#(country.URL)">#(country.emoji) #(country.name)</a></h2>
-            #for(city in country.cities):
             <div class="row">
+            #for(city in country.cities):
                 #extend("city_template")
-            </div>
             #endfor
+            </div>
             #endfor
         </div>
     #endexport
