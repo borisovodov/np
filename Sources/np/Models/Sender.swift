@@ -42,7 +42,7 @@ final class Sender: Model, @unchecked Sendable, Content {
         guard let avatar = self.avatar else {
             return nil
         }
-        return "/avatars/\(avatar)"
+        return "/\(avatar)"
     }
     
     func cities(_ database: Database) async throws -> [City] {

@@ -16,6 +16,10 @@
             <a href="https://www.contextualternate.com/collection01"><img class="img-thumbnail mx-auto d-block" src="/DraftsOfHistory.jpg"></a>
         </div>-->
         <div class="container mb-4">
+            <p><b>Server Maintenance</b></p>
+            <p>I am migrating the database from the old server to the new one due to sanctions affecting the ability to pay for services outside of Russia. The data will be transferred by the end of July. Please send your questions to <a href="mailto:boris@ovodov.me">boris@ovodov.me</a>.</p>
+        </div>
+        <div class="container mb-4">
             <h1 class="pb-2">Recent</h1>
             <div class="row">
             #for(newspaper in popularNewspapers):

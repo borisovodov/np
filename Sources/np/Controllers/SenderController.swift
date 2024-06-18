@@ -70,7 +70,7 @@ struct SenderController: RouteCollection {
         let form = try req.content.decode(SenderFormDTO.self)
         
         if let avatar = form.avatar {
-            let path = req.application.directory.publicDirectory + "avatars/" + avatar.filename
+            let path = req.application.directory.publicDirectory + "senders/" + avatar.filename
             try await req.fileio.writeFile(avatar.data, at: path)
             
             avatarURL = avatar.filename
