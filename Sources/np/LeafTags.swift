@@ -36,6 +36,6 @@ struct NowTag: LeafTag {
 
 struct MapboxAccessKeyTag: LeafTag {
     func render(_ ctx: LeafContext) throws -> LeafData {
-        return LeafData.string(Environment.get("MAPBOX_ACCESS_KEY"))
+        return LeafData.string(Environment.get("pk.eyJ1IjoiYm9yaXNvdm9kb3YiLCJhIjoiY2psZHJyZnVrMGVlczNwbHMxb29jcHNuaiJ9.-KKUWx4veVy8RMtjxdD3cw"))
     }
 }
