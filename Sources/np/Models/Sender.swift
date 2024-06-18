@@ -17,9 +17,6 @@ final class Sender: Model, @unchecked Sendable, Content {
     @Field(key: "name")
     var name: String
     
-    @Boolean(key: "isWoman")
-    var isWoman: Bool
-    
     @OptionalField(key: "avatar")
     var avatar: String?
     
@@ -31,10 +28,9 @@ final class Sender: Model, @unchecked Sendable, Content {
     
     init() { }
     
-    init(name: String, isWoman: Bool, avatar: String? = nil) {
+    init(name: String, avatar: String? = nil) {
         self.id = UUID()
         self.name = name
-        self.isWoman = isWoman
         self.avatar = avatar
     }
     
@@ -42,12 +38,29 @@ final class Sender: Model, @unchecked Sendable, Content {
         return "/senders/\(self.id ?? UUID())"
     }
     
+    var avatarURL: String? {
+        guard let avatar = self.avatar else {
+            return nil
+        }
+        return "/\(avatar)"
+    }
+    
     func cities(_ database: Database) async throws -> [City] {
-        return try await Set(self.$newspapers.query(on: database).all().map { $0.city }).sorted { $0.name < $1.name }
+        var cities: [City] = []
+        for newspaper in try await self.$newspapers.query(on: database).all() {
+            try await cities.append(newspaper.$city.get(on: database))
+        }
+        
+        return Set(cities).sorted { $0.name < $1.name }
     }
     
     func countries(_ database: Database) async throws -> [Country] {
-        return try await Set(self.cities(database).map { $0.country }).sorted { $0.name < $1.name }
+        var countries: [Country] = []
+        for city in try await self.cities(database) {
+            try await countries.append(city.$country.get(on: database))
+        }
+        
+        return Set(countries).sorted { $0.name < $1.name }
     }
     
     func markers(_ database: Database) async throws -> [Marker] {
@@ -66,7 +79,7 @@ final class Sender: Model, @unchecked Sendable, Content {
     }
     
     func toDTO(_ database: Database) async throws -> SenderDTO {
-        return try await SenderDTO(name: self.name, avatar: self.avatar, URL: self.URL, countriesCount: self.countries(database).count, citiesCount: self.cities(database).count, achievements: self.$achievements.query(on: database).all().map { $0.toDTO })
+        return try await SenderDTO(name: self.name, avatar: self.avatarURL, URL: self.URL, countriesCount: self.countries(database).count, citiesCount: self.cities(database).count, achievements: self.$achievements.query(on: database).all().map { $0.toDTO })
     }
     
     func toPageDTO(_ database: Database) async throws -> SenderPageDTO {
@@ -82,7 +95,15 @@ final class Sender: Model, @unchecked Sendable, Content {
             try await newspapers.append(newspaper.toDTO(database))
         }
         
-        return try await SenderPageDTO(name: self.name, avatar: self.avatar, URL: self.URL, countries: countries, cities: cities, achievements: self.$achievements.query(on: database).all().map { $0.toDTO }, newspapers: newspapers)
+        return try await SenderPageDTO(name: self.name, avatar: self.avatarURL, URL: self.URL, countries: countries, cities: cities, achievements: self.$achievements.query(on: database).all().map { $0.toDTO }, newspapers: newspapers)
+    }
+    
+    func edit(_ database: Database, form: SenderFormDTO, avatarURL: String?) async throws {
+        self.name = form.name
+        if form.isAvatarChanged == "True" {
+            self.avatar = avatarURL
+        }
+        try await self.save(on: database)
     }
     
     static func popular(_ database: Database) async throws -> [SenderDTO] {
@@ -101,6 +122,13 @@ final class Sender: Model, @unchecked Sendable, Content {
     
     static func first(_ database: Database) async throws -> Sender? {
         try await Sender.query(on: database).filter(\.$name == "Sasha Ovodova").first()
+    }
+    
+    static func add(_ database: Database, form: SenderFormDTO, avatarURL: String?) async throws -> Sender {
+        let sender = Sender(name: form.name, avatar: avatarURL)
+        try await sender.save(on: database)
+        
+        return sender
     }
     
 //    var countries: [Country] {

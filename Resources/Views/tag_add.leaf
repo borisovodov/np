@@ -15,9 +15,9 @@
             <form method="POST">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input class="form-control" id="name" name="name">
+                    <input class="form-control" id="name" name="name" required>
                 </div>
-                <button type="submit" class="btn btn-primary" action="/add" method="POST">Create</button>
+                <button type="submit" class="btn btn-primary" action="/add" method="POST">Add</button>
             </form>
         </div>
     #endexport

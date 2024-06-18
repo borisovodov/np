@@ -10,35 +10,62 @@ import Vapor
 
 final class Newspaper: Model, @unchecked Sendable, Content {
     enum PublicationColor: String, CustomStringConvertible, Codable {
-        case monochrome = "Monochrome"
-        case bicolor = "Bicolor"
-        case multicolor = "Multicolor"
+        case monochrome
+        case bicolor
+        case multicolor
         
         var description: String {
-            self.rawValue
+            switch self {
+            case .monochrome:
+                return "Monochrome"
+            case .bicolor:
+                return "Bicolor"
+            case .multicolor:
+                return "Multicolor"
+            }
         }
     }
     
     enum PublicationType: String, CustomStringConvertible, Codable {
-        case newspaper = "Newspaper"
-        case magazine = "Magazine"
-        case brochure = "Brochure"
+        case newspaper
+        case magazine
+        case brochure
         
         var description: String {
-            self.rawValue
+            switch self {
+            case .newspaper:
+                return "Newspaper"
+            case .magazine:
+                return "Magazine"
+            case .brochure:
+                return "Brochure"
+            }
         }
     }
     
     enum Frequency: String, CustomStringConvertible, Codable {
-        case daily = "Daily"
-        case weekly = "Weekly"
-        case weeklies = "Weeklies"
-        case biweekly = "Biweekly"
-        case monthly = "Monthly"
-        case bimonthly = "Bimonthly"
+        case daily
+        case weekly
+        case weeklies
+        case biweekly
+        case monthly
+        case bimonthly
         
         var description: String {
-            self.rawValue
+            switch self {
+            case .daily:
+                return "Daily"
+            case .weekly:
+                return "Weekly"
+            case .weeklies:
+                return "Weeklies"
+            case .biweekly:
+                return "Biweekly"
+            case .monthly:
+                return "Monthly"
+            case .bimonthly:
+                return "Bimonthly"
+            }
         }
         
         func tag(_ database: Database) async throws -> Tag? {
@@ -90,8 +117,8 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     @Enum(key: "color")
     var color: PublicationColor
     
-    @Field(key: "pages")
-    var pages: Int
+    @OptionalField(key: "pages")
+    var pages: Int?
     
     @Boolean(key: "isTop")
     var isTop: Bool
@@ -158,7 +185,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         dateFormatter.dateStyle = .long
         dateFormatter.locale = Locale(identifier: "en_EN")
         
-        return try await NewspaperDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), URL: self.URL, thumbnail: self.thumbnail, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), tags: tags)
+        return try await NewspaperDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), URL: self.URL, thumbnail: "/\(self.thumbnail ?? "")", city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), tags: tags)
     }
     
     func toPageDTO(_ database: Database) async throws -> NewspaperPageDTO {
@@ -186,7 +213,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
             try await tags.append(tag.toDTO(database))
         }
         
-        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: self.thumbnail, URL: self.URL, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequency: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
+        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: "/\(self.thumbnail ?? "")", URL: self.URL, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequency: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
     }
     
     static func popular(_ database: Database) async throws -> [NewspaperDTO] {

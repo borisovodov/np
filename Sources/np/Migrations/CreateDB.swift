@@ -62,12 +62,6 @@ struct CreateDB: AsyncMigration {
             .field("markerIcon", .string)
             .create()
         
-        try await database.schema("country-language-pivot")
-            .id()
-            .field("countryID", .uuid, .required, .references("countries", "id", onDelete: .restrict))
-            .field("languageID", .uuid, .required, .references("languages", "id", onDelete: .restrict))
-            .create()
-        
         try await database.schema("cities")
             .id()
             .field("name", .string, .required)
@@ -84,7 +78,6 @@ struct CreateDB: AsyncMigration {
         try await database.schema("senders")
             .id()
             .field("name", .string, .required)
-            .field("isWoman", .bool, .required)
             .field("avatar", .string)
             .create()
         
@@ -122,7 +115,7 @@ struct CreateDB: AsyncMigration {
             .field("secondaryNumber", .string)
             .field("date", .date, .required)
             .field("color", publicationColor, .required)
-            .field("pages", .int, .required)
+            .field("pages", .int)
             .field("isTop", .bool, .required)
             .field("cityID", .uuid, .required, .references("cities", "id", onDelete: .restrict))
             .field("paperformatID", .uuid, .references("paperFormats", "id", onDelete: .restrict))

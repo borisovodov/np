@@ -1,11 +1,7 @@
 # np
-np is a django-app for easy work with database of newspapers and their images.
 
-Work on Python 3.7. Also uses:
-* PostgreSQL 11;
-* Django 2;
-* Bootstrap 4;
-* Images stored on DigitalOcean Spaces;
-* Maps builds through MapBox JS API.
+np — система по учёту коллекции газет и сайт проекта Papers Around.
 
-Thanks for your attention :)
+Написана на Swift (Vapor, Fluent, Leaf), в качестве БД — SQLite, свёрстана с помощью Bootstrap'а, карты работают на Mapbox JS API.  
+
+Посмотреть эту красоту: https://www.papersaround.com

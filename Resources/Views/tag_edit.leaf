@@ -4,7 +4,7 @@
     #endexport
     
     #export("url"):
-        #(tag.URL)
+        #(tag.URL)/edit
     #endexport
     
     #export("content"):
@@ -15,7 +15,7 @@
             <form method="POST">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input class="form-control" id="name" name="name">
+                    <input class="form-control" id="name" name="name" value="#(tag.name)" required>
                 </div>
                 <button type="submit" class="btn btn-primary" action="/edit" method="POST">Edit</button>
             </form>

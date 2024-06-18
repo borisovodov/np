@@ -1,0 +1,32 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — Add new sender
+    #endexport
+    
+    #export("url"):
+        /senders/add
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2">Add sender</h1>
+        </div>
+        <div class="container mb-4">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="avatar">Avatar</label>
+                    <input type="file" class="form-control-file" id="avatar" name="avatar">
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="isAvatarChanged" name="isAvatarChanged">
+                    <label class="form-check-label" for="isAvatarChanged">Avatar changed</label>
+                </div>
+                <button type="submit" class="btn btn-primary" action="/add" method="POST">Add</button>
+            </form>
+        </div>
+    #endexport
+#endextend

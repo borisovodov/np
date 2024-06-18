@@ -13,11 +13,11 @@
         </div>
         <div class="container mb-4">
             <h2 class="pb-2">#if(count(achievement.senders) != 1):Senders#else:Sender#endif</h2>
-            #for(sender in achievement.senders):
             <div class="row">
+            #for(sender in achievement.senders):
                 #extend("sender_template")
-            </div>
             #endfor
+            </div>
         </div>
     #endexport
 #endextend

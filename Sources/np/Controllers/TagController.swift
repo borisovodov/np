@@ -66,9 +66,9 @@ struct TagController: RouteCollection {
 
     @Sendable
     func add(req: Request) async throws -> View {
-        let tagForm = try req.content.decode(TagFormDTO.self)
+        let form = try req.content.decode(TagFormDTO.self)
         
-        let tag = try await Tag.add(req.db, tag: tagForm)
+        let tag = try await Tag.add(req.db, form: form)
         
         guard let id = tag.id else {
             throw Abort(.notFound)
@@ -93,13 +93,13 @@ struct TagController: RouteCollection {
     
     @Sendable
     func edit(req: Request) async throws -> View {
-        let tagForm = try req.content.decode(TagFormDTO.self)
+        let form = try req.content.decode(TagFormDTO.self)
         
         guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else {
             throw Abort(.notFound)
         }
         
-        try await tag.edit(req.db, properties: tagForm)
+        try await tag.edit(req.db, form: form)
         
         guard let id = tag.id else {
             throw Abort(.notFound)

@@ -9,7 +9,7 @@ public func configure(_ app: Application) async throws {
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
     // TODO: Оставляем поддрежку только HTTP/2.
-//    app.http.server.configuration.supportVersions = [.two]
+//    app.http.server.configuration.supportVersions = [.one, .two]
     
     // Подключаем работу БД.
     app.databases.use(DatabaseConfigurationFactory.sqlite(.file("./Data/db.sqlite")), as: .sqlite)
@@ -19,6 +19,9 @@ public func configure(_ app: Application) async throws {
     
     // Добавляем миграции.
     app.migrations.add(CreateDB())
+    
+    // Указываем максимальный размер пэйлоада.
+    app.routes.defaultMaxBodySize = "100mb"
     
     // Инициализируем кастомные тэги.
     app.leaf.tags["now"] = NowTag()

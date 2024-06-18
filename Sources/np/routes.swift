@@ -10,11 +10,11 @@ func routes(_ app: Application) throws {
         }
         
 //        let lang = Language(name: "Chinese", population: 121322)
-//        let country = Country(name: "China2", population: 21324, officialLanguages: [lang])
+//        let country = Country(name: "China2", population: 21324, officialLanguages: [])
 //        let achiv = Achievement(name: "achTest")
 //        let tag = Tag(name: "tagTest")
-//        let city = try City(name: "Beijing", country: country, population: 86876, continent: .asia, isCoastal: false, elevation: 200, latitude: 39.9042, longitude: 116.4074, manualLocation: true)
-//        let sender = Sender(name: "boris", isWoman: false, avatar: "avatarURL")
+//        let city = try City(name: "Beijing2", country: country, population: 86876, continent: .asia, isCoastal: false, elevation: 200, latitude: 39.9042, longitude: 116.4074, manualLocation: true)
+//        let sender = Sender(name: "boris", avatar: "avatarURL")
 //        let paperFormat = PaperFormat(name: "just pf", height: 100, width: 200)
 //        let newspaper = try Newspaper(title: "newspaper1", publicationType: .newspaper, frequency: .daily, circulation: 12323, website: "ovodov.me", ISSN: "897-876", publicationStart: Date(timeIntervalSince1970: 100), photo: "photo", thumbnail: "thumbnail", number: "12", secondaryNumber: "89778", date: .now, color: .monochrome, pages: 12, city: city, paperFormat: paperFormat, language: lang, senders: [sender], tags: [tag])
 //        try await lang.create(on: req.db)

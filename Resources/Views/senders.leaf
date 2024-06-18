@@ -10,11 +10,11 @@
     #export("content"):
         <div class="container mb-4">
             <h1 class="d-inline-block pb-2">Senders</h1>
-            #for(sender in senders):
             <div class="row">
+            #for(sender in senders):
                 #extend("sender_template")
-            </div>
             #endfor
+            </div>
         </div>
     #endexport
 #endextend
