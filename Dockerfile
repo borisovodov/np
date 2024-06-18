@@ -74,9 +74,9 @@ COPY --from=build /staging /np
 # Provide configuration needed by the built-in crash reporter and some sensible default behaviors.
 ENV SWIFT_BACKTRACE=enable=yes,sanitize=yes,threads=all,images=all,interactive=no,swift-backtrace=./swift-backtrace-static
 
-ENV MAPBOX_ACCESS_KEY=${{ secrets.MAPBOX_ACCESS_KEY }}
-ENV AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-ENV AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+# ENV MAPBOX_ACCESS_KEY=${{ secrets.MAPBOX_ACCESS_KEY }}
+# ENV AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+# ENV AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 # Let Docker bind to port 8080
 EXPOSE 8080
