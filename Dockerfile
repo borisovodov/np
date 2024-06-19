@@ -74,13 +74,14 @@ COPY --from=build /staging /np
 # Provide configuration needed by the built-in crash reporter and some sensible default behaviors.
 ENV SWIFT_BACKTRACE=enable=yes,sanitize=yes,threads=all,images=all,interactive=no,swift-backtrace=./swift-backtrace-static
 
-ENV MAPBOX_ACCESS_KEY=${MAPBOX_ACCESS_KEY}
-ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-
 # Let Docker bind to port 8080
 EXPOSE 8080
 
 # Start the Vapor service when the image is run, default to listening on 8080 in production environment
 ENTRYPOINT ["./np"]
+
+RUN export MAPBOX_ACCESS_KEY=${MAPBOX_ACCESS_KEY}
+RUN export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+RUN export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+
 CMD ["serve", "--env", "production", "--hostname", "0.0.0.0", "--port", "8080"]
