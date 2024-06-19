@@ -42,7 +42,7 @@ final class Sender: Model, @unchecked Sendable, Content {
         guard let avatar = self.avatar else {
             return nil
         }
-        return "/\(avatar)"
+        return "/" + Self.pathToAvatars + avatar
     }
     
     func cities(_ database: Database) async throws -> [City] {
@@ -98,12 +98,30 @@ final class Sender: Model, @unchecked Sendable, Content {
         return try await SenderPageDTO(name: self.name, avatar: self.avatarURL, URL: self.URL, countries: countries, cities: cities, achievements: self.$achievements.query(on: database).all().map { $0.toDTO }, newspapers: newspapers)
     }
     
-    func edit(_ database: Database, form: SenderFormDTO, avatarURL: String?) async throws {
+    func edit(_ request: Request) async throws {
+        let form = try request.content.decode(SenderFormDTO.self)
+        
         self.name = form.name
-        if form.isAvatarChanged == "True" {
-            self.avatar = avatarURL
+        
+        if form.isAvatarChanged == "on" {
+            guard let avatar = form.avatar else {
+                self.avatar = nil
+                try await self.save(on: request.db)
+                return
+            }
+            
+            let path = request.application.directory.publicDirectory + Sender.pathToAvatars + avatar.filename
+            try await request.fileio.writeFile(avatar.data, at: path)
+            
+            self.avatar = avatar.filename
+            try await self.save(on: request.db)
         }
-        try await self.save(on: database)
+        
+        try await self.save(on: request.db)
+    }
+    
+    static var pathToAvatars: String {
+        return "avatars/"
     }
     
     static func popular(_ database: Database) async throws -> [SenderDTO] {
@@ -124,9 +142,28 @@ final class Sender: Model, @unchecked Sendable, Content {
         try await Sender.query(on: database).filter(\.$name == "Sasha Ovodova").first()
     }
     
-    static func add(_ database: Database, form: SenderFormDTO, avatarURL: String?) async throws -> Sender {
-        let sender = Sender(name: form.name, avatar: avatarURL)
-        try await sender.save(on: database)
+    static func add(_ request: Request) async throws -> Sender {
+        let form = try request.content.decode(SenderFormDTO.self)
+        
+        guard let avatar = form.avatar else {
+            let sender = Sender(name: form.name)
+            try await sender.save(on: request.db)
+            
+            return sender
+        }
+        
+        if avatar.filename == "" {
+            let sender = Sender(name: form.name)
+            try await sender.save(on: request.db)
+            
+            return sender
+        }
+        
+        let path = request.application.directory.publicDirectory + Sender.pathToAvatars + avatar.filename
+        try await request.fileio.writeFile(avatar.data, at: path)
+        
+        let sender = Sender(name: form.name, avatar: avatar.filename)
+        try await sender.save(on: request.db)
         
         return sender
     }
