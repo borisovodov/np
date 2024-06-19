@@ -3,7 +3,7 @@
 # 3. `git clone https://github.com/borisovodov/np.git`
 # 4. `docker compose up -d`
 # 5. `docker compose run migrate -y`
-# 6. Удалить всё докерное: `docker system prune -y`.
+# 6. Удалить всё докерное: `docker system prune`.
 
 version: '3.7'
 
