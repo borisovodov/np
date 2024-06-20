@@ -51,6 +51,13 @@ RUN [ -d /build/Resources ] && { mv /build/Resources ./Resources && chmod -R a-w
 # ================================
 FROM ubuntu:jammy
 
+ARG MAPBOX_ACCESS_KEY
+ARG AWS_ACCESS_KEY_ID=""
+ARG AWS_SECRET_ACCESS_KEY=""
+# ENV MAPBOX_ACCESS_KEY=$MAPBOX_ACCESS_KEY
+# ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+# ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+
 # Make sure all system packages are up to date, and install only essential packages.
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q update \
@@ -80,8 +87,8 @@ EXPOSE 8080
 # Start the Vapor service when the image is run, default to listening on 8080 in production environment
 ENTRYPOINT ["./np"]
 
-RUN export MAPBOX_ACCESS_KEY=${MAPBOX_ACCESS_KEY}
-RUN export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-RUN export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+RUN export MAPBOX_ACCESS_KEY=$MAPBOX_ACCESS_KEY
+RUN export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+RUN export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 
 CMD ["serve", "--env", "production", "--hostname", "0.0.0.0", "--port", "8080"]
