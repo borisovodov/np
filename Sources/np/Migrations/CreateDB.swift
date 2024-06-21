@@ -51,14 +51,12 @@ struct CreateDB: AsyncMigration {
         try await database.schema("languages")
             .id()
             .field("name", .string, .required)
-            .field("population", .int, .required)
             .create()
         
         try await database.schema("countries")
             .id()
             .field("name", .string, .required)
             .field("emoji", .string)
-            .field("population", .int, .required)
             .field("markerIcon", .string)
             .create()
         

@@ -89,9 +89,11 @@ final class Tag: Model, @unchecked Sendable, Content {
         return TagPageDTO(name: self.name, URL: self.URL, newspapers: newspapers)
     }
     
-    func edit(_ database: Database, form: TagFormDTO) async throws {
+    func edit(_ request: Request) async throws {
+        let form = try request.content.decode(TagFormDTO.self)
+        
         self.name = form.name
-        try await self.save(on: database)
+        try await self.save(on: request.db)
     }
     
     static func continents(_ database: Database) async throws -> [TagDTO] {
@@ -102,9 +104,11 @@ final class Tag: Model, @unchecked Sendable, Content {
         return continents.sorted { $0.newspapersCount > $1.newspapersCount }
     }
     
-    static func add(_ database: Database, form: TagFormDTO) async throws -> Tag {
+    static func add(_ request: Request) async throws -> Tag {
+        let form = try request.content.decode(TagFormDTO.self)
+        
         let tag = Tag(name: form.name, tagType: .other)
-        try await tag.save(on: database)
+        try await tag.save(on: request.db)
         
         return tag
     }

@@ -17,18 +17,14 @@ final class Language: Model, @unchecked Sendable, Content {
     @Field(key: "name")
     var name: String
     
-    @Field(key: "population")
-    var population: Int
-    
     @Children(for: \.$language)
     var newspapers: [Newspaper]
     
     init() { }
     
-    init(name: String, population: Int) {
+    init(name: String) {
         self.id = UUID()
         self.name = name
-        self.population = population
     }
     
     var URL: String {
@@ -62,6 +58,13 @@ final class Language: Model, @unchecked Sendable, Content {
         return LanguagePageDTO(name: self.name, URL: self.URL, newspapers: newspapers)
     }
     
+    func edit(_ request: Request) async throws {
+        let form = try request.content.decode(LanguageFormDTO.self)
+        
+        self.name = form.name
+        try await self.save(on: request.db)
+    }
+    
     static func popular(_ database: Database) async throws -> [LanguageDTO] {
         var languages: [LanguageDTO] = []
         for language in try await Language.query(on: database).all() {
@@ -71,6 +74,15 @@ final class Language: Model, @unchecked Sendable, Content {
             }
         }
         return languages.sorted { $0.newspapersCount > $1.newspapersCount }
+    }
+    
+    static func add(_ request: Request) async throws -> Language {
+        let form = try request.content.decode(LanguageFormDTO.self)
+        
+        let language = Language(name: form.name)
+        try await language.save(on: request.db)
+        
+        return language
     }
 
 //    var cities: [City] {
