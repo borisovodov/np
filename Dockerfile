@@ -80,7 +80,7 @@ EXPOSE 8080
 # Start the Vapor service when the image is run, default to listening on 8080 in production environment
 ENTRYPOINT ["./np"]
 
-ARG MAPBOX_ACCESS_KEY=pk.eyJ1IjoiYm9yaXNvdm9kb3YiLCJhIjoiY2psZHJyZnVrMGVlczNwbHMxb29jcHNuaiJ9.-KKUWx4veVy8RMtjxdD3cw
+ARG MAPBOX_ACCESS_KEY
 # ARG AWS_ACCESS_KEY_ID=""
 # ARG AWS_SECRET_ACCESS_KEY=""
 ENV MAPBOX_ACCESS_KEY=$MAPBOX_ACCESS_KEY

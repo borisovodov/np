@@ -23,4 +23,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/np:latest
-          build-args: MAPBOX_ACCESS_KEY=${{secrets.MAPBOX_ACCESS_KEY}}
+          build-args: MAPBOX_ACCESS_KEY=pk.eyJ1IjoiYm9yaXNvdm9kb3YiLCJhIjoiY2psZHJyZnVrMGVlczNwbHMxb29jcHNuaiJ9.-KKUWx4veVy8RMtjxdD3cw
