@@ -18,18 +18,18 @@ struct SenderController: RouteCollection {
             sender.get(use: self.getObject)
         }
         
-        senders.group(":senderID", "edit") { tag in
-            tag.get(use: self.getEditForm)
-            tag.post(use: self.edit)
+        senders.group(":senderID", "edit") { sender in
+            sender.get(use: self.getEditForm)
+            sender.post(use: self.edit)
         }
         
-        senders.group(":senderID", "delete") { tag in
-            tag.get(use: self.delete)
+        senders.group(":senderID", "delete") { sender in
+            sender.get(use: self.delete)
         }
         
-        senders.group("add") { tag in
-            tag.get(use: self.getAddForm)
-            tag.post(use: self.add)
+        senders.group("add") { sender in
+            sender.get(use: self.getAddForm)
+            sender.post(use: self.add)
         }
     }
 

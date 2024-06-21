@@ -164,7 +164,6 @@ final class City: Model, @unchecked Sendable, Content {
         }
         
         return try await CityPageDTO(name: self.name, URL: self.URL, population: self.population, isCoastal: self.isCoastal, elevation: self.elevation, country: self.$country.get(on: database).toDTO(database), continentTag: self.continent.tag(database)?.toDTO(database), senders: self.senders(database), newspapers: newspapers)
-//        return try await CityPageDTO(name: self.name, URL: self.URL, population: self.population, isCoastal: self.isCoastal, elevation: self.elevation, country: self.$country.get(on: database).toDTO(database), senders: self.senders(database), newspapers: newspapers)
     }
     
     static func northernmost(_ database: Database) async throws -> City? {

@@ -63,7 +63,6 @@ struct CountryPageDTO: Content {
     var name: String
     var URL: String
     var emoji: String?
-    var population: Int
     var senders: [SenderDTO]
     var cities: [CityDTO]
     var newspapers: [NewspaperDTO]
@@ -79,6 +78,10 @@ struct LanguagePageDTO: Content {
     var name: String
     var URL: String
     var newspapers: [NewspaperDTO]
+}
+
+struct LanguageFormDTO: Content {
+    var name: String
 }
 
 struct NewspaperDTO: Content {

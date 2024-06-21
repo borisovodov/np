@@ -1,6 +1,6 @@
 //
 //  LanguageController.swift
-//  
+//
 //
 //  Created by Boris Ovodov on 25.05.2024.
 //
@@ -13,11 +13,23 @@ struct LanguageController: RouteCollection {
         let languages = routes.grouped("languages")
 
         languages.get(use: self.getList)
-        languages.post(use: self.create)
         
         languages.group(":languageID") { language in
             language.get(use: self.getObject)
-            language.delete(use: self.delete)
+        }
+        
+        languages.group(":languageID", "edit") { language in
+            language.get(use: self.getEditForm)
+            language.post(use: self.edit)
+        }
+        
+        languages.group(":languageID", "delete") { language in
+            language.get(use: self.delete)
+        }
+        
+        languages.group("add") { language in
+            language.get(use: self.getAddForm)
+            language.post(use: self.add)
         }
     }
 
@@ -47,11 +59,48 @@ struct LanguageController: RouteCollection {
     }
 
     @Sendable
-    func create(req: Request) async throws -> Language {
-        let language = try req.content.decode(Language.self)
+    func getAddForm(req: Request) async throws -> View {
+        return try await req.view.render("language_add")
+    }
 
-        try await language.save(on: req.db)
-        return language
+    @Sendable
+    func add(req: Request) async throws -> View {
+        let language = try await Language.add(req)
+        
+        guard let id = language.id else {
+            throw Abort(.notFound)
+        }
+        
+        throw Abort.redirect(to: "/languages/\(id)")
+    }
+    
+    @Sendable
+    func getEditForm(req: Request) async throws -> View {
+        struct Context: Content {
+            var language: LanguagePageDTO
+        }
+        
+        guard let language = try await Language.find(req.parameters.get("languageID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        
+        let context = try await Context(language: language.toPageDTO(req.db))
+        return try await req.view.render("language_edit", context)
+    }
+    
+    @Sendable
+    func edit(req: Request) async throws -> View {
+        guard let language = try await Language.find(req.parameters.get("languageID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        
+        try await language.edit(req)
+        
+        guard let id = language.id else {
+            throw Abort(.notFound)
+        }
+        
+        throw Abort.redirect(to: "/languages/\(id)")
     }
 
     @Sendable
@@ -61,6 +110,7 @@ struct LanguageController: RouteCollection {
         }
 
         try await language.delete(on: req.db)
-        return .noContent
+        
+        throw Abort.redirect(to: "/languages")
     }
 }

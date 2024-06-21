@@ -218,7 +218,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     static func popular(_ database: Database) async throws -> [NewspaperDTO] {
         var newspapers: [NewspaperDTO] = []
-        for newspaper in try await Newspaper.query(on: database).filter(\.$isTop == true).sort(\.$date, .descending).all() {
+        for newspaper in try await Newspaper.query(on: database).filter(\.$isTop == true).sort(\.$date, .descending).range(..<8).all() {
             try await newspapers.append(newspaper.toDTO(database))
         }
         return newspapers

@@ -20,9 +20,6 @@ final class Country: Model, @unchecked Sendable, Content {
     @OptionalField(key: "emoji")
     var emoji: String?
     
-    @Field(key: "population")
-    var population: Int
-    
     @OptionalField(key: "markerIcon")
     var markerIcon: String?
     
@@ -31,12 +28,11 @@ final class Country: Model, @unchecked Sendable, Content {
     
     init() { }
     
-    init(name: String, emoji: String? = nil, markerIcon: String? = nil, population: Int, officialLanguages: [Language]) {
+    init(name: String, emoji: String? = nil, markerIcon: String? = nil) {
         self.id = UUID()
         self.name = name
         self.emoji = emoji
         self.markerIcon = markerIcon
-        self.population = population
     }
     
     var URL: String {
@@ -90,7 +86,7 @@ final class Country: Model, @unchecked Sendable, Content {
             try await newspapers.append(newspaper.toDTO(database))
         }
         
-        return try await CountryPageDTO(name: self.name, URL: self.URL, emoji: self.emoji, population: self.population, senders: self.senders(database), cities: cities, newspapers: newspapers)
+        return try await CountryPageDTO(name: self.name, URL: self.URL, emoji: self.emoji, senders: self.senders(database), cities: cities, newspapers: newspapers)
     }
     
     static func popular(_ database: Database) async throws -> [CountryDTO] {

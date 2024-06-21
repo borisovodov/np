@@ -127,7 +127,7 @@ final class Sender: Model, @unchecked Sendable, Content {
     static func popular(_ database: Database) async throws -> [SenderDTO] {
         var senders: [SenderDTO] = []
         
-        for sender in try await Sender.query(on: database).filter(\.$name != "Anonym / Unknown").all() {
+        for sender in try await Sender.query(on: database).filter(\.$name != "Anonym / Unknown").range(..<8).all() {
             try await senders.append(sender.toDTO(database))
         }
         
