@@ -225,21 +225,14 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     }
     
     static func first(_ database: Database) async throws -> Newspaper? {
-        guard let firstNewspaperReleaseDate = Calendar.current.date(from: DateComponents(year: 2012, month: 1, day: 13)) else {
-            return nil
-        }
-        
-        guard let newspaper = try await Newspaper.query(on: database).filter(\.$title == "体坛周报").filter(\.$date == firstNewspaperReleaseDate).first() else {
-            return nil
-        }
+        guard let firstNewspaperReleaseDate = Calendar.current.date(from: DateComponents(year: 2012, month: 1, day: 13)) else { return nil }
+        guard let newspaper = try await Newspaper.query(on: database).filter(\.$title == "体坛周报").filter(\.$date == firstNewspaperReleaseDate).first() else { return nil }
         
         return newspaper
     }
     
     static func last(_ database: Database) async throws -> Newspaper? {
-        guard let newspaper = try await Newspaper.query(on: database).sort(\.$date, .descending).first() else {
-            return nil
-        }
+        guard let newspaper = try await Newspaper.query(on: database).sort(\.$date, .descending).first() else { return nil }
         
         return newspaper
     }

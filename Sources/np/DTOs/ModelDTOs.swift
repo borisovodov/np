@@ -48,6 +48,18 @@ struct CityPageDTO: Content {
     var newspapers: [NewspaperDTO]
 }
 
+struct CityFormDTO: Content {
+    var name: String
+    var population: String
+    var continent: String
+    var isCoastal: String
+    var elevation: String
+    var latitude: String
+    var longitude: String
+    var manualLocation: String
+    var country: String
+}
+
 struct CostDTO: Content {
     var value: String
 }
@@ -66,6 +78,13 @@ struct CountryPageDTO: Content {
     var senders: [SenderDTO]
     var cities: [CityDTO]
     var newspapers: [NewspaperDTO]
+}
+
+struct CountryFormDTO: Content {
+    var name: String
+    var emoji: String?
+    var markerIcon: File?
+    var isMarkerIconChanged: String?
 }
 
 struct LanguageDTO: Content {

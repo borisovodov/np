@@ -49,9 +49,7 @@ struct LanguageController: RouteCollection {
             var markers: [Marker]
         }
         
-        guard let language = try await Language.find(req.parameters.get("languageID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let language = try await Language.find(req.parameters.get("languageID"), on: req.db) else { throw Abort(.notFound) }
         
         let context = try await Context(language: language.toPageDTO(req.db), markers: language.markers(req.db))
         
@@ -67,9 +65,7 @@ struct LanguageController: RouteCollection {
     func add(req: Request) async throws -> View {
         let language = try await Language.add(req)
         
-        guard let id = language.id else {
-            throw Abort(.notFound)
-        }
+        guard let id = language.id else { throw Abort(.notFound) }
         
         throw Abort.redirect(to: "/languages/\(id)")
     }
@@ -80,9 +76,7 @@ struct LanguageController: RouteCollection {
             var language: LanguagePageDTO
         }
         
-        guard let language = try await Language.find(req.parameters.get("languageID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let language = try await Language.find(req.parameters.get("languageID"), on: req.db) else { throw Abort(.notFound) }
         
         let context = try await Context(language: language.toPageDTO(req.db))
         return try await req.view.render("language_edit", context)
@@ -90,24 +84,18 @@ struct LanguageController: RouteCollection {
     
     @Sendable
     func edit(req: Request) async throws -> View {
-        guard let language = try await Language.find(req.parameters.get("languageID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let language = try await Language.find(req.parameters.get("languageID"), on: req.db) else { throw Abort(.notFound) }
         
         try await language.edit(req)
         
-        guard let id = language.id else {
-            throw Abort(.notFound)
-        }
+        guard let id = language.id else { throw Abort(.notFound) }
         
         throw Abort.redirect(to: "/languages/\(id)")
     }
 
     @Sendable
-    func delete(req: Request) async throws -> HTTPStatus {
-        guard let language = try await Language.find(req.parameters.get("languageID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+    func delete(req: Request) async throws -> View {
+        guard let language = try await Language.find(req.parameters.get("languageID"), on: req.db) else { throw Abort(.notFound) }
 
         try await language.delete(on: req.db)
         
