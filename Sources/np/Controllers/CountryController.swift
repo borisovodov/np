@@ -91,7 +91,6 @@ struct CountryController: RouteCollection {
     
     @Sendable
     func getCountryAddForm(req: Request) async throws -> View {
-        #warning("тут доделать нужно")
         return try await req.view.render("country_add")
     }
     
@@ -131,7 +130,6 @@ struct CountryController: RouteCollection {
         guard let country = try await Country.find(req.parameters.get("countryID"), on: req.db) else { throw Abort(.notFound) }
         
         let context = try await Context(country: country.toPageDTO(req.db))
-        #warning("тут доделать нужно")
         return try await req.view.render("country_edit", context)
     }
     
