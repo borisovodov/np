@@ -89,6 +89,28 @@ final class Country: Model, @unchecked Sendable, Content {
         return try await CountryPageDTO(name: self.name, URL: self.URL, emoji: self.emoji, senders: self.senders(database), cities: cities, newspapers: newspapers)
     }
     
+    func edit(_ request: Request) async throws {
+        let form = try request.content.decode(CountryFormDTO.self)
+        
+        self.name = form.name
+        self.emoji = form.emoji
+        
+        if form.isMarkerIconChanged == "on" {
+            guard let markerIcon = try await Self.saveMarkerIcon(request, form: form) else {
+                self.markerIcon = nil
+                try await self.save(on: request.db)
+                return
+            }
+            self.markerIcon = markerIcon
+        }
+        
+        try await self.save(on: request.db)
+    }
+    
+    static var pathToMarkerIcons: String {
+        return "markers/"
+    }
+    
     static func popular(_ database: Database) async throws -> [CountryDTO] {
         var countries: [CountryDTO] = []
         for country in try await Country.query(on: database).all() {
@@ -99,6 +121,32 @@ final class Country: Model, @unchecked Sendable, Content {
     
     static func firstNewspaperFrom(_ database: Database) async throws -> Country? {
         try await Country.query(on: database).filter(\.$name == "China").first()
+    }
+    
+    static func saveMarkerIcon(_ request: Request, form: CountryFormDTO) async throws -> String? {
+        guard let markerIcon = form.markerIcon else { return nil }
+        
+        if markerIcon.filename == "" { return nil }
+        
+        let path = request.application.directory.publicDirectory + Country.pathToMarkerIcons + markerIcon.filename
+        try await request.fileio.writeFile(markerIcon.data, at: path)
+        
+        return markerIcon.filename
+    }
+    
+    static func add(_ request: Request) async throws -> Country {
+        let form = try request.content.decode(CountryFormDTO.self)
+        
+        guard let markerIcon = try await Self.saveMarkerIcon(request, form: form) else {
+            let country = Country(name: form.name, emoji: form.emoji)
+            try await country.save(on: request.db)
+            return country
+        }
+        
+        let country = Country(name: form.name, emoji: form.emoji, markerIcon: markerIcon)
+        try await country.save(on: request.db)
+        
+        return country
     }
     
 //    var cities: [City] {

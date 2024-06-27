@@ -26,7 +26,7 @@ final class Cost: Model, @unchecked Sendable, Content {
     init() { }
     
     func toDTO(_ database: Database) async throws -> CostDTO {
-        return CostDTO(value: String(format: "%.2f", self.value))
+        return try await CostDTO(value: String(format: "%.2f", self.value), currency: self.$currency.get(on: database).symbol)
     }
 }
 

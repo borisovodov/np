@@ -50,9 +50,7 @@ struct TagController: RouteCollection {
             var markers: [Marker]
         }
         
-        guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else { throw Abort(.notFound) }
         
         let context = try await Context(tag: tag.toPageDTO(req.db), markers: tag.markers(req.db))
         
@@ -68,9 +66,7 @@ struct TagController: RouteCollection {
     func add(req: Request) async throws -> View {
         let tag = try await Tag.add(req)
         
-        guard let id = tag.id else {
-            throw Abort(.notFound)
-        }
+        guard let id = tag.id else { throw Abort(.notFound) }
         
         throw Abort.redirect(to: "/tags/\(id)")
     }
@@ -81,9 +77,7 @@ struct TagController: RouteCollection {
             var tag: TagPageDTO
         }
         
-        guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else { throw Abort(.notFound) }
         
         let context = try await Context(tag: tag.toPageDTO(req.db))
         return try await req.view.render("tag_edit", context)
@@ -91,24 +85,18 @@ struct TagController: RouteCollection {
     
     @Sendable
     func edit(req: Request) async throws -> View {
-        guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else { throw Abort(.notFound) }
         
         try await tag.edit(req)
         
-        guard let id = tag.id else {
-            throw Abort(.notFound)
-        }
+        guard let id = tag.id else { throw Abort(.notFound) }
         
         throw Abort.redirect(to: "/tags/\(id)")
     }
 
     @Sendable
     func delete(req: Request) async throws -> View {
-        guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let tag = try await Tag.find(req.parameters.get("tagID"), on: req.db) else { throw Abort(.notFound) }
 
         try await tag.delete(on: req.db)
         

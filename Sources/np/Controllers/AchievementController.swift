@@ -32,9 +32,7 @@ struct AchievementController: RouteCollection {
             var achievement: AchievementPageDTO
         }
         
-        guard let achievement = try await Achievement.find(req.parameters.get("achievementID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let achievement = try await Achievement.find(req.parameters.get("achievementID"), on: req.db) else { throw Abort(.notFound) }
         
         let context = Context(achievement: try await achievement.toPageDTO(req.db))
         
@@ -51,9 +49,7 @@ struct AchievementController: RouteCollection {
 
     @Sendable
     func delete(req: Request) async throws -> HTTPStatus {
-        guard let achievement = try await Achievement.find(req.parameters.get("achievementID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let achievement = try await Achievement.find(req.parameters.get("achievementID"), on: req.db) else { throw Abort(.notFound) }
 
         try await achievement.delete(on: req.db)
         return .noContent

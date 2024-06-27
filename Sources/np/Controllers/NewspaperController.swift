@@ -38,9 +38,7 @@ struct NewspaperController: RouteCollection {
             var markers: [Marker]
         }
         
-        guard let newspaper = try await Newspaper.find(req.parameters.get("newspaperID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let newspaper = try await Newspaper.find(req.parameters.get("newspaperID"), on: req.db) else { throw Abort(.notFound) }
         
         let context = try await Context(newspaper: newspaper.toPageDTO(req.db), markers: newspaper.markers(req.db))
         
@@ -57,9 +55,7 @@ struct NewspaperController: RouteCollection {
 
     @Sendable
     func delete(req: Request) async throws -> HTTPStatus {
-        guard let newspaper = try await Newspaper.find(req.parameters.get("newspaperID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let newspaper = try await Newspaper.find(req.parameters.get("newspaperID"), on: req.db) else { throw Abort(.notFound) }
 
         try await newspaper.delete(on: req.db)
         return .noContent

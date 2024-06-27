@@ -1,0 +1,36 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — Edit #(country.name)
+    #endexport
+    
+    #export("url"):
+        #(country.URL)/edit
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2">Edit #(country.name) tag</h1>
+        </div>
+        <div class="container mb-4">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input class="form-control" id="name" name="name" value="#(country.name)" required>
+                </div>
+                <div class="form-group">
+                    <label for="emoji">Emoji</label>
+                    <input class="form-control" id="emoji" name="emoji" value="#(country.emoji)">
+                </div>
+                <div class="form-group">
+                    <label for="markerIcon">Marker icon</label>
+                    <input type="file" class="form-control-file" id="markerIcon" name="markerIcon" value="#(country.markerIcon)">
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="isMarkerIconChanged" name="isMarkerIconChanged">
+                    <label class="form-check-label" for="isMarkerIconChanged">Marker icon changed</label>
+                </div>
+                <button type="submit" class="btn btn-primary" action="/edit" method="POST">Edit</button>
+            </form>
+        </div>
+    #endexport
+#endextend

@@ -39,9 +39,7 @@ final class Sender: Model, @unchecked Sendable, Content {
     }
     
     var avatarURL: String? {
-        guard let avatar = self.avatar else {
-            return nil
-        }
+        guard let avatar = self.avatar else { return nil }
         return "/" + Self.pathToAvatars + avatar
     }
     
@@ -104,17 +102,12 @@ final class Sender: Model, @unchecked Sendable, Content {
         self.name = form.name
         
         if form.isAvatarChanged == "on" {
-            guard let avatar = form.avatar else {
+            guard let avatar = try await Self.saveAvatar(request, form: form) else {
                 self.avatar = nil
                 try await self.save(on: request.db)
                 return
             }
-            
-            let path = request.application.directory.publicDirectory + Sender.pathToAvatars + avatar.filename
-            try await request.fileio.writeFile(avatar.data, at: path)
-            
-            self.avatar = avatar.filename
-            try await self.save(on: request.db)
+            self.avatar = avatar
         }
         
         try await self.save(on: request.db)
@@ -142,27 +135,27 @@ final class Sender: Model, @unchecked Sendable, Content {
         try await Sender.query(on: database).filter(\.$name == "Sasha Ovodova").first()
     }
     
-    static func add(_ request: Request) async throws -> Sender {
-        let form = try request.content.decode(SenderFormDTO.self)
+    static func saveAvatar(_ request: Request, form: SenderFormDTO) async throws -> String? {
+        guard let avatar = form.avatar else { return nil }
         
-        guard let avatar = form.avatar else {
-            let sender = Sender(name: form.name)
-            try await sender.save(on: request.db)
-            
-            return sender
-        }
-        
-        if avatar.filename == "" {
-            let sender = Sender(name: form.name)
-            try await sender.save(on: request.db)
-            
-            return sender
-        }
+        if avatar.filename == "" { return nil }
         
         let path = request.application.directory.publicDirectory + Sender.pathToAvatars + avatar.filename
         try await request.fileio.writeFile(avatar.data, at: path)
         
-        let sender = Sender(name: form.name, avatar: avatar.filename)
+        return avatar.filename
+    }
+    
+    static func add(_ request: Request) async throws -> Sender {
+        let form = try request.content.decode(SenderFormDTO.self)
+        
+        guard let avatar = try await Self.saveAvatar(request, form: form) else {
+            let sender = Sender(name: form.name)
+            try await sender.save(on: request.db)
+            return sender
+        }
+        
+        let sender = Sender(name: form.name, avatar: avatar)
         try await sender.save(on: request.db)
         
         return sender

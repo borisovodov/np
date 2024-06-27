@@ -13,17 +13,41 @@ struct CountryController: RouteCollection {
         let countries = routes.grouped("countries")
 
         countries.get(use: self.getList)
-        countries.post(use: self.createCountry)
         
         countries.group(":countryID") { country in
             country.get(use: self.getCountry)
-            countries.post(use: self.createCity)
-            country.delete(use: self.deleteCountry)
+        }
+        
+        countries.group(":countryID", "edit") { country in
+            country.get(use: self.getCountryEditForm)
+            country.post(use: self.editCountry)
+        }
+        
+        countries.group(":countryID", "delete") { country in
+            country.get(use: self.deleteCountry)
+        }
+        
+        countries.group("add") { country in
+            country.get(use: self.getCountryAddForm)
+            country.post(use: self.addCountry)
         }
         
         countries.group(":countryID", ":cityID") { city in
             city.get(use: self.getCity)
-            city.delete(use: self.deleteCity)
+        }
+        
+        countries.group(":countryID", ":cityID", "edit") { city in
+            city.get(use: self.getCityEditForm)
+            city.post(use: self.editCity)
+        }
+        
+        countries.group(":countryID", ":cityID", "delete") { city in
+            city.get(use: self.deleteCity)
+        }
+        
+        countries.group(":countryID", "add") { city in
+            city.get(use: self.getCityAddForm)
+            city.post(use: self.addCity)
         }
     }
 
@@ -44,9 +68,7 @@ struct CountryController: RouteCollection {
             var markers: [Marker]
         }
         
-        guard let country = try await Country.find(req.parameters.get("countryID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let country = try await Country.find(req.parameters.get("countryID"), on: req.db) else { throw Abort(.notFound) }
         
         let context = try await Context(country: country.toPageDTO(req.db), markers: country.markers(req.db))
         
@@ -60,48 +82,111 @@ struct CountryController: RouteCollection {
             var markers: [Marker]
         }
         
-        guard let city = try await City.find(req.parameters.get("cityID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let city = try await City.find(req.parameters.get("cityID"), on: req.db) else { throw Abort(.notFound) }
         
         let context = try await Context(city: city.toPageDTO(req.db), markers: city.markers(req.db))
         
         return try await req.view.render("city", context)
     }
-
+    
     @Sendable
-    func createCountry(req: Request) async throws -> Country {
-        let country = try req.content.decode(Country.self)
-
-        try await country.save(on: req.db)
-        return country
+    func getCountryAddForm(req: Request) async throws -> View {
+        return try await req.view.render("country_add")
     }
     
     @Sendable
-    func createCity(req: Request) async throws -> City {
-        let city = try req.content.decode(City.self)
-
-        try await city.save(on: req.db)
-        return city
+    func getCityAddForm(req: Request) async throws -> View {
+        #warning("тут доделать нужно")
+        return try await req.view.render("city_add")
     }
-
+    
     @Sendable
-    func deleteCountry(req: Request) async throws -> HTTPStatus {
-        guard let country = try await Country.find(req.parameters.get("countryID"), on: req.db) else {
-            throw Abort(.notFound)
+    func addCountry(req: Request) async throws -> View {
+        let country = try await Country.add(req)
+        
+        guard let id = country.id else { throw Abort(.notFound) }
+        
+        throw Abort.redirect(to: "/countries/\(id)")
+    }
+    
+    @Sendable
+    func addCity(req: Request) async throws -> View {
+//        let city = try await City.add(req)
+//        
+//        guard let id = city.id else { throw Abort(.notFound) }
+//        guard let countryID = try await city.$country.get(on: req.db).id else { throw Abort(.notFound) }
+//        
+//        throw Abort.redirect(to: "/countries/\(countryID)/\(id)")
+        #warning("тут доделать нужно")
+        throw Abort.redirect(to: "/countries")
+    }
+    
+    @Sendable
+    func getCountryEditForm(req: Request) async throws -> View {
+        struct Context: Content {
+            var country: CountryPageDTO
         }
+        
+        guard let country = try await Country.find(req.parameters.get("countryID"), on: req.db) else { throw Abort(.notFound) }
+        
+        let context = try await Context(country: country.toPageDTO(req.db))
+        return try await req.view.render("country_edit", context)
+    }
+    
+    @Sendable
+    func getCityEditForm(req: Request) async throws -> View {
+        struct Context: Content {
+            var city: CityPageDTO
+        }
+        
+        guard let city = try await City.find(req.parameters.get("cityID"), on: req.db) else { throw Abort(.notFound) }
+        
+        let context = try await Context(city: city.toPageDTO(req.db))
+        #warning("тут доделать нужно")
+        return try await req.view.render("city_edit", context)
+    }
+    
+    @Sendable
+    func editCountry(req: Request) async throws -> View {
+        guard let country = try await Country.find(req.parameters.get("countryID"), on: req.db) else { throw Abort(.notFound) }
+        
+        try await country.edit(req)
+        
+        guard let id = country.id else { throw Abort(.notFound) }
+        
+        throw Abort.redirect(to: "/countries/\(id)")
+    }
+    
+    @Sendable
+    func editCity(req: Request) async throws -> View {
+//        guard let city = try await City.find(req.parameters.get("cityID"), on: req.db) else { throw Abort(.notFound) }
+//        
+//        try await city.edit(req)
+//        
+//        guard let id = city.id else { throw Abort(.notFound) }
+//        guard let countryID = try await city.$country.get(on: req.db).id else { throw Abort(.notFound) }
+//        
+//        throw Abort.redirect(to: "/countries/\(countryID)/\(id)")
+        #warning("тут доделать нужно")
+        throw Abort.redirect(to: "/countries")
+    }
+    
+    @Sendable
+    func deleteCountry(req: Request) async throws -> View {
+        guard let country = try await Country.find(req.parameters.get("countryID"), on: req.db) else { throw Abort(.notFound) }
 
         try await country.delete(on: req.db)
-        return .noContent
+        
+        throw Abort.redirect(to: "/countries")
     }
     
     @Sendable
-    func deleteCity(req: Request) async throws -> HTTPStatus {
-        guard let city = try await City.find(req.parameters.get("cityID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+    func deleteCity(req: Request) async throws -> View {
+        guard let city = try await City.find(req.parameters.get("cityID"), on: req.db) else { throw Abort(.notFound) }
+        guard let countryID = try await city.$country.get(on: req.db).id else { throw Abort(.notFound) }
 
         try await city.delete(on: req.db)
-        return .noContent
+        
+        throw Abort.redirect(to: "/countries/\(countryID)")
     }
 }

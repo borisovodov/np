@@ -20,9 +20,7 @@ struct NowTag: LeafTag {
         switch ctx.parameters.count {
         case 0: formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         case 1:
-            guard let string = ctx.parameters[0].string else {
-                throw NowTagError.invalidFormatParameter
-            }
+            guard let string = ctx.parameters[0].string else { throw NowTagError.invalidFormatParameter }
             
             formatter.dateFormat = string
         default:

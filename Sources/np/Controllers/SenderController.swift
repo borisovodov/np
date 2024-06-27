@@ -50,9 +50,7 @@ struct SenderController: RouteCollection {
             var markers: [Marker]
         }
         
-        guard let sender = try await Sender.find(req.parameters.get("senderID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let sender = try await Sender.find(req.parameters.get("senderID"), on: req.db) else { throw Abort(.notFound) }
         
         let context = try await Context(sender: sender.toPageDTO(req.db), markers: sender.markers(req.db))
         
@@ -68,9 +66,7 @@ struct SenderController: RouteCollection {
     func add(req: Request) async throws -> View {
         let sender = try await Sender.add(req)
         
-        guard let id = sender.id else {
-            throw Abort(.notFound)
-        }
+        guard let id = sender.id else { throw Abort(.notFound) }
         
         throw Abort.redirect(to: "/senders/\(id)")
     }
@@ -81,9 +77,7 @@ struct SenderController: RouteCollection {
             var sender: SenderPageDTO
         }
         
-        guard let sender = try await Sender.find(req.parameters.get("senderID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let sender = try await Sender.find(req.parameters.get("senderID"), on: req.db) else { throw Abort(.notFound) }
         
         let context = try await Context(sender: sender.toPageDTO(req.db))
         return try await req.view.render("sender_edit", context)
@@ -91,24 +85,18 @@ struct SenderController: RouteCollection {
     
     @Sendable
     func edit(req: Request) async throws -> View {
-        guard let sender = try await Sender.find(req.parameters.get("senderID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let sender = try await Sender.find(req.parameters.get("senderID"), on: req.db) else { throw Abort(.notFound) }
         
         try await sender.edit(req)
         
-        guard let id = sender.id else {
-            throw Abort(.notFound)
-        }
+        guard let id = sender.id else { throw Abort(.notFound) }
         
         throw Abort.redirect(to: "/senders/\(id)")
     }
     
     @Sendable
     func delete(req: Request) async throws -> View {
-        guard let sender = try await Sender.find(req.parameters.get("senderID"), on: req.db) else {
-            throw Abort(.notFound)
-        }
+        guard let sender = try await Sender.find(req.parameters.get("senderID"), on: req.db) else { throw Abort(.notFound) }
 
         try await sender.delete(on: req.db)
         
