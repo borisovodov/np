@@ -106,3 +106,19 @@ extension Language: Hashable {
         hasher.combine(self.id)
     }
 }
+
+struct LanguageDTO: Content {
+    var name: String
+    var URL: String
+    var newspapersCount: Int
+}
+
+struct LanguagePageDTO: Content {
+    var name: String
+    var URL: String
+    var newspapers: [NewspaperDTO]
+}
+
+struct LanguageFormDTO: Content {
+    var name: String
+}

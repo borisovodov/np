@@ -39,3 +39,8 @@ extension Cost: CustomStringConvertible {
         }
     }
 }
+
+struct CostDTO: Content {
+    var value: String
+    var currency: String
+}

@@ -1,0 +1,49 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — Add new city
+    #endexport
+    
+    #export("url"):
+        /countries/#(parentCountry.URL)/add
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2">Add city</h1>
+        </div>
+        <div class="container mb-4">
+            <form method="POST">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select class="form-control" id="country" name="country">
+                        <option value="#(parentCountry.id)" selected>#(parentCountry.name)</option>
+                        #for(country in countries):<option value="#(country.id)">#(country.name)</option>#endfor
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="continent">Continent</label>
+                    <select class="form-control" id="continent" name="continent">
+                        #for(continent in continents):<option value="#(continent.id)">#(continent.name)</option>#endfor
+                    </select>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="manualLocation" name="manualLocation">
+                    <label class="form-check-label" for="manualLocation">Manual location</label>
+                </div>
+                <div class="form-group">
+                    <label for="latitude">Latitude</label>
+                    <input class="form-control" id="latitude" name="latitude">
+                </div>
+                <div class="form-group">
+                    <label for="longitude">Longitude</label>
+                    <input class="form-control" id="longitude" name="longitude">
+                </div>
+                <button type="submit" class="btn btn-primary" action="/add" method="POST">Add</button>
+            </form>
+        </div>
+    #endexport
+#endextend
