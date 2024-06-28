@@ -14,9 +14,7 @@
                 <div class="col-md-6">
                     <ul class="list-unstyled ml-4">
                         <li class="mb-2">Country: <a href="#(city.country.URL)">#(city.country.name)</a></li>
-                        <li class="mb-2">Population: #(city.population)</li>
                         <li class="mb-2">Continent: <a href="#(city.continentTag.URL)">#(city.continentTag.name)</a></li>
-                        #if(!city.isCoastal):<li class="mb-2">Elevation: #(city.elevation) m</li>#endif
                     </ul>
                 </div>
                 <div class="col-md-6">

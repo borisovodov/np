@@ -112,11 +112,6 @@ final class Tag: Model, @unchecked Sendable, Content {
         
         return tag
     }
-
-//    var cities: [City] {
-//        cities_ids = self.newspapers().values_list('city_id', flat=True)
-//        return City.objects.order_by('name').filter(id__in=list(cities_ids))
-//    }
 }
 
 extension Tag: CustomStringConvertible {
@@ -133,4 +128,20 @@ extension Tag: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(self.id)
     }
+}
+
+struct TagDTO: Content {
+    var name: String
+    var URL: String
+    var newspapersCount: Int
+}
+
+struct TagPageDTO: Content {
+    var name: String
+    var URL: String
+    var newspapers: [NewspaperDTO]
+}
+
+struct TagFormDTO: Content {
+    var name: String
 }

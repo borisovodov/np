@@ -48,3 +48,8 @@ extension PaperFormat: CustomStringConvertible {
         return "\(self.name) (\(self.height)×\(self.width))"
     }
 }
+
+struct PaperFormatDTO: Content {
+    var name: String
+    var URL: String
+}
