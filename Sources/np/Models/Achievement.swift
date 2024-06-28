@@ -49,3 +49,14 @@ extension Achievement: CustomStringConvertible {
         self.name
     }
 }
+
+struct AchievementDTO: Content {
+    var name: String
+    var URL: String
+}
+
+struct AchievementPageDTO: Content {
+    var name: String
+    var URL: String
+    var senders: [SenderDTO]
+}

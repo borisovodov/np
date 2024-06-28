@@ -8,40 +8,14 @@
 import Fluent
 import Vapor
 
+enum CityError: Error {
+    case unknownCountry
+    case unknownContinent
+    case incorrectLatitude
+    case incorrectLongitude
+}
+
 final class City: Model, @unchecked Sendable, Content {
-    enum Continent: String, CustomStringConvertible, Codable {
-        case africa
-        case antarctica
-        case asia
-        case australiaAndOceania
-        case europe
-        case northAmerica
-        case southAmerica
-        
-        var description: String {
-            switch self {
-            case .africa:
-                return "Africa"
-            case .antarctica:
-                return "Antarctica"
-            case .asia:
-                return "Asia"
-            case .australiaAndOceania:
-                return "Australia/Oceania"
-            case .europe:
-                return "Europe"
-            case .northAmerica:
-                return "North America"
-            case .southAmerica:
-                return "South America"
-            }
-        }
-        
-        func tag(_ database: Database) async throws -> Tag? {
-            return try await Tag.query(on: database).filter(\.$tagType == .continent).filter(\.$name == self.rawValue).first()
-        }
-    }
-    
     static let schema = "cities"
     
     @ID(key: .id)
@@ -50,18 +24,8 @@ final class City: Model, @unchecked Sendable, Content {
     @Field(key: "name")
     var name: String
     
-    @Field(key: "population")
-    var population: Int
-    
     @Enum(key: "continent")
     var continent: Continent
-    
-    @Boolean(key: "isCoastal")
-    var isCoastal: Bool
-    
-    @Field(key: "elevation")
-    /// Elevation in meters
-    var elevation: Int
     
     @Field(key: "latitude")
     var latitude: Float
@@ -80,14 +44,11 @@ final class City: Model, @unchecked Sendable, Content {
     
     init() { }
     
-    init(name: String, country: Country, population: Int, continent: Continent, isCoastal: Bool, elevation: Int, latitude: Float, longitude: Float, manualLocation: Bool) throws {
+    init(name: String, country: Country, continent: Continent, latitude: Float, longitude: Float, manualLocation: Bool) throws {
         self.id = UUID()
         self.name = name
         self.$country.id = try country.requireID()
-        self.population = population
         self.continent = continent
-        self.isCoastal = isCoastal
-        self.elevation = elevation
         self.latitude = latitude
         self.longitude = longitude
         self.manualLocation = manualLocation
@@ -97,8 +58,9 @@ final class City: Model, @unchecked Sendable, Content {
         return self.latitude > 66.562 || self.latitude < -66.562
     }
     
+    /// false — north hemisphere, true — south hemisphere
     var hemisphere: Bool {
-        if self.latitude > 0.0 { // false — north hemisphere, true — south hemisphere
+        if self.latitude > 0.0 {
             return false
         }
         return true
@@ -163,7 +125,25 @@ final class City: Model, @unchecked Sendable, Content {
             try await newspapers.append(newspaper.toDTO(database))
         }
         
-        return try await CityPageDTO(name: self.name, URL: self.URL, population: self.population, isCoastal: self.isCoastal, elevation: self.elevation, country: self.$country.get(on: database).toDTO(database), continentTag: self.continent.tag(database)?.toDTO(database), senders: self.senders(database), newspapers: newspapers)
+        return try await CityPageDTO(name: self.name, URL: self.URL, country: self.$country.get(on: database).toDTO(database), continent: self.continent.toDTO, continentTag: self.continent.tag(database)?.toDTO(database), manualLocation: self.manualLocation, latitude: String(self.latitude), longitude: String(self.longitude), senders: self.senders(database), newspapers: newspapers)
+    }
+    
+    func edit(_ request: Request) async throws {
+        let form = try request.content.decode(CityFormDTO.self)
+        
+        guard let country = try await Country.find(UUID(form.country), on: request.db) else { throw CityError.unknownCountry }
+        guard let continent = Continent(rawValue: form.continent) else { throw CityError.unknownContinent }
+        guard let latitude = Float(form.latitude) else { throw CityError.incorrectLatitude }
+        guard let longitude = Float(form.longitude) else { throw CityError.incorrectLongitude }
+        
+        self.name = form.name
+        self.$country.id = try country.requireID()
+        self.continent = continent
+        self.manualLocation = Bootstrap.stringToBool(form.manualLocation)
+        self.latitude = latitude
+        self.longitude = longitude
+        
+        try await self.save(on: request.db)
     }
     
     static func northernmost(_ database: Database) async throws -> City? {
@@ -185,10 +165,20 @@ final class City: Model, @unchecked Sendable, Content {
     static func authorFrom(_ database: Database) async throws -> City? {
         try await City.query(on: database).filter(\.$name == "Yekaterinburg").first()
     }
-
-//    var photo: String {
-//        if self.newspapers(): return self.newspapers().first().photo
-//    }
+    
+    static func add(_ request: Request) async throws -> City {
+        let form = try request.content.decode(CityFormDTO.self)
+        
+        guard let country = try await Country.find(UUID(form.country), on: request.db) else { throw CityError.unknownCountry }
+        guard let continent = Continent(rawValue: form.continent) else { throw CityError.unknownContinent }
+        guard let latitude = Float(form.latitude) else { throw CityError.incorrectLatitude }
+        guard let longitude = Float(form.longitude) else { throw CityError.incorrectLongitude }
+        
+        let city = try City(name: form.name, country: country, continent: continent, latitude: latitude, longitude: longitude, manualLocation: Bootstrap.stringToBool(form.manualLocation))
+        try await city.save(on: request.db)
+        
+        return city
+    }
 }
 
 extension City: CustomStringConvertible {
@@ -205,4 +195,49 @@ extension City: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(self.id)
     }
+}
+
+struct CityDTO: Content {
+    var name: String
+    var coordinates: String
+    var markerIcon: String?
+    var URL: String
+    var newspapersCount: Int
+}
+
+extension CityDTO: Hashable {
+    static func == (lhs: CityDTO, rhs: CityDTO) -> Bool {
+        return lhs.URL == rhs.URL
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.URL)
+    }
+}
+
+struct CityPageDTO: Content {
+    var name: String
+    var URL: String
+    var country: CountryDTO
+    var continent: ContinentDTO
+    var continentTag: TagDTO?
+    var manualLocation: Bool
+    var latitude: String
+    var longitude: String
+    var senders: [SenderDTO]
+    var newspapers: [NewspaperDTO]
+}
+
+struct CityFormDTO: Content {
+    var name: String
+    /// На сервере это `enum`.
+    var continent: String
+    /// На сервере это `Parent`.
+    var country: String
+    /// На сервере это `Bool`. Поле не нужно на форме создания, пригодится только при редактировании.
+    var manualLocation: String?
+    /// На сервере это `Float`. Поле не нужно на форме создания, пригодится только при редактировании.
+    var latitude: String
+    /// На сервере это `Float`. Поле не нужно на форме создания, пригодится только при редактировании.
+    var longitude: String
 }

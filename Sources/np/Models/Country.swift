@@ -72,12 +72,12 @@ final class Country: Model, @unchecked Sendable, Content {
     }
     
     func toDTO(_ database: Database) async throws -> CountryDTO {
-        return try await CountryDTO(name: self.name, URL: self.URL, emoji: self.emoji, newspapersCount: self.newspapers(database).count)
+        return try await CountryDTO(id: self.requireID().uuidString, name: self.name, URL: self.URL, emoji: self.emoji, newspapersCount: self.newspapers(database).count)
     }
     
     func toPageDTO(_ database: Database) async throws -> CountryPageDTO {
         var cities: [CityDTO] = []
-        for city in try await self.$cities.query(on: database).all() {
+        for city in try await self.$cities.query(on: database).sort(\.$name).all() {
             try await cities.append(city.toDTO(database))
         }
         
@@ -95,7 +95,7 @@ final class Country: Model, @unchecked Sendable, Content {
         self.name = form.name
         self.emoji = form.emoji
         
-        if form.isMarkerIconChanged == "on" {
+        if Bootstrap.stringToBool(form.isMarkerIconChanged) {
             guard let markerIcon = try await Self.saveMarkerIcon(request, form: form) else {
                 self.markerIcon = nil
                 try await self.save(on: request.db)
@@ -117,6 +117,14 @@ final class Country: Model, @unchecked Sendable, Content {
             try await countries.append(country.toDTO(database))
         }
         return countries.sorted { $0.newspapersCount > $1.newspapersCount }
+    }
+    
+    static func all(_ database: Database) async throws -> [CountryDTO] {
+        var countries: [CountryDTO] = []
+        for country in try await Country.query(on: database).sort(\.$name).all() {
+            try await countries.append(country.toDTO(database))
+        }
+        return countries
     }
     
     static func firstNewspaperFrom(_ database: Database) async throws -> Country? {
@@ -173,4 +181,28 @@ extension Country: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(self.id)
     }
+}
+
+struct CountryDTO: Content {
+    var id: String
+    var name: String
+    var URL: String
+    var emoji: String?
+    var newspapersCount: Int
+}
+
+struct CountryPageDTO: Content {
+    var name: String
+    var URL: String
+    var emoji: String?
+    var senders: [SenderDTO]
+    var cities: [CityDTO]
+    var newspapers: [NewspaperDTO]
+}
+
+struct CountryFormDTO: Content {
+    var name: String
+    var emoji: String?
+    var markerIcon: File?
+    var isMarkerIconChanged: String?
 }
