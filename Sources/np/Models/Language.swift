@@ -68,12 +68,17 @@ final class Language: Model, @unchecked Sendable, Content {
     static func popular(_ database: Database) async throws -> [LanguageDTO] {
         var languages: [LanguageDTO] = []
         for language in try await Language.query(on: database).all() {
-            let languageDTO = try await language.toDTO(database)
-            if languageDTO.newspapersCount > 0 {
-                languages.append(languageDTO)
-            }
+            try await languages.append(language.toDTO(database))
         }
         return languages.sorted { $0.newspapersCount > $1.newspapersCount }
+    }
+    
+    static func all(_ database: Database) async throws -> [LanguageDTO] {
+        var languages: [LanguageDTO] = []
+        for language in try await Language.query(on: database).sort(\.$name).all() {
+            try await languages.append(language.toDTO(database))
+        }
+        return languages
     }
     
     static func add(_ request: Request) async throws -> Language {

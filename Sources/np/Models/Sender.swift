@@ -149,15 +149,8 @@ final class Sender: Model, @unchecked Sendable, Content {
     static func add(_ request: Request) async throws -> Sender {
         let form = try request.content.decode(SenderFormDTO.self)
         
-        guard let avatar = try await Self.saveAvatar(request, form: form) else {
-            let sender = Sender(name: form.name)
-            try await sender.save(on: request.db)
-            return sender
-        }
-        
-        let sender = Sender(name: form.name, avatar: avatar)
+        let sender = try await Sender(name: form.name, avatar: Self.saveAvatar(request, form: form))
         try await sender.save(on: request.db)
-        
         return sender
     }
     

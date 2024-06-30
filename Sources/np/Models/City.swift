@@ -166,6 +166,14 @@ final class City: Model, @unchecked Sendable, Content {
         try await City.query(on: database).filter(\.$name == "Yekaterinburg").first()
     }
     
+    static func all(_ database: Database) async throws -> [CityDTO] {
+        var cities: [CityDTO] = []
+        for city in try await City.query(on: database).sort(\.$name).all() {
+            try await cities.append(city.toDTO(database))
+        }
+        return cities
+    }
+    
     static func add(_ request: Request) async throws -> City {
         let form = try request.content.decode(CityFormDTO.self)
         

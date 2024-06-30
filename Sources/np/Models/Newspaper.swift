@@ -8,71 +8,15 @@
 import Fluent
 import Vapor
 
+enum NewspaperError: Error {
+    case unknownCity
+    case incorrectPages
+    case unknownLanguage
+    case unknownColor
+    case unknownPublicationType
+}
+
 final class Newspaper: Model, @unchecked Sendable, Content {
-    enum PublicationColor: String, CustomStringConvertible, Codable {
-        case monochrome
-        case bicolor
-        case multicolor
-        
-        var description: String {
-            switch self {
-            case .monochrome:
-                return "Monochrome"
-            case .bicolor:
-                return "Bicolor"
-            case .multicolor:
-                return "Multicolor"
-            }
-        }
-    }
-    
-    enum PublicationType: String, CustomStringConvertible, Codable {
-        case newspaper
-        case magazine
-        case brochure
-        
-        var description: String {
-            switch self {
-            case .newspaper:
-                return "Newspaper"
-            case .magazine:
-                return "Magazine"
-            case .brochure:
-                return "Brochure"
-            }
-        }
-    }
-    
-    enum Frequency: String, CustomStringConvertible, Codable {
-        case daily
-        case weekly
-        case weeklies
-        case biweekly
-        case monthly
-        case bimonthly
-        
-        var description: String {
-            switch self {
-            case .daily:
-                return "Daily"
-            case .weekly:
-                return "Weekly"
-            case .weeklies:
-                return "Weeklies"
-            case .biweekly:
-                return "Biweekly"
-            case .monthly:
-                return "Monthly"
-            case .bimonthly:
-                return "Bimonthly"
-            }
-        }
-        
-        func tag(_ database: Database) async throws -> Tag? {
-            return try await Tag.query(on: database).filter(\.$tagType == .frequency).filter(\.$name == self.rawValue).first()
-        }
-    }
-    
     static let schema = "newspapers"
     
     @ID(key: .id)
@@ -143,7 +87,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     init() { }
     
-    init(title: String, publicationType: PublicationType, frequency: Frequency? = nil, circulation: Int? = nil, website: String? = nil, ISSN: String? = nil, publicationStart: Date? = nil, photo: String? = nil, thumbnail: String? = nil, number: String? = nil, secondaryNumber: String? = nil, date: Date, color: PublicationColor, pages: Int, city: City, paperFormat: PaperFormat? = nil, language: Language, senders: [Sender], tags: [Tag]) throws {
+    init(title: String, publicationType: PublicationType, frequency: Frequency? = nil, circulation: Int? = nil, website: String? = nil, ISSN: String? = nil, publicationStart: Date? = nil, photo: String? = nil, thumbnail: String? = nil, number: String? = nil, secondaryNumber: String? = nil, date: Date, color: PublicationColor, pages: Int?, city: City, paperFormat: PaperFormat? = nil, language: Language, senders: [Sender], tags: [Tag]) throws {
         self.id = UUID()
         self.title = title
         self.publicationType = publicationType
@@ -163,7 +107,9 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         self.$city.id = try city.requireID()
         self.$paperFormat.id = try paperFormat?.requireID()
         self.$language.id = try language.requireID()
+        #warning("тут нужно добавить работу")
 //        self.senders = senders
+        #warning("тут нужно добавить работу")
 //        self.tags = tags
     }
     
@@ -216,6 +162,14 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: "/\(self.thumbnail ?? "")", URL: self.URL, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequency: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
     }
     
+    static var pathToPhotos: String {
+        return "newspapers/originals/"
+    }
+    
+    static var pathToThumbnails: String {
+        return "newspapers/thumbnails/"
+    }
+    
     static func popular(_ database: Database) async throws -> [NewspaperDTO] {
         var newspapers: [NewspaperDTO] = []
         for newspaper in try await Newspaper.query(on: database).filter(\.$isTop == true).sort(\.$date, .descending).range(..<8).all() {
@@ -234,6 +188,46 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     static func last(_ database: Database) async throws -> Newspaper? {
         guard let newspaper = try await Newspaper.query(on: database).sort(\.$date, .descending).first() else { return nil }
         
+        return newspaper
+    }
+    
+    static func savePhoto(_ request: Request, form: NewspaperFormDTO) async throws -> String? {
+        guard let photo = form.photo else { return nil }
+        
+        if photo.filename == "" { return nil }
+        
+        let path = request.application.directory.publicDirectory + Newspaper.pathToPhotos + photo.filename
+        try await request.fileio.writeFile(photo.data, at: path)
+        
+        return photo.filename
+    }
+    
+    static func add(_ request: Request) async throws -> Newspaper {
+        let form = try request.content.decode(NewspaperFormDTO.self)
+        
+        let date = try Date(form.date, strategy: .iso8601)
+        var pages: Int? = nil
+        var circulation: Int? = nil
+        var frequency: Frequency? = nil
+        var publicationStart: Date? = nil
+        var paperFormat: PaperFormat? = nil
+        
+        guard let city = try await City.find(UUID(form.city), on: request.db) else { throw NewspaperError.unknownCity }
+        guard let language = try await Language.find(UUID(form.language), on: request.db) else { throw NewspaperError.unknownLanguage }
+        guard let color = PublicationColor(rawValue: form.color) else { throw NewspaperError.unknownColor }
+        guard let publicationType = PublicationType(rawValue: form.publicationType) else { throw NewspaperError.unknownPublicationType }
+        
+        if let pagesString = form.pages { pages = Int(pagesString) }
+        if let circulationString = form.circulation { circulation = Int(circulationString) }
+        if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
+        if let publicationStartString = form.publicationStart { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
+        if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
+        
+        #warning("добавить обработку отправителей")
+        #warning("добавить обработку тэгов")
+        #warning("добавить создание thumbnails")
+        let newspaper = try await Newspaper(title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: form.website, ISSN: form.ISSN, publicationStart: publicationStart, photo: Self.savePhoto(request, form: form), thumbnail: nil, number: form.number, secondaryNumber: form.secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language, senders: [], tags: [])
+        try await newspaper.save(on: request.db)
         return newspaper
     }
     
@@ -316,4 +310,27 @@ struct NewspaperPageDTO: Content {
     var costs: [CostDTO]
     var senders: [SenderDTO]
     var tags: [TagDTO]
+}
+
+struct NewspaperFormDTO: Content {
+    var title: String
+    var publicationType: String
+    var frequency: String?
+    var circulation: String?
+    var website: String?
+    var ISSN: String?
+    var publicationStart: String?
+    var photo: File?
+    var isPhotoChanged: String?
+    var number: String?
+    var secondaryNumber: String?
+    var date: String
+    var color: String
+    var pages: String?
+    var isTop: String?
+    var city: String
+    var paperFormat: String?
+    var language: String
+    var senders: [String]
+    var tags: [String]
 }

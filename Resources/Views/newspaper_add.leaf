@@ -1,0 +1,96 @@
+#extend("main"):
+    #export("title"):
+        Papers Around — Add new newspaper
+    #endexport
+    
+    #export("url"):
+        /newspapers/add
+    #endexport
+    
+    #export("content"):
+        <div class="container mb-4">
+            <h1 class="pb-2">Add newspaper</h1>
+        </div>
+        <div class="container mb-4">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <select class="form-control" id="city" name="city" required>
+                        #for(city in cities):<option value="#(city.id)">#(city.name)</option>#endfor
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="language">Language</label>
+                    <select class="form-control" id="language" name="language" required>
+                        #for(language in languages):<option value="#(language.id)">#(language.name)</option>#endfor
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input class="form-control" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="number">Number</label>
+                    <input class="form-control" id="number" name="number">
+                </div>
+                <div class="form-group">
+                    <label for="secondaryNumber">Secondary Number</label>
+                    <input class="form-control" id="secondaryNumber" name="secondaryNumber">
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input class="form-control" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="pages">Pages</label>
+                    <input class="form-control" id="pages" name="pages">
+                </div>
+                <div class="form-group">
+                    <label for="color">Color</label>
+                    <select class="form-control" id="color" name="color" required>
+                        #for(color in colors):<option value="#(color.id)">#(color.name)</option>#endfor
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paperFormat">Paper Format</label>
+                    <select class="form-control" id="paperFormat" name="paperFormat">
+                        #for(paperFormat in paperFormats):<option value="#(paperFormat.id)">#(paperFormat.name)</option>#endfor
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="publicationType">Publication Type</label>
+                    <select class="form-control" id="publicationType" name="publicationType" required>
+                        #for(publicationType in publicationTypes):<option value="#(publicationType.id)">#(publicationType.name)</option>#endfor
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="frequency">Frequency</label>
+                    <select class="form-control" id="frequency" name="frequency">
+                        #for(frequency in frequencies):<option value="#(frequency.id)">#(frequency.name)</option>#endfor
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="circulation">Circulation</label>
+                    <input class="form-control" id="circulation" name="circulation">
+                </div>
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input class="form-control" id="website" name="website">
+                </div>
+                <div class="form-group">
+                    <label for="ISSN">ISSN</label>
+                    <input class="form-control" id="ISSN" name="ISSN">
+                </div>
+                <div class="form-group">
+                    <label for="publicationStart">Publication Start</label>
+                    <input class="form-control" id="publicationStart" name="publicationStart">
+                </div>
+                <div class="form-group">
+                    <label for="photo">Photo</label>
+                    <input type="file" class="form-control-file" id="photo" name="photo">
+                </div>
+                <button type="submit" class="btn btn-primary" action="/add" method="POST">Add</button>
+            </form>
+        </div>
+    #endexport
+#endextend

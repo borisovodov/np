@@ -13,11 +13,23 @@ struct NewspaperController: RouteCollection {
         let newspapers = routes.grouped("newspapers")
 
         newspapers.get(use: self.getList)
-        newspapers.post(use: self.create)
         
         newspapers.group(":newspaperID") { newspaper in
             newspaper.get(use: self.getObject)
-            newspaper.delete(use: self.delete)
+        }
+
+        newspapers.group(":newspaperID", "edit") { newspaper in
+            newspaper.get(use: self.getEditForm)
+            newspaper.post(use: self.edit)
+        }
+
+        newspapers.group(":newspaperID", "delete") { newspaper in
+            newspaper.get(use: self.delete)
+        }
+
+        newspapers.group("add") { newspaper in
+            newspaper.get(use: self.getAddForm)
+            newspaper.post(use: self.add)
         }
     }
 
@@ -46,18 +58,62 @@ struct NewspaperController: RouteCollection {
     }
 
     @Sendable
-    func create(req: Request) async throws -> Newspaper {
-        let newspaper = try req.content.decode(Newspaper.self)
-
-        try await newspaper.save(on: req.db)
-        return newspaper
+    func getAddForm(req: Request) async throws -> View {
+        struct Context: Content {
+            var cities: [CityDTO]
+            var languages: [LanguageDTO]
+            var colors: [PublicationColorDTO]
+            var paperFormats: [PaperFormatDTO]
+            var publicationTypes: [PublicationTypeDTO]
+            var frequencies: [FrequencyDTO]
+        }
+        
+        let context = try await Context(cities: City.all(req.db), languages: Language.all(req.db), colors: PublicationColor.all, paperFormats: PaperFormat.all(req.db), publicationTypes: PublicationType.all, frequencies: Frequency.all)
+        
+        #warning("всё запустилось, нужно тестировать форму создания")
+        return try await req.view.render("newspaper_add", context)
     }
 
     @Sendable
-    func delete(req: Request) async throws -> HTTPStatus {
+    func add(req: Request) async throws -> View {
+        let newspaper = try await Newspaper.add(req)
+        
+        guard let id = newspaper.id else { throw Abort(.notFound) }
+        
+        throw Abort.redirect(to: "/newspapers/\(id)")
+    }
+
+    @Sendable
+    func getEditForm(req: Request) async throws -> View {
+        struct Context: Content {
+            var newspaper: NewspaperPageDTO
+        }
+        
+        guard let newspaper = try await Newspaper.find(req.parameters.get("newspaperID"), on: req.db) else { throw Abort(.notFound) }
+        
+        let context = try await Context(newspaper: newspaper.toPageDTO(req.db))
+        return try await req.view.render("newspaper_edit", context)
+    }
+    
+    @Sendable
+    func edit(req: Request) async throws -> View {
+        #warning("нужно добавить редактирование")
+//        guard let newspaper = try await Newspaper.find(req.parameters.get("newspaperID"), on: req.db) else { throw Abort(.notFound) }
+//        
+//        try await newspaper.edit(req)
+//        
+//        guard let id = newspaper.id else { throw Abort(.notFound) }
+//        
+//        throw Abort.redirect(to: "/newspapers/\(id)")
+        throw Abort.redirect(to: "/newspapers")
+    }
+
+    @Sendable
+    func delete(req: Request) async throws -> View {
         guard let newspaper = try await Newspaper.find(req.parameters.get("newspaperID"), on: req.db) else { throw Abort(.notFound) }
 
         try await newspaper.delete(on: req.db)
-        return .noContent
+        
+        throw Abort.redirect(to: "/newspapers")
     }
 }
