@@ -26,7 +26,7 @@
                         #endfor</li>
                         #endif
                         #if(newspaper.paperFormat):<li class="mb-2">Paper Format: <a href="#(newspaper.paperFormat.URL)">#(newspaper.paperFormat.name)</a></li>#endif
-                        #if(newspaper.frequency):<li class="mb-2">Frequency: <a href="#(newspaper.frequencyTag.URL)">#(newspaper.frequencyTag.name)</a></li>#endif
+                        #if(newspaper.frequencyTag):<li class="mb-2">Frequency: <a href="#(newspaper.frequencyTag.URL)">#(newspaper.frequencyTag.name)</a></li>#endif
                         #if(newspaper.circulation):<li class="mb-2">Circulation: #(newspaper.circulation)</li>#endif
                         #if(newspaper.publicationStart):<li class="mb-2">Since: #(newspaper.publicationStart)</li>#endif
                         #if(newspaper.website):<li class="mb-2">Website: <a href="#(newspaper.website)">#(newspaper.website)</a></li>#endif

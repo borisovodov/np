@@ -159,7 +159,62 @@ final class Newspaper: Model, @unchecked Sendable, Content {
             try await tags.append(tag.toDTO(database))
         }
         
-        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: "/\(self.thumbnail ?? "")", URL: self.URL, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequency: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
+        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: "/\(self.thumbnail ?? "")", URL: self.URL, color: self.color.toDTO, publicationType: self.publicationType.toDTO, frequency: self.frequency?.toDTO, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequencyTag: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
+    }
+    
+    func edit(_ request: Request) async throws {
+        let form = try request.content.decode(NewspaperFormDTO.self)
+        
+        let date = try Date("\(form.date)T00:00:00Z", strategy: .iso8601)
+        var pages: Int? = nil
+        var circulation: Int? = nil
+        var frequency: Frequency? = nil
+        var publicationStart: Date? = nil
+        var paperFormat: PaperFormat? = nil
+        
+        guard let city = try await City.find(UUID(form.city), on: request.db) else { throw NewspaperError.unknownCity }
+        guard let language = try await Language.find(UUID(form.language), on: request.db) else { throw NewspaperError.unknownLanguage }
+        guard let color = PublicationColor(rawValue: form.color) else { throw NewspaperError.unknownColor }
+        guard let publicationType = PublicationType(rawValue: form.publicationType) else { throw NewspaperError.unknownPublicationType }
+        
+        if let pagesString = form.pages { pages = Int(pagesString) }
+        if let circulationString = form.circulation { circulation = Int(circulationString) }
+        if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
+        if let publicationStartString = form.publicationStart { try publicationStart = Date("\(publicationStartString)T00:00:00Z", strategy: .iso8601) }
+        if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
+        
+        self.title = form.title
+        self.publicationType = publicationType
+        self.frequency = frequency
+        self.circulation = circulation
+        self.website = form.website
+        self.ISSN = form.ISSN
+        self.publicationStart = publicationStart
+        self.number = form.number
+        self.secondaryNumber = form.secondaryNumber
+        self.date = date
+        self.color = color
+        self.pages = pages
+        self.$city.id = try city.requireID()
+        self.$language.id = try language.requireID()
+        
+        if let paperFormat {
+            self.$paperFormat.id = try paperFormat.requireID()
+        }
+        
+        #warning("добавить обработку отправителей")
+        #warning("добавить обработку тэгов")
+        #warning("добавить создание thumbnails")
+        if Bootstrap.stringToBool(form.isPhotoChanged) {
+            guard let photo = try await Self.savePhoto(request, form: form) else {
+                self.photo = nil
+                try await self.save(on: request.db)
+                return
+            }
+            self.photo = photo
+        }
+        
+        try await self.save(on: request.db)
     }
     
     static var pathToPhotos: String {
@@ -294,19 +349,24 @@ struct NewspaperPageDTO: Content {
     var title: String
     var number: String?
     var secondaryNumber: String?
+    #warning("дату для редактирования нужно формировать не так, как для просмотра")
     var date: String
     var pages: Int?
     var circulation: Int?
+    #warning("дату для редактирования нужно формировать не так, как для просмотра")
     var publicationStart: String?
     var website: String?
     var ISSN: String?
     var photo: String?
     var thumbnail: String?
     var URL: String
+    var color: PublicationColorDTO
+    var publicationType: PublicationTypeDTO
+    var frequency: FrequencyDTO?
     var city: CityDTO
     var language: LanguageDTO
     var paperFormat: PaperFormatDTO?
-    var frequency: Tag?
+    var frequencyTag: Tag?
     var costs: [CostDTO]
     var senders: [SenderDTO]
     var tags: [TagDTO]
