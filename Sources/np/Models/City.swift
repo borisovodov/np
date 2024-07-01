@@ -116,7 +116,7 @@ final class City: Model, @unchecked Sendable, Content {
     }
     
     func toDTO(_ database: Database) async throws -> CityDTO {
-        return try await CityDTO(name: self.name, coordinates: self.coordinates, markerIcon: self.$country.get(on: database).markerIcon, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
+        return try await CityDTO(id: self.requireID().uuidString, name: self.name, coordinates: self.coordinates, markerIcon: self.$country.get(on: database).markerIcon, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
     }
     
     func toPageDTO(_ database: Database) async throws -> CityPageDTO {
@@ -206,6 +206,7 @@ extension City: Hashable {
 }
 
 struct CityDTO: Content {
+    var id: String
     var name: String
     var coordinates: String
     var markerIcon: String?

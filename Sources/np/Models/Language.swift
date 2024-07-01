@@ -47,7 +47,7 @@ final class Language: Model, @unchecked Sendable, Content {
     }
     
     func toDTO(_ database: Database) async throws -> LanguageDTO {
-        return try await LanguageDTO(name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
+        return try await LanguageDTO(id: self.requireID().uuidString, name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
     }
     
     func toPageDTO(_ database: Database) async throws -> LanguagePageDTO {
@@ -113,6 +113,7 @@ extension Language: Hashable {
 }
 
 struct LanguageDTO: Content {
+    var id: String
     var name: String
     var URL: String
     var newspapersCount: Int

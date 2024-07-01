@@ -15,13 +15,13 @@
             <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="city">City</label>
-                    <select class="form-control" id="city" name="city" required>
+                    <select class="form-control" id="city" name="city">
                         #for(city in cities):<option value="#(city.id)">#(city.name)</option>#endfor
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="language">Language</label>
-                    <select class="form-control" id="language" name="language" required>
+                    <select class="form-control" id="language" name="language">
                         #for(language in languages):<option value="#(language.id)">#(language.name)</option>#endfor
                     </select>
                 </div>

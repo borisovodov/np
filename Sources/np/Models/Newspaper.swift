@@ -205,7 +205,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     static func add(_ request: Request) async throws -> Newspaper {
         let form = try request.content.decode(NewspaperFormDTO.self)
         
-        let date = try Date(form.date, strategy: .iso8601)
+        let date = try Date("\(form.date)T00:00:00Z", strategy: .iso8601)
         var pages: Int? = nil
         var circulation: Int? = nil
         var frequency: Frequency? = nil
@@ -220,7 +220,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         if let pagesString = form.pages { pages = Int(pagesString) }
         if let circulationString = form.circulation { circulation = Int(circulationString) }
         if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
-        if let publicationStartString = form.publicationStart { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
+        if let publicationStartString = form.publicationStart { try publicationStart = Date("\(publicationStartString)T00:00:00Z", strategy: .iso8601) }
         if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
         
         #warning("добавить обработку отправителей")
@@ -331,6 +331,6 @@ struct NewspaperFormDTO: Content {
     var city: String
     var paperFormat: String?
     var language: String
-    var senders: [String]
-    var tags: [String]
+//    var senders: [String]
+//    var tags: [String]
 }
