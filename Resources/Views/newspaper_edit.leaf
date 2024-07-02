@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group">
                     <label for="date">Date</label>
-                    <input class="form-control" id="date" name="date" value="#(newspaper.date)" required>
+                    <input class="form-control" id="date" name="date" value="#(newspaper.dateForEdit)" required>
                 </div>
                 <div class="form-group">
                     <label for="pages">Pages</label>
@@ -89,7 +89,7 @@
                 </div>
                 <div class="form-group">
                     <label for="publicationStart">Publication Start</label>
-                    <input class="form-control" id="publicationStart" name="publicationStart" value="#(newspaper.publicationStart)">
+                    <input class="form-control" id="publicationStart" name="publicationStart" value="#(newspaper.publicationStartForEdit)">
                 </div>
                 <div class="form-group">
                     <label for="photo">Photo</label>

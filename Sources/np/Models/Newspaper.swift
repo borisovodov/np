@@ -107,9 +107,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         self.$city.id = try city.requireID()
         self.$paperFormat.id = try paperFormat?.requireID()
         self.$language.id = try language.requireID()
-        #warning("тут нужно добавить работу")
 //        self.senders = senders
-        #warning("тут нужно добавить работу")
 //        self.tags = tags
     }
     
@@ -140,8 +138,10 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         dateFormatter.locale = Locale(identifier: "en_EN")
         
         var publicationStartString: String? = nil
+        var publicationStartForEditString: String? = nil
         if let publicationStart = self.publicationStart {
             publicationStartString = dateFormatter.string(from: publicationStart)
+            publicationStartForEditString = publicationStart.ISO8601Format()
         }
         
         var costs: [CostDTO] = []
@@ -159,13 +159,13 @@ final class Newspaper: Model, @unchecked Sendable, Content {
             try await tags.append(tag.toDTO(database))
         }
         
-        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: "/\(self.thumbnail ?? "")", URL: self.URL, color: self.color.toDTO, publicationType: self.publicationType.toDTO, frequency: self.frequency?.toDTO, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequencyTag: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
+        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), dateForEdit: self.date.ISO8601Format(), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, publicationStartForEdit: publicationStartForEditString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: "/\(self.thumbnail ?? "")", URL: self.URL, color: self.color.toDTO, publicationType: self.publicationType.toDTO, frequency: self.frequency?.toDTO, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequencyTag: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
     }
     
     func edit(_ request: Request) async throws {
         let form = try request.content.decode(NewspaperFormDTO.self)
         
-        let date = try Date("\(form.date)T00:00:00Z", strategy: .iso8601)
+        let date = try Date(form.date, strategy: .iso8601)
         var pages: Int? = nil
         var circulation: Int? = nil
         var frequency: Frequency? = nil
@@ -180,7 +180,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         if let pagesString = form.pages { pages = Int(pagesString) }
         if let circulationString = form.circulation { circulation = Int(circulationString) }
         if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
-        if let publicationStartString = form.publicationStart { try publicationStart = Date("\(publicationStartString)T00:00:00Z", strategy: .iso8601) }
+        if let publicationStartString = form.publicationStart { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
         if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
         
         self.title = form.title
@@ -202,9 +202,6 @@ final class Newspaper: Model, @unchecked Sendable, Content {
             self.$paperFormat.id = try paperFormat.requireID()
         }
         
-        #warning("добавить обработку отправителей")
-        #warning("добавить обработку тэгов")
-        #warning("добавить создание thumbnails")
         if Bootstrap.stringToBool(form.isPhotoChanged) {
             guard let photo = try await Self.savePhoto(request, form: form) else {
                 self.photo = nil
@@ -260,7 +257,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     static func add(_ request: Request) async throws -> Newspaper {
         let form = try request.content.decode(NewspaperFormDTO.self)
         
-        let date = try Date("\(form.date)T00:00:00Z", strategy: .iso8601)
+        let date = try Date(form.date, strategy: .iso8601)
         var pages: Int? = nil
         var circulation: Int? = nil
         var frequency: Frequency? = nil
@@ -275,12 +272,9 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         if let pagesString = form.pages { pages = Int(pagesString) }
         if let circulationString = form.circulation { circulation = Int(circulationString) }
         if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
-        if let publicationStartString = form.publicationStart { try publicationStart = Date("\(publicationStartString)T00:00:00Z", strategy: .iso8601) }
+        if let publicationStartString = form.publicationStart { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
         if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
         
-        #warning("добавить обработку отправителей")
-        #warning("добавить обработку тэгов")
-        #warning("добавить создание thumbnails")
         let newspaper = try await Newspaper(title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: form.website, ISSN: form.ISSN, publicationStart: publicationStart, photo: Self.savePhoto(request, form: form), thumbnail: nil, number: form.number, secondaryNumber: form.secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language, senders: [], tags: [])
         try await newspaper.save(on: request.db)
         return newspaper
@@ -349,12 +343,12 @@ struct NewspaperPageDTO: Content {
     var title: String
     var number: String?
     var secondaryNumber: String?
-    #warning("дату для редактирования нужно формировать не так, как для просмотра")
     var date: String
+    var dateForEdit: String
     var pages: Int?
     var circulation: Int?
-    #warning("дату для редактирования нужно формировать не так, как для просмотра")
     var publicationStart: String?
+    var publicationStartForEdit: String?
     var website: String?
     var ISSN: String?
     var photo: String?
