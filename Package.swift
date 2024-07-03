@@ -17,6 +17,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/leaf.git", exact: "4.3.0"),
         // 🔵 Non-blocking, event-driven networking for Swift. Used for custom executors
         .package(url: "https://github.com/apple/swift-nio.git", exact: "2.65.0"),
+        .package(url: "https://github.com/t-ae/swim", exact: "3.9.0"),
     ],
     targets: [
         .executableTarget(
@@ -28,6 +29,7 @@ let package = Package(
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "NIOCore", package: "swift-nio"),
                 .product(name: "NIOPosix", package: "swift-nio"),
+                .product(name: "Swim", package: "swim"),
             ],
             swiftSettings: swiftSettings
         )

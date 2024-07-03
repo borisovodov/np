@@ -6,6 +6,7 @@
 //
 
 import Fluent
+import Swim
 import Vapor
 
 enum NewspaperError: Error {
@@ -115,6 +116,16 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         return "/newspapers/\(self.id ?? UUID())"
     }
     
+    var photoURL: String? {
+        guard let photo = self.photo else { return nil }
+        return "/" + Self.pathToPhotos + photo
+    }
+    
+    var thumbnailURL: String? {
+        guard let thumbnail = self.thumbnail else { return nil }
+        return "/" + Self.pathToThumbnails + thumbnail
+    }
+    
     func markers(_ database: Database) async throws -> [Marker] {
         return try await [Marker(city: self.$city.get(on: database).toDTO(database), newspapers: [self.toDTO(database)])]
     }
@@ -129,7 +140,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         dateFormatter.dateStyle = .long
         dateFormatter.locale = Locale(identifier: "en_EN")
         
-        return try await NewspaperDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), URL: self.URL, thumbnail: "/\(self.thumbnail ?? "")", city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), tags: tags)
+        return try await NewspaperDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), URL: self.URL, thumbnail: self.thumbnailURL, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), tags: tags)
     }
     
     func toPageDTO(_ database: Database) async throws -> NewspaperPageDTO {
@@ -159,7 +170,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
             try await tags.append(tag.toDTO(database))
         }
         
-        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), dateForEdit: self.date.ISO8601Format(), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, publicationStartForEdit: publicationStartForEditString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: "/\(self.thumbnail ?? "")", URL: self.URL, color: self.color.toDTO, publicationType: self.publicationType.toDTO, frequency: self.frequency?.toDTO, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequencyTag: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
+        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), dateForEdit: self.date.ISO8601Format(), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, publicationStartForEdit: publicationStartForEditString, website: self.website, ISSN: self.ISSN, photo: self.photoURL, thumbnail: self.thumbnailURL, URL: self.URL, color: self.color.toDTO, publicationType: self.publicationType.toDTO, frequency: self.frequency?.toDTO, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequencyTag: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
     }
     
     func edit(_ request: Request) async throws {
@@ -208,7 +219,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
                 try await self.save(on: request.db)
                 return
             }
-            self.photo = photo
+            self.photo = photo.filename
         }
         
         try await self.save(on: request.db)
@@ -243,7 +254,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         return newspaper
     }
     
-    static func savePhoto(_ request: Request, form: NewspaperFormDTO) async throws -> String? {
+    static func savePhoto(_ request: Request, form: NewspaperFormDTO) async throws -> File? {
         guard let photo = form.photo else { return nil }
         
         if photo.filename == "" { return nil }
@@ -251,7 +262,18 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         let path = request.application.directory.publicDirectory + Newspaper.pathToPhotos + photo.filename
         try await request.fileio.writeFile(photo.data, at: path)
         
-        return photo.filename
+        return photo
+    }
+    
+    static func saveThumbnail(_ request: Request, photo: File) async throws -> File {
+        let photoImage = try Image<RGBA, UInt8>(fileData: Data(buffer: photo.data))
+        let thumbnailImage = photoImage.resize(width: 100, height: 100)
+        let thumbnail = try File(data: ByteBuffer(data: thumbnailImage.fileData()), filename: photo.filename)
+        
+        let path = request.application.directory.publicDirectory + Newspaper.pathToThumbnails + thumbnail.filename
+        try await request.fileio.writeFile(thumbnail.data, at: path)
+        
+        return thumbnail
     }
     
     static func add(_ request: Request) async throws -> Newspaper {
@@ -263,6 +285,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         var frequency: Frequency? = nil
         var publicationStart: Date? = nil
         var paperFormat: PaperFormat? = nil
+        var thumbnail: File? = nil
         
         guard let city = try await City.find(UUID(form.city), on: request.db) else { throw NewspaperError.unknownCity }
         guard let language = try await Language.find(UUID(form.language), on: request.db) else { throw NewspaperError.unknownLanguage }
@@ -275,7 +298,10 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         if let publicationStartString = form.publicationStart { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
         if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
         
-        let newspaper = try await Newspaper(title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: form.website, ISSN: form.ISSN, publicationStart: publicationStart, photo: Self.savePhoto(request, form: form), thumbnail: nil, number: form.number, secondaryNumber: form.secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language, senders: [], tags: [])
+        let photo = try await Self.savePhoto(request, form: form)
+        if let photo { thumbnail = try await Self.saveThumbnail(request, photo: photo) }
+        
+        let newspaper = try Newspaper(title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: form.website, ISSN: form.ISSN, publicationStart: publicationStart, photo: photo?.filename, thumbnail: thumbnail?.filename, number: form.number, secondaryNumber: form.secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language, senders: [], tags: [])
         try await newspaper.save(on: request.db)
         return newspaper
     }
