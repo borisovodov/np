@@ -220,6 +220,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
                 return
             }
             self.photo = photo.filename
+            self.thumbnail = try await Self.saveThumbnail(request, photo: photo).filename
         }
         
         try await self.save(on: request.db)
