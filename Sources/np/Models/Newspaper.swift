@@ -268,7 +268,16 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     static func saveThumbnail(_ request: Request, photo: File) async throws -> File {
         let photoImage = try Image<RGBA, UInt8>(fileData: Data(buffer: photo.data))
-        let thumbnailImage = photoImage.resize(width: 100, height: 100)
+        
+        let maxSide = 522
+        var width = maxSide
+        var height = maxSide
+        if photoImage.height > photoImage.width {
+            width = (photoImage.width * maxSide) / photoImage.height
+        } else {
+            height = (photoImage.height * maxSide) / photoImage.width
+        }
+        let thumbnailImage = photoImage.resize(width: width, height: height)
         let thumbnail = try File(data: ByteBuffer(data: thumbnailImage.fileData()), filename: photo.filename)
         
         let path = request.application.directory.publicDirectory + Newspaper.pathToThumbnails + thumbnail.filename
