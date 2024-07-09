@@ -66,9 +66,10 @@ struct NewspaperController: RouteCollection {
             var paperFormats: [PaperFormatDTO]
             var publicationTypes: [PublicationTypeDTO]
             var frequencies: [FrequencyDTO]
+            var senders: [SenderDTO]
         }
         
-        let context = try await Context(cities: City.all(req.db), languages: Language.all(req.db), colors: PublicationColor.all, paperFormats: PaperFormat.all(req.db), publicationTypes: PublicationType.all, frequencies: Frequency.all)
+        let context = try await Context(cities: City.all(req.db), languages: Language.all(req.db), colors: PublicationColor.all, paperFormats: PaperFormat.all(req.db), publicationTypes: PublicationType.all, frequencies: Frequency.all, senders: Sender.all(req.db))
         
         return try await req.view.render("newspaper_add", context)
     }
@@ -92,11 +93,12 @@ struct NewspaperController: RouteCollection {
             var paperFormats: [PaperFormatDTO]
             var publicationTypes: [PublicationTypeDTO]
             var frequencies: [FrequencyDTO]
+            var senders: [SenderDTO]
         }
         
         guard let newspaper = try await Newspaper.find(req.parameters.get("newspaperID"), on: req.db) else { throw Abort(.notFound) }
         
-        let context = try await Context(newspaper: newspaper.toPageDTO(req.db), cities: City.all(req.db), languages: Language.all(req.db), colors: PublicationColor.all, paperFormats: PaperFormat.all(req.db), publicationTypes: PublicationType.all, frequencies: Frequency.all)
+        let context = try await Context(newspaper: newspaper.toPageDTO(req.db), cities: City.all(req.db), languages: Language.all(req.db), colors: PublicationColor.all, paperFormats: PaperFormat.all(req.db), publicationTypes: PublicationType.all, frequencies: Frequency.all, senders: Sender.all(req.db))
         return try await req.view.render("newspaper_edit", context)
     }
     

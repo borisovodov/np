@@ -26,6 +26,12 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="senders">Senders</label>
+                    <select class="selectpicker form-control" data-live-search="true" id="senders" name="senders" multiple>
+                        #for(sender in senders):<option data-tokens="#(sender.name)" value="#(sender.id)">#(sender.name)</option>#endfor
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="title">Title</label>
                     <input class="form-control" id="title" name="title" required>
                 </div>

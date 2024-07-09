@@ -15,6 +15,7 @@ enum NewspaperError: Error {
     case unknownLanguage
     case unknownColor
     case unknownPublicationType
+    case unknownSender
 }
 
 final class Newspaper: Model, @unchecked Sendable, Content {
@@ -88,7 +89,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     init() { }
     
-    init(title: String, publicationType: PublicationType, frequency: Frequency? = nil, circulation: Int? = nil, website: String? = nil, ISSN: String? = nil, publicationStart: Date? = nil, photo: String? = nil, thumbnail: String? = nil, number: String? = nil, secondaryNumber: String? = nil, date: Date, color: PublicationColor, pages: Int?, city: City, paperFormat: PaperFormat? = nil, language: Language, senders: [Sender], tags: [Tag]) throws {
+    init(_ database: Database, title: String, publicationType: PublicationType, frequency: Frequency? = nil, circulation: Int? = nil, website: String? = nil, ISSN: String? = nil, publicationStart: Date? = nil, photo: String? = nil, thumbnail: String? = nil, number: String? = nil, secondaryNumber: String? = nil, date: Date, color: PublicationColor, pages: Int?, city: City, paperFormat: PaperFormat? = nil, language: Language) async throws {
         self.id = UUID()
         self.title = title
         self.publicationType = publicationType
@@ -108,8 +109,6 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         self.$city.id = try city.requireID()
         self.$paperFormat.id = try paperFormat?.requireID()
         self.$language.id = try language.requireID()
-//        self.senders = senders
-//        self.tags = tags
     }
     
     var URL: String {
@@ -296,6 +295,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         var publicationStart: Date? = nil
         var paperFormat: PaperFormat? = nil
         var thumbnail: File? = nil
+        var senders: [Sender] = []
         
         guard let city = try await City.find(UUID(form.city), on: request.db) else { throw NewspaperError.unknownCity }
         guard let language = try await Language.find(UUID(form.language), on: request.db) else { throw NewspaperError.unknownLanguage }
@@ -305,14 +305,32 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         if let pagesString = form.pages { pages = Int(pagesString) }
         if let circulationString = form.circulation { circulation = Int(circulationString) }
         if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
+        #warning("кажется возникают ошибки, если не указать.")
         if let publicationStartString = form.publicationStart { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
         if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
         
         let photo = try await Self.savePhoto(request, form: form)
         if let photo { thumbnail = try await Self.saveThumbnail(request, photo: photo) }
         
-        let newspaper = try Newspaper(title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: form.website, ISSN: form.ISSN, publicationStart: publicationStart, photo: photo?.filename, thumbnail: thumbnail?.filename, number: form.number, secondaryNumber: form.secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language, senders: [], tags: [])
+        print("SENDERS: \(form.senders)")
+        for sender in form.senders.split(separator: ",") {
+            guard let sender = try await Sender.find(UUID(String(sender)), on: request.db) else { throw NewspaperError.unknownSender }
+            senders.append(sender)
+        }
+        
+        let newspaper = try await Newspaper(request.db, title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: form.website, ISSN: form.ISSN, publicationStart: publicationStart, photo: photo?.filename, thumbnail: thumbnail?.filename, number: form.number, secondaryNumber: form.secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language)
         try await newspaper.save(on: request.db)
+        
+        for sender in senders {
+            let newspaperSenderPivot = try NewspaperSenderPivot(newspaper: newspaper, sender: sender)
+            try await newspaperSenderPivot.save(on: request.db)
+        }
+        
+//        for tag in tags {
+//            let newspaperTagPivot = try NewspaperTagPivot(newspaper: self, tag: tag)
+//            try await newspaperTagPivot.save(on: database)
+//        }
+        
         return newspaper
     }
     
@@ -421,6 +439,6 @@ struct NewspaperFormDTO: Content {
     var city: String
     var paperFormat: String?
     var language: String
-//    var senders: [String]
+    var senders: String
 //    var tags: [String]
 }
