@@ -78,7 +78,7 @@ final class Tag: Model, @unchecked Sendable, Content {
     }
     
     func toDTO(_ database: Database) async throws -> TagDTO {
-        return try await TagDTO(name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
+        return try await TagDTO(id: self.requireID().uuidString, name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
     }
     
     func toPageDTO(_ database: Database) async throws -> TagPageDTO {
@@ -102,6 +102,14 @@ final class Tag: Model, @unchecked Sendable, Content {
             try await continents.append(continent.toDTO(database))
         }
         return continents.sorted { $0.newspapersCount > $1.newspapersCount }
+    }
+    
+    static func all(_ database: Database) async throws -> [TagDTO] {
+        var tags: [TagDTO] = []
+        for tag in try await Tag.query(on: database).sort(\.$name).all() {
+            try await tags.append(tag.toDTO(database))
+        }
+        return tags
     }
     
     static func add(_ request: Request) async throws -> Tag {
@@ -131,6 +139,7 @@ extension Tag: Hashable {
 }
 
 struct TagDTO: Content {
+    var id: String
     var name: String
     var URL: String
     var newspapersCount: Int
