@@ -288,6 +288,8 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     static func add(_ request: Request) async throws -> Newspaper {
         let form = try request.content.decode(NewspaperFormDTO.self)
+        let senders = try await Self.getSenders(request)
+        let tags = try await Self.getTags(request)
         
         let date = try Date(form.date, strategy: .iso8601)
         var pages: Int? = nil
@@ -305,7 +307,6 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         if let pagesString = form.pages { pages = Int(pagesString) }
         if let circulationString = form.circulation { circulation = Int(circulationString) }
         if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
-        #warning("кажется возникают ошибки, если не указать.")
         if let publicationStartString = form.publicationStart { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
         if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
         
@@ -315,22 +316,49 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         let newspaper = try await Newspaper(request.db, title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: form.website, ISSN: form.ISSN, publicationStart: publicationStart, photo: photo?.filename, thumbnail: thumbnail?.filename, number: form.number, secondaryNumber: form.secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language)
         try await newspaper.save(on: request.db)
         
-        print("SENDERS: \(form.senders)")
-        for sender in form.senders.split(separator: ",") {
-            guard let sender = try await Sender.find(UUID(String(sender)), on: request.db) else { throw NewspaperError.unknownSender }
+        for sender in senders {
             let newspaperSenderPivot = try NewspaperSenderPivot(newspaper: newspaper, sender: sender)
             try await newspaperSenderPivot.save(on: request.db)
         }
         
-        if let tags = form.tags {
-            for tag in tags.split(separator: ",") {
-                guard let tag = try await Tag.find(UUID(String(tag)), on: request.db) else { throw NewspaperError.unknownTag }
-                let newspaperTagPivot = try NewspaperTagPivot(newspaper: newspaper, tag: tag)
-                try await newspaperTagPivot.save(on: request.db)
-            }
+        for tag in tags {
+            let newspaperTagPivot = try NewspaperTagPivot(newspaper: newspaper, tag: tag)
+            try await newspaperTagPivot.save(on: request.db)
         }
         
         return newspaper
+    }
+    
+    static func getSenders(_ request: Request) async throws -> [Sender] {
+        var senders: [Sender] = []
+        
+        guard let bodyString = request.body.string else { throw NewspaperError.unknownSender }
+        let bodyRows = bodyString.split(separator: "\r\n")
+        
+        for (index, row) in bodyRows.enumerated() {
+            if row == "Content-Disposition: form-data; name=\"senders\"" {
+                guard let sender = try await Sender.find(UUID(String(bodyRows[index + 1])), on: request.db) else { throw NewspaperError.unknownSender }
+                senders.append(sender)
+            }
+        }
+        
+        return senders
+    }
+    
+    static func getTags(_ request: Request) async throws -> [Tag] {
+        var tags: [Tag] = []
+        
+        guard let bodyString = request.body.string else { throw NewspaperError.unknownTag }
+        let bodyRows = bodyString.split(separator: "\r\n")
+        
+        for (index, row) in bodyRows.enumerated() {
+            if row == "Content-Disposition: form-data; name=\"tags\"" {
+                guard let tag = try await Tag.find(UUID(String(bodyRows[index + 1])), on: request.db) else { throw NewspaperError.unknownTag }
+                tags.append(tag)
+            }
+        }
+        
+        return tags
     }
     
 //    var isPravda: Bool {
@@ -438,6 +466,4 @@ struct NewspaperFormDTO: Content {
     var city: String
     var paperFormat: String?
     var language: String
-    var senders: String
-    var tags: String?
 }
