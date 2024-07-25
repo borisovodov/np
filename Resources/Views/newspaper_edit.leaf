@@ -28,6 +28,13 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="senders">Senders</label>
+                    <select class="form-select" id="senders" name="senders" multiple>
+                        #for(sender in newspaper.senders):<option value="#(sender.id)" selected>#(sender.name)</option>#endfor
+                        #for(sender in senders):<option value="#(sender.id)">#(sender.name)</option>#endfor
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="title">Title</label>
                     <input class="form-control" id="title" name="title" value="#(newspaper.title)" required>
                 </div>
@@ -90,6 +97,13 @@
                 <div class="form-group">
                     <label for="publicationStart">Publication Start</label>
                     <input class="form-control" id="publicationStart" name="publicationStart" value="#(newspaper.publicationStartForEdit)">
+                </div>
+                <div class="form-group">
+                    <label for="tags">Tags</label>
+                    <select class="form-select" id="tags" name="tags" multiple>
+                        #for(tag in newspaper.tags):<option value="#(tag.id)" selected>#(tag.name)</option>#endfor
+                        #for(tag in tags):<option value="#(tag.id)">#(tag.name)</option>#endfor
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="photo">Photo</label>
