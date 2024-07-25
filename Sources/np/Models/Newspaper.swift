@@ -298,6 +298,10 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         var publicationStart: Date? = nil
         var paperFormat: PaperFormat? = nil
         var thumbnail: File? = nil
+        var number: String? = nil
+        var secondaryNumber: String? = nil
+        var website: String? = nil
+        var ISSN: String? = nil
         
         guard let city = try await City.find(UUID(form.city), on: request.db) else { throw NewspaperError.unknownCity }
         guard let language = try await Language.find(UUID(form.language), on: request.db) else { throw NewspaperError.unknownLanguage }
@@ -307,13 +311,17 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         if let pagesString = form.pages { pages = Int(pagesString) }
         if let circulationString = form.circulation { circulation = Int(circulationString) }
         if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
-        if let publicationStartString = form.publicationStart { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
+        if let publicationStartString = form.publicationStart, form.publicationStart != "" { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
         if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
+        if let numberString = form.number, form.number != "" { number = numberString }
+        if let secondaryNumberString = form.secondaryNumber, form.secondaryNumber != "" { secondaryNumber = secondaryNumberString }
+        if let websiteString = form.website, form.website != "" { website = websiteString }
+        if let ISSNString = form.ISSN, form.ISSN != "" { ISSN = ISSNString }
         
         let photo = try await Self.savePhoto(request, form: form)
         if let photo { thumbnail = try await Self.saveThumbnail(request, photo: photo) }
         
-        let newspaper = try await Newspaper(request.db, title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: form.website, ISSN: form.ISSN, publicationStart: publicationStart, photo: photo?.filename, thumbnail: thumbnail?.filename, number: form.number, secondaryNumber: form.secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language)
+        let newspaper = try await Newspaper(request.db, title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: website, ISSN: ISSN, publicationStart: publicationStart, photo: photo?.filename, thumbnail: thumbnail?.filename, number: number, secondaryNumber: secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language)
         try await newspaper.save(on: request.db)
         
         for sender in senders {
