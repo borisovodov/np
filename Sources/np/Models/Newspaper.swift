@@ -175,6 +175,8 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     func edit(_ request: Request) async throws {
         let form = try request.content.decode(NewspaperFormDTO.self)
+        let senders = try await Self.getSenders(request)
+        let tags = try await Self.getTags(request)
         
         let date = try Date(form.date, strategy: .iso8601)
         var pages: Int? = nil
@@ -182,6 +184,10 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         var frequency: Frequency? = nil
         var publicationStart: Date? = nil
         var paperFormat: PaperFormat? = nil
+        var number: String? = nil
+        var secondaryNumber: String? = nil
+        var website: String? = nil
+        var ISSN: String? = nil
         
         guard let city = try await City.find(UUID(form.city), on: request.db) else { throw NewspaperError.unknownCity }
         guard let language = try await Language.find(UUID(form.language), on: request.db) else { throw NewspaperError.unknownLanguage }
@@ -191,27 +197,28 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         if let pagesString = form.pages { pages = Int(pagesString) }
         if let circulationString = form.circulation { circulation = Int(circulationString) }
         if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
-        if let publicationStartString = form.publicationStart { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
+        if let publicationStartString = form.publicationStart, form.publicationStart != "" { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
         if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
+        if let numberString = form.number, form.number != "" { number = numberString }
+        if let secondaryNumberString = form.secondaryNumber, form.secondaryNumber != "" { secondaryNumber = secondaryNumberString }
+        if let websiteString = form.website, form.website != "" { website = websiteString }
+        if let ISSNString = form.ISSN, form.ISSN != "" { ISSN = ISSNString }
         
         self.title = form.title
         self.publicationType = publicationType
         self.frequency = frequency
         self.circulation = circulation
-        self.website = form.website
-        self.ISSN = form.ISSN
+        self.website = website
+        self.ISSN = ISSN
         self.publicationStart = publicationStart
-        self.number = form.number
-        self.secondaryNumber = form.secondaryNumber
+        self.number = number
+        self.secondaryNumber = secondaryNumber
         self.date = date
         self.color = color
         self.pages = pages
         self.$city.id = try city.requireID()
         self.$language.id = try language.requireID()
-        
-        if let paperFormat {
-            self.$paperFormat.id = try paperFormat.requireID()
-        }
+        if let paperFormat { self.$paperFormat.id = try paperFormat.requireID() }
         
         if Bootstrap.stringToBool(form.isPhotoChanged) {
             guard let photo = try await Self.savePhoto(request, form: form) else {
@@ -224,6 +231,16 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         }
         
         try await self.save(on: request.db)
+        
+        for sender in senders {
+            let newspaperSenderPivot = try NewspaperSenderPivot(newspaper: self, sender: sender)
+            try await newspaperSenderPivot.save(on: request.db)
+        }
+        
+        for tag in tags {
+            let newspaperTagPivot = try NewspaperTagPivot(newspaper: self, tag: tag)
+            try await newspaperTagPivot.save(on: request.db)
+        }
     }
     
     static var pathToPhotos: String {
