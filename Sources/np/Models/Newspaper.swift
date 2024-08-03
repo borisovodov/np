@@ -220,14 +220,16 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         self.$language.id = try language.requireID()
         if let paperFormat { self.$paperFormat.id = try paperFormat.requireID() }
         
+        
         if Bootstrap.stringToBool(form.isPhotoChanged) {
-            guard let photo = try await Self.savePhoto(request, form: form) else {
+            let photo = try await Self.savePhoto(request, form: form)
+            if let photo {
+                self.photo = photo.filename
+                self.thumbnail = try await Self.saveThumbnail(request, photo: photo).filename
+            } else {
                 self.photo = nil
-                try await self.save(on: request.db)
-                return
+                self.thumbnail = nil
             }
-            self.photo = photo.filename
-            self.thumbnail = try await Self.saveThumbnail(request, photo: photo).filename
         }
         
         try await self.save(on: request.db)
