@@ -234,14 +234,15 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         
         try await self.save(on: request.db)
         
+        try await self.$senders.detachAll(on: request.db)
+        try await self.$tags.detachAll(on: request.db)
+        
         for sender in senders {
-            let newspaperSenderPivot = try NewspaperSenderPivot(newspaper: self, sender: sender)
-            try await newspaperSenderPivot.save(on: request.db)
+            try await self.$senders.attach(sender, on: request.db)
         }
         
         for tag in tags {
-            let newspaperTagPivot = try NewspaperTagPivot(newspaper: self, tag: tag)
-            try await newspaperTagPivot.save(on: request.db)
+            try await self.$tags.attach(tag, on: request.db)
         }
     }
     
@@ -344,13 +345,11 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         try await newspaper.save(on: request.db)
         
         for sender in senders {
-            let newspaperSenderPivot = try NewspaperSenderPivot(newspaper: newspaper, sender: sender)
-            try await newspaperSenderPivot.save(on: request.db)
+            try await newspaper.$senders.attach(sender, on: request.db)
         }
         
         for tag in tags {
-            let newspaperTagPivot = try NewspaperTagPivot(newspaper: newspaper, tag: tag)
-            try await newspaperTagPivot.save(on: request.db)
+            try await newspaper.$tags.attach(tag, on: request.db)
         }
         
         return newspaper
@@ -395,38 +394,6 @@ final class Newspaper: Model, @unchecked Sendable, Content {
 //    var isMetro: Bool {
 //        return 'metro' in self.title.lower()
 //    }
-
-//    var isNotOfficialLanguage: Bool {
-//        return self.language not in self.city.country.languages.all()
-//    }
-
-//    def get_tags_alph(self):
-//        return self.tags.order_by('name')
-
-//    def save(self):
-//        from PIL import Image
-//        from io import BytesIO
-//        from django.core.files.uploadedfile import InMemoryUploadedFile
-//        import sys
-//
-//        try:
-//            size = (522, 522)
-//            im = Image.open(self.photo)
-//            output = BytesIO()
-//
-//            #Resize/modify the image
-//            im.thumbnail(size)
-//
-//            #after modifications, save it to the output
-//            im.save(output, format='JPEG', quality=100)
-//            output.seek(0)
-//
-//            self.thumbnail = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.photo.name.split('.')[0],
-//                                                    'image/jpeg', sys.getsizeof(output), None)
-//
-//            super(Newspaper, self).save()
-//        except:
-//            super(Newspaper, self).save()
 }
 
 extension Newspaper: CustomStringConvertible {
