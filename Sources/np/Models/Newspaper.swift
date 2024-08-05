@@ -126,6 +126,14 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         return "/" + Self.pathToThumbnails + thumbnail
     }
     
+    var isPravda: Bool {
+        return self.title.lowercased().contains("правда")
+    }
+
+    var isMetro: Bool {
+        return self.title.lowercased().contains("metro")
+    }
+    
     func markers(_ database: Database) async throws -> [Marker] {
         return try await [Marker(city: self.$city.get(on: database).toDTO(database), newspapers: [self.toDTO(database)])]
     }
@@ -386,14 +394,6 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         
         return tags
     }
-    
-//    var isPravda: Bool {
-//        return 'правда' in self.title.lower()
-//    }
-
-//    var isMetro: Bool {
-//        return 'metro' in self.title.lower()
-//    }
 }
 
 extension Newspaper: CustomStringConvertible {
