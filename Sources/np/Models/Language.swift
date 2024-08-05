@@ -47,7 +47,7 @@ final class Language: Model, @unchecked Sendable, Content {
     }
     
     func toDTO(_ database: Database) async throws -> LanguageDTO {
-        return try await LanguageDTO(name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
+        return try await LanguageDTO(id: self.requireID().uuidString, name: self.name, URL: self.URL, newspapersCount: self.$newspapers.query(on: database).count())
     }
     
     func toPageDTO(_ database: Database) async throws -> LanguagePageDTO {
@@ -68,12 +68,17 @@ final class Language: Model, @unchecked Sendable, Content {
     static func popular(_ database: Database) async throws -> [LanguageDTO] {
         var languages: [LanguageDTO] = []
         for language in try await Language.query(on: database).all() {
-            let languageDTO = try await language.toDTO(database)
-            if languageDTO.newspapersCount > 0 {
-                languages.append(languageDTO)
-            }
+            try await languages.append(language.toDTO(database))
         }
         return languages.sorted { $0.newspapersCount > $1.newspapersCount }
+    }
+    
+    static func all(_ database: Database) async throws -> [LanguageDTO] {
+        var languages: [LanguageDTO] = []
+        for language in try await Language.query(on: database).sort(\.$name).all() {
+            try await languages.append(language.toDTO(database))
+        }
+        return languages
     }
     
     static func add(_ request: Request) async throws -> Language {
@@ -108,6 +113,7 @@ extension Language: Hashable {
 }
 
 struct LanguageDTO: Content {
+    var id: String
     var name: String
     var URL: String
     var newspapersCount: Int

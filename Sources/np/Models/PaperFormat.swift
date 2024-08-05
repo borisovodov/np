@@ -39,7 +39,15 @@ final class PaperFormat: Model, @unchecked Sendable, Content {
     }
     
     func toDTO(_ database: Database) async throws -> PaperFormatDTO {
-        return try await PaperFormatDTO(name: self.name, URL: self.tag(database)?.URL ?? "")
+        return try await PaperFormatDTO(id: self.requireID().uuidString, name: self.name, URL: self.tag(database)?.URL ?? "")
+    }
+    
+    static func all(_ database: Database) async throws -> [PaperFormatDTO] {
+        var paperFormats: [PaperFormatDTO] = []
+        for paperFormat in try await PaperFormat.query(on: database).sort(\.$name).all() {
+            try await paperFormats.append(paperFormat.toDTO(database))
+        }
+        return paperFormats
     }
 }
 
@@ -50,6 +58,7 @@ extension PaperFormat: CustomStringConvertible {
 }
 
 struct PaperFormatDTO: Content {
+    var id: String
     var name: String
     var URL: String
 }

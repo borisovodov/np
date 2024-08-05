@@ -77,7 +77,7 @@ final class Sender: Model, @unchecked Sendable, Content {
     }
     
     func toDTO(_ database: Database) async throws -> SenderDTO {
-        return try await SenderDTO(name: self.name, avatar: self.avatarURL, URL: self.URL, countriesCount: self.countries(database).count, citiesCount: self.cities(database).count, achievements: self.$achievements.query(on: database).all().map { $0.toDTO })
+        return try await SenderDTO(id: self.requireID().uuidString, name: self.name, avatar: self.avatarURL, URL: self.URL, countriesCount: self.countries(database).count, citiesCount: self.cities(database).count, achievements: self.$achievements.query(on: database).all().map { $0.toDTO })
     }
     
     func toPageDTO(_ database: Database) async throws -> SenderPageDTO {
@@ -146,18 +146,19 @@ final class Sender: Model, @unchecked Sendable, Content {
         return avatar.filename
     }
     
+    static func all(_ database: Database) async throws -> [SenderDTO] {
+        var senders: [SenderDTO] = []
+        for sender in try await Sender.query(on: database).sort(\.$name).all() {
+            try await senders.append(sender.toDTO(database))
+        }
+        return senders
+    }
+    
     static func add(_ request: Request) async throws -> Sender {
         let form = try request.content.decode(SenderFormDTO.self)
         
-        guard let avatar = try await Self.saveAvatar(request, form: form) else {
-            let sender = Sender(name: form.name)
-            try await sender.save(on: request.db)
-            return sender
-        }
-        
-        let sender = Sender(name: form.name, avatar: avatar)
+        let sender = try await Sender(name: form.name, avatar: Self.saveAvatar(request, form: form))
         try await sender.save(on: request.db)
-        
         return sender
     }
     
@@ -263,6 +264,7 @@ extension Sender: Hashable {
 }
 
 struct SenderDTO: Content {
+    var id: String
     var name: String
     var avatar: String?
     var URL: String

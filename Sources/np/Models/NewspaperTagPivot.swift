@@ -21,4 +21,10 @@ final class NewspaperTagPivot: Model, @unchecked Sendable {
     var tag: Tag
     
     init() { }
+    
+    init(newspaper: Newspaper, tag: Tag) throws {
+        self.id = UUID()
+        self.$newspaper.id = try newspaper.requireID()
+        self.$tag.id = try tag.requireID()
+    }
 }

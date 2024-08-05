@@ -6,73 +6,20 @@
 //
 
 import Fluent
+import Swim
 import Vapor
 
+enum NewspaperError: Error {
+    case unknownCity
+    case incorrectPages
+    case unknownLanguage
+    case unknownColor
+    case unknownPublicationType
+    case unknownSender
+    case unknownTag
+}
+
 final class Newspaper: Model, @unchecked Sendable, Content {
-    enum PublicationColor: String, CustomStringConvertible, Codable {
-        case monochrome
-        case bicolor
-        case multicolor
-        
-        var description: String {
-            switch self {
-            case .monochrome:
-                return "Monochrome"
-            case .bicolor:
-                return "Bicolor"
-            case .multicolor:
-                return "Multicolor"
-            }
-        }
-    }
-    
-    enum PublicationType: String, CustomStringConvertible, Codable {
-        case newspaper
-        case magazine
-        case brochure
-        
-        var description: String {
-            switch self {
-            case .newspaper:
-                return "Newspaper"
-            case .magazine:
-                return "Magazine"
-            case .brochure:
-                return "Brochure"
-            }
-        }
-    }
-    
-    enum Frequency: String, CustomStringConvertible, Codable {
-        case daily
-        case weekly
-        case weeklies
-        case biweekly
-        case monthly
-        case bimonthly
-        
-        var description: String {
-            switch self {
-            case .daily:
-                return "Daily"
-            case .weekly:
-                return "Weekly"
-            case .weeklies:
-                return "Weeklies"
-            case .biweekly:
-                return "Biweekly"
-            case .monthly:
-                return "Monthly"
-            case .bimonthly:
-                return "Bimonthly"
-            }
-        }
-        
-        func tag(_ database: Database) async throws -> Tag? {
-            return try await Tag.query(on: database).filter(\.$tagType == .frequency).filter(\.$name == self.rawValue).first()
-        }
-    }
-    
     static let schema = "newspapers"
     
     @ID(key: .id)
@@ -143,7 +90,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     init() { }
     
-    init(title: String, publicationType: PublicationType, frequency: Frequency? = nil, circulation: Int? = nil, website: String? = nil, ISSN: String? = nil, publicationStart: Date? = nil, photo: String? = nil, thumbnail: String? = nil, number: String? = nil, secondaryNumber: String? = nil, date: Date, color: PublicationColor, pages: Int, city: City, paperFormat: PaperFormat? = nil, language: Language, senders: [Sender], tags: [Tag]) throws {
+    init(_ database: Database, title: String, publicationType: PublicationType, frequency: Frequency? = nil, circulation: Int? = nil, website: String? = nil, ISSN: String? = nil, publicationStart: Date? = nil, photo: String? = nil, thumbnail: String? = nil, number: String? = nil, secondaryNumber: String? = nil, date: Date, color: PublicationColor, pages: Int?, city: City, paperFormat: PaperFormat? = nil, language: Language) async throws {
         self.id = UUID()
         self.title = title
         self.publicationType = publicationType
@@ -163,12 +110,28 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         self.$city.id = try city.requireID()
         self.$paperFormat.id = try paperFormat?.requireID()
         self.$language.id = try language.requireID()
-//        self.senders = senders
-//        self.tags = tags
     }
     
     var URL: String {
         return "/newspapers/\(self.id ?? UUID())"
+    }
+    
+    var photoURL: String? {
+        guard let photo = self.photo else { return nil }
+        return "/" + Self.pathToPhotos + photo
+    }
+    
+    var thumbnailURL: String? {
+        guard let thumbnail = self.thumbnail else { return nil }
+        return "/" + Self.pathToThumbnails + thumbnail
+    }
+    
+    var isPravda: Bool {
+        return self.title.lowercased().contains("правда")
+    }
+
+    var isMetro: Bool {
+        return self.title.lowercased().contains("metro")
     }
     
     func markers(_ database: Database) async throws -> [Marker] {
@@ -185,7 +148,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         dateFormatter.dateStyle = .long
         dateFormatter.locale = Locale(identifier: "en_EN")
         
-        return try await NewspaperDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), URL: self.URL, thumbnail: "/\(self.thumbnail ?? "")", city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), tags: tags)
+        return try await NewspaperDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), URL: self.URL, thumbnail: self.thumbnailURL, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), tags: tags)
     }
     
     func toPageDTO(_ database: Database) async throws -> NewspaperPageDTO {
@@ -194,8 +157,10 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         dateFormatter.locale = Locale(identifier: "en_EN")
         
         var publicationStartString: String? = nil
+        var publicationStartForEditString: String? = nil
         if let publicationStart = self.publicationStart {
             publicationStartString = dateFormatter.string(from: publicationStart)
+            publicationStartForEditString = publicationStart.ISO8601Format()
         }
         
         var costs: [CostDTO] = []
@@ -213,7 +178,88 @@ final class Newspaper: Model, @unchecked Sendable, Content {
             try await tags.append(tag.toDTO(database))
         }
         
-        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, website: self.website, ISSN: self.ISSN, photo: self.photo, thumbnail: "/\(self.thumbnail ?? "")", URL: self.URL, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequency: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
+        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), dateForEdit: self.date.ISO8601Format(), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, publicationStartForEdit: publicationStartForEditString, website: self.website, ISSN: self.ISSN, photo: self.photoURL, thumbnail: self.thumbnailURL, URL: self.URL, color: self.color.toDTO, publicationType: self.publicationType.toDTO, frequency: self.frequency?.toDTO, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequencyTag: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
+    }
+    
+    func edit(_ request: Request) async throws {
+        let form = try request.content.decode(NewspaperFormDTO.self)
+        let senders = try await Self.getSenders(request)
+        let tags = try await Self.getTags(request)
+        
+        let date = try Date(form.date, strategy: .iso8601)
+        var pages: Int? = nil
+        var circulation: Int? = nil
+        var frequency: Frequency? = nil
+        var publicationStart: Date? = nil
+        var paperFormat: PaperFormat? = nil
+        var number: String? = nil
+        var secondaryNumber: String? = nil
+        var website: String? = nil
+        var ISSN: String? = nil
+        
+        guard let city = try await City.find(UUID(form.city), on: request.db) else { throw NewspaperError.unknownCity }
+        guard let language = try await Language.find(UUID(form.language), on: request.db) else { throw NewspaperError.unknownLanguage }
+        guard let color = PublicationColor(rawValue: form.color) else { throw NewspaperError.unknownColor }
+        guard let publicationType = PublicationType(rawValue: form.publicationType) else { throw NewspaperError.unknownPublicationType }
+        
+        if let pagesString = form.pages { pages = Int(pagesString) }
+        if let circulationString = form.circulation { circulation = Int(circulationString) }
+        if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
+        if let publicationStartString = form.publicationStart, form.publicationStart != "" { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
+        if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
+        if let numberString = form.number, form.number != "" { number = numberString }
+        if let secondaryNumberString = form.secondaryNumber, form.secondaryNumber != "" { secondaryNumber = secondaryNumberString }
+        if let websiteString = form.website, form.website != "" { website = websiteString }
+        if let ISSNString = form.ISSN, form.ISSN != "" { ISSN = ISSNString }
+        
+        self.title = form.title
+        self.publicationType = publicationType
+        self.frequency = frequency
+        self.circulation = circulation
+        self.website = website
+        self.ISSN = ISSN
+        self.publicationStart = publicationStart
+        self.number = number
+        self.secondaryNumber = secondaryNumber
+        self.date = date
+        self.color = color
+        self.pages = pages
+        self.$city.id = try city.requireID()
+        self.$language.id = try language.requireID()
+        if let paperFormat { self.$paperFormat.id = try paperFormat.requireID() }
+        
+        
+        if Bootstrap.stringToBool(form.isPhotoChanged) {
+            let photo = try await Self.savePhoto(request, form: form)
+            if let photo {
+                self.photo = photo.filename
+                self.thumbnail = try await Self.saveThumbnail(request, photo: photo).filename
+            } else {
+                self.photo = nil
+                self.thumbnail = nil
+            }
+        }
+        
+        try await self.save(on: request.db)
+        
+        try await self.$senders.detachAll(on: request.db)
+        try await self.$tags.detachAll(on: request.db)
+        
+        for sender in senders {
+            try await self.$senders.attach(sender, on: request.db)
+        }
+        
+        for tag in tags {
+            try await self.$tags.attach(tag, on: request.db)
+        }
+    }
+    
+    static var pathToPhotos: String {
+        return "newspapers/originals/"
+    }
+    
+    static var pathToThumbnails: String {
+        return "newspapers/thumbnails/"
     }
     
     static func popular(_ database: Database) async throws -> [NewspaperDTO] {
@@ -237,45 +283,117 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         return newspaper
     }
     
-//    var isPravda: Bool {
-//        return 'правда' in self.title.lower()
-//    }
-
-//    var isMetro: Bool {
-//        return 'metro' in self.title.lower()
-//    }
-
-//    var isNotOfficialLanguage: Bool {
-//        return self.language not in self.city.country.languages.all()
-//    }
-
-//    def get_tags_alph(self):
-//        return self.tags.order_by('name')
-
-//    def save(self):
-//        from PIL import Image
-//        from io import BytesIO
-//        from django.core.files.uploadedfile import InMemoryUploadedFile
-//        import sys
-//
-//        try:
-//            size = (522, 522)
-//            im = Image.open(self.photo)
-//            output = BytesIO()
-//
-//            #Resize/modify the image
-//            im.thumbnail(size)
-//
-//            #after modifications, save it to the output
-//            im.save(output, format='JPEG', quality=100)
-//            output.seek(0)
-//
-//            self.thumbnail = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.photo.name.split('.')[0],
-//                                                    'image/jpeg', sys.getsizeof(output), None)
-//
-//            super(Newspaper, self).save()
-//        except:
-//            super(Newspaper, self).save()
+    static func savePhoto(_ request: Request, form: NewspaperFormDTO) async throws -> File? {
+        guard let photo = form.photo else { return nil }
+        
+        if photo.filename == "" { return nil }
+        
+        let path = request.application.directory.publicDirectory + Newspaper.pathToPhotos + photo.filename
+        try await request.fileio.writeFile(photo.data, at: path)
+        
+        return photo
+    }
+    
+    static func saveThumbnail(_ request: Request, photo: File) async throws -> File {
+        let photoImage = try Image<RGBA, UInt8>(fileData: Data(buffer: photo.data))
+        
+        let maxSide = 522
+        var width = maxSide
+        var height = maxSide
+        if photoImage.height > photoImage.width {
+            width = (photoImage.width * maxSide) / photoImage.height
+        } else {
+            height = (photoImage.height * maxSide) / photoImage.width
+        }
+        let thumbnailImage = photoImage.resize(width: width, height: height)
+        let thumbnail = try File(data: ByteBuffer(data: thumbnailImage.fileData()), filename: photo.filename)
+        
+        let path = request.application.directory.publicDirectory + Newspaper.pathToThumbnails + thumbnail.filename
+        try await request.fileio.writeFile(thumbnail.data, at: path)
+        
+        return thumbnail
+    }
+    
+    static func add(_ request: Request) async throws -> Newspaper {
+        let form = try request.content.decode(NewspaperFormDTO.self)
+        let senders = try await Self.getSenders(request)
+        let tags = try await Self.getTags(request)
+        
+        let date = try Date(form.date, strategy: .iso8601)
+        var pages: Int? = nil
+        var circulation: Int? = nil
+        var frequency: Frequency? = nil
+        var publicationStart: Date? = nil
+        var paperFormat: PaperFormat? = nil
+        var thumbnail: File? = nil
+        var number: String? = nil
+        var secondaryNumber: String? = nil
+        var website: String? = nil
+        var ISSN: String? = nil
+        
+        guard let city = try await City.find(UUID(form.city), on: request.db) else { throw NewspaperError.unknownCity }
+        guard let language = try await Language.find(UUID(form.language), on: request.db) else { throw NewspaperError.unknownLanguage }
+        guard let color = PublicationColor(rawValue: form.color) else { throw NewspaperError.unknownColor }
+        guard let publicationType = PublicationType(rawValue: form.publicationType) else { throw NewspaperError.unknownPublicationType }
+        
+        if let pagesString = form.pages { pages = Int(pagesString) }
+        if let circulationString = form.circulation { circulation = Int(circulationString) }
+        if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
+        if let publicationStartString = form.publicationStart, form.publicationStart != "" { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
+        if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
+        if let numberString = form.number, form.number != "" { number = numberString }
+        if let secondaryNumberString = form.secondaryNumber, form.secondaryNumber != "" { secondaryNumber = secondaryNumberString }
+        if let websiteString = form.website, form.website != "" { website = websiteString }
+        if let ISSNString = form.ISSN, form.ISSN != "" { ISSN = ISSNString }
+        
+        let photo = try await Self.savePhoto(request, form: form)
+        if let photo { thumbnail = try await Self.saveThumbnail(request, photo: photo) }
+        
+        let newspaper = try await Newspaper(request.db, title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: website, ISSN: ISSN, publicationStart: publicationStart, photo: photo?.filename, thumbnail: thumbnail?.filename, number: number, secondaryNumber: secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language)
+        try await newspaper.save(on: request.db)
+        
+        for sender in senders {
+            try await newspaper.$senders.attach(sender, on: request.db)
+        }
+        
+        for tag in tags {
+            try await newspaper.$tags.attach(tag, on: request.db)
+        }
+        
+        return newspaper
+    }
+    
+    static func getSenders(_ request: Request) async throws -> [Sender] {
+        var senders: [Sender] = []
+        
+        guard let bodyString = request.body.string else { throw NewspaperError.unknownSender }
+        let bodyRows = bodyString.split(separator: "\r\n")
+        
+        for (index, row) in bodyRows.enumerated() {
+            if row == "Content-Disposition: form-data; name=\"senders\"" {
+                guard let sender = try await Sender.find(UUID(String(bodyRows[index + 1])), on: request.db) else { throw NewspaperError.unknownSender }
+                senders.append(sender)
+            }
+        }
+        
+        return senders
+    }
+    
+    static func getTags(_ request: Request) async throws -> [Tag] {
+        var tags: [Tag] = []
+        
+        guard let bodyString = request.body.string else { throw NewspaperError.unknownTag }
+        let bodyRows = bodyString.split(separator: "\r\n")
+        
+        for (index, row) in bodyRows.enumerated() {
+            if row == "Content-Disposition: form-data; name=\"tags\"" {
+                guard let tag = try await Tag.find(UUID(String(bodyRows[index + 1])), on: request.db) else { throw NewspaperError.unknownTag }
+                tags.append(tag)
+            }
+        }
+        
+        return tags
+    }
 }
 
 extension Newspaper: CustomStringConvertible {
@@ -301,19 +419,45 @@ struct NewspaperPageDTO: Content {
     var number: String?
     var secondaryNumber: String?
     var date: String
+    var dateForEdit: String
     var pages: Int?
     var circulation: Int?
     var publicationStart: String?
+    var publicationStartForEdit: String?
     var website: String?
     var ISSN: String?
     var photo: String?
     var thumbnail: String?
     var URL: String
+    var color: PublicationColorDTO
+    var publicationType: PublicationTypeDTO
+    var frequency: FrequencyDTO?
     var city: CityDTO
     var language: LanguageDTO
     var paperFormat: PaperFormatDTO?
-    var frequency: Tag?
+    var frequencyTag: Tag?
     var costs: [CostDTO]
     var senders: [SenderDTO]
     var tags: [TagDTO]
+}
+
+struct NewspaperFormDTO: Content {
+    var title: String
+    var publicationType: String
+    var frequency: String?
+    var circulation: String?
+    var website: String?
+    var ISSN: String?
+    var publicationStart: String?
+    var photo: File?
+    var isPhotoChanged: String?
+    var number: String?
+    var secondaryNumber: String?
+    var date: String
+    var color: String
+    var pages: String?
+    var isTop: String?
+    var city: String
+    var paperFormat: String?
+    var language: String
 }

@@ -21,4 +21,10 @@ final class SenderAchievementPivot: Model, @unchecked Sendable {
     var achievement: Achievement
     
     init() { }
+    
+    init(sender: Sender, achievement: Achievement) throws {
+        self.id = UUID()
+        self.$sender.id = try sender.requireID()
+        self.$achievement.id = try achievement.requireID()
+    }
 }

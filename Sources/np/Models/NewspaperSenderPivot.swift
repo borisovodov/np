@@ -21,4 +21,10 @@ final class NewspaperSenderPivot: Model, @unchecked Sendable {
     var sender: Sender
     
     init() { }
+    
+    init(newspaper: Newspaper, sender: Sender) throws {
+        self.id = UUID()
+        self.$newspaper.id = try newspaper.requireID()
+        self.$sender.id = try sender.requireID()
+    }
 }
