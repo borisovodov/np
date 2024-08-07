@@ -90,7 +90,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     init() { }
     
-    init(_ database: Database, title: String, publicationType: PublicationType, frequency: Frequency? = nil, circulation: Int? = nil, website: String? = nil, ISSN: String? = nil, publicationStart: Date? = nil, photo: String? = nil, thumbnail: String? = nil, number: String? = nil, secondaryNumber: String? = nil, date: Date, color: PublicationColor, pages: Int?, city: City, paperFormat: PaperFormat? = nil, language: Language) async throws {
+    init(_ database: Database, title: String, publicationType: PublicationType, frequency: Frequency? = nil, circulation: Int? = nil, website: String? = nil, ISSN: String? = nil, publicationStart: Date? = nil, photo: String? = nil, thumbnail: String? = nil, number: String? = nil, secondaryNumber: String? = nil, date: Date, color: PublicationColor, pages: Int?, city: City, paperFormat: PaperFormat? = nil, language: Language) throws {
         self.id = UUID()
         self.title = title
         self.publicationType = publicationType
@@ -349,7 +349,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         let photo = try await Self.savePhoto(request, form: form)
         if let photo { thumbnail = try await Self.saveThumbnail(request, photo: photo) }
         
-        let newspaper = try await Newspaper(request.db, title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: website, ISSN: ISSN, publicationStart: publicationStart, photo: photo?.filename, thumbnail: thumbnail?.filename, number: number, secondaryNumber: secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language)
+        let newspaper = try Newspaper(request.db, title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: website, ISSN: ISSN, publicationStart: publicationStart, photo: photo?.filename, thumbnail: thumbnail?.filename, number: number, secondaryNumber: secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language)
         try await newspaper.save(on: request.db)
         
         for sender in senders {

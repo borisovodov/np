@@ -25,6 +25,13 @@ final class Cost: Model, @unchecked Sendable, Content {
     
     init() { }
     
+    init(value: Float, currency: Currency, newspaper: Newspaper) throws {
+        self.id = UUID()
+        self.value = value
+        self.$currency.id = try currency.requireID()
+        self.$newspaper.id = try newspaper.requireID()
+    }
+    
     func toDTO(_ database: Database) async throws -> CostDTO {
         return try await CostDTO(value: String(format: "%.2f", self.value), currency: self.$currency.get(on: database).symbol)
     }

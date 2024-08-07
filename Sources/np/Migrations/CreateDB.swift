@@ -33,7 +33,7 @@ struct CreateDB: AsyncMigration {
             .case("bimonthly")
             .create()
         
-        let tagTypes = try await database.enum("tagtype")
+        let tagTypes = try await database.enum("tagType")
             .case("continent")
             .case("frequency")
             .case("paperFormat")
