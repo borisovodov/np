@@ -6,6 +6,7 @@
 //
 
 import Fluent
+import Foundation
 import Swim
 import Vapor
 
