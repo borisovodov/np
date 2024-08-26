@@ -10,6 +10,10 @@ import Foundation
 import Swim
 import Vapor
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#endif
+
 enum NewspaperError: Error {
     case unknownCity
     case incorrectPages
