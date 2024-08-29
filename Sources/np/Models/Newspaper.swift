@@ -6,13 +6,8 @@
 //
 
 import Fluent
-import Foundation
 import Swim
 import Vapor
-
-#if canImport(FoundationEssentials)
-import FoundationEssentials
-#endif
 
 enum NewspaperError: Error {
     case unknownCity
@@ -165,7 +160,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         var publicationStartForEditString: String? = nil
         if let publicationStart = self.publicationStart {
             publicationStartString = dateFormatter.string(from: publicationStart)
-            publicationStartForEditString = publicationStart.ISO8601Format()
+            publicationStartForEditString = try publicationStart.toString()
         }
         
         var costs: [CostDTO] = []
@@ -183,7 +178,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
             try await tags.append(tag.toDTO(database))
         }
         
-        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), dateForEdit: self.date.ISO8601Format(), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, publicationStartForEdit: publicationStartForEditString, website: self.website, ISSN: self.ISSN, photo: self.photoURL, thumbnail: self.thumbnailURL, URL: self.URL, color: self.color.toDTO, publicationType: self.publicationType.toDTO, frequency: self.frequency?.toDTO, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequencyTag: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
+        return try await NewspaperPageDTO(title: self.title, number: self.number, secondaryNumber: self.secondaryNumber, date: dateFormatter.string(from: self.date), dateForEdit: self.date.toString(), pages: self.pages, circulation: self.circulation, publicationStart: publicationStartString, publicationStartForEdit: publicationStartForEditString, website: self.website, ISSN: self.ISSN, photo: self.photoURL, thumbnail: self.thumbnailURL, URL: self.URL, color: self.color.toDTO, publicationType: self.publicationType.toDTO, frequency: self.frequency?.toDTO, city: self.$city.get(on: database).toDTO(database), language: self.$language.get(on: database).toDTO(database), paperFormat: self.$paperFormat.get(on: database)?.toDTO(database), frequencyTag: self.frequency?.tag(database), costs: costs, senders: senders, tags: tags)
     }
     
     func edit(_ request: Request) async throws {
@@ -191,7 +186,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         let senders = try await Self.getSenders(request)
         let tags = try await Self.getTags(request)
         
-        let date = try Date(form.date, strategy: .iso8601)
+        let date = try Date(fromString: form.date)
         var pages: Int? = nil
         var circulation: Int? = nil
         var frequency: Frequency? = nil
@@ -210,7 +205,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         if let pagesString = form.pages { pages = Int(pagesString) }
         if let circulationString = form.circulation { circulation = Int(circulationString) }
         if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
-        if let publicationStartString = form.publicationStart, form.publicationStart != "" { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
+        if let publicationStartString = form.publicationStart, form.publicationStart != "" { try publicationStart = Date(fromString: publicationStartString) }
         if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
         if let numberString = form.number, form.number != "" { number = numberString }
         if let secondaryNumberString = form.secondaryNumber, form.secondaryNumber != "" { secondaryNumber = secondaryNumberString }
@@ -324,7 +319,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         let senders = try await Self.getSenders(request)
         let tags = try await Self.getTags(request)
         
-        let date = try Date(form.date, strategy: .iso8601)
+        let date = try Date(fromString: form.date)
         var pages: Int? = nil
         var circulation: Int? = nil
         var frequency: Frequency? = nil
@@ -344,7 +339,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         if let pagesString = form.pages { pages = Int(pagesString) }
         if let circulationString = form.circulation { circulation = Int(circulationString) }
         if let frequencyString = form.frequency { frequency = Frequency(rawValue: frequencyString) }
-        if let publicationStartString = form.publicationStart, form.publicationStart != "" { try publicationStart = Date(publicationStartString, strategy: .iso8601) }
+        if let publicationStartString = form.publicationStart, form.publicationStart != "" { try publicationStart = Date(fromString: publicationStartString) }
         if let paperFormatString = form.paperFormat { paperFormat = try await PaperFormat.find(UUID(paperFormatString), on: request.db) }
         if let numberString = form.number, form.number != "" { number = numberString }
         if let secondaryNumberString = form.secondaryNumber, form.secondaryNumber != "" { secondaryNumber = secondaryNumberString }
