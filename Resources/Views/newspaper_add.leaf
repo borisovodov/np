@@ -89,7 +89,7 @@
                 </div>
                 <div class="form-group">
                     <label for="publicationStart">Publication Start</label>
-                    <input class="form-control" id="publicationStart" name="publicationStart" value="T00:00:00Z">
+                    <input class="form-control" id="publicationStart" name="publicationStart">
                 </div>
                 <div class="form-group">
                     <label for="tags">Tags</label>
