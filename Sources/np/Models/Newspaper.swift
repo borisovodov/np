@@ -118,12 +118,12 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     var photoURL: String? {
         guard let photo = self.photo else { return nil }
-        return "/" + Self.pathToPhotos + photo
+        return Self.pathToPhotos + photo
     }
     
     var thumbnailURL: String? {
         guard let thumbnail = self.thumbnail else { return nil }
-        return "/" + Self.pathToThumbnails + thumbnail
+        return Self.pathToThumbnails + thumbnail
     }
     
     var isPravda: Bool {
@@ -254,12 +254,22 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         }
     }
     
+//    var photoFile: File {
+//        
+//    }
+    
+    func updateThumbnail(_ request: Request) async throws {
+//        let photo = self.photoFile
+//        self.thumbnail = try await Self.saveThumbnail(request, photo: photo).filename
+//        _ = try await self.save(on: request.db)
+    }
+    
     static var pathToPhotos: String {
-        return "newspapers/originals/"
+        return Bucket.pathToFiles + "/newspapers/originals/"
     }
     
     static var pathToThumbnails: String {
-        return "newspapers/thumbnails/"
+        return Bucket.pathToFiles + "/newspapers/thumbnails/"
     }
     
     static func popular(_ database: Database) async throws -> [NewspaperDTO] {
@@ -281,6 +291,14 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         guard let newspaper = try await Newspaper.query(on: database).sort(\.$date, .descending).first() else { return nil }
         
         return newspaper
+    }
+    
+    static func all(_ database: Database) async throws -> [NewspaperDTO] {
+        var newspapers: [NewspaperDTO] = []
+        for newspaper in try await Newspaper.query(on: database).sort(\.$date, .descending).all() {
+            try await newspapers.append(newspaper.toDTO(database))
+        }
+        return newspapers
     }
     
     static func savePhoto(_ request: Request, form: NewspaperFormDTO) async throws -> File? {
@@ -393,6 +411,12 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         }
         
         return tags
+    }
+    
+    static func updateAllThumbnails(_ request: Request) async throws {
+        for newspaper in try await Newspaper.query(on: request.db).sort(\.$date, .descending).all() {
+            try await newspaper.updateThumbnail(request)
+        }
     }
 }
 

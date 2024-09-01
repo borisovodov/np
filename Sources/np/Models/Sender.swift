@@ -40,7 +40,7 @@ final class Sender: Model, @unchecked Sendable, Content {
     
     var avatarURL: String? {
         guard let avatar = self.avatar else { return nil }
-        return "/" + Self.pathToAvatars + avatar
+        return Self.pathToAvatars + avatar
     }
     
     func cities(_ database: Database) async throws -> [City] {
@@ -114,7 +114,7 @@ final class Sender: Model, @unchecked Sendable, Content {
     }
     
     static var pathToAvatars: String {
-        return "avatars/"
+        return Bucket.pathToFiles + "/avatars/"
     }
     
     static func popular(_ database: Database) async throws -> [SenderDTO] {
@@ -162,16 +162,6 @@ final class Sender: Model, @unchecked Sendable, Content {
         return sender
     }
     
-//    var countries: [Country] {
-//        countries_ids = self.newspapers().values_list('city__country_id', flat=True)
-//        return Country.objects.order_by('name').filter(id__in=list(countries_ids))
-//    }
-
-//    var languages: [Language] {
-//        languages_ids = self.newspapers().values_list('language_id', flat=True)
-//        return Language.objects.order_by('name').filter(id__in=list(languages_ids))
-//    }
-
 //    def get_achievements_alph(self):
 //        return self.achievements.order_by('name')
 
