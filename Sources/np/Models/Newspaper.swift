@@ -238,10 +238,10 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         
         
         if Bootstrap.stringToBool(form.isPhotoChanged) {
-            let photo = try await Self.savePhoto(request, form: form)
+            let photo = try await Self.savePhoto(form: form)
             if let photo {
                 self.photo = photo.filename
-                self.thumbnail = try await Self.saveThumbnail(request, photo: photo).filename
+                self.thumbnail = try await Self.saveThumbnail(photo: photo).filename
             } else {
                 self.photo = nil
                 self.thumbnail = nil
@@ -263,9 +263,11 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     }
     
     func updateThumbnail(_ request: Request) async throws {
-//        let photo = self.photoFile
-//        self.thumbnail = try await Self.saveThumbnail(request, photo: photo).filename
-//        _ = try await self.save(on: request.db)
+        if let photoName = self.photo {
+            let photo = try await Bucket.get(fileName: photoName, fileType: .newspaperPhoto)
+            self.thumbnail = try await Self.saveThumbnail(photo: photo).filename
+            _ = try await self.save(on: request.db)
+        }
     }
     
     static func popular(_ database: Database) async throws -> [NewspaperDTO] {
@@ -297,7 +299,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         return newspapers
     }
     
-    static func savePhoto(_ request: Request, form: NewspaperFormDTO) async throws -> File? {
+    static func savePhoto(form: NewspaperFormDTO) async throws -> File? {
         guard let photo = form.photo else { return nil }
         
         if photo.filename == "" { return nil }
@@ -307,7 +309,7 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         return savedPhoto
     }
     
-    static func saveThumbnail(_ request: Request, photo: File) async throws -> File {
+    static func saveThumbnail(photo: File) async throws -> File {
         let photoImage = try Image<RGBA, UInt8>(fileData: Data(buffer: photo.data))
         
         let maxSide = 522
@@ -357,8 +359,8 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         if let websiteString = form.website, form.website != "" { website = websiteString }
         if let ISSNString = form.ISSN, form.ISSN != "" { ISSN = ISSNString }
         
-        let photo = try await Self.savePhoto(request, form: form)
-        if let photo { thumbnail = try await Self.saveThumbnail(request, photo: photo) }
+        let photo = try await Self.savePhoto(form: form)
+        if let photo { thumbnail = try await Self.saveThumbnail(photo: photo) }
         
         let newspaper = try Newspaper(request.db, title: form.title, publicationType: publicationType, frequency: frequency, circulation: circulation, website: website, ISSN: ISSN, publicationStart: publicationStart, photo: photo?.filename, thumbnail: thumbnail?.filename, number: number, secondaryNumber: secondaryNumber, date: date, color: color, pages: pages, city: city, paperFormat: paperFormat, language: language)
         try await newspaper.save(on: request.db)

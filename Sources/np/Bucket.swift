@@ -79,6 +79,26 @@ struct Bucket {
         return file
     }
 
+	static func get(fileName: String, fileType: Bucket.FileType) async throws -> File {
+		guard let accessKeyId else { throw BucketError.incorrectAWSCredentials }
+		guard let secretAccessKey else { throw BucketError.incorrectAWSCredentials }
+		guard let bucketName else { throw BucketError.incorrectAWSCredentials }
+		guard let endpoint else { throw BucketError.incorrectAWSCredentials }
+		guard let region else { throw BucketError.incorrectAWSCredentials }
+
+		let client = AWSClient(credentialProvider: .static(accessKeyId: accessKeyId, secretAccessKey: secretAccessKey))
+        let s3 = S3(client: client, region: Region(rawValue: region), endpoint: endpoint)
+		let key: String = fileType.folderPath + fileName
+
+		let getObjectRequest = S3.GetObjectRequest(bucket: bucketName, key: key)
+		let response = try await s3.getObject(getObjectRequest)
+		let body = try await response.body.collect(upTo: 1_000_000)
+
+		try await client.shutdown()
+
+		return File(data: body, filename: fileName)
+    }
+
 	static func fileURL(name: String, fileType: Bucket.FileType) throws -> String {
 		return try fileType.folderURL() + name
 	}
