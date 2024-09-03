@@ -35,12 +35,7 @@ struct NewspaperController: RouteCollection {
 
     @Sendable
     func getList(req: Request) async throws -> View {
-        var newspapers: [NewspaperDTO] = []
-        for newspaper in try await Newspaper.query(on: req.db).sort(\.$date, .descending).all() {
-            try await newspapers.append(newspaper.toDTO(req.db))
-        }
-        
-        return try await req.view.render("newspapers", ["newspapers": newspapers])
+        return try await req.view.render("newspapers", ["newspapers": Newspaper.all(req.db)])
     }
     
     @Sendable

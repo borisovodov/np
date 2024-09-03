@@ -118,12 +118,20 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     var photoURL: String? {
         guard let photo = self.photo else { return nil }
-        return "/" + Self.pathToPhotos + photo
+        do {
+            return try Bucket.fileURL(name: photo, fileType: .newspaperPhoto)
+        } catch {
+            return nil
+        }
     }
     
     var thumbnailURL: String? {
         guard let thumbnail = self.thumbnail else { return nil }
-        return "/" + Self.pathToThumbnails + thumbnail
+        do {
+            return try Bucket.fileURL(name: thumbnail, fileType: .newspaperPhotoThumbnail)
+        } catch {
+            return nil
+        }
     }
     
     var isPravda: Bool {
@@ -254,12 +262,14 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         }
     }
     
-    static var pathToPhotos: String {
-        return "newspapers/originals/"
-    }
+//    var photoFile: File {
+//        
+//    }
     
-    static var pathToThumbnails: String {
-        return "newspapers/thumbnails/"
+    func updateThumbnail(_ request: Request) async throws {
+//        let photo = self.photoFile
+//        self.thumbnail = try await Self.saveThumbnail(request, photo: photo).filename
+//        _ = try await self.save(on: request.db)
     }
     
     static func popular(_ database: Database) async throws -> [NewspaperDTO] {
@@ -283,15 +293,22 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         return newspaper
     }
     
+    static func all(_ database: Database) async throws -> [NewspaperDTO] {
+        var newspapers: [NewspaperDTO] = []
+        for newspaper in try await Newspaper.query(on: database).sort(\.$date, .descending).all() {
+            try await newspapers.append(newspaper.toDTO(database))
+        }
+        return newspapers
+    }
+    
     static func savePhoto(_ request: Request, form: NewspaperFormDTO) async throws -> File? {
         guard let photo = form.photo else { return nil }
         
         if photo.filename == "" { return nil }
         
-        let path = request.application.directory.publicDirectory + Newspaper.pathToPhotos + photo.filename
-        try await request.fileio.writeFile(photo.data, at: path)
+        let savedPhoto = try await Bucket.put(file: photo, fileType: .newspaperPhoto)
         
-        return photo
+        return savedPhoto
     }
     
     static func saveThumbnail(_ request: Request, photo: File) async throws -> File {
@@ -307,11 +324,9 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         }
         let thumbnailImage = photoImage.resize(width: width, height: height)
         let thumbnail = try File(data: ByteBuffer(data: thumbnailImage.fileData()), filename: photo.filename)
+        let savedThumbnail = try await Bucket.put(file: thumbnail, fileType: .newspaperPhotoThumbnail)
         
-        let path = request.application.directory.publicDirectory + Newspaper.pathToThumbnails + thumbnail.filename
-        try await request.fileio.writeFile(thumbnail.data, at: path)
-        
-        return thumbnail
+        return savedThumbnail
     }
     
     static func add(_ request: Request) async throws -> Newspaper {
@@ -393,6 +408,12 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         }
         
         return tags
+    }
+    
+    static func updateAllThumbnails(_ request: Request) async throws {
+        for newspaper in try await Newspaper.query(on: request.db).sort(\.$date, .descending).all() {
+            try await newspaper.updateThumbnail(request)
+        }
     }
 }
 

@@ -148,6 +148,12 @@ func routes(_ app: Application) throws {
         
         return try await req.view.render("statistics", context)
     }
+    
+    app.get("updateall") { req async throws -> View in
+        try await Newspaper.updateAllThumbnails(req)
+        
+        throw Abort.redirect(to: "/")
+    }
 
     try app.register(collection: AchievementController())
     try app.register(collection: CountryController())
