@@ -23,4 +23,10 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/np:latest
-          build-args: MAPBOX_ACCESS_KEY=${{ secrets.MAPBOX_ACCESS_KEY }}, AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}, AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}, AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}, AWS_ENDPOINT=${{ secrets.AWS_ENDPOINT }}, AWS_REGION=${{ secrets.AWS_REGION }}
+          build-args: |
+            MAPBOX_ACCESS_KEY=${{ secrets.MAPBOX_ACCESS_KEY }}
+            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}
+            AWS_ENDPOINT=${{ secrets.AWS_ENDPOINT }}
+            AWS_REGION=${{ secrets.AWS_REGION }}

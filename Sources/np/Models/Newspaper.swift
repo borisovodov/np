@@ -262,10 +262,6 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         }
     }
     
-//    var photoFile: File {
-//        
-//    }
-    
     func updateThumbnail(_ request: Request) async throws {
 //        let photo = self.photoFile
 //        self.thumbnail = try await Self.saveThumbnail(request, photo: photo).filename
