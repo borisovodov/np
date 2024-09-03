@@ -118,12 +118,20 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     var photoURL: String? {
         guard let photo = self.photo else { return nil }
-        return Self.pathToPhotos + photo
+        do {
+            return try Bucket.fileURL(name: photo, fileType: .newspaperPhoto)
+        } catch {
+            return nil
+        }
     }
     
     var thumbnailURL: String? {
         guard let thumbnail = self.thumbnail else { return nil }
-        return Self.pathToThumbnails + thumbnail
+        do {
+            return try Bucket.fileURL(name: thumbnail, fileType: .newspaperPhotoThumbnail)
+        } catch {
+            return nil
+        }
     }
     
     var isPravda: Bool {
@@ -264,14 +272,6 @@ final class Newspaper: Model, @unchecked Sendable, Content {
 //        _ = try await self.save(on: request.db)
     }
     
-    static var pathToPhotos: String {
-        return Bucket.pathToFiles + "/newspapers/originals/"
-    }
-    
-    static var pathToThumbnails: String {
-        return Bucket.pathToFiles + "/newspapers/thumbnails/"
-    }
-    
     static func popular(_ database: Database) async throws -> [NewspaperDTO] {
         var newspapers: [NewspaperDTO] = []
         for newspaper in try await Newspaper.query(on: database).filter(\.$isTop == true).sort(\.$date, .descending).range(..<8).all() {
@@ -306,10 +306,9 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         
         if photo.filename == "" { return nil }
         
-        let path = request.application.directory.publicDirectory + Newspaper.pathToPhotos + photo.filename
-        try await request.fileio.writeFile(photo.data, at: path)
+        let savedPhoto = try await Bucket.put(file: photo, fileType: .newspaperPhoto)
         
-        return photo
+        return savedPhoto
     }
     
     static func saveThumbnail(_ request: Request, photo: File) async throws -> File {
@@ -325,11 +324,9 @@ final class Newspaper: Model, @unchecked Sendable, Content {
         }
         let thumbnailImage = photoImage.resize(width: width, height: height)
         let thumbnail = try File(data: ByteBuffer(data: thumbnailImage.fileData()), filename: photo.filename)
+        let savedThumbnail = try await Bucket.put(file: thumbnail, fileType: .newspaperPhotoThumbnail)
         
-        let path = request.application.directory.publicDirectory + Newspaper.pathToThumbnails + thumbnail.filename
-        try await request.fileio.writeFile(thumbnail.data, at: path)
-        
-        return thumbnail
+        return savedThumbnail
     }
     
     static func add(_ request: Request) async throws -> Newspaper {

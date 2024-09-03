@@ -6,34 +6,80 @@
 //
 
 import SotoS3
+import Vapor
+
+enum BucketError: Error {
+	case incorrectAWSCredentials
+}
 
 struct Bucket {
-    static let pathToFiles: String = "\(Self.endpoint)/\(Self.bucketName)"
-    private static let bucketName: String = "e1bedefb-np-bucket"
-    private static let endpoint: String = "https://s3.timeweb.cloud"
-    private static let region: String = "ru-1"
+	enum FileType: String {
+		case newspaperPhoto
+		case newspaperPhotoThumbnail
+		case avatar
 
-    func createBucketPutGetObject() async throws {
-        let client = AWSClient(credentialProvider: .static(accessKeyId: "TZ9BCUBY1DKD7VLZ6OMK", secretAccessKey: "GMKIGKbdSD0kEGEKsKms1EhBcTej6v0qY82tqZny"))
-        let s3 = S3(client: client, region: Region(rawValue: Self.region), endpoint: Self.endpoint)
-        
-        
-        
-        
-        // Upload text file to the s3
-        let bodyData = "hello world"
+		var folderPath: String {
+			switch self {
+				case .newspaperPhoto:
+					return "newspapers/originals/"
+				case .newspaperPhotoThumbnail:
+					return "newspapers/thumbnails/"
+				case .avatar:
+					return "avatars/"
+			}
+		}
+
+		func folderURL() throws -> String {
+			switch self {
+				case .newspaperPhoto:
+					return try "\(Bucket.pathToFiles())/\(Self.newspaperPhoto.folderPath)"
+				case .newspaperPhotoThumbnail:
+					return try "\(Bucket.pathToFiles())/\(Self.newspaperPhotoThumbnail.folderPath)"
+				case .avatar:
+					return try "\(Bucket.pathToFiles())/\(Self.avatar.folderPath)"
+			}
+		}
+	}
+
+    static func pathToFiles() throws -> String {
+		guard let endpoint else { throw BucketError.incorrectAWSCredentials }
+		guard let bucketName else { throw BucketError.incorrectAWSCredentials }
+
+		return "\(endpoint)/\(bucketName)"
+	}
+
+    private static let accessKeyId: String? = Environment.get("AWS_ACCESS_KEY_ID")
+    private static let secretAccessKey: String? = Environment.get("AWS_SECRET_ACCESS_KEY")
+    private static let bucketName: String? = Environment.get("AWS_BUCKET_NAME")
+    private static let endpoint: String? = Environment.get("AWS_ENDPOINT")
+    private static let region: String? = Environment.get("AWS_REGION")
+
+    static func put(file: File, fileType: Bucket.FileType) async throws -> File {
+		guard let accessKeyId else { throw BucketError.incorrectAWSCredentials }
+		guard let secretAccessKey else { throw BucketError.incorrectAWSCredentials }
+		guard let bucketName else { throw BucketError.incorrectAWSCredentials }
+		guard let endpoint else { throw BucketError.incorrectAWSCredentials }
+		guard let region else { throw BucketError.incorrectAWSCredentials }
+
+        let client = AWSClient(credentialProvider: .static(accessKeyId: accessKeyId, secretAccessKey: secretAccessKey))
+        let s3 = S3(client: client, region: Region(rawValue: region), endpoint: endpoint)
+        let key: String = fileType.folderPath + file.filename
+
         let putObjectRequest = S3.PutObjectRequest(
             acl: .publicRead,
-            body: AWSHTTPBody(string: bodyData),
-            bucket: Self.bucketName,
-            key: "hello.txt"
+            body: AWSHTTPBody(buffer: file.data),
+            bucket: bucketName,
+            key: key
         )
-        _ = try await s3.putObject(putObjectRequest)
-        // download text file just uploaded to S3
-        let getObjectRequest = S3.GetObjectRequest(bucket: Self.bucketName, key: "hello.txt")
-        let response = try await s3.getObject(getObjectRequest)
-        // print contents of response
-        print(response.body)
-        try await client.shutdown()
+
+		_ = try await s3.putObject(putObjectRequest)
+
+		try await client.shutdown()
+        
+        return file
     }
+
+	static func fileURL(name: String, fileType: Bucket.FileType) throws -> String {
+		return try fileType.folderURL() + name
+	}
 }

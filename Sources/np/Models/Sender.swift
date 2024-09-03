@@ -40,7 +40,11 @@ final class Sender: Model, @unchecked Sendable, Content {
     
     var avatarURL: String? {
         guard let avatar = self.avatar else { return nil }
-        return Self.pathToAvatars + avatar
+        do {
+            return try Bucket.fileURL(name: avatar, fileType: .avatar)
+        } catch {
+            return nil
+        }
     }
     
     func cities(_ database: Database) async throws -> [City] {
@@ -107,14 +111,10 @@ final class Sender: Model, @unchecked Sendable, Content {
                 try await self.save(on: request.db)
                 return
             }
-            self.avatar = avatar
+            self.avatar = avatar.filename
         }
         
         try await self.save(on: request.db)
-    }
-    
-    static var pathToAvatars: String {
-        return Bucket.pathToFiles + "/avatars/"
     }
     
     static func popular(_ database: Database) async throws -> [SenderDTO] {
@@ -135,15 +135,14 @@ final class Sender: Model, @unchecked Sendable, Content {
         try await Sender.query(on: database).filter(\.$name == "Sasha Ovodova").first()
     }
     
-    static func saveAvatar(_ request: Request, form: SenderFormDTO) async throws -> String? {
+    static func saveAvatar(_ request: Request, form: SenderFormDTO) async throws -> File? {
         guard let avatar = form.avatar else { return nil }
         
         if avatar.filename == "" { return nil }
         
-        let path = request.application.directory.publicDirectory + Sender.pathToAvatars + avatar.filename
-        try await request.fileio.writeFile(avatar.data, at: path)
+        let savedAvatar = try await Bucket.put(file: avatar, fileType: .avatar)
         
-        return avatar.filename
+        return savedAvatar
     }
     
     static func all(_ database: Database) async throws -> [SenderDTO] {
@@ -156,8 +155,10 @@ final class Sender: Model, @unchecked Sendable, Content {
     
     static func add(_ request: Request) async throws -> Sender {
         let form = try request.content.decode(SenderFormDTO.self)
+
+        let avatar = try await Self.saveAvatar(request, form: form)
         
-        let sender = try await Sender(name: form.name, avatar: Self.saveAvatar(request, form: form))
+        let sender = Sender(name: form.name, avatar: avatar?.filename)
         try await sender.save(on: request.db)
         return sender
     }
