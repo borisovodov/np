@@ -410,7 +410,9 @@ final class Newspaper: Model, @unchecked Sendable, Content {
     
     static func updateAllThumbnails(_ request: Request) async throws {
         for newspaper in try await Newspaper.query(on: request.db).sort(\.$date, .descending).all() {
-            try await newspaper.updateThumbnail(request)
+            do {
+                try await newspaper.updateThumbnail(request)
+            } catch { }
         }
     }
 }
