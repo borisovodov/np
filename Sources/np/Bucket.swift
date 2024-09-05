@@ -92,7 +92,7 @@ struct Bucket {
 
 		let getObjectRequest = S3.GetObjectRequest(bucket: bucketName, key: key)
 		let response = try await s3.getObject(getObjectRequest)
-		let body = try await response.body.collect(upTo: 1_000_000)
+		let body = try await response.body.collect(upTo: 1_000_000_000)
 
 		try await client.shutdown()
 
