@@ -118,13 +118,15 @@ final class Sender: Model, @unchecked Sendable, Content {
     }
     
     static func popular(_ database: Database) async throws -> [SenderDTO] {
-        var senders: [SenderDTO] = []
+        var senders: [SenderDTO: Int] = [:]
         
-        for sender in try await Sender.query(on: database).filter(\.$name != "Anonym / Unknown").range(..<8).all() {
-            try await senders.append(sender.toDTO(database))
+        for sender in try await Sender.query(on: database).filter(\.$name != "Anonym / Unknown").all() {
+            try await senders[sender.toDTO(database)] = sender.cities(database).count
         }
+
+        let sortedSenders = senders.sorted(by: { $0.value > $1.value })
         
-        return senders.sorted { $0.citiesCount > $1.citiesCount }
+        return Array(sortedSenders.map({ $0.key }).prefix(8))
     }
     
     static func author(_ database: Database) async throws -> Sender? {
