@@ -134,7 +134,7 @@ final class Sender: Model, @unchecked Sendable, Content {
     }
     
     static func first(_ database: Database) async throws -> Sender? {
-        try await Sender.query(on: database).filter(\.$name == "Sasha Ovodova").first()
+        try await Sender.query(on: database).filter(\.$name == "Aleksandra Ovodova").first()
     }
     
     static func saveAvatar(_ request: Request, form: SenderFormDTO) async throws -> File? {
