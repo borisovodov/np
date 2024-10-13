@@ -10,7 +10,6 @@ import Vapor
 
 struct Marker: Content {
     var city: CityDTO
-    var newspapers: [NewspaperDTO]
     
     static func all(_ database: Database) async throws -> [Marker] {
         var markers: [Marker] = []

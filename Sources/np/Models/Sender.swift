@@ -74,7 +74,7 @@ final class Sender: Model, @unchecked Sendable, Content {
         }
         
         for city in cities {
-            markers.append(Marker(city: city.key, newspapers: city.value))
+            markers.append(Marker(city: city.key))
         }
         
         return markers

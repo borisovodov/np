@@ -4,9 +4,9 @@ import Vapor
 func routes(_ app: Application) throws {
     app.get { req async throws -> View in
         struct Context: Content {
-            var popularNewspapers: [NewspaperDTO]
-            var popularSenders: [SenderDTO]
-            var markers: [Marker]
+            let popularNewspapers: [NewspaperDTO]
+            let popularSenders: [SenderDTO]
+            let markers: [Marker]
         }
         
         let context = Context(
@@ -20,11 +20,11 @@ func routes(_ app: Application) throws {
     
     app.get("about") { req async throws -> View in
         struct Context: Content {
-            var author: SenderDTO?
-            var authorCity: CityDTO?
-            var firstNewspaper: NewspaperDTO?
-            var firstSender: SenderDTO?
-            var firstCountry: CountryDTO?
+            let author: SenderDTO?
+            let authorCity: CityDTO?
+            let firstNewspaper: NewspaperDTO?
+            let firstSender: SenderDTO?
+            let firstCountry: CountryDTO?
         }
         
         let context = Context(
@@ -40,7 +40,7 @@ func routes(_ app: Application) throws {
     
     app.get("map") { req async throws -> View in
         struct Context: Content {
-            var markers: [Marker]
+            let markers: [Marker]
         }
         
         let context = Context(
@@ -52,14 +52,14 @@ func routes(_ app: Application) throws {
     
     app.get("search") { req async throws -> View in
         struct Context: Content {
-            var query: String?
-            var achievements: [AchievementDTO]
-            var cities: [CityDTO]
-            var countries: [CountryDTO]
-            var languages: [LanguageDTO]
-            var senders: [SenderDTO]
-            var tags: [TagDTO]
-            var newspapers: [NewspaperDTO]
+            let query: String?
+            let achievements: [AchievementDTO]
+            let cities: [CityDTO]
+            let countries: [CountryDTO]
+            let languages: [LanguageDTO]
+            let senders: [SenderDTO]
+            let tags: [TagDTO]
+            let newspapers: [NewspaperDTO]
         }
         
         let query = try req.query.decode(SearchQuery.self).query ?? ""
@@ -107,23 +107,23 @@ func routes(_ app: Application) throws {
     
     app.get("statistics") { req async throws -> View in
         struct Context: Content {
-            var numberOfNewspapers: Int
-            var numberOfCountries: Int
-            var numberOfCities: Int
-            var countryWithMaxNumberOfNewspapers: CountryDTO?
-            var numberOfLanguages: Int
-            var languageWithMaxNumberOfNewspapers: LanguageDTO?
-            var numberOfContinents: Int
-            var continents: [TagDTO]
-            var continentWithMaxNumberOfNewspapers: TagDTO?
-            var northernmostCity: CityPageDTO?
-            var southernmostCity: CityPageDTO?
-            var westernmostCity: CityPageDTO?
-            var easternmostCity: CityPageDTO?
-            var numberOfSenders: Int
-            var senderWithMaxNumberOfCities: SenderDTO?
-            var firstNewspaper: NewspaperPageDTO?
-            var lastNewspaper: NewspaperPageDTO?
+            let numberOfNewspapers: Int
+            let numberOfCountries: Int
+            let numberOfCities: Int
+            let countryWithMaxNumberOfNewspapers: CountryDTO?
+            let numberOfLanguages: Int
+            let languageWithMaxNumberOfNewspapers: LanguageDTO?
+            let numberOfContinents: Int
+            let continents: [TagDTO]
+            let continentWithMaxNumberOfNewspapers: TagDTO?
+            let northernmostCity: CityPageDTO?
+            let southernmostCity: CityPageDTO?
+            let westernmostCity: CityPageDTO?
+            let easternmostCity: CityPageDTO?
+            let numberOfSenders: Int
+            let senderWithMaxNumberOfCities: SenderDTO?
+            let firstNewspaper: NewspaperPageDTO?
+            let lastNewspaper: NewspaperPageDTO?
         }
         
         let context = Context(
