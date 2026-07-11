@@ -1,0 +1,904 @@
+<p>This map shows all places from which newspapers were brought for this site.</p>
+<p>Also you can see the <a style="text-decoration: underline" href="https://googledrive.com/host/0B3n4EMBczDDEfkZOTFltWm1zYnlFTXAxUHY2TE9fbWhlWUoyN1IyZDdHUFVvN2xuNkNEczA/map.html">full map</a>.</p>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfa0x6UYdgUF7kzg0iGJCoReWvUZRJ5D0&sensor=false" type="text/javascript">
+</script>
+<script>
+ function initialize() {
+     var mapOptions = {
+         center: new google.maps.LatLng(33.818104,26.1731511),
+         zoom: 2,
+         panControl: false,
+         zoomControl: true,
+		    zoomControlOptions: {
+		    style: google.maps.ZoomControlStyle.SMALL
+		    },
+		    mapTypeControl: false,
+		    scaleControl: true,
+		    streetViewControl: false,
+		    overviewMapControl: false,
+		    mapTypeId: google.maps.MapTypeId.ROADMAP //Рельеф - TERRAIN
+		    };
+	    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+	    var content=[];
+	    var papername=[];
+	    var papertitle=[];
+	    var papernumber1=[];
+	    var papernumber2=[];
+	    var paperdate=[];
+	    var paperlang=[];
+	    var papersender=[];
+	    var paperland=[];
+	    var paperlink=[];
+	    var iconimage=[];
+	    var infowindow=[];
+	    var marker=[];
+
+     papername[0]='Beijing, China';
+     papertitle[0]='体坛周报';
+     papernumber1[0]='';
+     papernumber2[0]='';
+     paperdate[0]='January 13, 2012';
+     paperlang[0]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Chinese">Chinese</a>';
+     papersender[0]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexandra%20Ovodova">Alexandra Ovodova</a>';
+     paperland[0] = new google.maps.LatLng(39.9388838,116.3974589);
+     paperlink[0]='http://papersaround.blogspot.com/2012/01/beijing-china.html';
+     iconimage[0]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/china.png';
+
+     papername[1]='Tokyo, Japan';
+     papertitle[1]='産経新聞';
+     papernumber1[1]='13371';
+     papernumber2[1]='';
+     paperdate[1]='July 31, 2013';
+     paperlang[1]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Japanese">Japanese</a>';
+     papersender[1]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Valentin%20Tetyorkin">Valentin Tetyorkin</a>';
+     paperland[1] = new google.maps.LatLng(35.673343,139.710388);
+     paperlink[1]='http://papersaround.blogspot.com/2013/07/tokyo-japan.html';
+     iconimage[1]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/japan.png';
+
+     papername[2]='Nice, France';
+     papertitle[2]='Le Courrier de Russie';
+     papernumber1[2]='251';
+     papernumber2[2]='';
+     paperdate[2]='February 7, 2014';
+     paperlang[2]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/French">French</a>';
+     papersender[2]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Maxim%20Neradovsky">Maxim Neradovsky</a>';
+     paperland[2] = new google.maps.LatLng(43.7031905,7.252817);
+     paperlink[2]='http://papersaround.blogspot.com/2014/02/nice-france.html';
+     iconimage[2]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/france.png';
+
+     papername[3]='Moscow, Russia';
+     papertitle[3]='Вечерняя Москва';
+     papernumber1[3]='222';
+     papernumber2[3]='26573';
+     paperdate[3]='December 2, 2013';
+     paperlang[3]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[3]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[3] = new google.maps.LatLng(55.749792,37.632495);
+     paperlink[3]='';
+     iconimage[3]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[4]='Perm, Russia';
+     papertitle[4]='Звезда';
+     papernumber1[4]='82';
+     papernumber2[4]='32098';
+     paperdate[4]='July 26, 2013';
+     paperlang[4]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[4]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Maxim%20Tuhbatov">Maxim Tuhbatov</a>';
+     paperland[4] = new google.maps.LatLng(58.020486,56.2342755);
+     paperlink[4]='http://papersaround.blogspot.com/2013/07/perm-russia.html';
+     iconimage[4]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[5]='Kamyshlov, Russia';
+     papertitle[5]='Камышловские известия';
+     papernumber1[5]='15';
+     papernumber2[5]='13612';
+     paperdate[5]='February 11, 2014';
+     paperlang[5]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[5]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alvira%20Kvashnina">Alvira Kvashnina</a>';
+     paperland[5] = new google.maps.LatLng(56.848974,62.7103416);
+     paperlink[5]='';
+     iconimage[5]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[6]='Izhevsk, Russia';
+     papertitle[6]='Удмуртская правда';
+     papernumber1[6]='22';
+     papernumber2[6]='25173';
+     paperdate[6]='February 26, 2014';
+     paperlang[6]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[6]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[6] = new google.maps.LatLng(56.8638095,53.2281006);
+     paperlink[6]='';
+     iconimage[6]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[7]='Tyumen, Russia';
+     papertitle[7]='Тюменская правда';
+     papernumber1[7]='20';
+     papernumber2[7]='19166';
+     paperdate[7]='February 6, 2014';
+     paperlang[7]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[7]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[7] = new google.maps.LatLng(57.174086,65.5719995);
+     paperlink[7]='';
+     iconimage[7]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[8]='Vladimir, Russia';
+     papertitle[8]='Хронометр Владимир';
+     papernumber1[8]='47';
+     papernumber2[8]='740';
+     paperdate[8]='November 19, 2013';
+     paperlang[8]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[8]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Maxim%20Tuhbatov">Maxim Tuhbatov</a>';
+     paperland[8] = new google.maps.LatLng(56.1376615,40.4134805);
+     paperlink[8]='';
+     iconimage[8]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[9]='Samara, Russia';
+     papertitle[9]='Самарские известия';
+     papernumber1[9]='170';
+     papernumber2[9]='6599';
+     paperdate[9]='September 20, 2013';
+     paperlang[9]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[9]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[9] = new google.maps.LatLng(53.260908,50.198077);
+     paperlink[9]='http://papersaround.blogspot.com/2015/02/samara-russia.html';
+     iconimage[9]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[10]='Ivdel, Russia';
+     papertitle[10]='ВГ';
+     papernumber1[10]='34';
+     papernumber2[10]='1000';
+     paperdate[10]='August 21, 2013';
+     paperlang[10]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[10]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Boris%20Ovodov">Boris Ovodov</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ekaterina%20Gladysheva">Ekaterina Gladysheva</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Maxim%20Tuhbatov">Maxim Tuhbatov</a>';
+     paperland[10] = new google.maps.LatLng(60.6911365,60.4357734);
+     paperlink[10]='';
+     iconimage[10]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[11]='Verkhoturye, Russia';
+     papertitle[11]='Православная газета Екатеринбург';
+     papernumber1[11]='40';
+     papernumber2[11]='697';
+     paperdate[11]='October 1, 2012';
+     paperlang[11]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[11]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Boris%20Ovodov">Boris Ovodov</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ekaterina%20Gladysheva">Ekaterina Gladysheva</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Maxim%20Tuhbatov">Maxim Tuhbatov</a>';
+     paperland[11] = new google.maps.LatLng(58.8765859,60.7536827);
+     paperlink[11]='';
+     iconimage[11]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[12]='Anapa, Russia';
+     papertitle[12]='Черноморка';
+     papernumber1[12]='68';
+     papernumber2[12]='1261';
+     paperdate[12]='August 28, 2013';
+     paperlang[12]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[12]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Dmitry%20Lukashevich">Dmitry Lukashevich</a>';
+     paperland[12] = new google.maps.LatLng(44.9237242,37.3146554);
+     paperlink[12]='';
+     iconimage[12]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[13]='Krasnodar, Russia';
+     papertitle[13]='Краснодарские известия';
+     papernumber1[13]='127';
+     papernumber2[13]='5130';
+     paperdate[13]='August 23, 2013';
+     paperlang[13]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[13]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Dmitry%20Lukashevich">Dmitry Lukashevich</a>';
+     paperland[13] = new google.maps.LatLng(45.053548,39.01605);
+     paperlink[13]='http://papersaround.blogspot.com/2013/08/krasnodar-russia.html';
+     iconimage[13]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[14]='Gelendzhik, Russia';
+     papertitle[14]='Маяк Геленджика';
+     papernumber1[14]='33';
+     papernumber2[14]='83';
+     paperdate[14]='August 21, 2013';
+     paperlang[14]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[14]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Dmitry%20Lukashevich">Dmitry Lukashevich</a>';
+     paperland[14] = new google.maps.LatLng(44.576569,38.0535916);
+     paperlink[14]='';
+     iconimage[14]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[15]='Tuapse, Russia';
+     papertitle[15]='Мой Туапсе';
+     papernumber1[15]='33';
+     papernumber2[15]='771';
+     paperdate[15]='August 22, 2013';
+     paperlang[15]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[15]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Dmitry%20Lukashevich">Dmitry Lukashevich</a>';
+     paperland[15] = new google.maps.LatLng(44.1018987,39.078565);
+     paperlink[15]='http://papersaround.blogspot.com/2015/04/tuapse-russia.html';
+     iconimage[15]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[16]='Rostov-on-Don, Russia';
+     papertitle[16]='Газета Дона';
+     papernumber1[16]='33';
+     papernumber2[16]='765';
+     paperdate[16]='August 13, 2013';
+     paperlang[16]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[16]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Dmitry%20Lukashevich">Dmitry Lukashevich</a>';
+     paperland[16] = new google.maps.LatLng(47.2610085,39.6279999);
+     paperlink[16]='http://papersaround.blogspot.com/2015/02/rostov-on-don-russia.html';
+     iconimage[16]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[17]='Penza, Russia';
+     papertitle[17]='Пензенская правда';
+     papernumber1[17]='61';
+     papernumber2[17]='24297';
+     paperdate[17]='August 16, 2013';
+     paperlang[17]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[17]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Dmitry%20Lukashevich">Dmitry Lukashevich</a>';
+     paperland[17] = new google.maps.LatLng(53.195153,45.0306203);
+     paperlink[17]='http://papersaround.blogspot.com/2015/02/penza-russia.html';
+     iconimage[17]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[18]='Balashov, Russia';
+     papertitle[18]='Весь Балашов';
+     papernumber1[18]='31';
+     papernumber2[18]='249';
+     paperdate[18]='August 14, 2013';
+     paperlang[18]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[18]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Dmitry%20Lukashevich">Dmitry Lukashevich</a>';
+     paperland[18] = new google.maps.LatLng(51.54481,43.1926455);
+     paperlink[18]='http://papersaround.blogspot.com/2015/01/balashov-russia.html';
+     iconimage[18]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[19]='Yekaterinburg, Russia';
+     papertitle[19]='Вечерний Екатеринбург';
+     papernumber1[19]='44';
+     papernumber2[19]='15940';
+     paperdate[19]='April 13, 2014';
+     paperlang[19]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[19]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Boris%20Ovodov">Boris Ovodov</a>';
+     paperland[19] = new google.maps.LatLng(56.813891,60.6549335);
+     paperlink[19]='http://papersaround.blogspot.com/2014/04/yekaterinburg-russia.html';
+     iconimage[19]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[20]='Perm, Russia';
+     papertitle[20]='Звезда';
+     papernumber1[20]='85';
+     papernumber2[20]='32101';
+     paperdate[20]='August 2, 2013';
+     paperlang[20]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[20]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Maxim%20Tuhbatov">Maxim Tuhbatov</a>';
+     paperland[20] = new google.maps.LatLng(58.0140056,56.2491115);
+     paperlink[20]='http://papersaround.blogspot.com/2013/08/perm-russia.html';
+     iconimage[20]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[21]='Kazan, Russia';
+     papertitle[21]='Республика Татарстан';
+     papernumber1[21]='64';
+     papernumber2[21]='27678';
+     paperdate[21]='April 30, 2014';
+     paperlang[21]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[21]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[21] = new google.maps.LatLng(55.7955015,49.073303);
+     paperlink[21]='';
+     iconimage[21]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[22]='Shanghai, China';
+     papertitle[22]='环球时报';
+     papernumber1[22]='3279';
+     papernumber2[22]='';
+     paperdate[22]='March 28, 2014';
+     paperlang[22]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Chinese">Chinese</a>';
+     papersender[22]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ilya%20Smolyakov">Ilya Smolyakov</a>';
+     paperland[22] = new google.maps.LatLng(31.2243489,121.4767528);
+     paperlink[22]='http://papersaround.blogspot.com/2014/12/shanghai-china.html';
+     iconimage[22]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/china.png';
+
+     papername[23]='Kazan, Russia';
+     papertitle[23]='Ватаным Татарстан';
+     papernumber1[23]='62';
+     papernumber2[23]='27268';
+     paperdate[23]='April 29, 2014';
+     paperlang[23]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Tatar">Tatar</a>';
+     papersender[23]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[23] = new google.maps.LatLng(55.7976826,49.1044474);
+     paperlink[23]='http://papersaround.blogspot.com/2014/04/kazan-russia.html';
+     iconimage[23]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[24]='Copenhagen, Denmark';
+     papertitle[24]='Metroxpress';
+     papernumber1[24]='';
+     papernumber2[24]='';
+     paperdate[24]='April 29, 2014';
+     paperlang[24]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Danish">Danish</a>';
+     papersender[24]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alvira%20Kvashnina">Alvira Kvashnina</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ekaterina%20Avvakumova">Ekaterina Avvakumova</a>';
+     paperland[24] = new google.maps.LatLng(55.6712674,12.5608388);
+     paperlink[24]='http://papersaround.blogspot.com/2014/04/copenhagen-denmark.html';
+     iconimage[24]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/denmark.png';
+
+     papername[25]='Copenhagen, Denmark';
+     papertitle[25]='Børsen';
+     papernumber1[25]='81';
+     papernumber2[25]='';
+     paperdate[25]='April 29, 2014';
+     paperlang[25]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Danish">Danish</a>';
+     papersender[25]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alvira%20Kvashnina">Alvira Kvashnina</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ekaterina%20Avvakumova">Ekaterina Avvakumova</a>';
+     paperland[25] = new google.maps.LatLng(55.674566,12.5748316);
+     paperlink[25]='http://papersaround.blogspot.com/2014/04/copenhagen-denmark-2.html';
+     iconimage[25]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/denmark.png';
+
+     papername[26]='Rostov-on-Don, Russia';
+     papertitle[26]='Вечерний Ростов';
+     papernumber1[26]='105-106';
+     papernumber2[26]='16110-16111';
+     paperdate[26]='May 30, 2014';
+     paperlang[26]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[26]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ekaterina%20Avvakumova">Ekaterina Avvakumova</a>';
+     paperland[26] = new google.maps.LatLng(47.2190173,39.7164414);
+     paperlink[26]='';
+     iconimage[26]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[27]='Degtyarsk, Russia';
+     papertitle[27]='Вести Дегтярска';
+     papernumber1[27]='20';
+     papernumber2[27]='55';
+     paperdate[27]='May 21, 2014';
+     paperlang[27]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[27]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[27] = new google.maps.LatLng(56.6981045,60.0960399);
+     paperlink[27]='';
+     iconimage[27]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[28]='Yekaterinburg, Russia';
+     papertitle[28]='Your Yekaterinburg';
+     papernumber1[28]='14';
+     papernumber2[28]='14';
+     paperdate[28]='July 1, 2012';
+     paperlang[28]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/English">English</a>';
+     papersender[28]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[28] = new google.maps.LatLng(56.8449605,60.6144394);
+     paperlink[28]='http://papersaround.blogspot.com/2014/12/yekaterinburg-russia.html';
+     iconimage[28]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[29]='Cancún, Mexico';
+     papertitle[29]='¡Hola!';
+     papernumber1[29]='377';
+     papernumber2[29]='';
+     paperdate[29]='March 26, 2014';
+     paperlang[29]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Spanish">Spanish</a>';
+     papersender[29]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Maxim%20Tuhbatov">Maxim Tuhbatov</a>';
+     paperland[29] = new google.maps.LatLng(21.122083,-86.8273416);
+     paperlink[29]='';
+     iconimage[29]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/mexico.png';
+
+     papername[30]='Tyumen, Russia';
+     papertitle[30]='Спортивный меридиан';
+     papernumber1[30]='24';
+     papernumber2[30]='719';
+     paperdate[30]='June 25, 2014';
+     paperlang[30]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[30]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Irina%20Ovodova">Irina Ovodova</a>';
+     paperland[30] = new google.maps.LatLng(57.1521389,65.5392108);
+     paperlink[30]='';
+     iconimage[30]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[31]='Paralimni, Cyprus';
+     papertitle[31]='η σημερίνη';
+     papernumber1[31]='';
+     papernumber2[31]='';
+     paperdate[31]='July 9, 2014';
+     paperlang[31]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Greek">Greek</a>';
+     papersender[31]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[31] = new google.maps.LatLng(35.0358805,33.9961677);
+     paperlink[31]='http://papersaround.blogspot.com/2014/07/paralimni-cyprus.html';
+     iconimage[31]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/cyprus.png';
+
+     papername[32]='Paphos, Cyprus';
+     papertitle[32]='Paphos Post';
+     papernumber1[32]='109';
+     papernumber2[32]='';
+     paperdate[32]='July 1, 2014';
+     paperlang[32]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/English">English</a>';
+     papersender[32]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[32] = new google.maps.LatLng(34.7726959,32.4332804);
+     paperlink[32]='http://papersaround.blogspot.com/2014/11/paphos-cyprus.html';
+     iconimage[32]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/cyprus.png';
+
+     papername[33]='Limassol, Cyprus';
+     papertitle[33]='Вестник Кипра';
+     papernumber1[33]='980';
+     papernumber2[33]='';
+     paperdate[33]='July 11, 2014';
+     paperlang[33]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[33]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[33] = new google.maps.LatLng(34.6917392,33.0284847);
+     paperlink[33]='';
+     iconimage[33]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/cyprus.png';
+
+     papername[34]='Tobolsk, Russia';
+     papertitle[34]='Тобольск-Содействие';
+     papernumber1[34]='31';
+     papernumber2[34]='975';
+     paperdate[34]='July 28, 2014';
+     paperlang[34]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[34]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Boris%20Ovodov">Boris Ovodov</a>';
+     paperland[34] = new google.maps.LatLng(58.2283625,68.257907);
+     paperlink[34]='http://papersaround.blogspot.com/2014/07/tobolsk-russia.html';
+     iconimage[34]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[35]='Surgut, Russia';
+     papertitle[35]='Новый город';
+     papernumber1[35]='31';
+     papernumber2[35]='4437';
+     paperdate[35]='July 25, 2014';
+     paperlang[35]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[35]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Boris%20Ovodov">Boris Ovodov</a>';
+     paperland[35] = new google.maps.LatLng(61.283857,73.382317);
+     paperlink[35]='http://papersaround.blogspot.com/2015/01/surgut-russia.html';
+     iconimage[35]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[36]='Kyzyl, Russia';
+     papertitle[36]='Тувинская правда';
+     papernumber1[36]='85';
+     papernumber2[36]='17544';
+     paperdate[36]='August 5, 2014';
+     paperlang[36]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[36]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ekaterina%20Klimova">Ekaterina Klimova</a>';
+     paperland[36] = new google.maps.LatLng(51.6914035,94.4631245);
+     paperlink[36]='';
+     iconimage[36]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[37]='Kyzyl, Russia';
+     papertitle[37]='Шын';
+     papernumber1[37]='94';
+     papernumber2[37]='18521';
+     paperdate[37]='August 5, 2014';
+     paperlang[37]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Tuvan">Tuvan</a>';
+     papersender[37]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ekaterina%20Klimova">Ekaterina Klimova</a>';
+     paperland[37] = new google.maps.LatLng(51.7203982,94.4376542);
+     paperlink[37]='http://papersaround.blogspot.com/2014/12/kyzyl-russia.html';
+     iconimage[37]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[38]='Reykjavik, Iceland';
+     papertitle[38]='Fréttatíminn';
+     papernumber1[38]='30';
+     papernumber2[38]='';
+     paperdate[38]='July 25, 2014';
+     paperlang[38]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Icelandic">Icelandic</a>';
+     papersender[38]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Evgeniya%20Telennaya">Evgeniya Telennaya</a>';
+     paperland[38] = new google.maps.LatLng(64.132442,-21.8569031);
+     paperlink[38]='http://papersaround.blogspot.com/2014/12/reykjavik-iceland_26.html';
+     iconimage[38]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/iceland.png';
+
+     papername[39]='Reykjavik, Iceland';
+     papertitle[39]='Bændablaðið';
+     papernumber1[39]='14';
+     papernumber2[39]='';
+     paperdate[39]='July 17, 2014';
+     paperlang[39]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Icelandic">Icelandic</a>';
+     papersender[39]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Evgeniya%20Telennaya">Evgeniya Telennaya</a>';
+     paperland[39] = new google.maps.LatLng(64.1418046,-21.9255569);
+     paperlink[39]='http://papersaround.blogspot.com/2014/12/reykjavik-iceland.html';
+     iconimage[39]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/iceland.png';
+
+     papername[40]='Noyabrsk, Russia';
+     papertitle[40]='Северная вахта';
+     papernumber1[40]='130';
+     papernumber2[40]='5674';
+     paperdate[40]='July 24, 2014';
+     paperlang[40]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[40]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Boris%20Ovodov">Boris Ovodov</a>';
+     paperland[40] = new google.maps.LatLng(63.1766945,75.4471666);
+     paperlink[40]='http://papersaround.blogspot.com/2014/07/noyabrsk-russia.html';
+     iconimage[40]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[41]='Kostanay, Kazakhstan';
+     papertitle[41]='Костанайские новости';
+     papernumber1[41]='26';
+     papernumber2[41]='22288';
+     paperdate[41]='February 20, 2014';
+     paperlang[41]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[41]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Aleksey%20Gavrilov">Aleksey Gavrilov</a>';
+     paperland[41] = new google.maps.LatLng(53.2054508,63.6218262);
+     paperlink[41]='http://papersaround.blogspot.com/2014/02/kostanay-kazakhstan.html';
+     iconimage[41]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/kazakhstan.png';
+
+     papername[42]='Rudniy, Kazakhstan';
+     papertitle[42]='Рудненский рабочий';
+     papernumber1[42]='1';
+     papernumber2[42]='9916';
+     paperdate[42]='January 4, 2013';
+     paperlang[42]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[42]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Aleksey%20Gavrilov">Aleksey Gavrilov</a>';
+     paperland[42] = new google.maps.LatLng(52.9754864,63.1212187);
+     paperlink[42]='';
+     iconimage[42]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/kazakhstan.png';
+
+     papername[43]='Rudniy, Kazakhstan';
+     papertitle[43]='Рудненский рабочий';
+     papernumber1[43]='27';
+     papernumber2[43]='10038';
+     paperdate[43]='April 15, 2014';
+     paperlang[43]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[43]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Aleksey%20Gavrilov">Aleksey Gavrilov</a>';
+     paperland[43] = new google.maps.LatLng(52.956417,63.1170431);
+     paperlink[43]='';
+     iconimage[43]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/kazakhstan.png';
+
+     papername[44]='Hurghada, Egypt';
+     papertitle[44]='الجمهورية‎';
+     papernumber1[44]='';
+     papernumber2[44]='';
+     paperdate[44]='August 21, 2014';
+     paperlang[44]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Arabic">Arabic</a>';
+     papersender[44]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Tatyana%20Shvetsova">Tatyana Shvetsova</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Denis%20Dirbenov">Denis Dirbenov</a>';
+     paperland[44] = new google.maps.LatLng(27.1925045,33.7817104);
+     paperlink[44]='http://papersaround.blogspot.com/2014/12/hurghada-egypt.html';
+     iconimage[44]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/egypt.png';
+
+     papername[45]='Salekhard, Russia';
+     papertitle[45]='Красный Север';
+     papernumber1[45]='72';
+     papernumber2[45]='15901';
+     paperdate[45]='September 13, 2014';
+     paperlang[45]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[45]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[45] = new google.maps.LatLng(66.5580064,66.6051276);
+     paperlink[45]='http://papersaround.blogspot.com/2015/02/salekhard-russia.html';
+     iconimage[45]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[46]='Noyabrsk, Russia';
+     papertitle[46]='Слово нефтяника';
+     papernumber1[46]='37';
+     papernumber2[46]='';
+     paperdate[46]='September 12, 2014';
+     paperlang[46]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[46]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[46] = new google.maps.LatLng(63.2058728,75.434249);
+     paperlink[46]='http://papersaround.blogspot.com/2015/04/noyabrsk-russia.html';
+     iconimage[46]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[47]='Sevastopol, Russia-Ukraine';
+     papertitle[47]='Севастопольская правда';
+     papernumber1[47]='33';
+     papernumber2[47]='1019';
+     paperdate[47]='September 27, 2014';
+     paperlang[47]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[47]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Olga%20Kvashnina">Olga Kvashnina</a>';
+     paperland[47] = new google.maps.LatLng(44.6155767,33.5236891);
+     paperlink[47]='';
+     iconimage[47]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia-ukraine.png';
+
+     papername[48]='Kislovodsk, Russia';
+     papertitle[48]='Кисловодская газета';
+     papernumber1[48]='40';
+     papernumber2[48]='198';
+     paperdate[48]='October 1, 2014';
+     paperlang[48]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[48]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Irina%20Ovodova">Irina Ovodova</a>';
+     paperland[48] = new google.maps.LatLng(43.90885,42.7312501);
+     paperlink[48]='';
+     iconimage[48]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[49]='Tyumen, Russia';
+     papertitle[49]='Тюменский курьер';
+     papernumber1[49]='109';
+     papernumber2[49]='3854';
+     paperdate[49]='June 25, 2014';
+     paperlang[49]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[49]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Irina%20Ovodova">Irina Ovodova</a>';
+     paperland[49] = new google.maps.LatLng(57.1640403,65.5437285);
+     paperlink[49]='';
+     iconimage[49]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[50]='Kachkanar, Russia';
+     papertitle[50]='Качканарский рабочий';
+     papernumber1[50]='43';
+     papernumber2[50]='5733';
+     paperdate[50]='October 29, 2014';
+     paperlang[50]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[50]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ekaterina%20Gladysheva">Ekaterina Gladysheva</a>';
+     paperland[50] = new google.maps.LatLng(58.7020961,59.493071);
+     paperlink[50]='';
+     iconimage[50]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[51]='Belgrade, Serbia';
+     papertitle[51]='Вечерње новости';
+     papernumber1[51]='';
+     papernumber2[51]='';
+     paperdate[51]='November 2, 2014';
+     paperlang[51]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Serbian">Serbian</a>';
+     papersender[51]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ekaterina%20Kulakova">Ekaterina Kulakova</a>';
+     paperland[51] = new google.maps.LatLng(44.8152453,20.4203223);
+     paperlink[51]='';
+     iconimage[51]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/serbia.png';
+
+     papername[52]='Tarko-Sale, Russia';
+     papertitle[52]='Северный луч';
+     papernumber1[52]='46';
+     papernumber2[52]='3548';
+     paperdate[52]='November 14, 2014';
+     paperlang[52]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[52]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[52] = new google.maps.LatLng(64.9209215,77.7815207);
+     paperlink[52]='';
+     iconimage[52]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[53]='Kyoto, Japan';
+     papertitle[53]='日本経済新聞';
+     papernumber1[53]='';
+     papernumber2[53]='';
+     paperdate[53]='December 9, 2014';
+     paperlang[53]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Japanese">Japanese</a>';
+     papersender[53]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Nadin%20Bizarre">Nadin Bizarre</a>';
+     paperland[53] = new google.maps.LatLng(35.0061,135.76095);
+     paperlink[53]='';
+     iconimage[53]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/japan.png';
+
+     papername[54]='Novouralsk, Russia';
+     papertitle[54]='Новоуральская газета';
+     papernumber1[54]='8';
+     papernumber2[54]='163';
+     paperdate[54]='February 25, 2015';
+     paperlang[54]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[54]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Boris%20Ovodov">Boris Ovodov</a>';
+     paperland[54] = new google.maps.LatLng(57.2559231,60.0786879);
+     paperlink[54]='';
+     iconimage[54]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[55]='Lisbon, Portugal';
+     papertitle[55]='O Benfica';
+     papernumber1[55]='LXXII';
+     papernumber2[55]='3692';
+     paperdate[55]='January 30, 2015';
+     paperlang[55]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Portuguese">Portuguese</a>';
+     papersender[55]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ilya%20Safarov">Ilya Safarov</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ilya%20Hamov">Ilya Hamov</a>';
+     paperland[55] = new google.maps.LatLng(38.7436266,-9.1602037);
+     paperlink[55]='';
+     iconimage[55]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/portugal.png';
+
+     papername[56]='Funchal, Portugal';
+     papertitle[56]='Diário de Notícias da Madeira';
+     papernumber1[56]='139';
+     papernumber2[56]='45462';
+     paperdate[56]='February 21, 2015';
+     paperlang[56]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Portuguese">Portuguese</a>';
+     papersender[56]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ilya%20Safarov">Ilya Safarov</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ilya%20Hamov">Ilya Hamov</a>';
+     paperland[56] = new google.maps.LatLng(32.6600438,-16.9246706);
+     paperlink[56]='';
+     iconimage[56]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/portugal.png';
+
+     papername[57]='Saint Petersburg, Russia';
+     papertitle[57]='Санкт-Петербургские ведомости';
+     papernumber1[57]='40';
+     papernumber2[57]='5413';
+     paperdate[57]='March 10, 2015';
+     paperlang[57]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[57]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[57] = new google.maps.LatLng(59.9174455,30.3250575);
+     paperlink[57]='';
+     iconimage[57]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[58]='Vyborg, Russia';
+     papertitle[58]='Выборг';
+     papernumber1[58]='30';
+     papernumber2[58]='17385';
+     paperdate[58]='March 6, 2015';
+     paperlang[58]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[58]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[58] = new google.maps.LatLng(60.712888,28.7521123);
+     paperlink[58]='';
+     iconimage[58]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[59]='Veliky Novgorod, Russia';
+     papertitle[59]='Волховъ';
+     papernumber1[59]='10';
+     papernumber2[59]='657';
+     paperdate[59]='March 10, 2015';
+     paperlang[59]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[59]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>';
+     paperland[59] = new google.maps.LatLng(58.5561955,31.3124346);
+     paperlink[59]='';
+     iconimage[59]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[60]='Tomsk, Russia';
+     papertitle[60]='Красное знамя';
+     papernumber1[60]='36';
+     papernumber2[60]='27121';
+     paperdate[60]='March 17, 2015';
+     paperlang[60]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[60]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Maria%20Loginova">Maria Loginova</a>';
+     paperland[60] = new google.maps.LatLng(56.4895329,85.0086309);
+     paperlink[60]='';
+     iconimage[60]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     papername[61]='Omsk, Russia';
+     papertitle[61]='Вечерний Омск';
+     papernumber1[61]='12';
+     papernumber2[61]='379';
+     paperdate[61]='March 25, 2015';
+     paperlang[61]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>';
+     papersender[61]='<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Anton%20Lyaptsev">Anton Lyaptsev</a>';
+     paperland[61] = new google.maps.LatLng(54.9858759,73.3561389);
+     paperlink[61]='';
+     iconimage[61]='https://googledrive.com/host/0B3n4EMBczDDEMlVkVzVCb3pfZ2c/russia.png';
+
+     var N=62; //Общее число газет
+     var i;
+     var j;
+     var k;
+
+     for (i=0; i<N; i++)
+     {
+         if (papernumber1[i]=='') {
+             if (paperdate[i]=='') {
+	                if (paperlink[i]=='') {
+                     content[i] = '<div id="content">'+
+				        '<div id="siteNotice">'+
+				        '</div>'+
+				        '<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				        '<div id="bodyContent">'+
+				        '<p><b>Title: </b>'+papertitle[i]+'</p>'+
+				        '<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				        '<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				        '</div>'+
+				        '</div>';
+	                } else {
+                     content[i] = '<div id="content">'+
+				        '<div id="siteNotice">'+
+				        '</div>'+
+				        '<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				        '<div id="bodyContent">'+
+				        '<p><b>Title: </b><a style="text-decoration: underline" href="'+paperlink[i]+'">'+papertitle[i]+'</a></p>'+
+				        '<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				        '<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				        '</div>'+
+				        '</div>';
+	                }
+             } else if (paperlink[i]=='') {
+                 content[i] = '<div id="content">'+
+				    '<div id="siteNotice">'+
+				    '</div>'+
+				    '<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				    '<div id="bodyContent">'+
+				    '<p><b>Title: </b>'+papertitle[i]+'</p>'+
+				    '<p><b>Released: </b>'+paperdate[i]+'</p>'+
+				    '<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				    '<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				    '</div>'+
+				    '</div>';
+             } else {
+                 content[i] = '<div id="content">'+
+				    '<div id="siteNotice">'+
+				    '</div>'+
+				    '<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				    '<div id="bodyContent">'+
+				    '<p><b>Title: </b><a style="text-decoration: underline" href="'+paperlink[i]+'">'+papertitle[i]+'</a></p>'+
+				    '<p><b>Released: </b>'+paperdate[i]+'</p>'+
+				    '<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				    '<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				    '</div>'+
+				    '</div>';
+             }
+         } else if (paperdate[i]=='') {
+             if (papernumber2[i]=='') {
+	                if (paperlink[i]=='') {
+                     content[i] = '<div id="content">'+
+				        '<div id="siteNotice">'+
+				        '</div>'+
+				        '<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				        '<div id="bodyContent">'+
+				        '<p><b>Title: </b>'+papertitle[i]+'</p>'+
+				        '<p><b>Number: </b>'+papernumber1[i]+'</p>'+
+				        '<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				        '<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				        '</div>'+
+				        '</div>';
+	                } else {
+                     content[i] = '<div id="content">'+
+				        '<div id="siteNotice">'+
+				        '</div>'+
+				        '<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				        '<div id="bodyContent">'+
+				        '<p><b>Title: </b><a style="text-decoration: underline" href="'+paperlink[i]+'">'+papertitle[i]+'</a></p>'+
+				        '<p><b>Number: </b>'+papernumber1[i]+'</p>'+
+				        '<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				        '<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				        '</div>'+
+				        '</div>';
+	                }
+             } else if (paperlink[i]=='') {
+                 content[i] = '<div id="content">'+
+				    '<div id="siteNotice">'+
+				    '</div>'+
+				    '<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				    '<div id="bodyContent">'+
+				    '<p><b>Title: </b>'+papertitle[i]+'</p>'+
+				    '<p><b>Number: </b>'+papernumber1[i]+' ('+papernumber2[i]+')</p>'+
+				    '<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				    '<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				    '</div>'+
+				    '</div>';
+             } else {
+                 content[i] = '<div id="content">'+
+				    '<div id="siteNotice">'+
+				    '</div>'+
+				    '<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				    '<div id="bodyContent">'+
+				    '<p><b>Title: </b><a style="text-decoration: underline" href="'+paperlink[i]+'">'+papertitle[i]+'</a></p>'+
+				    '<p><b>Number: </b>'+papernumber1[i]+' ('+papernumber2[i]+')</p>'+
+				    '<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				    '<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				    '</div>'+
+				    '</div>';
+             }
+         } else if (papernumber2[i]=='') {
+             if (paperlink[i]=='') {
+                 content[i] = '<div id="content">'+
+				    '<div id="siteNotice">'+
+				    '</div>'+
+				    '<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				    '<div id="bodyContent">'+
+				    '<p><b>Title: </b>'+papertitle[i]+'</p>'+
+				    '<p><b>Number: </b>'+papernumber1[i]+'</p>'+
+				    '<p><b>Released: </b>'+paperdate[i]+'</p>'+
+				    '<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				    '<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				    '</div>'+
+				    '</div>';
+             } else {
+                 content[i] = '<div id="content">'+
+				    '<div id="siteNotice">'+
+				    '</div>'+
+				    '<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				    '<div id="bodyContent">'+
+				    '<p><b>Title: </b><a style="text-decoration: underline" href="'+paperlink[i]+'">'+papertitle[i]+'</a></p>'+
+				    '<p><b>Number: </b>'+papernumber1[i]+'</p>'+
+				    '<p><b>Released: </b>'+paperdate[i]+'</p>'+
+				    '<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				    '<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				    '</div>'+
+				    '</div>';
+             }
+         } else if (paperlink[i]=='') {
+             content[i] = '<div id="content">'+
+				'<div id="siteNotice">'+
+				'</div>'+
+				'<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				'<div id="bodyContent">'+
+				'<p><b>Title: </b>'+papertitle[i]+'</p>'+
+				'<p><b>Number: </b>'+papernumber1[i]+' ('+papernumber2[i]+')</p>'+
+				'<p><b>Released: </b>'+paperdate[i]+'</p>'+
+				'<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				'<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				'</div>'+
+				'</div>';
+         } else {
+             content[i] = '<div id="content">'+
+				'<div id="siteNotice">'+
+				'</div>'+
+				'<h1 id="firstHeading" class="firstHeading">'+papername[i]+'</h1>'+
+				'<div id="bodyContent">'+
+				'<p><b>Title: </b><a style="text-decoration: underline" href="'+paperlink[i]+'">'+papertitle[i]+'</a></p>'+
+				'<p><b>Number: </b>'+papernumber1[i]+' ('+papernumber2[i]+')</p>'+
+				'<p><b>Released: </b>'+paperdate[i]+'</p>'+
+				'<p><b>Language: </b>'+paperlang[i]+'</p>'+
+				'<p><b>Sender: </b>'+papersender[i]+'</p>'+
+				'</div>'+
+				'</div>';
+         }
+
+         infowindow[i] = new google.maps.InfoWindow({
+         content: content[i],
+         });
+         marker[i] = new google.maps.Marker({
+         position: paperland[i],
+         map: map,
+         title: papername[i],
+         icon: iconimage[i]
+         });
+         google.maps.event.addListener(marker[i], 'click', function(j) {
+         return function() {
+         for (k=0; k<N; k++) {
+             infowindow[k].close();
+         }
+         infowindow[j].open(map,marker[j]);
+         }
+         }(i));
+     }
+ }
+</script>
+<div id="map_canvas" style="width: 100%; height: 600px"></div>

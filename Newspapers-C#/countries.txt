@@ -1,0 +1,93 @@
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<p>Newspapers for this site were brought from many countries and cities:</p>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/China">China</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Beijing">Beijing</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Shanghai">Shanghai</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Cyprus">Cyprus</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Limassol">Limassol</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Paphos">Paphos</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Paralimni">Paralimni</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Denmark">Denmark</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Copenhagen">Copenhagen</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Egypt">Egypt</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Hurghada">Hurghada</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/France">France</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Nice">Nice</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Iceland">Iceland</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Reykjavik">Reykjavik</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Japan">Japan</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Kyoto">Kyoto</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Tokyo">Tokyo</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Kazakhstan">Kazakhstan</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Kostanay">Kostanay</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Rudniy">Rudniy</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Mexico">Mexico</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Cancún">Cancún</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Portugal">Portugal</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Funchal">Funchal</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Lisbon">Lisbon</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russia">Russia</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Anapa">Anapa</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Balashov">Balashov</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Degtyarsk">Degtyarsk</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Gelendzhik">Gelendzhik</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Ivdel">Ivdel</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Izhevsk">Izhevsk</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Kachkanar">Kachkanar</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Kamyshlov">Kamyshlov</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Kazan">Kazan</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Kislovodsk">Kislovodsk</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Krasnodar">Krasnodar</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Kyzyl">Kyzyl</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Moscow">Moscow</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Novouralsk">Novouralsk</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Noyabrsk">Noyabrsk</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Omsk">Omsk</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Penza">Penza</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Perm">Perm</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Rostov-on-Don">Rostov-on-Don</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Saint%20Petersburg">Saint Petersburg</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Salekhard">Salekhard</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Samara">Samara</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Surgut">Surgut</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Tarko-Sale">Tarko-Sale</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Tobolsk">Tobolsk</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Tomsk">Tomsk</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Tuapse">Tuapse</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Tyumen">Tyumen</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Veliky%20Novgorod">Veliky Novgorod</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Verkhoturye">Verkhoturye</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Vladimir">Vladimir</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Vyborg">Vyborg</a></li>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Yekaterinburg">Yekaterinburg</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russia-Ukraine">Russia-Ukraine</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Sevastopol">Sevastopol</a></li>
+</ul>
+<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Serbia">Serbia</a>
+<ul>
+<li><a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Belgrade">Belgrade</a></li>
+</ul>
+</div>

@@ -1,7 +1,0 @@
-www.papersaround.com {
-    reverse_proxy np-app-1:8080
-}
-
-papersaround.com {
-    redir https://www.papersaround.com{uri}
-}

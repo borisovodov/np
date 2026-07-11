@@ -1,0 +1,61 @@
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<p>In this site presents newspapers <span style="text-decoration: line-through">from around the world</span>. Look at this entertaining statistics:</p>
+<ul>
+<p><li>A total of <a style="text-decoration: underline" href="http://papersaround.blogspot.com/">62 newspapers</a> from <a style="text-decoration: underline" href="http://papersaround.blogspot.com/p/countries.html">13 countries</a> and <a style="text-decoration: underline" href="http://papersaround.blogspot.com/p/countries.html">51 cities</a>.</li></p>
+<p><li>Most newspapers from <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russia">Russia</a>—41.</li></p>
+<p><li>Here are the newspapers on 14 languages.</li></p>
+<p><li>43 newspapers were brought on <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russian">Russian</a>.</li></p>
+<p><li>Newspapers were brought from the 4 continents—<a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Asia">Asia</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Europe">Europe</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/North%20America">North America</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Africa">Africa</a>. More then other from <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Europe">Europe</a>: 33.</li></p>
+<p><li>The northernmost newspaper brought <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a> from <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Salekhard">Salekhard</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russia">Russia</a>: 66° 33′ N.</li></p>
+<p><li>The southernmost newspaper brought <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Maxim%20Tuhbatov">Maxim Tuhbatov</a> from <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Cancún">Cancún</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Mexico">Mexico</a>: 21° 7′ N.</li></p>
+<p><li>The westernmost newspaper brought <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Maxim%20Tuhbatov">Maxim Tuhbatov</a> from <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Cancún">Cancún</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Mexico">Mexico</a>: 86° 49′ W.</li></p>
+<p><li>The easternmost newspaper brought <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Valentin%20Tetyorkin">Valentin Tetyorkin</a> from <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Tokyo">Tokyo</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Japan">Japan</a>: 139° 42′ E.</li></p>
+<p><li>Newspapers brought <a style="text-decoration: underline" href="http://papersaround.blogspot.com/p/senders.html">24 people</a>.</li></p>
+<p><li>Most newspapers brought <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexander%20Konstantinov">Alexander Konstantinov</a>—24.</li></p>
+<p><li>First <a style="text-decoration: underline" href="http://papersaround.blogspot.com/2012/01/beijing-china.html">newspaper</a> <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Alexandra%20Ovodova">Alexandra Ovodova</a> filch from post.</li></p>
+<p><li>Latest newspaper <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Anton%20Lyaptsev">Anton Lyaptsev</a> brought from <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Omsk">Omsk</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russia">Russia</a>.</li></p>
+</ul><!--// Этот коммент не даёт показаться дополнительной статистике, пока она не готова
+<hr noshade style="margin-top: 30px; margin-bottom: 30px; color: black; background-color: black; height: 1px; border: none">
+<p>Random:</p>
+<ul>
+<p><li>
+<script type="text/javascript"><!--
+var h=(Math.random()*34);
+if (h < 1) document.writeln('*** newspapers have Sudoku.');
+if (h > 1 && h < 2) document.writeln('*** newspapers have horoscope.');
+if (h > 2 && h < 3) document.writeln('*** newspapers have crossword puzzle.');
+if (h > 3 && h < 4) document.writeln('В скольких реклама автомобилей Тойота');
+if (h > 4 && h < 5) document.writeln('*** newspapers have anecdotes.');
+if (h > 5 && h < 6) document.writeln('*** newspapers monochrome.');
+if (h > 6 && h < 7) document.writeln('*** newspapers bicolour.');
+if (h > 7 && h < 8) document.writeln('*** newspapers multicolour.');
+if (h > 8 && h < 9) document.writeln('Least of all pages in the newspaper from ***—***');
+if (h > 9 && h < 10) document.writeln('The most popular newspaper format is ***. *** newspapers have this format.');
+if (h > 10 && h < 11) document.writeln('Rarest newspaper format is ***. *** newspapers have this format.');
+if (h > 11 && h < 12) document.writeln('*** newspapers contains in its title the word “правда”.');
+if (h > 12 && h < 13) document.writeln('Most pages in the newspaper from ***—***.');
+if (h > 13 && h < 14) document.writeln('Самая давноиздающаяся газета');
+if (h > 14 && h < 15) document.writeln('In *** newspapers have recipes.');
+if (h > 15 && h < 16) document.writeln('*** newspapers from the coastal cities.');
+if (h > 16 && h < 17) document.writeln('Over the last month brought *** newspapers.');
+if (h > 17 && h < 18) document.writeln('If you choose the most commonly used letters in the name of the newspaper, the averaged name of newspaper, the averaged name of newspaper will be "***".');
+if (h > 18 && h < 19) document.writeln('Area of submitted newspapers comparable with area of a football field. //football field - не обязательно так');
+if (h > 19 && h < 20) document.writeln('Total circulation of all newspapers is *** copies.');
+if (h > 20 && h < 21) document.writeln('Количество газет с телепрограммой');
+if (h > 21 && h < 22) document.writeln('Only in the newspaper from Tokyo shows a naked women.');
+if (h > 22 && h < 23) document.writeln('The largest circulation newspaper from ***.');
+if (h > 23 && h < 24) document.writeln('*** newspapers in a language that is not a staple in the country from which it was brought.');
+if (h > 24 && h < 25) document.writeln('The smallest circulation newspaper from ***.');
+if (h > 25 && h < 26) document.writeln('The shortest name of the newspaper—***.');
+if (h > 26 && h < 27) document.writeln('The longest name of the newspaper—***.');
+if (h > 27 && h < 28) document.writeln('*** newspapers from the cities landlocked.');
+if (h > 28 && h < 29) document.writeln('Газета на языке с самым малым количеством носителей это "Красная правда" на тувинском языке');
+if (h > 29 && h < 30) document.writeln('Сколько в среднем времени происходит между печатью газеты и приездом её сюда');
+if (h > 30 && h < 31) document.writeln('В скольких газетах есть карикатурные зарисовки');
+if (h > 31 && h < 32) document.writeln('Самое популярное имя отправителя');
+if (h > 32 && h < 33) document.writeln('The largest city, from which brought newspaper is <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Shanghai">Shanghai</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/China">China</a>—24 150 000 people.');
+if (h > 33 && h < 34) document.writeln('<p><li>The smallest city, from which brought newspaper is <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Verkhoturie">Verkhoturie</a>, <a style="text-decoration: underline" href="http://papersaround.blogspot.com/search/label/Russia">Russia</a>—8776 people.</li></p>');
+//--><!--</script>
+</li></p>
+</ul>-->
+</div>
